@@ -14,7 +14,7 @@
   "license": "WTFPL",
   "homepage": "https://digital.slub-dresden.de",
   "devDependencies": {
-    "grunt": "^1.0.4",
+    "grunt": "^1.1.0",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^3.4.0",
