@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-03-04T16:36:33Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="double.RectoVerso">
+				<source><![CDATA[Adjust recto/verso]]></source>
+			</trans-unit>
+			<trans-unit id="double.doublePageView">
+				<source><![CDATA[Show double pages]]></source>
+			</trans-unit>
+			<trans-unit id="double.singlePageView">
+				<source><![CDATA[Show single page]]></source>
+			</trans-unit>
+			<trans-unit id="download.fulltext.fulltextDownload">
+				<source><![CDATA[Fulltext download]]></source>
+			</trans-unit>
+			<trans-unit id="download.fulltext.leftPage">
+				<source><![CDATA[Fulltext left page (XML)]]></source>
+			</trans-unit>
+			<trans-unit id="download.fulltext.rightPage">
+				<source><![CDATA[Fulltext right page (XML)]]></source>
+			</trans-unit>
+			<trans-unit id="download.fulltext.singlePage">
+				<source><![CDATA[Fulltext page (XML)]]></source>
+			</trans-unit>
+			<trans-unit id="download.image.imageDownload">
+				<source><![CDATA[Download image]]></source>
+			</trans-unit>
+			<trans-unit id="download.image.leftPage">
+				<source><![CDATA[Download left page (JPG)]]></source>
+			</trans-unit>
+			<trans-unit id="download.image.rightPage">
+				<source><![CDATA[Download right page (JPG)]]></source>
+			</trans-unit>
+			<trans-unit id="download.image.singlePage">
+				<source><![CDATA[Download single page (JPG)]]></source>
+			</trans-unit>
+			<trans-unit id="download.mets">
+				<source><![CDATA[METS file (XML)]]></source>
+			</trans-unit>
+			<trans-unit id="download.pdf.leftPage">
+				<source><![CDATA[Download left page (PDF)]]></source>
+			</trans-unit>
+			<trans-unit id="download.pdf.pdfDownload">
+				<source><![CDATA[Download PDF]]></source>
+			</trans-unit>
+			<trans-unit id="download.pdf.rightPage">
+				<source><![CDATA[Download right page (PDF)]]></source>
+			</trans-unit>
+			<trans-unit id="download.pdf.singlePage">
+				<source><![CDATA[Download single page (PDF)]]></source>
+			</trans-unit>
+			<trans-unit id="download.work">
+				<source><![CDATA[Download whole work]]></source>
+			</trans-unit>
+			<trans-unit id="fullscreen">
+				<source><![CDATA[Fullscreen Mode]]></source>
+			</trans-unit>
+			<trans-unit id="fulltext.no_fulltext_double">
+				<source><![CDATA[No fulltext in double page mode.]]></source>
+			</trans-unit>
+			<trans-unit id="fulltext.no_fulltext_gridpage">
+				<source><![CDATA[No fulltext in gridpage mode.]]></source>
+			</trans-unit>
+			<trans-unit id="gridpage.preview">
+				<source><![CDATA[Thumbnail Preview]]></source>
+			</trans-unit>
+			<trans-unit id="provider.email_provider">
+				<source><![CDATA[Email to data provider]]></source>
+			</trans-unit>
+			<trans-unit id="provider.local_catalogue">
+				<source><![CDATA[Online Public Access Catalogue]]></source>
+			</trans-unit>
+			<trans-unit id="provider.slub_catalogue">
+				<source><![CDATA[SLUB Catalogue]]></source>
+			</trans-unit>
+			<trans-unit id="purl.singlePage">
+				<source><![CDATA[Permalink page]]></source>
+			</trans-unit>
+			<trans-unit id="purl.document">
+				<source><![CDATA[Permalink document]]></source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

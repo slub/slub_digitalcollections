@@ -1,0 +1,179 @@
+/*
+ *
+ * Gridview
+ * ================================================
+ * All special styles for the gridview which shows
+ * multiple pages of one document side by side
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+body.gridview {
+    .view-functions {
+        display: none;
+    }
+    .step-back-button {
+        top: 60px;
+        left: 10px;
+        border: 1px solid @lightgrey-color;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        .step-back-button {
+            border: 0 none;
+            top: 80px;
+            left: 15px;
+        }
+    }
+}
+
+.tx-dlf-pagegrid-list {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    li {
+        width: 100px;
+        height: 160px;
+        display: inline-block;
+        margin: 10px;
+        .no-touchevents & {
+            .transition();
+            &:hover {
+                .transform(scale(1.1));
+            }
+        }
+        img {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            max-height: 150px;
+        }
+        .tx-dlf-pagegrid-pagination {
+            margin-top: 5px;
+            font-weight: 700;
+            font-size: 12px;
+            color: @secondary-color;
+        }
+        &.current {
+            .transform(scale(1.1));
+            img {
+                border: 6px solid @secondary-color;
+            }
+        }
+    }
+    @media screen and (min-width: @tabletViewportWidth) {
+        top: 0;
+        padding-top: 70px;
+        li {
+            width: 120px;
+            height: 180px;
+            margin: 20px;
+        }
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        li {
+            width: 150px;
+            height: 200px;
+            .tx-dlf-pagegrid-pagination {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.tx-dlf-pagegrid-pagebrowser { // The stupid old paging. YEAH!
+    position: absolute;
+    bottom: 15px;
+    height: 1px;
+    width: 290px;
+    left: 50%;
+    margin-left: -145px;
+    line-height: 0;
+    background: green;
+    .text-hide();
+    a {
+        position: absolute;
+        bottom: 0;
+        display: none;
+        width: 40px;
+        height: 40px;
+        &:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: -1px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: white url('@{control-icons}') no-repeat 0 0;
+            content: " ";
+        }
+        &:first-child {
+            display: block;
+            left: 0;
+            &:before {
+                background-position: -240px -80px;
+            }
+        }
+        &:last-child {
+            display: block;
+            right: 0;
+            &:before {
+                background-position: -280px -80px;
+            }
+        }
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        height: 70px;
+        padding: 15px;
+        font-family: @font-sans-bold;
+        font-size: 14px;
+        line-height: 30px;
+        color: white;
+        white-space: nowrap;
+        width: auto;
+        margin: 0;
+        .transform(translateX(-50%));
+        -moz-font-feature-settings: "lnum";
+        -webkit-font-feature-settings: "lnum";
+        font-feature-settings: "lnum";
+        background: fade(@secondary-color, 90%);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        a,
+        a:first-child,
+        a:last-child {
+            color: @secondary-color;
+            position: relative;
+            display: inline-block;
+            bottom: auto;
+            margin: 0 3px;
+            left: auto;
+            right: auto;
+            background: white;
+            border-radius: 20px;
+            width: 30px;
+            height: 30px;
+            &:before {
+                display: none;
+            }
+        }
+    }
+    @media screen and (min-width: @desktopViewportWidth) {
+        font-size: 18px;
+        line-height: 40px;
+        a,
+        a:first-child,
+        a:last-child {
+            width: 40px;
+            height: 40px;
+        }
+    }
+}
+
+// EOF

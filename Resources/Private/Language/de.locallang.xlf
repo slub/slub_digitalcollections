@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-03-04T16:36:33Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="double.RectoVerso" approved="yes">
+				<source><![CDATA[Adjust recto/verso]]></source>
+				<target><![CDATA[Recto/Verso korrigieren]]></target>
+			</trans-unit>
+			<trans-unit id="double.doublePageView" approved="yes">
+				<source><![CDATA[Show double pages]]></source>
+				<target><![CDATA[Doppelseitenansicht]]></target>
+			</trans-unit>
+			<trans-unit id="double.singlePageView" approved="yes">
+				<source><![CDATA[Show single page]]></source>
+				<target><![CDATA[Einzelseitenansicht]]></target>
+			</trans-unit>
+			<trans-unit id="download.fulltext.fulltextDownload" approved="yes">
+				<source><![CDATA[Fulltext download]]></source>
+				<target><![CDATA[Volltext herunterladen]]></target>
+			</trans-unit>
+			<trans-unit id="download.fulltext.leftPage" approved="yes">
+				<source><![CDATA[Fulltext left page (XML)]]></source>
+				<target><![CDATA[Volltext linke Seite (XML)]]></target>
+			</trans-unit>
+			<trans-unit id="download.fulltext.rightPage" approved="yes">
+				<source><![CDATA[Fulltext right page (XML)]]></source>
+				<target><![CDATA[Volltext rechte Seite (XML)]]></target>
+			</trans-unit>
+			<trans-unit id="download.fulltext.singlePage" approved="yes">
+				<source><![CDATA[Fulltext page (XML)]]></source>
+				<target><![CDATA[Volltext Seite (XML)]]></target>
+			</trans-unit>
+			<trans-unit id="download.image.imageDownload" approved="yes">
+				<source><![CDATA[Download image]]></source>
+				<target><![CDATA[Bild herunterladen]]></target>
+			</trans-unit>
+			<trans-unit id="download.image.leftPage" approved="yes">
+				<source><![CDATA[Download left page (JPG)]]></source>
+				<target><![CDATA[Linke Seite herunterladen (JPG)]]></target>
+			</trans-unit>
+			<trans-unit id="download.image.rightPage" approved="yes">
+				<source><![CDATA[Download right page (JPG)]]></source>
+				<target><![CDATA[Rechte Seite herunterladen (JPG)]]></target>
+			</trans-unit>
+			<trans-unit id="download.image.singlePage" approved="yes">
+				<source><![CDATA[Download single page (JPG)]]></source>
+				<target><![CDATA[Einzelseite als Bild herunterladen (JPG)]]></target>
+			</trans-unit>
+			<trans-unit id="download.mets" approved="yes">
+				<source><![CDATA[METS file (XML)]]></source>
+				<target><![CDATA[METS Datei (XML)]]></target>
+			</trans-unit>
+			<trans-unit id="download.pdf.leftPage" approved="yes">
+				<source><![CDATA[Download left page (PDF)]]></source>
+				<target><![CDATA[Linke Seite herunterladen (PDF)]]></target>
+			</trans-unit>
+			<trans-unit id="download.pdf.pdfDownload" approved="yes">
+				<source><![CDATA[Download PDF]]></source>
+				<target><![CDATA[PDF herunterladen]]></target>
+			</trans-unit>
+			<trans-unit id="download.pdf.rightPage" approved="yes">
+				<source><![CDATA[Download right page (PDF)]]></source>
+				<target><![CDATA[Rechte Seite herunterladen (PDF)]]></target>
+			</trans-unit>
+			<trans-unit id="download.pdf.singlePage" approved="yes">
+				<source><![CDATA[Download single page (PDF)]]></source>
+				<target><![CDATA[Einzelseite herunterladen (PDF)]]></target>
+			</trans-unit>
+			<trans-unit id="download.work" approved="yes">
+				<source><![CDATA[Download whole work]]></source>
+				<target><![CDATA[Gesamtes Werk herunterladen (PDF)]]></target>
+			</trans-unit>
+			<trans-unit id="fullscreen" approved="yes">
+				<source><![CDATA[Fullscreen Mode]]></source>
+				<target><![CDATA[Vollansicht]]></target>
+			</trans-unit>
+			<trans-unit id="fulltext.no_fulltext_double" approved="yes">
+				<source><![CDATA[No fulltext in double page mode.]]></source>
+				<target><![CDATA[Keine Volltexte in der Doppelseitenansicht.]]></target>
+			</trans-unit>
+			<trans-unit id="fulltext.no_fulltext_gridpage" approved="yes">
+				<source><![CDATA[No fulltext in gridpage mode.]]></source>
+				<target><![CDATA[Keine Volltexte in der Vorschau-Ansicht.]]></target>
+			</trans-unit>
+			<trans-unit id="gridpage.preview" approved="yes">
+				<source><![CDATA[Thumbnail Preview]]></source>
+				<target><![CDATA[Vorschaubilder]]></target>
+			</trans-unit>
+			<trans-unit id="provider.email_provider" approved="yes">
+				<source><![CDATA[Email to data provider]]></source>
+				<target><![CDATA[Email an Datenprovider]]></target>
+			</trans-unit>
+			<trans-unit id="provider.local_catalogue" approved="yes">
+				<source><![CDATA[Online Public Access Catalogue]]></source>
+				<target><![CDATA[Lokaler Katalog]]></target>
+			</trans-unit>
+			<trans-unit id="provider.slub_catalogue">
+				<source><![CDATA[SLUB Catalogue]]></source>
+				<target><![CDATA[SLUB Katalog]]></target>
+			</trans-unit>
+			<trans-unit id="purl.singlePage" approved="yes">
+				<source><![CDATA[Permalink page]]></source>
+				<target><![CDATA[Permalink Seite]]></target>
+			</trans-unit>
+			<trans-unit id="purl.document" approved="yes">
+				<source><![CDATA[Permalink document]]></source>
+				<target><![CDATA[Permalink Dokument]]></target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

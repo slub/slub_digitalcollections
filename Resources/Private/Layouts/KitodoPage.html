@@ -1,0 +1,6 @@
+<div class="main-wrapper">
+    <f:render section="MainContent" />
+</div>
+<f:if condition="{settings.matomo.siteId}>0">
+    <f:render section="Matomo" partial="Matomo" arguments="{_all}" />
+</f:if>

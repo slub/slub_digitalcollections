@@ -1,0 +1,32 @@
+<f:section name="ControlBar">
+    <div class="control-bar">
+        <div class="header-bar">
+            <div class="brand"><f:link.page pageUid="{settings.rootPage.pid}" title="{settings.rootPage.title}" class="{settings.rootPage.cssClass}">{settings.rootPage.title}</f:link.page></div>
+            <nav>
+                <ul class="secondary-nav"><f:cObject typoscriptObjectPath="lib.navigation.kitodo" /></ul>
+                <button type="button" class="nav-toggle">
+                    <span class="nav-label">Open Navigation</span>
+                    <span class="nav-button-bar"></span>
+                    <span class="nav-button-bar"></span>
+                    <span class="nav-button-bar"></span>
+                    <span class="nav-button-bar"></span>
+                </button>
+            </nav>
+        </div>
+        <div class="ctrldata-container">
+            <div class="metadata-wrapper">
+                <div class="tx-dlf-metadata">
+                    <f:if condition="{docTitle}">
+                        <h1>{docTitle}</h1>
+                    </f:if>
+                    <f:cObject typoscriptObjectPath="plugin.tx_dlf_metadata" />
+                </div>
+                <div class="offcanvas-toggle"></div>
+            </div>
+            <div class="toc-wrapper">
+                <f:cObject typoscriptObjectPath="plugin.tx_dlf_toc" />
+                <div class="offcanvas-toggle"></div>
+            </div>
+        </div>
+    </div>
+</f:section>

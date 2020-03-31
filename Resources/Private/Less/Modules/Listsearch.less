@@ -1,0 +1,255 @@
+/*
+ *
+ * List search elements
+ * ================================================
+ * Styling for simple and extended
+ * search forms in list views
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+#rightcol .tx-dlf-enable-offcanvas { // the basic setup for the off-canvas behaviour
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 90%;
+    background: fade(@secondary-color, 97%);
+    z-index: 102;
+    text-align: left;
+    padding: 15px;
+    margin: 0;
+    border: none;
+    color: white;
+    .transform(translateX(100%));
+    .offcanvas-toggle {
+        position: absolute;
+        left: -30px;
+        border-radius: 30px 0 0 30px;
+        bottom: 100px;
+        width: 30px;
+        height: 60px;
+        background: fade(@secondary-color, 97%);
+        &:before {
+            position: absolute;
+            top: 20px;
+            left: 7px;
+            width: 14px;
+            height: 14px;
+            border-radius: 14px;
+            border: 2px solid white;
+            content: " ";
+        }
+        &:after {
+            position: absolute;
+            right: 4px;
+            bottom: 20px;
+            width: 2px;
+            height: 8px;
+            background: white;
+            content: " ";
+            .transform(rotate(-45deg));
+        }
+    }
+    &.open {
+        .transform(translateX(0));
+        z-index: 1100;
+        .offcanvas-toggle {
+            border-color: white;
+        }
+    }
+    h3 {
+        color: white;
+    }
+    @media screen and (min-width: @tabletViewportWidth) {
+        width: 60%;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        position: relative;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        width: auto;
+        background: white;
+        color: @basegrey-color;
+        .transform(none);
+        .offcanvas-toggle {
+            display: none;
+        }
+        h3 {
+            color: @primary-color;
+        }
+    }
+}
+
+#rightcol .tx-dlf-search { // the scrolling container with search elements
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    form { // The input fields and buttons
+        position: relative;
+        margin-bottom: 20px;
+        font-family: @font-sans-normal;
+        font-size: 14px;
+        input {
+            &[type="text"] {
+                position: relative;
+                width: 100%;
+                font-family: @font-sans-normal;
+                font-size: 14px;
+                background: white;
+                border: 0;
+                line-height: 1.1;
+                padding: 4px 10px;
+                height: 40px;
+                color: @basegrey-color;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+                margin-bottom: 10px;
+                &:focus {
+                    color: @secondary-color;
+                }
+            }
+            &[type="submit"] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 40px;
+                height: 40px;
+                .text-hide();
+                background: lighten(@secondary-color-light, 40%) url('@{control-icons}') no-repeat -560px 0;
+                background-size: auto 120px;
+                border-radius: 20px 0 0 20px;
+            }
+            &[type="radio"] {
+                position: relative;
+                appearance: none;
+                -webkit-appearance: none;
+                border: 2px solid rgba(255, 255, 255, 0.4);
+                width: 20px;
+                height: 20px;
+                border-radius: 10px;
+                vertical-align: middle;
+                &:after {
+                    position: absolute;
+                    top: 4px;
+                    left: 4px;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 4px;
+                    background: white;
+                    content: " ";
+                    opacity: 0;
+                }
+                &:hover {
+                    border-color: white;
+                }
+                &:checked {
+                    background: lighten(@secondary-color, 10%);
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        label {
+            margin-right: 10px;
+            &[for="tx-dlf-search-query"] {
+                display: none;
+            }
+        }
+        #tx-dlf-search-suggest {
+            position: absolute;
+            ul {
+                z-index: 300;
+                margin: 10px 0 0 0;
+                padding: 0;
+                background: white;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+                li {
+                    color: @secondary-color;
+                    padding: 10px 15px;
+                    font-family: @font-sans-bold;
+                    border-bottom: 1px solid @lightgrey-color;
+                    .no-touchevents & {
+                        .transition(all .15s ease-in);
+                        cursor: pointer;
+                        &:hover {
+                            background: white;
+                            color: @secondary-color;
+                        }
+                    }
+                }
+                &:after {
+                    position: absolute;
+                    top: -10px;
+                    left: 20px;
+                    width: 0;
+                    height: 0;
+                    border: 10px solid transparent;
+                    border-top-width: 0;
+                    border-bottom-color: white;
+                    content: " ";
+                    z-index: 301;
+                }
+            }
+        }
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        position: relative;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        overflow: visible;
+        form {
+            input {
+                &[type="text"] {
+                    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+                    border: 1px solid rgb(175, 175, 175);
+                }
+                &[type="submit"] {
+                    top: 1px;
+                    right: 1px;
+                    height: 38px;
+                }
+                &[type="radio"] {
+                    border-color: @secondary-color;
+                    height: 16px;
+                    width: 16px;
+                    border-radius: 8px;
+                    &:after {
+                        top: 2px;
+                        left: 2px;
+                    }
+                    &:hover {
+                        border-color: @primary-color;
+                    }
+                }
+            }
+            label {
+                &:hover {
+                    color: @primary-color;
+                }
+            }
+            #tx-dlf-search-suggest {
+                ul {
+                    background: rgba(@secondary-color, .9);
+                    li {
+                        color: white;
+                    }
+                    &:after {
+                        border-bottom-color: rgba(@secondary-color, .9);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// EOF

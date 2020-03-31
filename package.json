@@ -1,0 +1,26 @@
+{
+  "name": "slub-digitalcollections",
+  "version": "0.0.1",
+  "description": "This TYPO3 extension provides the configuration and setup for the Digital Collections by SLUB Dresden",
+  "main": "gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.slub-dresden.de:slub-webseite/slub_digitalcollections.git"
+  },
+  "author": "Alexander Bigga",
+  "license": "WTFPL",
+  "homepage": "https://digital.slub-dresden.de",
+  "devDependencies": {
+    "grunt": "^1.0.4",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-less": "^2.0.0",
+    "grunt-contrib-uglify": "^3.4.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "jit-grunt": "^0.10.0",
+    "less": "^3.10.3"
+  },
+  "dependencies": {}
+}

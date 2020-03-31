@@ -1,0 +1,92 @@
+/*
+ *
+ * Facets styling
+ * ================================================
+ * Styling for the facets in list views
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+#rightcol .tx-dlf-search-facets {
+    position: relative;
+    font-family: @font-sans-normal;
+    color: white;
+    ul {
+        padding: 0;
+        margin: 0;
+        li {
+            font-size: 18px;
+            font-family: @font-sans-bold;
+            text-transform: uppercase;
+            padding: 0;
+            display: none;
+            margin: 30px 0;
+            &.tx-dlf-search-ifsub {
+                display: block;
+            }
+            ul {
+                border-top: 1px solid rgba(255, 255, 255, .3);
+                li {
+                    font-family: @font-sans-normal;
+                    text-transform: none;
+                    opacity: 1;
+                    display: block;
+                    margin: 0;
+                    a {
+                        position: relative;
+                        color: white;
+                        font-size: 14px;
+                        padding: 5px 0;
+                        display: inline-block;
+                    }
+                    &.tx-dlf-search-cur {
+                        font-family: @font-sans-bold;
+                    }
+                }
+            }
+            .facets-toggle {
+                font-size: 14px;
+                border-top: 1px solid rgba(255, 255, 255, .6);
+                padding-top: 5px;
+                opacity: .5;
+                .no-touchevents & {
+                    cursor: pointer;
+                }
+            }
+
+            @media screen and (min-width: @tabletLandscapeViewportWidth) {
+                color: lighten(@basegrey-color, 20%);
+                font-size: 16px;
+                ul {
+                    margin: 5px 0;
+                    border-top: 1px solid @lightgrey-color;
+                    li {
+                        a {
+                            color: @secondary-color;
+                        }
+                        &.tx-dlf-search-cur a {
+                            position: relative;
+                            padding-left: 18px;
+                            &:after {
+                                position: absolute;
+                                top: 50%;
+                                left: 0;
+                                margin-top: -16px;
+                                content: "+";
+                                font-size: 30px;
+                                line-height: 30px;
+                                .transform(rotate(45deg));
+                            }
+                        }
+                    }
+                }
+                .facets-toggle {
+                    border-top: 1px solid @lightgrey-color;
+                }
+            }
+        }
+    }
+}
+
+// EOF

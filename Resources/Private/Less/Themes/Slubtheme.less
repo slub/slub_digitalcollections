@@ -1,0 +1,65 @@
+/*
+ *
+ * SLUB Styles
+ * ================================================
+ * Color typography and adjustments
+ * for custom styling
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+// The paths to external Resources
+@header-logo: '@{basepath}Resources/Public/Images/Slub/Slublogo.svg';
+@control-icons: '@{basepath}Resources/Public/Images/Slub/viewerControlIcons.svg';
+
+// Colors
+@primary-color: rgb(204, 0, 0);
+@secondary-color: rgb(17, 102, 119);
+@secondary-color-light: desaturate(lighten(@secondary-color, 27%), 22%);
+@basegrey-color: rgb(51, 51, 51);
+@lightgrey-color: lighten(@basegrey-color, 65%);
+
+// Typography
+@font-sans-normal: 'VistaSansBook', 'Calibri', 'Helvetica', Sans-serif;
+@font-sans-bold: 'VistaSansBold', 'Calibri-Bold', 'Helvetica', Sans-serif;
+@font-serif-normal: 'VistaSlabReg', 'Rockwell', 'Georgia', "Times New Roman", 'Times', serif;
+@font-serif-bold: 'VistaSlabBold', 'Rockwell-Bold', 'Georgia', 'Times', serif;
+
+// Dedicated restyling
+.control-bar {
+    .header-bar .brand a {
+        line-height: 24px;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        &:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: -60px;
+            height: 85px;
+            background: url('@{basepath}Resources/Public/Images/Slub/headerbarBg.svg') no-repeat left top;
+            background-size: 100% 100%;
+            content: " ";
+            pointer-events: none;
+        }
+        .header-bar nav {
+            .nav-toggle {
+                right: 0;
+            }
+            .language-nav {
+                right: 24px;
+            }
+        }
+    }
+}
+
+.document-functions {
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        > ul {
+            left: 40px;
+        }
+    }
+}
+
+// EOF

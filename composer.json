@@ -1,0 +1,38 @@
+{
+  "name": "slub/slub-digitalcollections",
+  "type": "typo3-cms-extension",
+  "description": "Templates, Styles and Configuration for the Kitodo.Presentation based Digital Collections by SLUB Dresden",
+  "homepage": "https://github.com/slub/slub_digitalcollections",
+  "keywords": [
+    "TYPO3",
+    "extension",
+    "slub_digitalcollections"
+  ],
+  "authors": [
+    {
+      "name": "Alexander Bigga",
+      "email": "alexander.bigga@slub-dresden.de",
+      "role": "Developer"
+    },
+    {
+      "name": "Norman Steger",
+      "email": "norman.steger@slub-dresden.de",
+      "role": "Developer"
+    },
+    {
+      "name": "Thomas Jung",
+      "email": "slub@jung.digital",
+      "role": "Developer"
+    }
+  ],
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "typo3/cms-core": "~7.6|^8.7|^9.5",
+    "kitodo/presentation": "~2.2|3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Slub\\DigitalCollections\\": "Classes/"
+    }
+  }
+}

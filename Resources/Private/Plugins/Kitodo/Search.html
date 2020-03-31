@@ -1,0 +1,19 @@
+<!-- ###TEMPLATE### -->
+<form action="###ACTION_URL###" method="post" enctype="multipart/form-data">
+  <label for="tx-dlf-search-query">###LABEL_QUERY###</label>
+  <input type="text" id="tx-dlf-search-query" name="###FIELD_QUERY###" value="###QUERY###" />
+  ###LOGICAL_PAGE###
+  <!-- The following element is needed for auto-completion! -->
+  <div id="tx-dlf-search-suggest"></div>
+  ###FULLTEXTSWITCH###
+  ###FIELD_DOC###
+  ###FIELD_COLL###
+  ###ADDITIONAL_INPUTS###
+  <input type="submit" id="tx-dlf-sendbtn" value="###LABEL_SUBMIT###" />
+  <!-- ###EXT_SEARCH_ENTRY### -->
+	<div class="tx-dlf-search-extended">###EXT_SEARCH_OPERATOR### ###EXT_SEARCH_FIELDSELECTOR### ###EXT_SEARCH_FIELDQUERY###</div>
+	<!-- ###EXT_SEARCH_ENTRY### -->
+</form>
+<div class="tx-dlf-searchglas"></div>
+<div class="tx-dlf-search-facets">###FACETS_MENU###</div>
+<!-- ###TEMPLATE### -->

@@ -1,0 +1,49 @@
+/*
+ *
+ * Mixins
+ * ================================================
+ * Own mixins for clearfixes, text removal,
+ * gradients and some other minor stuff
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+.clearfix() { // Guess what. ;-)
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+.text-overflow() { // If you need the three dots on the end of a text element
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-hide() { // Fully hide the text of an element (Often used as image replacement)
+    font: ~"0/0" 'Open Sans', Helvetica, Arial, sans-serif;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.transition(@transition: all .3s ease-out) { // Standardized CSS transitions
+    -webkit-transition: @transition;
+    -o-transition: @transition;
+    transition: @transition;
+}
+
+.transform(@transform) { // Use this to ensure all transforms are proper prefixed
+    -webkit-transform: @transform;
+    -moz-transform: @transform;
+    -ms-transform: @transform;
+    transform: @transform;
+}
+
+// EOF
