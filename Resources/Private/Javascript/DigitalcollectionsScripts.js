@@ -70,7 +70,7 @@ $(function () {
     }
 
     $('.provider').append('<div class="mobile-controls" />');
-    $('.view-functions .pages form, .view-functions .zoom a.fullscreen').clone().appendTo('.provider .mobile-controls');
+    $('.view-functions .pages form, .view-functions .zoom a.fullscreen, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
 
     // Shorten mobile meta title
     shortenMobileMetaElement = $('.provider dl.mobile-meta dd.tx-dlf-title a');
@@ -135,6 +135,8 @@ $(function () {
     if ($('.tx-dlf-toolsFulltextsearch form')[0]) {
         $('.fulltext-search-toggle').on(mobileEvent, function () { // selector should be semantically: .search-indocument-toggle
             $('body').toggleClass('search-indocument-active');
+            console.log($(this).offset().top + 'px');
+            $('.tx-dlf-toolsFulltextsearch').css({top: ($(this).offset().top - 60) + 'px'});
             $('#tx-dlf-search-in-document-query').trigger('focus');
         });
     } else {
