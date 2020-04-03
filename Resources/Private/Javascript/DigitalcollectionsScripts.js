@@ -141,19 +141,45 @@ $(function () {
         $('.fulltext-search-toggle').addClass('disabled');
     }
 
-    // Check if a click on page navigation is made and unfold next/back navigation
-    $('.fwds, .backs')
-        .on('mouseenter', function () {
-            $(this).addClass('over');
-        })
-        .on('mouseleave', function () {
-            $(this).removeClass('over');
-        })
-        .on('click', function () {
-            localStorage.txDlfFromPage = $(this).attr('class').split(' ')[0];
+    // Complex page turning mechanism and check if a click on page control was made and unfold next/back navigation
+    if (Modernizr.touchevents) {
+        $('.fwds, .backs')
+            .on('touchstart', function () {
+                $(this).addClass('over');
+                triggeredElement = $(this);
+                setTimeout(function () {
+                    triggeredElement.addClass('enable-touchevent');
+                }, 250);
+            })
+            .on('touchend', function () {
+                localStorage.txDlfFromPage = $(this).attr('class').split(' ')[0];
+            });
+        $('body').on('touchstart', function (event) {
+            target = $(event.target);
+            if (!target.closest('.page-control')[0]) {
+                $('.fwds, .backs').removeClass('over enable-touchevent');
+                localStorage.clear();
+            }
         });
-    if (localStorage.txDlfFromPage) {
-        $('.' + localStorage.txDlfFromPage).addClass('no-transition over');
+        if (localStorage.txDlfFromPage) {
+            $('.' + localStorage.txDlfFromPage).addClass('no-transition over enable-touchevent');
+            localStorage.clear();
+        }
+    } else {
+        $('.fwds, .backs')
+            .on('mouseenter', function () {
+                $(this).addClass('over');
+            })
+            .on('mouseleave', function () {
+                $(this).removeClass('over');
+            })
+            .on('click', function () {
+                localStorage.txDlfFromPage = $(this).attr('class').split(' ')[0];
+            });
+        if (localStorage.txDlfFromPage) {
+            $('.' + localStorage.txDlfFromPage).addClass('no-transition over');
+            localStorage.clear();
+        }
     }
 
     // Add a error message if no map element in document viewer given

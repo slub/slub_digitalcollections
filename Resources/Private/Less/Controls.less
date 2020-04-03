@@ -711,6 +711,8 @@
         margin: 0;
         pointer-events: none;
         > div {
+            bottom: 50%;
+            margin-bottom: -20px;
             height: 80px;
             min-width: 80px;
             pointer-events: all;
@@ -728,6 +730,9 @@
                     &:before {
                         .transition();
                     }
+                    .touchevents & {
+                        pointer-events: none;
+                    }
                 }
                 .no-touchevents & {
                     a:hover {
@@ -738,8 +743,15 @@
                     cursor: not-allowed;
                 }
             }
-            bottom: 50%;
-            margin-bottom: -20px;
+            &.enable-touchevent {
+                span {
+                    a, span {
+                        .touchevents & {
+                            pointer-events: all;
+                        }
+                    }
+                }
+            }
             &.no-transition {
                 a, span, a:before, span:before {
                     -webkit-transition: none !important;
