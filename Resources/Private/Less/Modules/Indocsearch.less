@@ -13,50 +13,11 @@
     top: 0;
     right: 106px;
     .fulltext-search-toggle { // should be semantically: .search-indocument-toggle
-        position: absolute;
-        top: 10px;
-        right: 0;
-        width: 40px;
-        height: 40px;
-        background: white url('@{control-icons}') no-repeat -560px 0;
-        background-size: auto 120px;
-        border-radius: 20px;
-        cursor: pointer;
-        &:after {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 40px;
-            width: 40px;
-            text-align: center;
-            content: "+";
-            font-size: 42px;
-            line-height: 32px;
-            color: @secondary-color;
-            .transition();
-            opacity: 0;
-        }
-        .search-indocument-active & {
-            background: lighten(@secondary-color-light, 40%);
-            &:after {
-                .transform(rotate(45deg));
-                opacity: 1;
-            }
-        }
-        &.disabled {
-            opacity: .5;
-            pointer-events: none;
-        }
-        .no-touchevents & {
-            .transition();
-            &:hover {
-                .transform(scale(1.2));
-            }
-        }
+        display: none;
     }
     form {
         position: absolute;
-        top: 60px;
+        top: 0;
         right: -106px;
         height: 40px;
         width: 100vw;
@@ -109,7 +70,7 @@
     }
     #tx-dlf-search-in-document-loading,
     #tx-dlf-search-in-document-clearing {
-        display: none;
+        display: none !important;
     }
     #tx-dlf-search-in-document-results {
         position: fixed;
@@ -182,8 +143,8 @@
         }
     }
     @media screen and (min-width: @phoneLandscapeViewportWidth) {
+        margin-top: -50px;
         form {
-            top: 10px;
             right: 40px;
             width: 400px;
         }
@@ -208,8 +169,54 @@
         }
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
-        top: 10px;
+        top: 10px !important;
         right: 8px;
+        margin: 0;
+        z-index: 50;
+        .fulltext-search-toggle {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: white url('@{control-icons}') no-repeat -560px 0;
+            background-size: auto 120px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: block;
+            &:after {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                content: "+";
+                font-size: 42px;
+                line-height: 32px;
+                color: @secondary-color;
+                .transition();
+                opacity: 0;
+            }
+            .search-indocument-active & {
+                background-color: lighten(@secondary-color-light, 40%);
+                background-position: -560px 40px;
+                &:after {
+                    .transform(rotate(45deg));
+                    opacity: 1;
+                }
+            }
+            &.disabled {
+                opacity: .5;
+                pointer-events: none;
+            }
+            .no-touchevents & {
+                .transition();
+                &:hover {
+                    .transform(scale(1.2));
+                }
+            }
+        }
         form {
             top: 80px;
             right: 0;

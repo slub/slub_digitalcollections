@@ -57,9 +57,9 @@ $(function () {
     });
 
     // Add click event to complete collections element on intro page
-    $('.tx-dlf-collection-item .tx-dlf-collection-thumbnail img').on(mobileEvent, function () {
-        window.location = $(this).parent().parent().find('h4 a').attr('href');
-        return false;
+    $('.tx-dlf-collection-item .tx-dlf-collection-thumbnail img').each(function () {
+        thumbnailUrl = $(this).parent().parent().find('h4 a').attr('href');
+        $(this).wrap('<a href="' + thumbnailUrl + '" />');
     });
 
     // Add a switch and function for alphabetical order of collections elements on intro page
@@ -143,6 +143,7 @@ sortAlphabetical = function (element, sortItems) {
     function showAlphabeticalList() {
         $('.tx-dlf-collection-list').addClass('alphabetical-ready');
     }
+
     window.setTimeout(showAlphabeticalList, 100);
 };
 
