@@ -135,7 +135,6 @@ $(function () {
     if ($('.tx-dlf-toolsFulltextsearch form')[0]) {
         $('.fulltext-search-toggle').on(mobileEvent, function () { // selector should be semantically: .search-indocument-toggle
             $('body').toggleClass('search-indocument-active');
-            console.log($(this).offset().top + 'px');
             $('.tx-dlf-toolsFulltextsearch').css({top: ($(this).offset().top - 60) + 'px'});
             $('#tx-dlf-search-in-document-query').trigger('focus');
         });
