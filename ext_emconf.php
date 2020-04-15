@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'SLUB Digital Collections',
-	'description' => '',
+	'description' => 'Templates, Styles and Configuration for the Kitodo.Presentation based Digital Collections by SLUB Dresden',
 	'category' => 'plugin',
 	'author' => 'Alexander Bigga',
 	'author_email' => 'alexander.bigga@slub-dresden.de',

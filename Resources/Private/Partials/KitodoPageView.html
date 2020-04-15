@@ -273,7 +273,7 @@
             <f:if condition="{gp-double} == 1">
               <f:then>
                 <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOff" title="<f:translate key='double.singlePageView'  extensionName='slub_digitalcollections' />"><f:translate key="double.singlePageView"  extensionName="slub_digitalcollections" /></f:link.page>
-                <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{dc:calc(val1:\'{gp-page}\', val2:\'1\', operator:\'+\')}}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doublePlusOne" title="<f:translate key='double.RectoVerso' extensionName='slub_digitalcollections' />"><span><f:translate key="double.RectoVerso"  extensionName="slub_digitalcollections" /></span></f:link.page>
+                <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{dc:calc(val1:\'{gp-page}\', val2:\'1\', operator:\'+\')}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doublePlusOne" title="<f:translate key='double.RectoVerso' extensionName='slub_digitalcollections' />"><span><f:translate key="double.RectoVerso"  extensionName="slub_digitalcollections" /></span></f:link.page>
               </f:then>
               <f:else>
                 <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOn" title="<f:translate key='double.doublePageView'  extensionName='slub_digitalcollections' />"><f:translate key="double.doublePageView"  extensionName="slub_digitalcollections" /></f:link.page>
