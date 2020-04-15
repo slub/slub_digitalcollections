@@ -99,22 +99,24 @@ page {
                 # kitodo vars
                 gp-id = TEXT
                 gp-id {
-                data = GP:tx_dlf|id
-                ifEmpty = 1
+                    data = GP:tx_dlf|id
+                    ifEmpty = 1
+                    stdWrap.intval = 1
                 }
 
                 gp-page = TEXT
                 gp-page {
-                data = GP:tx_dlf|page
-                ifEmpty = 1
+                    data = GP:tx_dlf|page
+                    ifEmpty = 1
+                    stdWrap.intval = 1
                 }
 
                 gp-page2 = TEXT
                 gp-page2 {
-                cObject = TEXT
-                cObject.data = GP:tx_dlf|page
-                cObject.wrap = | +1
-                prioriCalc = 1
+                    cObject = TEXT
+                    cObject.data = GP:tx_dlf|page
+                    cObject.wrap = | +1
+                    prioriCalc = 1
                 }
 
                 gp-double = TEXT
