@@ -57,6 +57,26 @@ page {
       }
     }
 
+    # sometimes partOfpartOf (root anchor) is set...
+    partOfpartOf {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOf}:partof
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    # if year is set
+    yearDate {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:year
+        wrap3={|}
+        insertData=1
+      }
+    }
+
     postDescription {
       cObject = COA
       cObject {
@@ -68,7 +88,6 @@ page {
             selectFields=title,author,year,place
             where=uid=###postid###
             markers {
-              #postid.data = GP:tx_dlf|id
               postid.data = register:partOf
             }
           }
@@ -170,6 +189,29 @@ page {
             isTrue.data = register:partOf
           }
         }
+
+        30 = COA
+        30 {
+          10 = TEXT
+          10 {
+            dataWrap = DB:tx_dlf_documents:{register:partOfpartOf}:title
+            wrap3={|}
+            insertData = 1
+            if {
+              value = 1
+              isTrue.data = register:partOfpartOf
+            }
+          }
+
+          20 = TEXT
+          20 {
+            data = register:yearDate
+            required = 1
+            strtotime = 1
+            strftime = %d.%m.%Y
+            noTrimWrap = |: ||
+          }
+        }
       }
     }
 
@@ -182,7 +224,7 @@ page {
   page.headerData.10 = TEXT
   page.headerData.10 {
     wrap = <title> | </title>
-    value = {register:postTitle} - {$config.kitodo.rootPage.title}
+    value = {$config.kitodo.rootPage.title}: {register:postTitle}
     insertData = 1
     htmlSpecialChars = 1
   }
