@@ -216,13 +216,6 @@ page {
           25.data = register:partOfPartOfTitle
           25.required = 1
           25.noTrimWrap = | | |
-
-          30 = TEXT
-          30 {
-              data = register:yearDate
-              required = 1
-              noTrimWrap = |: ||
-          }
         }
       }
     }
