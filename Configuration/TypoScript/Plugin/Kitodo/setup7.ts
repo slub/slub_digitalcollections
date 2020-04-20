@@ -291,4 +291,15 @@ page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_issue
 }
+# The issue has YYYY-MM-DD as dateformat for the publishing date. We can format it in a localilzed format:
+page.2.postTitle.cObject {
+    30 = TEXT
+    30 {
+        data = register:yearDate
+        required = 1
+        strtotime = 1
+        strftime = %d.%m.%Y
+        noTrimWrap = |: ||
+    }
+}
 [END]

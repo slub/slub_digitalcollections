@@ -125,7 +125,7 @@ page {
 
           table = tx_dlf_documents
           select {
-            pidInList = 4152
+            pidInList = {$config.kitodo.storagePid}
             selectFields=title,author,year,place
             where=uid=###postid###
             markers {
@@ -168,30 +168,8 @@ page {
     postTitle {
       cObject = COA
       cObject {
-        10 = TEXT
+        10 = COA
         10 {
-          dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:title
-          wrap3 = {|}
-          insertData = 1
-          if {
-            value = 1
-            isEmpty.data = register:partOf
-          }
-        }
-
-        20 = TEXT
-        20 {
-          dataWrap = DB:tx_dlf_documents:{register:partOf}:title
-          wrap3={|}
-          insertData = 1
-          if {
-            value = 1
-            isTrue.data = register:partOf
-          }
-        }
-
-        30 = COA
-        30 {
           10 = TEXT
           10 {
             dataWrap = DB:tx_dlf_documents:{register:partOfpartOf}:title
@@ -202,19 +180,26 @@ page {
               isTrue.data = register:partOfpartOf
             }
           }
-
           20 = TEXT
           20 {
-            data = register:yearDate
-            required = 1
-            strtotime = 1
-            strftime = %d.%m.%Y
+            dataWrap = DB:tx_dlf_documents:{register:partOf}:title
+            wrap3={|}
+            insertData = 1
+            if {
+              value = 1
+              isTrue.data = register:partOf
+            }
             noTrimWrap = |: ||
           }
         }
+        30 = TEXT
+        30 {
+            data = register:yearDate
+            required = 1
+            noTrimWrap = |: ||
+        }
       }
     }
-
   }
 
 
