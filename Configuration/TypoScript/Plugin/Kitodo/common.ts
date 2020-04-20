@@ -39,11 +39,20 @@ page {
   page.2 {
 
     pageUrlDigital {
-      cObject = TEXT
+      cObject = COA
       cObject {
-        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:purl
-        wrap3={|}
-        insertData=1
+        10 = TEXT
+        10 {
+          dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:purl
+          wrap3={|}
+          insertData=1
+        }
+        20 = TEXT
+        20 {
+          data = GP:tx_dlf|page
+          required = 1
+          wrap=/|
+        }
       }
     }
 
@@ -222,6 +231,7 @@ page {
     10 = TEXT
     10.value (
 
+  <link rel="canonical" href="{register:pageUrlDigital}" />
   <meta property="og:title" content="{register:postTitle}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{register:pageUrlDigital}" />
