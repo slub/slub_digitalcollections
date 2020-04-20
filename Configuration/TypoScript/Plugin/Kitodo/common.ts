@@ -56,6 +56,15 @@ page {
       }
     }
 
+    currentTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:title
+        wrap3={|}
+        insertData=1
+      }
+    }
+
     # sometimes partOf is set...
     partOf {
       cObject = TEXT
@@ -66,11 +75,29 @@ page {
       }
     }
 
+    partOfTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOf}:title
+        wrap3={|}
+        insertData=1
+      }
+    }
+
     # sometimes partOfpartOf (root anchor) is set...
-    partOfpartOf {
+    partOfPartOf {
       cObject = TEXT
       cObject {
         dataWrap = DB:tx_dlf_documents:{register:partOf}:partof
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    partOfPartOfTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOfPartOf}:title
         wrap3={|}
         insertData=1
       }
@@ -177,35 +204,25 @@ page {
     postTitle {
       cObject = COA
       cObject {
-        10 = COA
-        10 {
           10 = TEXT
-          10 {
-            dataWrap = DB:tx_dlf_documents:{register:partOfpartOf}:title
-            wrap3={|}
-            insertData = 1
-            if {
-              value = 1
-              isTrue.data = register:partOfpartOf
-            }
-          }
+          10.data = register:currentTitle
+
           20 = TEXT
-          20 {
-            dataWrap = DB:tx_dlf_documents:{register:partOf}:title
-            wrap3={|}
-            insertData = 1
-            if {
-              value = 1
-              isTrue.data = register:partOf
-            }
-            noTrimWrap = |: ||
+          20.data = register:partOfTitle
+          20.required = 1
+          20.noTrimWrap = | | |
+
+          25 = TEXT
+          25.data = register:partOfPartOfTitle
+          25.required = 1
+          25.noTrimWrap = | | |
+
+          30 = TEXT
+          30 {
+              data = register:yearDate
+              required = 1
+              noTrimWrap = |: ||
           }
-        }
-        30 = TEXT
-        30 {
-            data = register:yearDate
-            required = 1
-            noTrimWrap = |: ||
         }
       }
     }

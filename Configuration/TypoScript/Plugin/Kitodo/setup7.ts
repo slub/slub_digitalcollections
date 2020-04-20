@@ -284,6 +284,14 @@ page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_year
 }
+page.2.postTitle.cObject {
+    30 = TEXT
+    30 {
+        data = register:yearDate
+        required = 1
+        noTrimWrap = |: ||
+    }
+}
 [END]
 
 [userFunc = user_dlf_docTypeCheck(issue)]
