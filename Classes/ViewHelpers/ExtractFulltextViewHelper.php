@@ -65,13 +65,18 @@ class ExtractFulltextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
       ) {
         $file= $arguments['file'];
 
-        $altoXml = simplexml_load_file($file);
-
-        $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
-        // Get all (presumed) words of the text.
-        $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
-        if (!empty($words)) {
-            $rawText = implode(' ', $words);
+        $altoXml = @simplexml_load_file($file);
+        if($altoXml ===  FALSE)
+        {
+          // fulltext not accessible
+          $rawText = '';
+        } else {
+          $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
+          // Get all (presumed) words of the text.
+          $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
+          if (!empty($words)) {
+              $rawText = implode(' ', $words);
+          }
         }
         return $rawText;
 
