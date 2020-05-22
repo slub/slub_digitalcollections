@@ -32,11 +32,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * # Example: Basic example
  * <code>
- * <si:piVars var="page">
- *	<span>1</span>
+ * <si:calc val1="1" val2="2" operator="+" />
  * </code>
  * <output>
- * Will output the value of tx_dlf[page]
+ * Will output "3"
  * </output>
  *
  * @package TYPO3
