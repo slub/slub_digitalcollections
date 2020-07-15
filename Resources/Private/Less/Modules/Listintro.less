@@ -54,6 +54,7 @@ body.collections {
                             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
                             margin-bottom: 10px;
                             float: none;
+                            border-radius: 0;
                             &:focus {
                                 color: @secondary-color;
                             }
@@ -68,6 +69,7 @@ body.collections {
                             background: lighten(@secondary-color-light, 40%) url('@{control-icons}') no-repeat -560px 0;
                             background-size: auto 120px;
                             border-radius: 20px 0 0 20px;
+                            z-index: 5;
                             .transition();
                         }
                         &[type="radio"] {
