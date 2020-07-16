@@ -245,6 +245,8 @@ plugin.tx_dlf_imagemanipulationtool {
     templateFile = {$config.kitodo.templates.toolsImageManipulation}
 }
 # For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
+# The following two lines could be removed with Kitodo.Presentation 3.1. Do not forget to adjust the fluid template!
+plugin.tx_dlf_imagemanipulationtool.parentContainer = .tx-dlf-toolbox
 plugin.tx_dlf_toolsImagemanipulation < plugin.tx_dlf_imagemanipulationtool
 
 # --------------------------------------------------------------------------------------------------------------------
