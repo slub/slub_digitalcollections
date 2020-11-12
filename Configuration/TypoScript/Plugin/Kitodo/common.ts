@@ -12,7 +12,7 @@ page {
     # we need jquery in head as it is used by pageview plugin
     # --> jQuery must be provided by Kitodo.Presentation --> include Template "Basis Configuration"
     includeJSFooterlibs {
-        kitodo-frontend          = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsListScripts.js
+        kitodo-frontend = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsListScripts.js
     }
 }
 
@@ -216,7 +216,6 @@ page {
           25.data = register:partOfPartOfTitle
           25.required = 1
           25.noTrimWrap = | | |
-        }
       }
     }
   }
@@ -240,12 +239,10 @@ page {
   page.headerData.300 {
     10 = TEXT
     10.value (
-
   <link rel="canonical" href="{register:pageUrlDigital}" />
   <meta property="og:title" content="{register:postTitle}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{register:pageUrlDigital}" />
-
     )
     10.insertData = 1
 
