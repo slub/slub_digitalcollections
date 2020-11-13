@@ -16,7 +16,7 @@ $(function () {
     var mobileEvent = mobileCheck() ? 'touchstart' : 'click';
 
     // menu toggles for offcanvas toc and metadata
-    $('.offcanvas-toggle').on('touchend', function (event) {
+    $('.offcanvas-toggle').on(mobileCheck() ? 'touchend' : 'click', function (event) {
         $(this).parent().toggleClass('open');
     });
 
