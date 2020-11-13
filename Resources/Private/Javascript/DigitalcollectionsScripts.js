@@ -16,7 +16,7 @@ $(function () {
     var mobileEvent = mobileCheck() ? 'touchstart' : 'click';
 
     // menu toggles for offcanvas toc and metadata
-    $('.offcanvas-toggle').on(mobileEvent, function (event) {
+    $('.offcanvas-toggle').on(mobileCheck() ? 'touchend' : 'click', function (event) {
         $(this).parent().toggleClass('open');
     });
 
@@ -136,7 +136,7 @@ $(function () {
         $('.fulltext-search-toggle').on(mobileEvent, function () { // selector should be semantically: .search-indocument-toggle
             $('body').toggleClass('search-indocument-active');
             $('.tx-dlf-toolsFulltextsearch').css({top: ($(this).offset().top - 60) + 'px'});
-            $('#tx-dlf-search-in-document-query').trigger('focus');
+            $('body.search-indocument-active #tx-dlf-search-in-document-query').trigger('focus');
         });
     } else {
         $('.fulltext-search-toggle').addClass('disabled');

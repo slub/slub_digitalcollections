@@ -156,7 +156,8 @@
                         }
                     }
                 }
-                &.open {
+                &.open,
+                &:focus-within {
                     padding-bottom: 65px;
                     max-height: 320px;
                     min-height: 60px;
@@ -198,8 +199,10 @@
             background: fade(@secondary-color, 97%) url('@{control-icons}') no-repeat 0 0;
             background-size: auto 120px;
             border: 1px solid fade(white, 50%);
+            cursor: pointer;
         }
-        &.open {
+        &.open,
+        &:focus-within  {
             .transform(translateX(0));
             z-index: 1100;
             .offcanvas-toggle {
@@ -317,6 +320,9 @@
                             &:hover {
                                 background: rgba(255, 255, 255, 0.2);
                             }
+                            &:focus {
+                                outline-color: white;
+                            }
                         }
                         &:first-child {
                             a {
@@ -324,7 +330,8 @@
                             }
                         }
                     }
-                    &.open {
+                    &.open,
+                    &:focus-within  {
                         padding: 15px;
                         opacity: 1;
                         right: -220px;
@@ -439,17 +446,18 @@
 
 /* ==============[ toc (inside the respective wrap > see above) ]========================= */
 .tx-dlf-toc {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    overflow: hidden;
+    overflow-y: auto;
     ul.toc {
         position: relative;
-        overflow: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        height: 100%;
         line-height: 1.2;
         font-size: 14px;
-        border-top: 1px solid @lightgrey-color;
+        border-top: 1px solid fade(@lightgrey-color,20%);
         ul li {
             position: relative;
             &.submenu {
@@ -526,6 +534,7 @@
                     background: url('@{basepath}Resources/Public/Images/viewerTocIcons.svg') no-repeat -90px 0;
                     background-size: auto 60px;
                     display: block;
+                    color: transparent;
                     .transform(scale(.6));
                     &.meta-type-Abbildung {
                         background-position: 0 0;
@@ -555,6 +564,12 @@
         }
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        bottom: auto;
+        overflow: visible;
         &:after {
             position: absolute;
             top: 0;
