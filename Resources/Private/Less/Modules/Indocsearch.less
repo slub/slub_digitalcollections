@@ -45,6 +45,7 @@
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
                 &:focus {
                     color: @secondary-color;
+                    outline: 1px solid white;
                 }
             }
         }
@@ -60,9 +61,13 @@
                 background: lighten(@secondary-color-light, 40%) url('@{control-icons}') no-repeat -560px 0;
                 background-size: auto 120px;
                 border-radius: 20px;
+                &:focus {
+                    outline: 1px solid white;
+                }
             }
         }
-        .search-indocument-active & {
+        .search-indocument-active &,
+        &:focus-within {
             pointer-events: all;
             opacity: 1;
             .transform(translateY(0));

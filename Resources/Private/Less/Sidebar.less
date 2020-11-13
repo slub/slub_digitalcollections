@@ -156,7 +156,8 @@
                         }
                     }
                 }
-                &.open {
+                &.open,
+                &:focus-within {
                     padding-bottom: 65px;
                     max-height: 320px;
                     min-height: 60px;
@@ -199,7 +200,8 @@
             background-size: auto 120px;
             border: 1px solid fade(white, 50%);
         }
-        &.open {
+        &.open,
+        &:focus-within  {
             .transform(translateX(0));
             z-index: 1100;
             .offcanvas-toggle {
@@ -317,6 +319,9 @@
                             &:hover {
                                 background: rgba(255, 255, 255, 0.2);
                             }
+                            &:focus {
+                                outline-color: white;
+                            }
                         }
                         &:first-child {
                             a {
@@ -324,7 +329,8 @@
                             }
                         }
                     }
-                    &.open {
+                    &.open,
+                    &:focus-within  {
                         padding: 15px;
                         opacity: 1;
                         right: -220px;
