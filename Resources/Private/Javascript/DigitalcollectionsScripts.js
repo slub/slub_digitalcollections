@@ -202,7 +202,7 @@ $(function () {
 $(document).keyup(function (e) {
 
     // Check if ESC key is pressed. Then end fullscreen mode or close SRU form.
-    if (e.keyCode == 27) {
+    if (e.key === 'Escape') {
         if ($('body.fullscreen')[0]) {
             return exitFullscreen();
         }
@@ -211,7 +211,7 @@ $(document).keyup(function (e) {
         }
     }
     // Check if the F key is pressed and no text input in SRU form is taking place.
-    if (e.keyCode == 70 && !$('#tx-dlf-search-in-document-query').is(':focus')) {
+    if (e.key === 'f' && !$('#tx-dlf-search-in-document-query').is(':focus')) {
         return enterFullscreen();
     }
 
