@@ -61,6 +61,17 @@ $(function () {
         }
     });
 
+    if ($('.provider img').length > 0) {
+        // Avoid broken image display if METS definitions are wrong
+        $('.provider img').each(function() {
+            if((typeof this.naturalWidth != "undefined" && this.naturalWidth == 0 ) || this.readyState == 'uninitialized' ) {
+                $(this).parents('.document-functions').addClass('missing-provider-image');
+            }
+        });
+    } else {
+        $('.provider').parents('.document-functions').addClass('missing-provider-image');
+    }
+
     // Copy selected page number to mobile meta (in order to transform select field to ui button)
     if ($('.pages select option[selected]')[0]) {
         $('dl.mobile-meta').append('<dt class="mobile-page-number">No.</dt><dd class="mobile-page-number">' + $('.pages select option[selected]').text() + '</dd>');

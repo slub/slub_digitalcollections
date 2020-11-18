@@ -74,7 +74,7 @@ class ProviderLogoCachedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abst
                     )
                 )
             );
-            $logo = file_get_contents($logoUrl, false, $context, 0, 1024*100);
+            $logo = @file_get_contents($logoUrl, false, $context, 0, 1024*100);
             // Save value in cache
             if ($logo) {
                 GeneralUtility::writeFile($logoFile, $logo);
