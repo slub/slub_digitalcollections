@@ -138,8 +138,16 @@ a {
             border-bottom: 1px solid @lightgrey-color;
             .transition();
             > a {
-                display: none; // Kill the logo inside the control bar in order to use the new logobar (.tx-dlf-logobar)
+                flex: 0 0 70px;
+                img {
+                    margin-top: 5px;
+                    width: 70px;
+                    height: 33px;
+                }
             }
+            // > a {
+            //     display: none; // Kill the logo inside the control bar in order to use the new logobar (.tx-dlf-logobar)
+            // }
             .mobile-meta {
                 position: relative;
                 font-size: 12px;
@@ -276,6 +284,19 @@ a {
                 .transform(translateY(-100%));
             }
         }
+        &.missing-provider-image {
+            .provider {
+                > a {
+                    display: none;
+                    img {
+                        display: none;
+                    }
+                }
+                .mobile-meta {
+                    padding-left: 10px;
+                }
+            }
+        }
     }
     @media screen and (min-width: @phoneLandscapeViewportWidth) {
         .tx-dlf-logobar {
@@ -322,6 +343,11 @@ a {
                 .mobile-meta,
                 .mobile-controls {
                     display: none;
+                }
+            }
+            &.missing-provider-image {
+                ul {
+                    left: 20px;
                 }
             }
         }

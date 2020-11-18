@@ -81,6 +81,8 @@ page {
                 solrHost = {$config.kitodo.solr.host}/{$config.kitodo.solr.coreName}
                 solrTimeout = {$config.kitodo.solr.timeout}
             }
+
+            showProviderLogo = 0
         }
         variables {
                 content < styles.content.get
