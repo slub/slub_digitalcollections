@@ -58,7 +58,7 @@ class ProviderLogoCachedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abst
             // calculate cache identifier
             $logoInfo = pathinfo($logoUrl);
             $cacheIdentifier = md5($logoUrl) . '.' . $logoInfo['extension'];
-            $logoFile = Environment::getPublicPath() . '/fileadmin/_temp_/' . $cacheIdentifier;
+            $logoFile = Environment::getPublicPath() . '/typo3temp/assets/images/' . $cacheIdentifier;
             // if file exists and is not too old - take it
             if (file_exists($LogoFile)) {
                 // if not older than one day:
