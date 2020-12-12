@@ -127,7 +127,7 @@ config {
 
     # matomo configuration (maybe overwritten)
     # cat=plugin.tx_slubdigitalcollections/piwik/0310; type=string; label=Matomo Hostname
-    piwik_hostname = piwik.slub-dresden.de
+    piwik_hostname = matomo.slub-dresden.de
     # cat=plugin.tx_slubdigitalcollections/piwik/0320; type=int+; label=Matomo Idsite
     piwik_idsite =
     # cat=plugin.tx_slubdigitalcollections/piwik/0330; type=string; label=Matomo Domains (optional)
