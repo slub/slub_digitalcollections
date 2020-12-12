@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\Helpers;
+namespace Slub\SlubDigitalcollections\Helpers;
 
 /***************************************************************
  *  Copyright notice

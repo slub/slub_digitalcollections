@@ -138,9 +138,9 @@ page {
 # more conditions appear.
 
 # for TYPO3 8.7 and 9.5 with Kitodo.Presentation 3.x
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup9.typoscript" condition="Slub\\DigitalCollections\\Helpers\\CoreVersionCondition >= 8.7">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup9.typoscript" condition="Slub\\SlubDigitalcollections\\Helpers\\CoreVersionCondition >= 8.7">
 # for TYPO3 7.6 with Kitodo.Presentation 2.x
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup7.ts" condition="Slub\\DigitalCollections\\Helpers\\CoreVersionCondition < 8.0">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup7.ts" condition="Slub\\SlubDigitalcollections\\Helpers\\CoreVersionCondition < 8.0">
 
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
