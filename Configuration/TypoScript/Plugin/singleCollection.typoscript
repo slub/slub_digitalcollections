@@ -1,0 +1,7 @@
+plugin.tx_slubdigitalcollections_singlecollection {
+    view {
+        templateRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Templates/
+        partialRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Partials/
+        layoutRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Layouts/
+    }
+}

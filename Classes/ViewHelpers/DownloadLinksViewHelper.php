@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice
@@ -68,7 +68,7 @@ class DownloadLinksViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
         $type = $arguments['type'];
         $pagenumber = $arguments['pagenumber'];
 
-        $doc = GeneralUtility::makeInstance(\Slub\DigitalCollections\Helpers\GetDoc::class);
+        $doc = GeneralUtility::makeInstance(\Slub\SlubDigitalcollections\Helpers\GetDoc::class);
 
         switch ($type) {
           case 'page-right':

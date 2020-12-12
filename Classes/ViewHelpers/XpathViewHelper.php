@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice
@@ -73,7 +73,7 @@ class XpathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
         $htmlspecialchars = $arguments['htmlspecialchars'];
         $returnArray = $arguments['returnArray'];
 
-        $doc = GeneralUtility::makeInstance(\Slub\DigitalCollections\Helpers\GetDoc::class);
+        $doc = GeneralUtility::makeInstance(\Slub\SlubDigitalcollections\Helpers\GetDoc::class);
 
         $result = $doc->getXpath($xpath);
 

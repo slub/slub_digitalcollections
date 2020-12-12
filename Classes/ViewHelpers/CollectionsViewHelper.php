@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -43,7 +43,7 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
         parent::initializeArguments();
         $this->registerArgument('kitodoId', 'integer', 'Id of Kitodo document', true);
         $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://sdvsolr2.slub-dresden.de:8983/solr/dlfCore0/");
-        $this->registerArgument('solrTimeout', 'integer', 'Id of Kitodo document', false, 5);
+        $this->registerArgument('solrTimeout', 'integer', 'Timeout to Solr server', false, 5);
     }
 
     /**

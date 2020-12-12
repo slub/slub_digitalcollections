@@ -83,6 +83,9 @@
 			<trans-unit id="purl.document">
 				<source><![CDATA[Permalink document]]></source>
 			</trans-unit>
+			<trans-unit id="plugins.single_collection_view">
+				<source><![CDATA[Single Collection View]]></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

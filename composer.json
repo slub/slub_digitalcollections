@@ -27,11 +27,11 @@
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "typo3/cms-core": "~7.6.32|~8.7.32|~9.5.17"
+    "typo3/cms-core": "~9.5.21"
   },
   "autoload": {
     "psr-4": {
-      "Slub\\DigitalCollections\\": "Classes/"
+      "Slub\\SlubDigitalcollections\\": "Classes/"
     }
   }
 }
