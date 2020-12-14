@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-12-13T20:22:07Z" product-name="slub_digitalcollections">
+		<header/>
+		<body>
+			<trans-unit id="structure" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="structure.act" xml:space="preserve">
+				<source>Act</source>
+			</trans-unit>
+			<trans-unit id="structure.additional" xml:space="preserve">
+				<source>Additional</source>
+			</trans-unit>
+			<trans-unit id="structure.address" xml:space="preserve">
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="structure.album" xml:space="preserve">
+				<source>Album</source>
+			</trans-unit>
+			<trans-unit id="structure.annotation" xml:space="preserve">
+				<source>Annotation</source>
+			</trans-unit>
+			<trans-unit id="structure.article" xml:space="preserve">
+				<source>Article</source>
+			</trans-unit>
+			<trans-unit id="structure.atlas" xml:space="preserve">
+				<source>Atlas</source>
+			</trans-unit>
+			<trans-unit id="structure.bachelor_thesis" xml:space="preserve">
+				<source>Bachelor Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.binding" xml:space="preserve">
+				<source>Binding</source>
+			</trans-unit>
+			<trans-unit id="structure.bookplate" xml:space="preserve">
+				<source>Bookplate</source>
+			</trans-unit>
+			<trans-unit id="structure.cartulary" xml:space="preserve">
+				<source>Cartulary</source>
+			</trans-unit>
+			<trans-unit id="structure.chapter" xml:space="preserve">
+				<source>Chapter</source>
+			</trans-unit>
+			<trans-unit id="structure.collation" xml:space="preserve">
+				<source>Collation</source>
+			</trans-unit>
+			<trans-unit id="structure.colophon" xml:space="preserve">
+				<source>Colophon</source>
+			</trans-unit>
+			<trans-unit id="structure.contained_work" xml:space="preserve">
+				<source>Contained Work</source>
+			</trans-unit>
+			<trans-unit id="structure.contents" xml:space="preserve">
+				<source>Table of Contents</source>
+			</trans-unit>
+			<trans-unit id="structure.corrigenda" xml:space="preserve">
+				<source>Corrigenda</source>
+			</trans-unit>
+			<trans-unit id="structure.cover" xml:space="preserve">
+				<source>Cover</source>
+			</trans-unit>
+			<trans-unit id="structure.cover_front" xml:space="preserve">
+				<source>Front Cover</source>
+			</trans-unit>
+			<trans-unit id="structure.cover_back" xml:space="preserve">
+				<source>Back Cover</source>
+			</trans-unit>
+			<trans-unit id="structure.day" xml:space="preserve">
+				<source>Day</source>
+			</trans-unit>
+			<trans-unit id="structure.dedication" xml:space="preserve">
+				<source>Dedication</source>
+			</trans-unit>
+			<trans-unit id="structure.diploma_thesis" xml:space="preserve">
+				<source>Diploma Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.doctoral_thesis" xml:space="preserve">
+				<source>Doctoral Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.document" xml:space="preserve">
+				<source>Document</source>
+			</trans-unit>
+			<trans-unit id="structure.dossier" xml:space="preserve">
+				<source>Dossier</source>
+			</trans-unit>
+			<trans-unit id="structure.edge" xml:space="preserve">
+				<source>Edge</source>
+			</trans-unit>
+			<trans-unit id="structure.endsheet" xml:space="preserve">
+				<source>Endsheet</source>
+			</trans-unit>
+			<trans-unit id="structure.engraved_titlepage" xml:space="preserve">
+				<source>Engraved Titlepage</source>
+			</trans-unit>
+			<trans-unit id="structure.entry" xml:space="preserve">
+				<source>Entry</source>
+			</trans-unit>
+			<trans-unit id="structure.ephemera" xml:space="preserve">
+				<source>Ephemera</source>
+			</trans-unit>
+			<trans-unit id="structure.fascicle" xml:space="preserve">
+				<source>Fascicle</source>
+			</trans-unit>
+			<trans-unit id="structure.file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="structure.folder" xml:space="preserve">
+				<source>Folder</source>
+			</trans-unit>
+			<trans-unit id="structure.fragment" xml:space="preserve">
+				<source>Fragment</source>
+			</trans-unit>
+			<trans-unit id="structure.ground_plan" xml:space="preserve">
+				<source>Ground Plan</source>
+			</trans-unit>
+			<trans-unit id="structure.habilitation_thesis" xml:space="preserve">
+				<source>Habilitation Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.illustration" xml:space="preserve">
+				<source>Illustration</source>
+			</trans-unit>
+			<trans-unit id="structure.image" xml:space="preserve">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="structure.imprint" xml:space="preserve">
+				<source>Imprint</source>
+			</trans-unit>
+			<trans-unit id="structure.index" xml:space="preserve">
+				<source>Index</source>
+			</trans-unit>
+			<trans-unit id="structure.initial_decoration" xml:space="preserve">
+				<source>Initial Decoration</source>
+			</trans-unit>
+			<trans-unit id="structure.issue" xml:space="preserve">
+				<source>Issue</source>
+			</trans-unit>
+			<trans-unit id="structure.judgement" xml:space="preserve">
+				<source>Judgement</source>
+			</trans-unit>
+			<trans-unit id="structure.land_register" xml:space="preserve">
+				<source>Land Register</source>
+			</trans-unit>
+			<trans-unit id="structure.leaflet" xml:space="preserve">
+				<source>Leaflet</source>
+			</trans-unit>
+			<trans-unit id="structure.lecture" xml:space="preserve">
+				<source>Lecture</source>
+			</trans-unit>
+			<trans-unit id="structure.letter" xml:space="preserve">
+				<source>Letter</source>
+			</trans-unit>
+			<trans-unit id="structure.magister_thesis" xml:space="preserve">
+				<source>Magister Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.master_thesis" xml:space="preserve">
+				<source>Master Thesis</source>
+			</trans-unit>
+			<trans-unit id="structure.manuscript" xml:space="preserve">
+				<source>Manuscript</source>
+			</trans-unit>
+			<trans-unit id="structure.map" xml:space="preserve">
+				<source>Map</source>
+			</trans-unit>
+			<trans-unit id="structure.monograph" xml:space="preserve">
+				<source>Monograph</source>
+			</trans-unit>
+			<trans-unit id="structure.month" xml:space="preserve">
+				<source>Month</source>
+			</trans-unit>
+			<trans-unit id="structure.multivolume_work" xml:space="preserve">
+				<source>Multivolume Work</source>
+			</trans-unit>
+			<trans-unit id="structure.musical_notation" xml:space="preserve">
+				<source>Musical Notation</source>
+			</trans-unit>
+			<trans-unit id="structure.newspaper" xml:space="preserve">
+				<source>Newspaper</source>
+			</trans-unit>
+			<trans-unit id="structure.note" xml:space="preserve">
+				<source>Note</source>
+			</trans-unit>
+			<trans-unit id="structure.official_notification" xml:space="preserve">
+				<source>Official Notification</source>
+			</trans-unit>
+			<trans-unit id="structure.ornament" xml:space="preserve">
+				<source>Ornament</source>
+			</trans-unit>
+			<trans-unit id="structure.page" xml:space="preserve">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="structure.paper" xml:space="preserve">
+				<source>Paper</source>
+			</trans-unit>
+			<trans-unit id="structure.paste_down" xml:space="preserve">
+				<source>Paste Down</source>
+			</trans-unit>
+			<trans-unit id="structure.periodical" xml:space="preserve">
+				<source>Periodical</source>
+			</trans-unit>
+			<trans-unit id="structure.photograph" xml:space="preserve">
+				<source>Photograph</source>
+			</trans-unit>
+			<trans-unit id="structure.plan" xml:space="preserve">
+				<source>Plan</source>
+			</trans-unit>
+			<trans-unit id="structure.poster" xml:space="preserve">
+				<source>Poster</source>
+			</trans-unit>
+			<trans-unit id="structure.preface" xml:space="preserve">
+				<source>Preface</source>
+			</trans-unit>
+			<trans-unit id="structure.preprint" xml:space="preserve">
+				<source>Preprint</source>
+			</trans-unit>
+			<trans-unit id="structure.printed_archives" xml:space="preserve">
+				<source>Printed Archives</source>
+			</trans-unit>
+			<trans-unit id="structure.printers_mark" xml:space="preserve">
+				<source>Printers Mark</source>
+			</trans-unit>
+			<trans-unit id="structure.privileges" xml:space="preserve">
+				<source>Privileges</source>
+			</trans-unit>
+			<trans-unit id="structure.proceeding" xml:space="preserve">
+				<source>Proceeding</source>
+			</trans-unit>
+			<trans-unit id="structure.provenance" xml:space="preserve">
+				<source>Provenance</source>
+			</trans-unit>
+			<trans-unit id="structure.register" xml:space="preserve">
+				<source>Register</source>
+			</trans-unit>
+			<trans-unit id="structure.report" xml:space="preserve">
+				<source>Report</source>
+			</trans-unit>
+			<trans-unit id="structure.research_paper" xml:space="preserve">
+				<source>Research Paper</source>
+			</trans-unit>
+			<trans-unit id="structure.scheme" xml:space="preserve">
+				<source>Scheme</source>
+			</trans-unit>
+			<trans-unit id="structure.seal" xml:space="preserve">
+				<source>Seal</source>
+			</trans-unit>
+			<trans-unit id="structure.section" xml:space="preserve">
+				<source>Section</source>
+			</trans-unit>
+			<trans-unit id="structure.spine" xml:space="preserve">
+				<source>Spine</source>
+			</trans-unit>
+			<trans-unit id="structure.stamp" xml:space="preserve">
+				<source>Stamp</source>
+			</trans-unit>
+			<trans-unit id="structure.study" xml:space="preserve">
+				<source>Study</source>
+			</trans-unit>
+			<trans-unit id="structure.table" xml:space="preserve">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="structure.text" xml:space="preserve">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="structure.title_page" xml:space="preserve">
+				<source>Titlepage</source>
+			</trans-unit>
+			<trans-unit id="structure.verse" xml:space="preserve">
+				<source>Verse</source>
+			</trans-unit>
+			<trans-unit id="structure.volume" xml:space="preserve">
+				<source>Volume</source>
+			</trans-unit>
+			<trans-unit id="structure.year" xml:space="preserve">
+				<source>Year</source>
+			</trans-unit>
+			<trans-unit id="metadata.prod_id" xml:space="preserve">
+				<source>Kitodo Process Number</source>
+			</trans-unit>
+			<trans-unit id="metadata.record_id" xml:space="preserve">
+				<source>OAI Identifier</source>
+			</trans-unit>
+			<trans-unit id="metadata.opac_id" xml:space="preserve">
+				<source>OPAC Identifier</source>
+			</trans-unit>
+			<trans-unit id="metadata.union_id" xml:space="preserve">
+				<source>Union Catalog ID</source>
+			</trans-unit>
+			<trans-unit id="metadata.urn" xml:space="preserve">
+				<source>URN</source>
+			</trans-unit>
+			<trans-unit id="metadata.purl" xml:space="preserve">
+				<source>PURL</source>
+			</trans-unit>
+			<trans-unit id="metadata.type" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="metadata.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="metadata.author" xml:space="preserve">
+				<source>Author</source>
+			</trans-unit>
+			<trans-unit id="metadata.year" xml:space="preserve">
+				<source>Year of Publication</source>
+			</trans-unit>
+			<trans-unit id="metadata.place" xml:space="preserve">
+				<source>Place of Publication</source>
+			</trans-unit>
+			<trans-unit id="metadata.volume" xml:space="preserve">
+				<source>Volume</source>
+			</trans-unit>
+			<trans-unit id="metadata.collection" xml:space="preserve">
+				<source>Collection(s)</source>
+			</trans-unit>
+			<trans-unit id="metadata.owner" xml:space="preserve">
+				<source>Owner</source>
+			</trans-unit>
+			<trans-unit id="metadata.language" xml:space="preserve">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="metadata.coordinates" xml:space="preserve">
+				<source>Coordinates</source>
+			</trans-unit>
+			<trans-unit id="metadata.license" xml:space="preserve">
+				<source>License</source>
+			</trans-unit>
+			<trans-unit id="metadata.terms" xml:space="preserve">
+				<source>Terms of Use</source>
+			</trans-unit>
+			<trans-unit id="metadata.restrictions" xml:space="preserve">
+				<source>Restrictions on Access</source>
+			</trans-unit>
+			<trans-unit id="metadata.out_of_print" xml:space="preserve">
+				<source>Out Of Print Works</source>
+			</trans-unit>
+			<trans-unit id="metadata.rights_info" xml:space="preserve">
+				<source>Rights Information</source>
+			</trans-unit>
+			<trans-unit id="metadata.useandreproduction" xml:space="preserve">
+				<source>License and Rights Information</source>
+			</trans-unit>
+			<trans-unit id="metadata.serial" xml:space="preserve">
+				<source>Series</source>
+			</trans-unit>
+			<trans-unit id="metadata.composer" xml:space="preserve">
+				<source>Composer</source>
+			</trans-unit>
+			<trans-unit id="sortinfo" xml:space="preserve">
+				<source>Entries %s to %s from %s.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
