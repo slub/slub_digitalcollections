@@ -1,7 +1,22 @@
 plugin.tx_slubdigitalcollections_singlecollection {
     view {
-        templateRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Templates/
-        partialRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Partials/
-        layoutRootPaths.110=EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Layouts/
+        templateRootPaths.110 = EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Templates/
+        partialRootPaths.110 = EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Partials/
+        layoutRootPaths.110 = EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Layouts/
+        widget.TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper.templateRootPath = EXT:slub_digitalcollections/Resources/Private/Plugins/SingleCollection/Templates/
+
+    }
+    persistence {
+        storagePid = {$config.kitodo.storagePid}
+    }
+    settings {
+        kitodo.pageView = {$config.kitodo.pageView}
+        list.paginate {
+            itemsPerPage = 25
+            insertAbove = 1
+            insertBelow = 1
+            maximumNumberOfLinks = 10
+        }
+
     }
 }
