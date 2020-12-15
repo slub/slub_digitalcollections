@@ -16,7 +16,11 @@ plugin.tx_slubdigitalcollections_singlecollection {
             insertAbove = 1
             insertBelow = 1
             maximumNumberOfLinks = 10
+            section = showResults
         }
-
+        solr {
+            host = {$config.kitodo.solr.host}/{$config.kitodo.solr.coreName}
+            timeout = {$config.kitodo.solr.timeout}
+        }
     }
 }

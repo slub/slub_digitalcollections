@@ -1,4 +1,4 @@
-<div class="tx-dlf-listview">
+<div class="tx-dlf-listview" id="showResults">
       <f:widget.paginate objects="{documents}" as="paginatedDocuments" configuration="{settings.list.paginate}">
          <f:variable name="pageOffset" value="{widgetPage.currentPage - 1}" />
          <f:variable name="numDocuments" value="{paginatedDocuments->f:count()}" />
@@ -7,6 +7,32 @@
                key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
                arguments="{0:'{settings.list.paginate.itemsPerPage * pageOffset + 1}',1:'{settings.list.paginate.itemsPerPage * pageOffset + numDocuments}', 2:'{documents->f:count()}'}" />
          </p>
+         <f:form section="showResults" name="searchParameter">
+            <div>
+               <label for="orderBy">
+                  <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
+               </label>
+               <f:form.select property="orderBy" value="{lastSearch.orderBy}" onclick="javascript:this.form.submit();">
+                  <f:for each="{metadata}" as="meta">
+                     <f:form.select.option value="{meta.indexName}_usi">
+                        <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{meta.indexName}' extensionName='slub_digitalcollections' />
+                     </f:form.select.option>
+                  </f:for>
+               </f:form.select>
+               <label for="order">
+                  <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order' extensionName='slub_digitalcollections' />
+               </label>
+               <f:form.select property="order" value="{lastSearch.order}" onclick="javascript:this.form.submit();">
+                  <f:form.select.option value="asc">
+                     <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.asc' extensionName='slub_digitalcollections' />
+                  </f:form.select.option>
+                  <f:form.select.option value="desc">
+                     <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.desc' extensionName='slub_digitalcollections' />
+                  </f:form.select.option>
+               </f:form.select>
+               <f:form.hidden property="collections" value="{settings.collections}" />
+            </div>
+         </f:form>
          <ol class="tx-dlf-abstracts">
             <f:for each="{paginatedDocuments}" as="document" iteration="docIterator">
             <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
@@ -38,8 +64,7 @@
                <div class="tx-dlf-listview-preview"></div>
             </f:link.page>
             <f:if condition="{document.children}">
-               <div class="tx-dlf-morevolumes">Details einblenden</div>
-               <div class="tx-dlf-hidevolumes">Details ausblenden</div>
+               <div class="tx-dlf-morevolumes" title="{f:translate(key='listview.moredetails.toggle')}"><f:translate key='listview.moredetails.toggle' /></div>
             </f:if>
             <f:if condition="{document.children}">
                   <ol class="tx-dlf-volume">

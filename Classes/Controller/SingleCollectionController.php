@@ -29,6 +29,7 @@ use Kitodo\Dlf\Common\Document;
 use Slub\SlubDigitalcollections\Domain\Repository\KitodoDocumentRepository;
 use Slub\SlubDigitalcollections\Domain\Repository\KitodoStructuresRepository;
 use Slub\SlubDigitalcollections\Domain\Repository\KitodoCollectionsRepository;
+use Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository;
 
 class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -53,7 +54,14 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
      */
     protected $kitodoCollectionsRepository;
 
-	/**
+    /**
+     * kitodoMetadataRepository
+     *
+     * @var \Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository
+     */
+    protected $kitodoMetadataRepository;
+
+    /**
      * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoDocumentRepository $kitodoDocumentRepository
      */
     public function injectKitodoDocumentRepository(KitodoDocumentRepository $kitodoDocumentRepository)
@@ -77,6 +85,14 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
         $this->kitodoCollectionsRepository = $kitodoCollectionsRepository;
     }
 
+	/**
+     * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository $kitodoMetadataRepository
+     */
+    public function injectKitodoMetadataRepository(KitodoMetadataRepository $kitodoMetadataRepository)
+    {
+        $this->kitodoMetadataRepository = $kitodoMetadataRepository;
+    }
+
     /**
      * initializeAction
      *
@@ -93,21 +109,52 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
      */
     public function showAction() {
 
+        // if search was triggered, get search parameters from POST variables
+        $searchParams = $this->getParametersSafely('searchParameter');
+
+        // set default sorting
+        if (empty($searchParams)) {
+            $searchParams = [
+                'orderBy' => 'title_usi',
+                'order' => 'asc'
+            ];
+        }
+
         $collection = $this->kitodoCollectionsRepository->findByUid($this->settings['collections']);
 
-        $documents = $this->kitodoDocumentRepository->findSolrByCollection($collection);
+        $documents = $this->kitodoDocumentRepository->findSolrByCollection($collection, $this->settings, $searchParams);
+
+        $metadata = $this->kitodoMetadataRepository->findByIsSortable(true);
 
         // pass the currentPage to the fluid template to calculate current index of search result
-        if ($this->request->hasArgument('@widget_0')) {
-            $widgetPage = $this->request->getArgument('@widget_0');
-        } else {
+        $widgetPage = $this->getParametersSafely('@widget_0');
+        if (empty($widgetPage)) {
             $widgetPage = ['currentPage' => 1];
         }
 
         $this->view->assign('collection', $collection);
         $this->view->assign('documents', $documents);
+        $this->view->assign('metadata', $metadata);
         $this->view->assign('widgetPage', $widgetPage);
+        $this->view->assign('lastSearch', $searchParams);
 
 
     }
+
+    /**
+     * Safely gets Parameters from request
+     * if they exist
+     *
+     * @param string $parameterName
+     *
+     * @return null|string
+     */
+    protected function getParametersSafely($parameterName)
+    {
+        if ($this->request->hasArgument($parameterName)) {
+            return $this->request->getArgument($parameterName);
+        }
+        return null;
+    }
+
 }
