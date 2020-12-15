@@ -7,7 +7,7 @@
                key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
                arguments="{0:'{settings.list.paginate.itemsPerPage * pageOffset + 1}',1:'{settings.list.paginate.itemsPerPage * pageOffset + numDocuments}', 2:'{documents->f:count()}'}" />
          </p>
-         <f:form section="showResults" name="searchParameter">
+         <f:form section="showResults" name="searchParameter" method="get">
             <div>
                <label for="orderBy">
                   <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
