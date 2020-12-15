@@ -15,4 +15,9 @@ config.tx_extbase.persistence.classes {
             tableName = tx_dlf_collections
         }
     }
+    Slub\SlubDigitalcollections\Domain\Model\KitodoMetadata {
+        mapping {
+            tableName = tx_dlf_metadata
+        }
+    }
 }

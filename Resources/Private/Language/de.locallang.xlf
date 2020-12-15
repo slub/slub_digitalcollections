@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-14T21:40:46Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-15T20:39:31Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -88,6 +88,22 @@
 			<trans-unit id="gridpage.preview" approved="yes">
 				<source><![CDATA[Thumbnail Preview]]></source>
 				<target><![CDATA[Vorschaubilder]]></target>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.hide" approved="yes">
+				<source><![CDATA[Hide more details]]></source>
+				<target><![CDATA[Details ausblenden]]></target>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.show" approved="yes">
+				<source><![CDATA[Show more details]]></source>
+				<target><![CDATA[Details einblenden]]></target>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.toggle" approved="yes">
+				<source><![CDATA[Toggle details]]></source>
+				<target><![CDATA[Details ein-/ausblenden]]></target>
+			</trans-unit>
+			<trans-unit id="plugins.single_collection_view" approved="yes">
+				<source><![CDATA[Single Collection View]]></source>
+				<target><![CDATA[Ansicht einer einzelne Kollektion]]></target>
 			</trans-unit>
 			<trans-unit id="provider.email_provider" approved="yes">
 				<source><![CDATA[Email to data provider]]></source>

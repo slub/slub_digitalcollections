@@ -345,8 +345,23 @@
 			<trans-unit id="metadata.composer" xml:space="preserve">
 				<source>Composer</source>
 			</trans-unit>
+			<trans-unit id="metadata.shelfmark" xml:space="preserve">
+				<source>Shelfmark</source>
+			</trans-unit>
 			<trans-unit id="sortinfo" xml:space="preserve">
 				<source>Entries %s to %s from %s.</source>
+			</trans-unit>
+			<trans-unit id="form.orderBy" xml:space="preserve">
+				<source>Order by:</source>
+			</trans-unit>
+			<trans-unit id="form.order" xml:space="preserve">
+				<source>Direction:</source>
+			</trans-unit>
+			<trans-unit id="form.order.asc" xml:space="preserve">
+				<source>ascending</source>
+			</trans-unit>
+			<trans-unit id="form.order.desc" xml:space="preserve">
+				<source>descending</source>
 			</trans-unit>
 		</body>
 	</file>

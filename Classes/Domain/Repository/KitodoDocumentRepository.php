@@ -28,84 +28,48 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
-    // Order by default by title_sorting
-    protected $defaultOrderings = array(
-        'title_sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-    );
-
-
     /**
-     * Find all documents with given collection
+     * Find all documents with given collection from Solr
      *
      * @param string $collections
+     * @param array $settings
+     * @param array $searchParams
      * @return objects
      */
-    public function findSolrByCollection($collection) {
-
-        $solrHost = 'http://sdvsolrsachsendigital.slub-dresden.de:8983/solr/dlfCore1';
+    public function findSolrByCollection($collection, $settings, $searchParams) {
 
         $context = stream_context_create(array(
             'http' => array(
-                'timeout' => 5
+                'timeout' => $settings['solr']['timeout']
                 )
             )
         );
-        $query = $solrHost . '/select?fq=toplevel%3Atrue%20AND%20partof%3A0&q=collection:(' . urlencode('"' . $collection->getIndexName() . '"') . ')&fl=uid&rows=10000&wt=csv';
+        $query = $settings['solr']['host'] . '/select?fq=toplevel%3Atrue%20AND%20partof%3A0&q=collection:(' . urlencode('"' . $collection->getIndexName() . '"') . ')&fl=uid&rows=10000&wt=csv';
+
+        // order if given
+        if (!empty($searchParams['orderBy'])) {
+            $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
+        } else {
+            // order by title asc by default
+            $query .= '&sort=title_usi%20asc';
+        }
+
         $apiAnswer = file_get_contents($query, false, $context);
-        $uids = explode("\n", $apiAnswer);
+        $uids = GeneralUtility::intExplode("\n", $apiAnswer);
 
-        $documents = $this->findAllByUids($uids);
-
-        foreach ($documents as $document) {
-            // find all child documents
-            $children = $this->findByPartof($document->getUid());
-            $document->setChildren($children->toArray());
+        $documents = [];
+        // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
+        foreach ($uids as $uid) {
+            $document = $this->findByUid($uid);
+            if ($document) {
+                // find all child documents
+                $children = $this->findByPartof($uid);
+                $document->setChildren($children->toArray());
+                $documents[] = $document;
+            }
         }
 
         return $documents;
-    }
-
-
-    /**
-     * Finds all datasets
-     *
-     * @param array
-     *
-     * @return objects
-     */
-    public function findAllByUids($uids)
-    {
-        $query = $this->createQuery();
-
-        $constraints = [];
-        $constraints[] = $query->in('uid', $uids);
-
-        if (count($constraints)) {
-            $query->matching($query->logicalAnd($constraints));
-        }
-
-        return $query->execute();
-    }
-
-
-    /**
-     * Find all records younger than the given timestamp
-     *
-     * @param int $timestamp
-     * @return objects
-     */
-    public function findYoungerThan($timestamp) {
-
-      $query = $this->createQuery();
-      $constraints = [];
-
-      $constraints[] = $query->greaterThan('tstamp', $timestamp);
-
-      if (count($constraints)) {
-          $query->matching($query->logicalAnd($constraints));
-      }
-
-      return $query->execute();
     }
 
 }

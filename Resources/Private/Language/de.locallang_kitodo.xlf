@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-14T21:42:19Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-15T20:28:34Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="form.order" approved="yes">
+				<source><![CDATA[Direction:]]></source>
+				<target><![CDATA[Richtung:]]></target>
+			</trans-unit>
+			<trans-unit id="form.order.asc" approved="yes">
+				<source><![CDATA[ascending]]></source>
+				<target><![CDATA[aufsteigend]]></target>
+			</trans-unit>
+			<trans-unit id="form.order.desc" approved="yes">
+				<source><![CDATA[descending]]></source>
+				<target><![CDATA[absteigend]]></target>
+			</trans-unit>
+			<trans-unit id="form.orderBy" approved="yes">
+				<source><![CDATA[Order by:]]></source>
+				<target><![CDATA[Sortieren nach:]]></target>
+			</trans-unit>
 			<trans-unit id="metadata.author" approved="yes">
 				<source><![CDATA[Author]]></source>
 				<target><![CDATA[Autor]]></target>
@@ -68,6 +84,10 @@
 			<trans-unit id="metadata.serial" approved="yes">
 				<source><![CDATA[Series]]></source>
 				<target><![CDATA[Reihe]]></target>
+			</trans-unit>
+			<trans-unit id="metadata.shelfmark" approved="yes">
+				<source><![CDATA[Shelfmark]]></source>
+				<target><![CDATA[Signatur]]></target>
 			</trans-unit>
 			<trans-unit id="metadata.terms" approved="yes">
 				<source><![CDATA[Terms of Use]]></source>
