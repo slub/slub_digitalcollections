@@ -26,6 +26,28 @@ namespace Slub\SlubDigitalcollections\Domain\Repository;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class KitodoCollectionsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class KitodoCollectionsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+    /**
+     * Finds all collections
+     *
+     * @param string $uids separated by comma
+     *
+     * @return objects
+     */
+    public function findAllByUids($uids)
+    {
+        $query = $this->createQuery();
+
+        $constraints = [];
+        $constraints[] = $query->in('uid', $uids);
+
+        if (count($constraints)) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+
+        return $query->execute();
+    }
 
 }
