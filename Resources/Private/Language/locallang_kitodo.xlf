@@ -363,6 +363,12 @@
 			<trans-unit id="form.order.desc" xml:space="preserve">
 				<source>descending</source>
 			</trans-unit>
+			<trans-unit id="form.query" xml:space="preserve">
+				<source>Search for:</source>
+			</trans-unit>
+			<trans-unit id="form.search" xml:space="preserve">
+				<source>Search</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

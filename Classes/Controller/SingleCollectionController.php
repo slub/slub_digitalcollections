@@ -113,19 +113,20 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
         $searchParams = $this->getParametersSafely('searchParameter');
 
         // set default sorting
-        if (empty($searchParams)) {
-            $searchParams = [
-                'orderBy' => 'title_usi',
-                'order' => 'asc'
-            ];
+        if (!isset($searchParams['orderBy'])) {
+            $searchParams['orderBy'] = 'title_usi';
+            $searchParams['order'] = 'asc';
         }
 
-        $collection = $this->kitodoCollectionsRepository->findByUid($this->settings['collections']);
+        $collections = $this->kitodoCollectionsRepository->findAllByUids(GeneralUtility::intExplode(',', $this->settings['collections'], true));
 
-        $documents = $this->kitodoDocumentRepository->findSolrByCollection($collection, $this->settings, $searchParams);
+        // find all documents from Solr
+        $documents = $this->kitodoDocumentRepository->findSolrByCollection($collections, $this->settings, $searchParams);
 
+        // get all sortable Metadata from Kitodo.Presentation
         $metadata = $this->kitodoMetadataRepository->findByIsSortable(true);
 
+        // Pagination of Results
         // pass the currentPage to the fluid template to calculate current index of search result
         $widgetPage = $this->getParametersSafely('@widget_0');
         if (empty($widgetPage)) {
@@ -137,7 +138,6 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
         $this->view->assign('metadata', $metadata);
         $this->view->assign('widgetPage', $widgetPage);
         $this->view->assign('lastSearch', $searchParams);
-
 
     }
 

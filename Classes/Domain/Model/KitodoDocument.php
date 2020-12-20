@@ -55,6 +55,27 @@ class KitodoDocument extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
     protected $metadata;
 
     /**
+     * METS Orderlabel
+     *
+     * @var string
+     */
+    protected $metsOrderlabel;
+
+    /**
+     * Page
+     *
+     * @var int
+     */
+    protected $page;
+
+    /**
+     * SearchResult
+     *
+     * @var array
+     */
+    protected $searchResults;
+
+    /**
      * structure
      *
      * @var \Slub\SlubDigitalcollections\Domain\Model\KitodoStructures
@@ -95,6 +116,44 @@ class KitodoDocument extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
     }
 
     /**
+     * Returns the page
+     *
+     * @return string $page
+     */
+    public function getPage() {
+        return $this->page;
+    }
+
+    /**
+     * Sets the page
+     *
+     * @param string $page
+     * @return void
+     */
+    public function setPage($page) {
+        $this->page = $page;
+    }
+
+    /**
+     * Returns the searchResult
+     *
+     * @return string $searchResult
+     */
+    public function getSearchResults() {
+        return $this->searchResults;
+    }
+
+    /**
+     * Sets the searchResult
+     *
+     * @param array $searchResult
+     * @return void
+     */
+    public function addSearchResult($searchResult) {
+        $this->searchResults[] = $searchResult;
+    }
+
+    /**
      * Returns the location
      *
      * @return string $location
@@ -113,12 +172,31 @@ class KitodoDocument extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
     }
 
     /**
+     * Set the thumbnail
+     *
+     * @param string $thumbnail
+     * @return void
+     */
+    public function setThumbnail($thumbnail) {
+        $this->thumbnail = $thumbnail;
+    }
+
+    /**
      * Returns the metadata
      *
      * @return string $metadata
      */
     public function getMetadata() {
         return unserialize($this->metadata);
+    }
+
+    /**
+     * Returns the mets_orderlabel
+     *
+     * @return string $title
+     */
+    public function getMetsOrderlabel() {
+        return $this->metsOrderlabel;
     }
 
     /**

@@ -26,6 +26,7 @@ namespace Slub\SlubDigitalcollections\Domain\Repository;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class KitodoStructuresRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class KitodoStructuresRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-15T20:28:34Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-15T21:56:11Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -20,6 +20,14 @@
 			<trans-unit id="form.orderBy" approved="yes">
 				<source><![CDATA[Order by:]]></source>
 				<target><![CDATA[Sortieren nach:]]></target>
+			</trans-unit>
+			<trans-unit id="form.query" approved="yes">
+				<source><![CDATA[Search for:]]></source>
+				<target><![CDATA[Suche nach:]]></target>
+			</trans-unit>
+			<trans-unit id="form.search" approved="yes">
+				<source><![CDATA[Search]]></source>
+				<target><![CDATA[Suchen]]></target>
 			</trans-unit>
 			<trans-unit id="metadata.author" approved="yes">
 				<source><![CDATA[Author]]></source>

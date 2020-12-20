@@ -26,17 +26,18 @@ namespace Slub\SlubDigitalcollections\Domain\Repository;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 
     /**
      * Find all documents with given collection from Solr
      *
-     * @param string $collections
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $collections
      * @param array $settings
      * @param array $searchParams
      * @return objects
      */
-    public function findSolrByCollection($collection, $settings, $searchParams) {
+    public function findSolrByCollection($collections, $settings, $searchParams) {
 
         $context = stream_context_create(array(
             'http' => array(
@@ -44,31 +45,78 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 )
             )
         );
-        $query = $settings['solr']['host'] . '/select?fq=toplevel%3Atrue%20AND%20partof%3A0&q=collection:(' . urlencode('"' . $collection->getIndexName() . '"') . ')&fl=uid&rows=10000&wt=csv';
 
-        // order if given
+        $collecionsOrString = '';
+        foreach ($collections as $index => $collection) {
+            $collecionsOrString .= (($index > 0) ? ' OR ' : '') . '"' . $collection->getIndexName() . '"';
+        }
+        $metadataQuery = '';
+        if (!empty($searchParams['query'])) {
+            // replace-statement from Kitodo.Presentation Solr::escapeQuery($query)
+            $queryString = urlencode(\Kitodo\Dlf\Common\Solr::escapeQuery($searchParams['query']));
+            debug($queryString);
+            if ($searchParams['fulltext'] == '1') {
+                // fulltext search
+                //webapp=/solr path=/select params={q=fulltext:(haus)&json.nl=flat&omitHeader=true&fl=*,score&start=0&sort=score+desc&fq=collection_faceting:("LDP\:+Bestände+der+Sächsischen+Staatskapelle\/Staatsoper+Dresden"+OR+"FakeValueForDistinction")&rows=0&wt=json} hits=3 status=0 QTime=0
+                $filterQuery ='fq=collection_faceting:(' . urlencode($collecionsOrString) .')';
+                $highlight = 'hl=on&hl.fl=fulltext&hl.method=fastVector';
+                $filterList = 'fl=uid,id,page,thumbnail' . '&' . $highlight;
+                $solrQuery = 'q=fulltext:("' . $queryString . '")';
+            } else {
+                // metadata search
+                $filterQuery = 'fq=';
+                $filterList = 'fl=uid';
+                $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')%20AND%20' . $queryString;
+            }
+        } else {
+            // collection listing
+            $filterQuery = 'fq=toplevel%3Atrue%20AND%20partof%3A0';
+            $filterList = 'fl=uid';
+            $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')';
+        }
+
+        // get 10.000 results maximum in JSON
+        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json';
+
+        // order the results as given or by title as default
         if (!empty($searchParams['orderBy'])) {
             $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
         } else {
-            // order by title asc by default
             $query .= '&sort=title_usi%20asc';
         }
 
-        $apiAnswer = file_get_contents($query, false, $context);
-        $uids = GeneralUtility::intExplode("\n", $apiAnswer);
-
         $documents = [];
-        // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
-        foreach ($uids as $uid) {
-            $document = $this->findByUid($uid);
-            if ($document) {
-                // find all child documents
-                $children = $this->findByPartof($uid);
-                $document->setChildren($children->toArray());
-                $documents[] = $document;
+        $apiAnswer = file_get_contents($query, false, $context);
+        $result = json_decode($apiAnswer, true);
+
+        // Only continue if we got a valid result
+        if ($result) {
+            // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
+            foreach ($result['response']['docs'] as $doc) {
+                $document = $this->findByUid($doc['uid']);
+                if ($document) {
+                    if ($doc['page']) {
+                        // page is only set on fulltext search
+                        $searchResult = [];
+                        $searchResult['page'] = $doc['page'];
+                        $searchResult['thumbnail'] = $doc['thumbnail'];
+                        $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
+                        $searchResult['highlighting'] = $hightlightSnippet;
+                        // get the emphasized word between <em></em> to take it for word highlighting
+                        $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
+                        $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
+                        $searchResult['highlight_word'] = $highlightWord;
+                        $document->addSearchResult($searchResult);
+                    } else {
+                        $document->setPage(1);
+                        // find all child documents
+                        $children = $this->findByPartof($doc['uid']);
+                        $document->setChildren($children->toArray());
+                    }
+                    $documents[] = $document;
+                }
             }
         }
-
         return $documents;
     }
 

@@ -1,4 +1,26 @@
-<div class="tx-dlf-listview" id="showResults">
+<f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" >
+   <div>
+      <label for="query" style="display:none;">
+         <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query' extensionName='slub_digitalcollections' />
+      </label>
+      <!-- Never change the @id of this input field! Otherwise search suggestions won't work! -->
+      <f:form.textfield type="text" id="tx-dlf-search-query" property="query" value="{lastSearch.query}" placeholder="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query', extensionName='slub_digitalcollections')}"></f:form.textfield>
+      <button type="submit" title="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search', extensionName='slub_digitalcollections')}">
+         <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search' extensionName='slub_digitalcollections' />
+      </button>
+
+      <div class="fulltext-switch">
+         <f:form.radio id="form-fulltext-no" property="fulltext" value="0" checked="{lastSearch.fulltext} == 0" />
+         <label for="form-fulltext-no">in Metadaten</label>
+         <f:form.radio id="form-fulltext-yes" property="fulltext" value="1" checked="{lastSearch.fulltext} == 1" />
+         <label for="form-fulltext-yes">in Volltext</label>
+      </div>
+
+      <f:form.hidden property="collections" value="{settings.collections}" />
+   </div>
+</f:form>
+<f:debug>{documents}</f:debug>
+   <div class="tx-dlf-listview" id="showResults">
       <f:widget.paginate objects="{documents}" as="paginatedDocuments" configuration="{settings.list.paginate}">
          <f:variable name="pageOffset" value="{widgetPage.currentPage - 1}" />
          <f:variable name="numDocuments" value="{paginatedDocuments->f:count()}" />
@@ -9,20 +31,20 @@
          </p>
          <f:form section="showResults" name="searchParameter" method="get">
             <div>
-               <label for="orderBy">
+               <label for="form-orderBy">
                   <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
                </label>
-               <f:form.select property="orderBy" value="{lastSearch.orderBy}" onclick="javascript:this.form.submit();">
+               <f:form.select id="form-orderBy" property="orderBy" value="{lastSearch.orderBy}" onclick="javascript:this.form.submit();">
                   <f:for each="{metadata}" as="meta">
                      <f:form.select.option value="{meta.indexName}_usi">
                         <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{meta.indexName}' extensionName='slub_digitalcollections' />
                      </f:form.select.option>
                   </f:for>
                </f:form.select>
-               <label for="order">
+               <label for="form-order">
                   <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order' extensionName='slub_digitalcollections' />
                </label>
-               <f:form.select property="order" value="{lastSearch.order}" onclick="javascript:this.form.submit();">
+               <f:form.select id="form-order" property="order" value="{lastSearch.order}" onclick="javascript:this.form.submit();">
                   <f:form.select.option value="asc">
                      <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.asc' extensionName='slub_digitalcollections' />
                   </f:form.select.option>
@@ -35,71 +57,115 @@
          </f:form>
          <ol class="tx-dlf-abstracts">
             <f:for each="{paginatedDocuments}" as="document" iteration="docIterator">
-            <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
-               <f:link.page
-               pageUid="{settings.kitodo.pageView}"
-               additionalParams="{tx_dlf:{page:'1', double:'0', id:'{document.uid}', pagegrid:'0'}}"
-               class=""
-               title="{document.title}">
-                  <div class="tx-dlf-listview-thumbnail">
-                     <f:if condition="{document.thumbnail}">
-                        <img src="{document.thumbnail}" alt="Vorschaubild von {document.title}" />
-                     </f:if>
-                  </div>
-                  <dl>
-                     <dd class="tx-dlf-title">
-                           {document.title}
-                     </dd>
-                     <f:for each="{document.metadata}" as="metadata" key="label">
-                        <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                           <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                           <dd>{metadata.0}</dd>
+               <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
+                  <f:link.page
+                  pageUid="{settings.kitodo.pageView}"
+                  additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}"
+                  class=""
+                  title="{document.title}">
+                     <div class="tx-dlf-listview-thumbnail">
+                        <f:if condition="{document.thumbnail}">
+                           <img src="{document.thumbnail}" alt="Vorschaubild von {document.title}" />
                         </f:if>
-                     </f:for>
-                     <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                     <dd class="tx-dlf-type">
-                        <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure.indexName}' extensionName='slub_digitalcollections' />
-                     </dd>
-                  </dl>
-               <div class="tx-dlf-listview-preview"></div>
-            </f:link.page>
-            <f:if condition="{document.children}">
-               <div class="tx-dlf-morevolumes" title="{f:translate(key='listview.moredetails.toggle')}"><f:translate key='listview.moredetails.toggle' /></div>
-            </f:if>
-            <f:if condition="{document.children}">
-                  <ol class="tx-dlf-volume">
-                     <f:for each="{document.children}" as="child" iteration="childIterator">
-                        <li value="{childIterator.index}" class="pageresult">
-                           <f:link.page
-                           pageUid="{settings.kitodo.pageView}"
-                           additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                           class=""
-                           title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                              <div class="tx-dlf-listview-thumbnail">
-                                 <f:if condition="{child.thumbnail}">
-                                    <img src="{child.thumbnail}" alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
-                                 </f:if>
-                              </div>
-                              <dl>
-                                 <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
-                                 <f:for each="{child.metadata}" as="metadata" key="label">
-                                    <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                                       <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                                       <dd>{metadata.0}</dd>
+                     </div>
+                     <dl>
+                        <dd class="tx-dlf-title">
+                              {document.title}
+                        </dd>
+                        <f:for each="{document.metadata}" as="metadata" key="label">
+                           <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
+                              <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
+                              <dd>{metadata.0}</dd>
+                           </f:if>
+                        </f:for>
+                        <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
+                        <dd class="tx-dlf-type">
+                           <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure.indexName}' extensionName='slub_digitalcollections' />
+                        </dd>
+                     </dl>
+                  </f:link.page>
+                  <f:if condition="{document.children} || {document.searchResults}">
+                     <div class="tx-dlf-morevolumes" title="{f:translate(key='listview.moredetails.toggle')}"><f:translate key='listview.moredetails.toggle' /></div>
+                  </f:if>
+                  <f:if condition="{document.children}">
+                     <ol class="tx-dlf-volume">
+                        <f:for each="{document.children}" as="child" iteration="childIterator">
+                           <f:if condition="{document.structure.indexName} == 'ephemera' || {document.structure.indexName} == 'newspaper'">
+                              <f:then>
+                                 <f:comment>Special output for Newspaper / Ephemera</f:comment>
+                                 <li value="{childIterator.index}" class="years">
+                                    <f:link.page
+                                    pageUid="{settings.kitodo.pageView}"
+                                    additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
+                                    class=""
+                                    title="{f:if(condition:'{child.metsOrderlabel}', then:'{child.metsOrderlabel}', else:'[{document.title}]')}">
+                                    {child.metsOrderlabel}
+                                    </f:link.page>
+                                 </li>
+                              </f:then>
+                              <f:else>
+                                 <li value="{childIterator.index}" class="pageresult">
+                                    <f:link.page
+                                    pageUid="{settings.kitodo.pageView}"
+                                    additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
+                                    class=""
+                                    title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
+                                       <div class="tx-dlf-listview-thumbnail">
+                                          <f:if condition="{child.thumbnail}">
+                                             <img src="{child.thumbnail}" alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                          </f:if>
+                                       </div>
+                                       <dl>
+                                          <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
+                                          <f:for each="{child.metadata}" as="metadata" key="label">
+                                             <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
+                                                <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
+                                                <dd>{metadata.0}</dd>
+                                             </f:if>
+                                          </f:for>
+                                          <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
+                                          <dd class="tx-dlf-type">
+                                             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure.indexName}' extensionName='slub_digitalcollections' />
+                                          </dd>
+                                       </dl>
+                                    </f:link.page>
+                                 </li>
+                              </f:else>
+                           </f:if>
+                        </f:for>
+                     </ol>
+                  </f:if>
+
+                  <f:if condition="{document.searchResults}">
+                     <ol class="tx-dlf-volume">
+                        <f:for each="{document.searchResults}" as="result" iteration="resultIterator">
+                           <li value="{resultIterator.index}" class="pageresult">
+                              <f:link.page
+                              pageUid="{settings.kitodo.pageView}"
+                              additionalParams="{tx_dlf:{page:'{result.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word: '{result.highlight_word}'}}"
+                              class=""
+                              title="{f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}">
+                                 <div class="tx-dlf-listview-thumbnail">
+                                    <f:if condition="{result.thumbnail}">
+                                       <img src="{result.thumbnail}" alt="Vorschaubild von {f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}" />
                                     </f:if>
-                                 </f:for>
-                                 <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                                 <dd class="tx-dlf-type">
-                                    <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure.indexName}' extensionName='slub_digitalcollections' />
-                                 </dd>
-                              </dl>
-                           </f:link.page>
-                        </li>
-                     </f:for>
-                  </ol>
-               </f:if>
-            </li>
-         </f:for>
-      </ol>
+                                 </div>
+                                 <div>
+                                    <div class="tx-dlf-listview-preview">
+                                       <p class="page">Seite {result.page}:</p>
+                                       <f:debug>{result.highlighting}</f:debug>
+                                       <f:for each="{result.highlighting}" as="highlighting">
+                                          <p><f:format.raw>{highlighting}</f:format.raw></p>
+                                       </f:for>
+                                    </div>
+                                 </div>
+                              </f:link.page>
+                           </li>
+                        </f:for>
+                     </ol>
+                  </f:if>
+               </li>
+            </f:for>
+         </ol>
    </f:widget.paginate>
 </div>

@@ -26,7 +26,7 @@
                                 <size>8</size>
                                 <autoSizeMax>10</autoSizeMax>
                                 <minitems>1</minitems>
-                                <maxitems>2</maxitems>
+                                <maxitems>10</maxitems>
                             </config>
                         </TCEforms>
                     </settings.collections>
