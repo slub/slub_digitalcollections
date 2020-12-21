@@ -271,7 +271,7 @@
 				<source>Volume</source>
 			</trans-unit>
 			<trans-unit id="structure.year" xml:space="preserve">
-				<source>Year</source>
+				<source>Date of Publication</source>
 			</trans-unit>
 			<trans-unit id="metadata.prod_id" xml:space="preserve">
 				<source>Kitodo Process Number</source>
@@ -347,6 +347,9 @@
 			</trans-unit>
 			<trans-unit id="metadata.shelfmark" xml:space="preserve">
 				<source>Shelfmark</source>
+			</trans-unit>
+			<trans-unit id="metadata.localtermsofuse" xml:space="preserve">
+				<source>Local Terms of Use</source>
 			</trans-unit>
 			<trans-unit id="sortinfo" xml:space="preserve">
 				<source>Entries %s to %s from %s.</source>
