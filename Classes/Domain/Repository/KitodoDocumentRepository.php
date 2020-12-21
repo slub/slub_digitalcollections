@@ -82,7 +82,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (!empty($searchParams['orderBy'])) {
             $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
         } else {
-            $query .= '&sort=title_usi%20asc';
+            $query .= '&sort=year_usi%20asc%2C%20title_usi%20asc';
         }
 
         $documents = [];
@@ -109,9 +109,11 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                         $document->addSearchResult($searchResult);
                     } else {
                         $document->setPage(1);
-                        // find all child documents
-                        $children = $this->findByPartof($doc['uid']);
-                        $document->setChildren($children->toArray());
+                        if (empty($searchParams['query'])) {
+                            // find all child documents but not on active search
+                            $children = $this->findSolrByPartof($doc['uid'], $settings, $searchParams);
+                            $document->setChildren($children);
+                        }
                     }
                     $documents[] = $document;
                 }
@@ -120,4 +122,47 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return $documents;
     }
 
+    /**
+     * Find all parent documents from Solr
+     *
+     * @param array $partOfUid
+     * @param array $settings
+     * @param array $searchParams
+     * @return objects
+     */
+    public function findSolrByPartof($partOfUid, $settings, $searchParams) {
+
+        $context = stream_context_create(array(
+            'http' => array(
+                'timeout' => $settings['solr']['timeout']
+                )
+            )
+        );
+
+        $filterQuery = 'fq=partof%3A' . $partOfUid;
+        $filterList = 'fl=uid';
+        $solrQuery = 'q=*.*';
+
+        // get 10.000 results maximum in JSON
+        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json';
+
+        // order the results as given or by title as default
+        if (!empty($searchParams['orderBy'])) {
+            $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
+        } else {
+            $query .= '&sort=year_usi%20asc%2C%20title_usi%20asc';
+        }
+
+        $documents = [];
+        $apiAnswer = file_get_contents($query, false, $context);
+        $result = json_decode($apiAnswer, true);
+        if ($result) {
+            // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
+            foreach ($result['response']['docs'] as $doc) {
+                $document = $this->findByUid($doc['uid']);
+                $documents[] = $document;
+            }
+        }
+        return $documents;
+    }
 }

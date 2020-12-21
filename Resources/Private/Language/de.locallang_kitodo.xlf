@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-15T21:56:11Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-20T16:21:50Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -52,6 +52,10 @@
 			<trans-unit id="metadata.license" approved="yes">
 				<source><![CDATA[License]]></source>
 				<target><![CDATA[Lizenz]]></target>
+			</trans-unit>
+			<trans-unit id="metadata.localtermsofuse" approved="yes">
+				<source><![CDATA[Local Terms of Use]]></source>
+				<target><![CDATA[Nutzungshinweis]]></target>
 			</trans-unit>
 			<trans-unit id="metadata.opac_id" approved="yes">
 				<source><![CDATA[OPAC Identifier]]></source>
@@ -127,7 +131,7 @@
 			</trans-unit>
 			<trans-unit id="metadata.year" approved="yes">
 				<source><![CDATA[Year of Publication]]></source>
-				<target><![CDATA[Erscheinungsjahr]]></target>
+				<target><![CDATA[Erscheinungsdatum]]></target>
 			</trans-unit>
 			<trans-unit id="sortinfo" approved="yes">
 				<source><![CDATA[Entries %s to %s from %s.]]></source>
