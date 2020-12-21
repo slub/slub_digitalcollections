@@ -54,7 +54,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (!empty($searchParams['query'])) {
             // replace-statement from Kitodo.Presentation Solr::escapeQuery($query)
             $queryString = urlencode(\Kitodo\Dlf\Common\Solr::escapeQuery($searchParams['query']));
-            debug($queryString);
             if ($searchParams['fulltext'] == '1') {
                 // fulltext search
                 //webapp=/solr path=/select params={q=fulltext:(haus)&json.nl=flat&omitHeader=true&fl=*,score&start=0&sort=score+desc&fq=collection_faceting:("LDP\:+Bestände+der+Sächsischen+Staatskapelle\/Staatsoper+Dresden"+OR+"FakeValueForDistinction")&rows=0&wt=json} hits=3 status=0 QTime=0
