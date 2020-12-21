@@ -75,7 +75,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         // get 10.000 results maximum in JSON
-        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json';
+        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json&omitHeader=true';
 
         // order the results as given or by title as default
         if (!empty($searchParams['orderBy'])) {
@@ -85,8 +85,13 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         $documents = [];
-        $apiAnswer = file_get_contents($query, false, $context);
-        $result = json_decode($apiAnswer, true);
+        if (($result = $this->getSolrCache($query)) === false) {
+            $apiAnswer = file_get_contents($query, false, $context);
+            $result = json_decode($apiAnswer, true);
+            if ($result) {
+                $this->setSolrCache($query, $result);
+            }
+        }
 
         // Only continue if we got a valid result
         if ($result) {
@@ -168,7 +173,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $solrQuery = 'q=*.*';
 
         // get 10.000 results maximum in JSON
-        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json';
+        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json&json.nl=flat&omitHeader=true';
 
         // order the results as given or by title as default
         if (!empty($searchParams['orderBy'])) {
@@ -178,8 +183,13 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         $documents = [];
-        $apiAnswer = file_get_contents($query, false, $context);
-        $result = json_decode($apiAnswer, true);
+        if (($result = $this->getSolrCache($query)) === false) {
+            $apiAnswer = file_get_contents($query, false, $context);
+            $result = json_decode($apiAnswer, true);
+            if ($result) {
+                $this->setSolrCache($query, $result);
+            }
+        }
         if ($result) {
             // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
             foreach ($result['response']['docs'] as $doc) {
@@ -188,5 +198,38 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
         }
         return $documents;
+    }
+
+
+    /**
+     * get Cache Hit for $query
+     *
+     * @param string $query
+     * @return array|false
+     */
+    private function getSolrCache(string $query) {
+
+        $cacheIdentifier = md5($query);
+        $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_collections');
+        $cacheHit = $cache->get($cacheIdentifier);
+
+        return $cacheHit;
+    }
+
+    /**
+     * set Cache for $query
+     *
+     * @param string $query
+     * @param array $value
+     * @return void
+     */
+    private function setSolrCache(string $query, array $value) {
+
+        $cacheIdentifier = md5($query);
+        $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_collections');
+
+        // Save value in cache
+        $cache->set($cacheIdentifier, $value);
+
     }
 }
