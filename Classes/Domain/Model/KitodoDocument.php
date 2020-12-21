@@ -237,12 +237,21 @@ class KitodoDocument extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
     }
 
     /**
-     * Returns the child documents
+     * Sets the  child documents
      *
      * @return void
      */
     public function setChildren(array $children) {
         $this->children = $children;
+    }
+
+    /**
+     * Adds one child documents
+     *
+     * @return void
+     */
+    public function addChildren(array $children) {
+        $this->children[] = $children;
     }
 
 }

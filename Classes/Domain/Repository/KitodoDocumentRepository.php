@@ -35,7 +35,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $collections
      * @param array $settings
      * @param array $searchParams
-     * @return objects
+     * @return array
      */
     public function findSolrByCollection($collections, $settings, $searchParams) {
 
@@ -59,18 +59,18 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 //webapp=/solr path=/select params={q=fulltext:(haus)&json.nl=flat&omitHeader=true&fl=*,score&start=0&sort=score+desc&fq=collection_faceting:("LDP\:+Bestände+der+Sächsischen+Staatskapelle\/Staatsoper+Dresden"+OR+"FakeValueForDistinction")&rows=0&wt=json} hits=3 status=0 QTime=0
                 $filterQuery ='fq=collection_faceting:(' . urlencode($collecionsOrString) .')';
                 $highlight = 'hl=on&hl.fl=fulltext&hl.method=fastVector';
-                $filterList = 'fl=uid,id,page,thumbnail' . '&' . $highlight;
+                $filterList = 'fl=uid,id,page,thumbnail,toplevel' . '&' . $highlight;
                 $solrQuery = 'q=fulltext:("' . $queryString . '")';
             } else {
                 // metadata search
                 $filterQuery = 'fq=';
-                $filterList = 'fl=uid';
+                $filterList = 'fl=uid,page,title,thumbnail,partof,toplevel,type';
                 $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')%20AND%20' . $queryString;
             }
         } else {
             // collection listing
             $filterQuery = 'fq=toplevel%3Atrue%20AND%20partof%3A0';
-            $filterList = 'fl=uid';
+            $filterList = 'fl=uid,toplevel';
             $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')';
         }
 
@@ -92,33 +92,58 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($result) {
             // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
             foreach ($result['response']['docs'] as $doc) {
-                $document = $this->findByUid($doc['uid']);
-                if ($document) {
-                    if ($doc['page']) {
-                        // page is only set on fulltext search
+                if ($doc['toplevel'] === false) {
+                    // this maybe a chapter, article, ..., year
+                    if ($doc['type'] == 'year') {
+                        continue;
+                    }
+                    $document = $this->findByUid($doc['uid']);
+                    if (!empty($doc['page'])) {
+                        // it's probably a fulltext or metadata search
                         $searchResult = [];
                         $searchResult['page'] = $doc['page'];
                         $searchResult['thumbnail'] = $doc['thumbnail'];
-                        $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
-                        $searchResult['highlighting'] = $hightlightSnippet;
-                        // get the emphasized word between <em></em> to take it for word highlighting
-                        $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
-                        $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
-                        $searchResult['highlight_word'] = $highlightWord;
+                        $searchResult['structure'] = $doc['type'];
+                        $searchResult['title'] = $doc['title'];
+                        if ($searchParams['fulltext'] == '1') {
+                            $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
+                            $searchResult['highlighting'] = $hightlightSnippet;
+                            // get the emphasized word between <em></em> to take it for word highlighting
+                            $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
+                            $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
+                            $searchResult['highlight_word'] = $highlightWord;
+                        }
                         $document->addSearchResult($searchResult);
-                    } else {
-                        $document->setPage(1);
-                        if (empty($searchParams['query'])) {
-                            // find all child documents but not on active search
-                            $children = $this->findSolrByPartof($doc['uid'], $settings, $searchParams);
-                            $document->setChildren($children);
+                    }
+                } else if ($doc['toplevel'] === true) {
+                    $document = $this->findByUid($doc['uid']);
+                    if ($document) {
+                        if ($searchParams['fulltext'] == '1') {
+                            // page is only set on fulltext search
+                            $searchResult = [];
+                            $searchResult['page'] = $doc['page'];
+                            $searchResult['thumbnail'] = $doc['thumbnail'];
+                            $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
+                            $searchResult['highlighting'] = $hightlightSnippet;
+                            // get the emphasized word between <em></em> to take it for word highlighting
+                            $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
+                            $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
+                            $searchResult['highlight_word'] = $highlightWord;
+                            $document->addSearchResult($searchResult);
+                        } else {
+                            $document->setPage(1);
+                            if (empty($searchParams['query'])) {
+                                // find all child documents but not on active search
+                                $children = $this->findSolrByPartof($doc['uid'], $settings, $searchParams);
+                                $document->setChildren($children);
+                            }
                         }
                     }
-                    $documents[] = $document;
                 }
+                $documents[] = $document;
             }
         }
-        return $documents;
+        return ['solrResults' => $result['response']['docs'], 'documents' => $documents];
     }
 
     /**

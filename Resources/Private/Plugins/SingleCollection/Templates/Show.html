@@ -23,7 +23,7 @@
       <f:variable name="pageOffset" value="{settings.list.paginate.itemsPerPage * currentPage}" />
       <f:variable name="allDocuments" value="{documents->f:count()}" />
       <f:variable name="numDocuments" value="{pageOffset + settings.list.paginate.itemsPerPage}" />
-      <p class="tx-dlf-search-numHits">Die Suche ergab xx Treffer in {allDocuments} Dokumenten.</p>
+      <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults->f:count()} Treffer in {allDocuments} Dokumenten.</p>
       <p class="tx-dlf-sortinfo">
          <f:translate
             key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
@@ -165,7 +165,15 @@
                                  </div>
                                  <div>
                                     <div class="tx-dlf-listview-preview">
-                                       <p class="page">Seite {result.page}</p>
+                                       <f:if condition="{result.structure} && {result.title}">
+                                          <f:then>
+                                             <p class="page"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{result.structure}' extensionName='slub_digitalcollections' />: {result.title}</p>
+                                             <p><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.page' extensionName='slub_digitalcollections' /> {result.page}</p>
+                                          </f:then>
+                                          <f:else>
+                                             <p class="page"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.page' extensionName='slub_digitalcollections' /> {result.page}</p>
+                                          </f:else>
+                                       </f:if>
                                        <f:for each="{result.highlighting}" as="highlighting">
                                           <p class="textsnippet">[...] <f:format.raw>{highlighting}</f:format.raw> [...]</p>
                                        </f:for>
