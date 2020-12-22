@@ -24,7 +24,8 @@ namespace Slub\SlubDigitalcollections\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
@@ -84,7 +85,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $query .= '&sort=year_usi%20asc%2C%20title_usi%20asc';
         }
 
-        $documents = [];
         if (($result = $this->getSolrCache($query)) === false) {
             $apiAnswer = file_get_contents($query, false, $context);
             $result = json_decode($apiAnswer, true);
@@ -93,16 +93,80 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
         }
 
+        $documents = [];
         // Only continue if we got a valid result
         if ($result) {
-            // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
+            // debug($result['response']['docs']);
+            // Initialize array
+            $documentSet = [];
+            // flat array with uids from Solr search
+            $documentSet = array_unique(array_column($result['response']['docs'], 'uid'));
+
+            if (empty($documentSet)) {
+                // return nothing found
+                return ['solrResults' => [], 'documents' => []];
+            }
+            // make lookup-table of structures uid -> indexName
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
+            // Fetch document info for UIDs in $documentSet from DB
+            $kitodoStructures = $queryBuilder
+                ->select(
+                    'tx_dlf_structures.uid AS uid',
+                    'tx_dlf_structures.index_name AS indexName'
+                )
+                ->from('tx_dlf_structures')
+                ->where(
+                    $queryBuilder->expr()->in('tx_dlf_structures.pid', $settings['storagePid'])
+                )
+                ->execute();
+
+            $allStructures = $kitodoStructures->fetchAll();
+            // make lookup-table uid -> indexName
+            $allStructures = array_column($allStructures, 'indexName', 'uid');
+
+            // get all documents from db we are talking about
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
+            // Fetch document info for UIDs in $documentSet from DB
+            $kitodoDocuments = $queryBuilder
+                ->select(
+                    'tx_dlf_documents.uid AS uid',
+                    'tx_dlf_documents.title AS title',
+                    'tx_dlf_documents.structure AS structure',
+                    'tx_dlf_documents.thumbnail AS thumbnail',
+                    'tx_dlf_documents.metadata AS metadata',
+                    'tx_dlf_documents.volume_sorting AS volumeSorting',
+                    'tx_dlf_documents.mets_orderlabel AS metsOrderlabel',
+                    'tx_dlf_documents.partof AS partOf'
+                )
+                ->from('tx_dlf_documents')
+                ->where(
+                    $queryBuilder->expr()->in('tx_dlf_documents.pid', $settings['storagePid']),
+                    $queryBuilder->expr()->in('tx_dlf_documents.uid', $documentSet)
+                )
+                ->execute();
+
+            // Process documents in a usable array structure
+            while ($resArray = $kitodoDocuments->fetch()) {
+                $resArray['metadata'] = unserialize($resArray['metadata']);
+                $resArray['structure'] = $allStructures[$resArray['structure']];
+                $allDocuments[$resArray['uid']] = $resArray;
+            }
+
+            // the following code would do the same but much slower :-(
+            // $extbasedocs = $this->findAllByUids(array_column($result['response']['docs'], 'uid'));
+            // foreach ($extbasedocs as $doc) {
+            //     $allDocuments[$doc->getUid()] = $doc;
+            // }
+
             foreach ($result['response']['docs'] as $doc) {
                 if ($doc['toplevel'] === false) {
                     // this maybe a chapter, article, ..., year
                     if ($doc['type'] == 'year') {
                         continue;
                     }
-                    $document = $this->findByUid($doc['uid']);
+                    $document = $allDocuments[$doc['uid']];
                     if (!empty($doc['page'])) {
                         // it's probably a fulltext or metadata search
                         $searchResult = [];
@@ -118,10 +182,11 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
                             $searchResult['highlight_word'] = $highlightWord;
                         }
-                        $document->addSearchResult($searchResult);
+                        $document['searchResults'][] = $searchResult;
                     }
                 } else if ($doc['toplevel'] === true) {
-                    $document = $this->findByUid($doc['uid']);
+                    $document = $allDocuments[$doc['uid']];
+                    //$document = $this->findByUid($doc['uid']);
                     if ($document) {
                         if ($searchParams['fulltext'] == '1') {
                             // page is only set on fulltext search
@@ -134,13 +199,13 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
                             $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
                             $searchResult['highlight_word'] = $highlightWord;
-                            $document->addSearchResult($searchResult);
+                            $document['searchResults'][] = $searchResult;
                         } else {
-                            $document->setPage(1);
+                            $document['page'] = 1;
                             if (empty($searchParams['query'])) {
                                 // find all child documents but not on active search
                                 $children = $this->findSolrByPartof($doc['uid'], $settings, $searchParams);
-                                $document->setChildren($children);
+                                $document['children'] = $children;
                             }
                         }
                     }
@@ -198,6 +263,27 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
         }
         return $documents;
+    }
+
+    /**
+     * Finds all collections
+     *
+     * @param string $uids separated by comma
+     *
+     * @return objects
+     */
+    public function findAllByUids($uids)
+    {
+        $query = $this->createQuery();
+
+        $constraints = [];
+        $constraints[] = $query->in('uid', $uids);
+
+        if (count($constraints)) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+
+        return $query->execute();
     }
 
 
