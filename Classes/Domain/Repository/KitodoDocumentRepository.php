@@ -29,6 +29,19 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+    /**
+     * Local copy of settings
+     *
+     * @var array
+     */
+    protected $settings;
+
+    /**
+     * Array of all document structures
+     *
+     * @var array
+     */
+    protected $documentStructures;
 
     /**
      * Find all documents with given collection from Solr
@@ -39,6 +52,9 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @return array
      */
     public function findSolrByCollection($collections, $settings, $searchParams) {
+
+        $this->settings = $settings;
+        $this->documentStructures = $this->getDocumentStructures();;
 
         $context = stream_context_create(array(
             'http' => array(
@@ -96,7 +112,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $documents = [];
         // Only continue if we got a valid result
         if ($result) {
-            // debug($result['response']['docs']);
             // Initialize array
             $documentSet = [];
             // flat array with uids from Solr search
@@ -106,59 +121,8 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 // return nothing found
                 return ['solrResults' => [], 'documents' => []];
             }
-            // make lookup-table of structures uid -> indexName
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
-            // Fetch document info for UIDs in $documentSet from DB
-            $kitodoStructures = $queryBuilder
-                ->select(
-                    'tx_dlf_structures.uid AS uid',
-                    'tx_dlf_structures.index_name AS indexName'
-                )
-                ->from('tx_dlf_structures')
-                ->where(
-                    $queryBuilder->expr()->in('tx_dlf_structures.pid', $settings['storagePid'])
-                )
-                ->execute();
 
-            $allStructures = $kitodoStructures->fetchAll();
-            // make lookup-table uid -> indexName
-            $allStructures = array_column($allStructures, 'indexName', 'uid');
-
-            // get all documents from db we are talking about
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
-            // Fetch document info for UIDs in $documentSet from DB
-            $kitodoDocuments = $queryBuilder
-                ->select(
-                    'tx_dlf_documents.uid AS uid',
-                    'tx_dlf_documents.title AS title',
-                    'tx_dlf_documents.structure AS structure',
-                    'tx_dlf_documents.thumbnail AS thumbnail',
-                    'tx_dlf_documents.metadata AS metadata',
-                    'tx_dlf_documents.volume_sorting AS volumeSorting',
-                    'tx_dlf_documents.mets_orderlabel AS metsOrderlabel',
-                    'tx_dlf_documents.partof AS partOf'
-                )
-                ->from('tx_dlf_documents')
-                ->where(
-                    $queryBuilder->expr()->in('tx_dlf_documents.pid', $settings['storagePid']),
-                    $queryBuilder->expr()->in('tx_dlf_documents.uid', $documentSet)
-                )
-                ->execute();
-
-            // Process documents in a usable array structure
-            while ($resArray = $kitodoDocuments->fetch()) {
-                $resArray['metadata'] = unserialize($resArray['metadata']);
-                $resArray['structure'] = $allStructures[$resArray['structure']];
-                $allDocuments[$resArray['uid']] = $resArray;
-            }
-
-            // the following code would do the same but much slower :-(
-            // $extbasedocs = $this->findAllByUids(array_column($result['response']['docs'], 'uid'));
-            // foreach ($extbasedocs as $doc) {
-            //     $allDocuments[$doc->getUid()] = $doc;
-            // }
+            $allDocuments = $this->findAllByUids($documentSet);
 
             foreach ($result['response']['docs'] as $doc) {
                 if ($doc['toplevel'] === false) {
@@ -186,7 +150,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                     }
                 } else if ($doc['toplevel'] === true) {
                     $document = $allDocuments[$doc['uid']];
-                    //$document = $this->findByUid($doc['uid']);
                     if ($document) {
                         if ($searchParams['fulltext'] == '1') {
                             // page is only set on fulltext search
@@ -221,12 +184,12 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Find all parent documents from Solr
      *
-     * @param array $partOfUid
+     * @param array $partOfUids
      * @param array $settings
      * @param array $searchParams
      * @return objects
      */
-    public function findSolrByPartof($partOfUid, $settings, $searchParams) {
+    public function findSolrByPartof($partOfUids, $settings, $searchParams) {
 
         $context = stream_context_create(array(
             'http' => array(
@@ -237,12 +200,12 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $filterQuery = '';
         // dirty hack to limit the URI size --> have to switch to solarium or POST!
-        for ($i=0; $i<1000; $i++) {
-            $filterQuery .= ' ' . $partOfUid[$i];
+        for ($i=0; $i < count($partOfUids) && $i < 1000 ; $i++) {
+            $filterQuery .= ' ' . $partOfUids[$i];
         }
         $filterQuery .= ')';
         $filterQuery = 'fq=partof%3A(' . urlencode(trim($filterQuery));
-        $filterList = 'fl=uid,partof';
+        $filterList = 'fl=uid,page,partof';
         $solrQuery = 'q=*.*';
 
         // get 10.000 results maximum in JSON
@@ -279,20 +242,69 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @return objects
      */
-    public function findAllByUids($uids)
+    private function findAllByUids($uids)
     {
-        $query = $this->createQuery();
+        // get all documents from db we are talking about
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
+        // Fetch document info for UIDs in $documentSet from DB
+        $kitodoDocuments = $queryBuilder
+            ->select(
+                'tx_dlf_documents.uid AS uid',
+                'tx_dlf_documents.title AS title',
+                'tx_dlf_documents.structure AS structure',
+                'tx_dlf_documents.thumbnail AS thumbnail',
+                'tx_dlf_documents.metadata AS metadata',
+                'tx_dlf_documents.volume_sorting AS volumeSorting',
+                'tx_dlf_documents.mets_orderlabel AS metsOrderlabel',
+                'tx_dlf_documents.partof AS partOf'
+            )
+            ->from('tx_dlf_documents')
+            ->where(
+                $queryBuilder->expr()->in('tx_dlf_documents.pid', $this->settings['storagePid']),
+                $queryBuilder->expr()->in('tx_dlf_documents.uid', $uids)
+            )
+            ->execute();
 
-        $constraints = [];
-        $constraints[] = $query->in('uid', $uids);
-
-        if (count($constraints)) {
-            $query->matching($query->logicalAnd($constraints));
+        $allDocuments = [];
+        // Process documents in a usable array structure
+        while ($resArray = $kitodoDocuments->fetch()) {
+            $resArray['metadata'] = unserialize($resArray['metadata']);
+            $resArray['structure'] = $this->documentStructures[$resArray['structure']];
+            $allDocuments[$resArray['uid']] = $resArray;
         }
 
-        return $query->execute();
+        return $allDocuments;
     }
 
+    /**
+     * Get all document structures as array
+     *
+     * @return array
+     */
+    private function getDocumentStructures()
+    {
+        // make lookup-table of structures uid -> indexName
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
+        // Fetch document info for UIDs in $documentSet from DB
+        $kitodoStructures = $queryBuilder
+            ->select(
+                'tx_dlf_structures.uid AS uid',
+                'tx_dlf_structures.index_name AS indexName'
+            )
+            ->from('tx_dlf_structures')
+            ->where(
+                $queryBuilder->expr()->in('tx_dlf_structures.pid', $this->settings['storagePid'])
+            )
+            ->execute();
+
+        $allStructures = $kitodoStructures->fetchAll();
+        // make lookup-table uid -> indexName
+        $allStructures = array_column($allStructures, 'indexName', 'uid');
+
+        return $allStructures;
+    }
 
     /**
      * get Cache Hit for $query
