@@ -1,5 +1,5 @@
 <div id="showResults"></div>
-<f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" >
+<f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" noCache="1">
    <div>
       <!-- Never change the @id of this input field! Otherwise search suggestions won't work! -->
       <f:form.textfield type="text" id="tx-dlf-search-query" property="query" value="{lastSearch.query}" placeholder="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query', extensionName='slub_digitalcollections')}"></f:form.textfield>
@@ -29,7 +29,7 @@
             key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
             arguments="{0:'{pageOffset + 1}',1:'{f:if(condition: \'{numDocuments} > {allDocuments}\', then: \'{allDocuments}\', else: \'{numDocuments}\')}', 2:'{allDocuments}'}" />
       </p>
-      <f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" >
+      <f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" noCache="1">
          <div>
             <label for="form-orderBy">
                <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
