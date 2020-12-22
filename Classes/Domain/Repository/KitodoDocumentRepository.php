@@ -204,8 +204,10 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $document['page'] = 1;
                             if (empty($searchParams['query'])) {
                                 // find all child documents but not on active search
-                                $children = $this->findSolrByPartof($doc['uid'], $settings, $searchParams);
-                                $document['children'] = $children;
+                                $children = $this->findSolrByPartof($documentSet, $settings, $searchParams);
+                                if (is_array($children[$document['uid']])) {
+                                    $document['children'] = $this->findAllByUids($children[$document['uid']]);
+                                }
                             }
                         }
                     }
@@ -233,8 +235,14 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             )
         );
 
-        $filterQuery = 'fq=partof%3A' . $partOfUid;
-        $filterList = 'fl=uid';
+        $filterQuery = '';
+        // dirty hack to limit the URI size --> have to switch to solarium or POST!
+        for ($i=0; $i<1000; $i++) {
+            $filterQuery .= ' ' . $partOfUid[$i];
+        }
+        $filterQuery .= ')';
+        $filterQuery = 'fq=partof%3A(' . urlencode(trim($filterQuery));
+        $filterList = 'fl=uid,partof';
         $solrQuery = 'q=*.*';
 
         // get 10.000 results maximum in JSON
@@ -255,11 +263,10 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $this->setSolrCache($query, $result);
             }
         }
+
         if ($result) {
-            // as extbase does not keep the sorting of the uids, we have to do the expensive foreach() way...
             foreach ($result['response']['docs'] as $doc) {
-                $document = $this->findByUid($doc['uid']);
-                $documents[] = $document;
+                $documents[$doc['partof']][] = $doc['uid'];
             }
         }
         return $documents;
