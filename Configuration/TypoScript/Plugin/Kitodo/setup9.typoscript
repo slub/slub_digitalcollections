@@ -265,6 +265,7 @@ lib.kitodo.newspaper.calendar {
     userFunc = Kitodo\Dlf\Plugin\Calendar->calendar
     pages = {$config.kitodo.storagePid}
     targetPid = {$config.kitodo.pageView}
+    showEmptyMonths = 0
     templateFile = {$config.kitodo.templates.newspaperCalendar}
 }
 
