@@ -11,6 +11,7 @@ plugin.tx_slubdigitalcollections_singlecollection {
     }
     settings {
         kitodo.pageView = {$config.kitodo.pageView}
+        storagePid = {$config.kitodo.storagePid}
         list.paginate {
             itemsPerPage = 25
             insertAbove = 1

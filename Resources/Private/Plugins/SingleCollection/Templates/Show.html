@@ -77,6 +77,7 @@
                               {docTitle}
                         </dd>
                         <f:for each="{document.metadata}" as="metadata" key="label">
+
                            <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
 
                               <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
@@ -93,7 +94,7 @@
                         </f:for>
                         <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
                         <dd class="tx-dlf-type">
-                           <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure.indexName}' extensionName='slub_digitalcollections' />
+                           <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure}' extensionName='slub_digitalcollections' />
                         </dd>
                      </dl>
                   </f:link.page>
@@ -103,7 +104,7 @@
                   <f:if condition="{document.children}">
                      <ol class="tx-dlf-volume">
                         <f:for each="{document.children}" as="child" iteration="childIterator">
-                           <f:if condition="{document.structure.indexName} == 'ephemera' || {document.structure.indexName} == 'newspaper'">
+                           <f:if condition="{document.structure} == 'ephemera' || {document.structure} == 'newspaper'">
                               <f:then>
                                  <f:comment>Special output for Newspaper / Ephemera</f:comment>
                                  <li value="{childIterator.index}" class="years">
@@ -138,7 +139,7 @@
                                           </f:for>
                                           <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
                                           <dd class="tx-dlf-type">
-                                             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure.indexName}' extensionName='slub_digitalcollections' />
+                                             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' />
                                           </dd>
                                        </dl>
                                     </f:link.page>

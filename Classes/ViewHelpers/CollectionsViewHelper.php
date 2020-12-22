@@ -62,7 +62,7 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
         if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kitodoId)) {
             // calculate cache identifier
             $cacheIdentifier = $kitodoId;
-            $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_collections');
+            $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_matomo_collections');
 
             if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
                 $context = stream_context_create(array(
