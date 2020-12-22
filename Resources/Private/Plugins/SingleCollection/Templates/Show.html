@@ -2,6 +2,8 @@
 <f:form section="showResults" name="searchParameter" method="get" class="tx-dlf-search-form" noCache="1">
    <div>
       <!-- Never change the @id of this input field! Otherwise search suggestions won't work! -->
+      <label for="tx-dlf-search-query"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query' extensionName='slub_digitalcollections' />
+      </label>
       <f:form.textfield type="text" id="tx-dlf-search-query" property="query" value="{lastSearch.query}" placeholder="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query', extensionName='slub_digitalcollections')}"></f:form.textfield>
       <button type="submit" title="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search', extensionName='slub_digitalcollections')}">
          <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search' extensionName='slub_digitalcollections' />
@@ -73,9 +75,8 @@
                         </f:if>
                      </div>
                      <dl>
-                        <dd class="tx-dlf-title">
-                              {docTitle}
-                        </dd>
+                        <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
+                        <dd class="tx-dlf-title">{docTitle}</dd>
                         <f:for each="{document.metadata}" as="metadata" key="label">
 
                            <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
@@ -130,6 +131,7 @@
                                           </f:if>
                                        </div>
                                        <dl>
+                                          <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
                                           <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
                                           <f:for each="{child.metadata}" as="metadata" key="label">
                                              <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
