@@ -103,11 +103,27 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
     }
 
     /**
+     * action search
+     *
+     * @return void
+     */
+    public function searchAction()
+    {
+
+        // if search was triggered, get search parameters from POST variables
+        $searchParams = $this->getParametersSafely('searchParameter');
+
+        // output is done by show action
+        $this->redirect('show', null, null, ['searchParameter' => $searchParams]);
+    }
+
+    /**
      * action show
      *
      * @return void
      */
-    public function showAction() {
+    public function showAction()
+    {
 
         // if search was triggered, get search parameters from POST variables
         $searchParams = $this->getParametersSafely('searchParameter');
