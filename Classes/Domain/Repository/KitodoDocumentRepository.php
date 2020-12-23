@@ -264,6 +264,8 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $queryBuilder->expr()->in('tx_dlf_documents.pid', $this->settings['storagePid']),
                 $queryBuilder->expr()->in('tx_dlf_documents.uid', $uids)
             )
+            ->addOrderBy('tx_dlf_documents.volume_sorting', 'asc')
+            ->addOrderBy('tx_dlf_documents.mets_orderlabel', 'asc')
             ->execute();
 
         $allDocuments = [];
