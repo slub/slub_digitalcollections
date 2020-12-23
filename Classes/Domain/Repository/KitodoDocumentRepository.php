@@ -26,6 +26,7 @@ namespace Slub\SlubDigitalcollections\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\RequestFactory;
 
 class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
@@ -123,6 +124,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
 
             $allDocuments = $this->findAllByUids($documentSet);
+            $children = $this->findSolrByPartof($documentSet, $settings, $searchParams);
 
             foreach ($result['response']['docs'] as $doc) {
                 if ($doc['toplevel'] === false) {
@@ -167,7 +169,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $document['page'] = 1;
                             if (empty($searchParams['query'])) {
                                 // find all child documents but not on active search
-                                $children = $this->findSolrByPartof($documentSet, $settings, $searchParams);
                                 if (is_array($children[$document['uid']])) {
                                     $document['children'] = $this->findAllByUids($children[$document['uid']]);
                                 }
@@ -191,45 +192,50 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findSolrByPartof($partOfUids, $settings, $searchParams) {
 
-        $context = stream_context_create(array(
-            'http' => array(
-                'timeout' => $settings['solr']['timeout']
-                )
-            )
-        );
+        if (($documents = $this->getSolrCache(serialize($partOfUids))) === false) {
+            /** @var RequestFactory $requestFactory */
+            $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+            $configuration = [
+                'timeout' => $settings['solr']['timeout'],
+                'headers' => [
+                    'Content-type' => 'application/x-www-form-urlencoded',
+                    'Accept' => 'application/json'
+                ],
+            ];
 
-        $filterQuery = '';
-        // dirty hack to limit the URI size --> have to switch to solarium or POST!
-        for ($i=0; $i < count($partOfUids) && $i < 1000 ; $i++) {
-            $filterQuery .= ' ' . $partOfUids[$i];
-        }
-        $filterQuery .= ')';
-        $filterQuery = 'fq=partof%3A(' . urlencode(trim($filterQuery));
-        $filterList = 'fl=uid,page,partof';
-        $solrQuery = 'q=*.*';
-
-        // get 10.000 results maximum in JSON
-        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json&json.nl=flat&omitHeader=true';
-
-        // order the results as given or by title as default
-        if (!empty($searchParams['orderBy'])) {
-            $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
-        } else {
-            $query .= '&sort=year_usi%20asc%2C%20title_usi%20asc';
-        }
-
-        $documents = [];
-        if (($result = $this->getSolrCache($query)) === false) {
-            $apiAnswer = file_get_contents($query, false, $context);
-            $result = json_decode($apiAnswer, true);
-            if ($result) {
-                $this->setSolrCache($query, $result);
+            // split partOfUids into 1000 values as maximum as Solr has default maxBooleanClauses=1024
+            for ($i=0; $i<count($partOfUids); $i+=1000) {
+                $partOfUidsSlices[$i] = array_slice($partOfUids, $i, 1000);
             }
-        }
 
-        if ($result) {
-            foreach ($result['response']['docs'] as $doc) {
-                $documents[$doc['partof']][] = $doc['uid'];
+            $documents = [];
+            foreach ($partOfUidsSlices as $partOfUidsSlice) {
+                $partOfSerialize = '';
+                foreach ($partOfUidsSlice as $uid) {
+                    $partOfSerialize .= ' ' . $uid;
+                }
+
+                $configuration['form_params'] = [
+                    'q' => '*.*',
+                    'fq' => 'partof:(' . (trim($partOfSerialize)) . ')',
+                    'fl' => 'uid,page,partof',
+                    'rows' => 10000,
+                    'wt' => 'json',
+                    'json.nl' => 'flat',
+                    'omitHeader' => 'true',
+                    'sort' => 'year_usi asc, title_usi asc'
+                ];
+                $response = $requestFactory->request($settings['solr']['host'] . '/select?', 'POST', $configuration);
+                $content  = $response->getBody()->getContents();
+                $result = json_decode($content, true);
+                if ($result) {
+                    foreach ($result['response']['docs'] as $doc) {
+                        $documents[$doc['partof']][] = $doc['uid'];
+                    }
+                }
+            }
+            if ($result) {
+                $this->setSolrCache(serialize($partOfUids), $documents);
             }
         }
         return $documents;
