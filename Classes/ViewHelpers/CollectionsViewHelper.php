@@ -22,6 +22,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -42,7 +43,7 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
     {
         parent::initializeArguments();
         $this->registerArgument('kitodoId', 'integer', 'Id of Kitodo document', true);
-        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://sdvsolr2.slub-dresden.de:8983/solr/dlfCore0/");
+        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://example.com:8983/solr/dlfCore0/");
         $this->registerArgument('solrTimeout', 'integer', 'Timeout to Solr server', false, 5);
     }
 
@@ -62,7 +63,7 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
         if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kitodoId)) {
             // calculate cache identifier
             $cacheIdentifier = $kitodoId;
-            $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_matomo_collections');
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('slub_digitalcollections_matomo_collections');
 
             if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
                 $context = stream_context_create(array(
