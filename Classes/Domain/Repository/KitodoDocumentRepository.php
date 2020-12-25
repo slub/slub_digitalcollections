@@ -57,56 +57,76 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $this->settings = $settings;
         $this->documentStructures = $this->getDocumentStructures();;
 
-        $context = stream_context_create(array(
-            'http' => array(
-                'timeout' => $settings['solr']['timeout']
-                )
-            )
-        );
+        /** @var RequestFactory $requestFactory */
+        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+        $configuration = [
+            'timeout' => $this->settings['solr']['timeout'],
+            'headers' => [
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Accept' => 'application/json'
+            ],
+        ];
+
 
         $collecionsOrString = '';
         foreach ($collections as $index => $collection) {
             $collecionsOrString .= (($index > 0) ? ' OR ' : '') . '"' . $collection->getIndexName() . '"';
         }
         $metadataQuery = '';
+        $highlight = [];
         if (!empty($searchParams['query'])) {
             // replace-statement from Kitodo.Presentation Solr::escapeQuery($query)
-            $queryString = urlencode(\Kitodo\Dlf\Common\Solr::escapeQuery($searchParams['query']));
+            $queryString = \Kitodo\Dlf\Common\Solr::escapeQuery($searchParams['query']);
             if ($searchParams['fulltext'] == '1') {
                 // fulltext search
-                //webapp=/solr path=/select params={q=fulltext:(haus)&json.nl=flat&omitHeader=true&fl=*,score&start=0&sort=score+desc&fq=collection_faceting:("LDP\:+Bestände+der+Sächsischen+Staatskapelle\/Staatsoper+Dresden"+OR+"FakeValueForDistinction")&rows=0&wt=json} hits=3 status=0 QTime=0
-                $filterQuery ='fq=collection_faceting:(' . urlencode($collecionsOrString) .')';
-                $highlight = 'hl=on&hl.fl=fulltext&hl.method=fastVector';
-                $filterList = 'fl=uid,id,page,thumbnail,toplevel' . '&' . $highlight;
-                $solrQuery = 'q=fulltext:("' . $queryString . '")';
+                $filterQuery ='collection_faceting:(' . $collecionsOrString .')';
+                $highlight = [
+                    'hl' => 'on',
+                    'hl.fl' => 'fulltext',
+                    'hl.method' => 'fastVector'
+                ];
+                $filterList = 'uid,id,page,thumbnail,toplevel';
+                $solrQuery = 'fulltext:("' . $queryString . '")';
             } else {
                 // metadata search
-                $filterQuery = 'fq=';
-                $filterList = 'fl=uid,page,title,thumbnail,partof,toplevel,type';
-                $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')%20AND%20' . $queryString;
+                $filterQuery = '';
+                $filterList = 'uid,page,title,thumbnail,partof,toplevel,type';
+                $solrQuery = 'collection:(' . $collecionsOrString . ') AND ' . $queryString;
             }
         } else {
             // collection listing
-            $filterQuery = 'fq=toplevel%3Atrue%20AND%20partof%3A0';
-            $filterList = 'fl=uid,toplevel';
-            $solrQuery = 'q=collection:(' . urlencode($collecionsOrString) . ')';
+            $filterQuery = 'toplevel:true AND partof:0';
+            $filterList = 'uid,toplevel';
+            $solrQuery = 'collection:(' . $collecionsOrString . ')';
         }
-
-        // get 10.000 results maximum in JSON
-        $query = $settings['solr']['host'] . '/select?' . $solrQuery . '&' . $filterQuery . '&' . $filterList . '&rows=10000&wt=json&omitHeader=true';
 
         // order the results as given or by title as default
         if (!empty($searchParams['orderBy'])) {
-            $query .= '&sort=' . $searchParams['orderBy'] . '%20' . $searchParams['order'];
+            $querySort = $searchParams['orderBy'] . ' ' . $searchParams['order'];
         } else {
-            $query .= '&sort=year_usi%20asc%2C%20title_usi%20asc';
+            $querySort = 'year_usi asc, title_usi asc';
         }
 
-        if (($result = $this->getSolrCache($query)) === false) {
-            $apiAnswer = file_get_contents($query, false, $context);
-            $result = json_decode($apiAnswer, true);
+        $configuration['form_params'] = [
+            'q' => $solrQuery,
+            'fq' => $filterQuery,
+            'fl' => $filterList,
+            'rows' => 10000,
+            'wt' => 'json',
+            'json.nl' => 'flat',
+            'omitHeader' => 'true',
+            'sort' => $querySort
+        ];
+        if (count($highlight)>0) {
+            $configuration['form_params'] += $highlight;
+        }
+
+        if (($result = $this->getSolrCache('findSolrByCollection' . serialize($configuration))) === false) {
+            $response = $requestFactory->request($this->settings['solr']['host'] . '/select?', 'POST', $configuration);
+            $content  = $response->getBody()->getContents();
+            $result = json_decode($content, true);
             if ($result) {
-                $this->setSolrCache($query, $result);
+                $this->setSolrCache('findSolrByCollection' . serialize($configuration), $result);
             }
         }
 
@@ -124,7 +144,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
 
             $allDocuments = $this->findAllByUids($documentSet);
-            $children = $this->findSolrByPartof($documentSet, $settings, $searchParams);
+            $children = $this->findSolrByPartof($documentSet, $searchParams);
 
             foreach ($result['response']['docs'] as $doc) {
                 if ($doc['toplevel'] === false) {
@@ -190,13 +210,13 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param array $searchParams
      * @return objects
      */
-    public function findSolrByPartof($partOfUids, $settings, $searchParams) {
+    private function findSolrByPartof($partOfUids, $searchParams) {
 
-        if (($documents = $this->getSolrCache(serialize($partOfUids))) === false) {
+        if (($documents = $this->getSolrCache('findSolrByPartof' . serialize($partOfUids))) === false) {
             /** @var RequestFactory $requestFactory */
             $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
             $configuration = [
-                'timeout' => $settings['solr']['timeout'],
+                'timeout' => $this->settings['solr']['timeout'],
                 'headers' => [
                     'Content-type' => 'application/x-www-form-urlencoded',
                     'Accept' => 'application/json'
@@ -225,7 +245,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                     'omitHeader' => 'true',
                     'sort' => 'year_usi asc, title_usi asc'
                 ];
-                $response = $requestFactory->request($settings['solr']['host'] . '/select?', 'POST', $configuration);
+                $response = $requestFactory->request($this->settings['solr']['host'] . '/select?', 'POST', $configuration);
                 $content  = $response->getBody()->getContents();
                 $result = json_decode($content, true);
                 if ($result) {
@@ -235,7 +255,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 }
             }
             if ($result) {
-                $this->setSolrCache(serialize($partOfUids), $documents);
+                $this->setSolrCache('findSolrByPartof' . serialize($partOfUids), $documents);
             }
         }
         return $documents;
