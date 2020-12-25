@@ -23,6 +23,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -65,23 +66,37 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
             $cacheIdentifier = $kitodoId;
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('slub_digitalcollections_matomo_collections');
 
-            if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
-                $context = stream_context_create(array(
-                    'http' => array(
-                        'timeout' => $solrTimeout
-                        )
-                    )
-                );
-                $apiAnswer = file_get_contents( $solrHost . '/select?q=uid:' . $kitodoId . '%20AND%20toplevel:true&rows=1&wt=json', false, $context);
-                $entry = json_decode($apiAnswer);
+            if (($result = $cache->get($cacheIdentifier)) === FALSE) {
+                /** @var RequestFactory $requestFactory */
+                $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+                $configuration = [
+                    'timeout' => $solrTimeout,
+                    'headers' => [
+                        'Content-type' => 'application/x-www-form-urlencoded',
+                        'Accept' => 'application/json'
+                    ],
+                    'form_params' => [
+                        'q' => 'uid:' . $kitodoId . ' AND toplevel:true',
+                        'rows' => '1',
+                        'fl' => 'collection',
+                        'wt' => 'json',
+                        'json.nl' => 'flat',
+                        'omitHeader' => 'true'
+                    ]
+                ];
+
+                $response = $requestFactory->request($solrHost . '/select?', 'POST', $configuration);
+                $content  = $response->getBody()->getContents();
+                $result = json_decode($content, true);
+
                 // Save value in cache
-                if ($entry) {
-                    $cache->set($cacheIdentifier, $entry);
+                if ($result) {
+                    $cache->set($cacheIdentifier, $result);
                 }
             }
         } else {
           return FALSE;
         }
-        return $entry;
+        return $result;
     }
 }
