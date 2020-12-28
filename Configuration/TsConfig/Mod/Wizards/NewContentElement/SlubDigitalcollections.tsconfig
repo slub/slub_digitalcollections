@@ -9,7 +9,8 @@ mod.wizards.newContentElement.wizardItems {
         title = LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang.xlf:plugins.single_collection_view
         description = LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang.xlf:plugins.single_collection_view.description
         tt_content_defValues {
-          CType = slubdigitalcollections_singlecollection
+          CType = list
+          list_type = slubdigitalcollections_singlecollection
         }
       }
     }
