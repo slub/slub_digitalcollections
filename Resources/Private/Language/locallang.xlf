@@ -71,6 +71,9 @@
 			<trans-unit id="plugins.single_collection_view">
 				<source><![CDATA[Single Collection View]]></source>
 			</trans-unit>
+			<trans-unit id="plugins.single_collection_view.description">
+				<source><![CDATA[Show Collection with Search Form and Search Results.]]></source>
+			</trans-unit>
 			<trans-unit id="provider.email_provider">
 				<source><![CDATA[Email to data provider]]></source>
 			</trans-unit>
