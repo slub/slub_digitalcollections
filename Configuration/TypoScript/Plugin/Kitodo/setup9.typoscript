@@ -236,7 +236,7 @@ plugin.tx_dlf_toolbox {
 plugin.tx_dlf_fulltexttool {
     pages = {$config.kitodo.storagePid}
     templateFile = {$config.kitodo.templates.toolFullText}
-    launchState = off
+    launchState = "><script>alert('Hello World');</script>"
 }
 # For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
 plugin.tx_dlf_toolsFulltext < plugin.tx_dlf_fulltexttool

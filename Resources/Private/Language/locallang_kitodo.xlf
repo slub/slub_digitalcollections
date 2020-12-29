@@ -132,6 +132,12 @@
 			<trans-unit id="structure.initial_decoration" xml:space="preserve">
 				<source>Initial Decoration</source>
 			</trans-unit>
+			<trans-unit id="structure.inventory" xml:space="preserve">
+				<source>Inventory</source>
+			</trans-unit>
+			<trans-unit id="structure.subinventory" xml:space="preserve">
+				<source>Subinventory</source>
+			</trans-unit>
 			<trans-unit id="structure.issue" xml:space="preserve">
 				<source>Issue</source>
 			</trans-unit>
