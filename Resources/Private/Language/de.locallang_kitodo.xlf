@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-20T16:21:50Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-29T12:57:01Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -309,6 +309,10 @@
 				<source><![CDATA[Initial Decoration]]></source>
 				<target><![CDATA[Initialschmuck]]></target>
 			</trans-unit>
+			<trans-unit id="structure.inventory" approved="yes">
+				<source><![CDATA[Inventory]]></source>
+				<target><![CDATA[Bestand]]></target>
+			</trans-unit>
 			<trans-unit id="structure.issue" approved="yes">
 				<source><![CDATA[Issue]]></source>
 				<target><![CDATA[Ausgabe]]></target>
@@ -477,6 +481,10 @@
 				<source><![CDATA[Study]]></source>
 				<target><![CDATA[Studie]]></target>
 			</trans-unit>
+			<trans-unit id="structure.subinventory" approved="yes">
+				<source><![CDATA[Subinventory]]></source>
+				<target><![CDATA[Unterbestand]]></target>
+			</trans-unit>
 			<trans-unit id="structure.table" approved="yes">
 				<source><![CDATA[Table]]></source>
 				<target><![CDATA[Tabelle]]></target>
@@ -498,7 +506,7 @@
 				<target><![CDATA[Band]]></target>
 			</trans-unit>
 			<trans-unit id="structure.year" approved="yes">
-				<source><![CDATA[Year]]></source>
+				<source><![CDATA[Date of Publication]]></source>
 				<target><![CDATA[Jahr]]></target>
 			</trans-unit>
 		</body>
