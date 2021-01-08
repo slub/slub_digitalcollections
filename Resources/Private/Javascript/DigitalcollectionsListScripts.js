@@ -18,10 +18,10 @@ $(function () {
     });
 
     // Additional transformations for sidebar search box to use it as offcanvas element in smaller views
-    $('#rightcol .tx-dlf-search').parent().addClass('tx-dlf-enable-offcanvas').append('<div class="offcanvas-toggle" />');
+    $('aside.sidebar .tx-dlf-search').parent().addClass('tx-dlf-enable-offcanvas').append('<div class="offcanvas-toggle" />');
     $transition = 'all .3s ease-out';
     setTimeout(function () {
-        $('#rightcol .tx-dlf-search').parent().css({
+        $('aside.sidebar .tx-dlf-search').parent().css({
             '-webkit-transition': $transition,
             '-o-transition': $transition,
             'transition': $transition
@@ -35,7 +35,7 @@ $(function () {
 
     // Init collection overview on intro page
     var layoutColumns = '<li class="tx-dlf-collection-col col-1"></li><li class="tx-dlf-collection-col col-2"></li><li class="tx-dlf-collection-col col-3"></li>';
-    $('.tx-dlf-collection-list').prepend(layoutColumns).append($('.tx-dlf-collection-list-additionals').html()).randomize('li.tx-dlf-collection-item').colcade({
+    $('.tx-dlf-collection-list').prepend(layoutColumns).append($('.tx-dlf-collection-list-additionals')).randomize('li.tx-dlf-collection-item').colcade({
         columns: '.tx-dlf-collection-col',
         items: '.tx-dlf-collection-item'
     });
