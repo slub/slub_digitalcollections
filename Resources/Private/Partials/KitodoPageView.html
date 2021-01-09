@@ -62,7 +62,27 @@
       </f:else>
     </f:if>
     <div class="document-functions">
-          <dl class="mobile-meta">
+        <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
+          <div class="provider">
+            <f:alias map="{providerLogoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerLogo)[1]\')}',
+            providerTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:owner)[1]\')}',
+            providerUri: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerSiteURL)[1]\', htmlspecialchars:\'FALSE\')}'}">
+                <f:if condition="{settings.showProviderLogo} && {dc:providerLogoCached(logo:'{providerLogoUrl}')}">
+                    <f:if condition="{providerLogoUrl}">
+                      <f:link.external
+                        uri="{providerUri}"
+                        title="{providerTitle}">
+                        <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{providerLogoUrl}')}"
+                            width="108"
+                            title="{providerTitle}"
+                            alt="Logo von {providerTitle}"
+                        />
+                      </f:link.external>
+                    </f:if>
+                </f:if>
+            </f:alias>
+
+            <dl class="mobile-meta">
             <dt class="tx-dlf-title">Titel</dt>
             <dd class="tx-dlf-title">
               <a href="#">{docTitle}</a>
