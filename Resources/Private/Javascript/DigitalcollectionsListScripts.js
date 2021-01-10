@@ -89,10 +89,12 @@ $(function () {
 
     // Add toggle and function for extended search
     var extendedSearchLabel = $('html[lang="de-DE"]')[0] ? 'Erweiterte Suche<span> ausblenden</span>' : '<span>Hide </span>Extended Search';
-    $('#c15323 .tx-dlf-search form').append('<div class="extended-search-toggle">' + extendedSearchLabel + '</div>');
+    $('.collections .tx-dlf-search form').append('<div class="extended-search-toggle">' + extendedSearchLabel + '</div>');
     $('.extended-search-toggle').on(mobileEvent, function () {
         $(this).parent().toggleClass('extendend-search-active');
     });
+    // Add extra CSS-class to parent div to make <h3> styleable
+    $('.collections .tx-dlf-search').parent().addClass('search-form');
 
 });
 
