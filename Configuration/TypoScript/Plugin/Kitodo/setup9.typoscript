@@ -36,8 +36,6 @@ plugin.tx_dlf_searchindocumenttool {
     // UID of dlfCore0
     solrcore = {$config.kitodo.solr.core}
 }
-# For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
-plugin.tx_dlf_toolsSearchindocument < plugin.tx_dlf_searchindocumenttool
 
 # --------------------------------------------------------------------------------------------------------------------
 # collections
