@@ -297,7 +297,7 @@
                       <span class="select switchoff" id="tx-dlf-tools-fulltext" title="<f:translate key='fulltext.no_fulltext_gridpage' extensionName='slub_digitalcollections' />"><f:translate key='fulltext.no_fulltext_gridpage' extensionName='slub_digitalcollections' /></span>
                     </f:then>
                     <f:else>
-                      <f:cObject typoscriptObjectPath="plugin.tx_dlf_toolsFulltext" />
+                      <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltexttool" />
                     </f:else>
                   </f:if>
                 </f:else>
@@ -346,7 +346,7 @@
         <f:else>
           <ul>
             <f:cObject typoscriptObjectPath="lib.kitodo.navigation.viewfunction" />
-            <li class="tx-dlf-toolsImagemanipulation"><f:cObject typoscriptObjectPath="plugin.tx_dlf_toolsImagemanipulation" /></li>
+            <li class="tx-dlf-toolsImagemanipulation"><f:cObject typoscriptObjectPath="plugin.tx_dlf_imagemanipulationtool" /></li>
           </ul>
         </f:else>
       </f:if>
