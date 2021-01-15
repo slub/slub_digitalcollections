@@ -5,11 +5,11 @@
     'Slub.SlubDigitalcollections',
     'SingleCollection',
     [
-        'SingleCollection' => 'show'
+        'SingleCollection' => 'show,search'
     ],
     // non-cacheable actions
     [
-        'SingleCollection' => ''
+        'SingleCollection' => 'search'
     ]
 );
 
