@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-28T12:12:18Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-02-01T13:42:14Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -100,6 +100,10 @@
 			<trans-unit id="listview.moredetails.toggle" approved="yes">
 				<source><![CDATA[Toggle details]]></source>
 				<target><![CDATA[Details ein-/ausblenden]]></target>
+			</trans-unit>
+			<trans-unit id="nav.open" approved="yes">
+				<source><![CDATA[Open page navigation]]></source>
+				<target><![CDATA[Seitennavigation öffnen]]></target>
 			</trans-unit>
 			<trans-unit id="plugins.single_collection_view" approved="yes">
 				<source><![CDATA[Single Collection View]]></source>
