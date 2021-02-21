@@ -1,0 +1,29 @@
+<f:layout name="Page" />
+
+<div xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://typo3.org/ns/fluid/ViewHelpers">
+
+    <f:section name="Content">
+        <div id="content" class="content">
+            <div class="centring">
+                <div class="main-column" role="main">
+                    <!--TYPO3SEARCH_begin-->
+                    <f:if condition="{data.subtitle}">
+                      <f:then>
+                        <h2>{data.subtitle}</h2>
+                      </f:then>
+                      <f:else>
+                        <h2>{data.title}</h2>
+                      </f:else>
+                    </f:if>
+                    <f:format.raw>{content}</f:format.raw>
+                </div>
+                <aside class="sidebar" role="complementary">
+                    <f:format.raw>{sidebar}</f:format.raw>
+                    <!-- TYPO3SEARCH_end -->
+                </aside>
+                <div class="floatclear"></div>
+            </div>
+        </div>
+    </f:section>
+
+</div>

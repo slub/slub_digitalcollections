@@ -1,0 +1,27 @@
+<div xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+
+    <f:section name="Header">
+
+        <div id="header" role="banner">
+            <a id="skip2top"></a>
+            <div class="centring">
+                <h1>
+                    <f:link.page pageUid="{rootPageId}" class="logo" title="Sächsische Landesbibliothek – Staats- und Universitätsbibliothek Dresden">Sächsische Landesbibliothek – Staats- und Universitätsbibliothek Dresden</f:link.page>
+                </h1>
+                <button type="button" class="main-navigation-toggle" aria-haspopup="true" aria-controls="main-navigation" aria-expanded="false">
+                    <span class="visually-hidden"><f:translate key="nav.hamburger" extensionName="SlubTemplate"/></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <nav class="main-navigation" id="main-navigation" aria-label="Hauptnavigation" aria-haspopup="true" aria-expanded="false">
+                <div class="main-navigation-clip">
+                    <f:cObject typoscriptObjectPath="lib.menu.main"/>
+                </div>
+            </nav>
+        </div>
+
+    </f:section>
+
+</div>
