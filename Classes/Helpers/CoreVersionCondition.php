@@ -7,7 +7,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Slub\DigitalCollections\Helpers;
+namespace Slub\SlubDigitalcollections\Helpers;
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * This TypoScript condition compares an integer to the current TYPO3 version
  *
  * = Example =
- * [Slub\DigitalCollections\Helpers\CoreVersionCondition < 9.3]
+ * [Slub\SlubDigitalcollections\Helpers\CoreVersionCondition < 9.3]
  *   page.6 = TEXT
  *   page.6.value = TYPO3 CORE VERSION IS LOWER THAN 9.3
  *   page.6.wrap = <div>|</div>

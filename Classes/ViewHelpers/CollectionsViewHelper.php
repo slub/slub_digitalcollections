@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,19 +22,19 @@ namespace Slub\DigitalCollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to get kitodo collections froms olr
  *
  * @package TYPO3
  */
-class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class CollectionsViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * Initialize arguments.
      */
@@ -42,8 +42,8 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
     {
         parent::initializeArguments();
         $this->registerArgument('kitodoId', 'integer', 'Id of Kitodo document', true);
-        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://sdvsolr2.slub-dresden.de:8983/solr/dlfCore0/");
-        $this->registerArgument('solrTimeout', 'integer', 'Id of Kitodo document', false, 5);
+        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://example.com:8983/solr/dlfCore0/");
+        $this->registerArgument('solrTimeout', 'integer', 'Timeout to Solr server', false, 5);
     }
 
     /**
@@ -62,25 +62,39 @@ class CollectionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
         if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kitodoId)) {
             // calculate cache identifier
             $cacheIdentifier = $kitodoId;
-            $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('slub_digitalcollections_collections');
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('slub_digitalcollections_matomo_collections');
 
-            if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
-                $context = stream_context_create(array(
-                    'http' => array(
-                        'timeout' => $solrTimeout
-                        )
-                    )
-                );
-                $apiAnswer = file_get_contents( $solrHost . '/select?q=uid:' . $kitodoId . '%20AND%20toplevel:true&rows=1&wt=json', false, $context);
-                $entry = json_decode($apiAnswer);
+            if (($result = $cache->get($cacheIdentifier)) === FALSE) {
+                /** @var RequestFactory $requestFactory */
+                $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+                $configuration = [
+                    'timeout' => $solrTimeout,
+                    'headers' => [
+                        'Content-type' => 'application/x-www-form-urlencoded',
+                        'Accept' => 'application/json'
+                    ],
+                    'form_params' => [
+                        'q' => 'uid:' . $kitodoId . ' AND toplevel:true',
+                        'rows' => '1',
+                        'fl' => 'collection',
+                        'wt' => 'json',
+                        'json.nl' => 'flat',
+                        'omitHeader' => 'true'
+                    ]
+                ];
+
+                $response = $requestFactory->request($solrHost . '/select?', 'POST', $configuration);
+                $content  = $response->getBody()->getContents();
+                $result = json_decode($content, true);
+
                 // Save value in cache
-                if ($entry) {
-                    $cache->set($cacheIdentifier, $entry);
+                if ($result) {
+                    $cache->set($cacheIdentifier, $result);
                 }
             }
         } else {
           return FALSE;
         }
-        return $entry;
+        return $result;
     }
 }

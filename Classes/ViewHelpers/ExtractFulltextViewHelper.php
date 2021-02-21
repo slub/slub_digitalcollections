@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice
@@ -24,8 +24,8 @@ namespace Slub\DigitalCollections\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to parse the ALTO fulltext
@@ -40,10 +40,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @package TYPO3
  */
-class ExtractFulltextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ExtractFulltextViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * Initialize arguments.
      */

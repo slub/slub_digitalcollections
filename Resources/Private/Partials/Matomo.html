@@ -1,4 +1,4 @@
-{namespace dc=Slub\DigitalCollections\ViewHelpers}
+{namespace dc=Slub\SlubDigitalcollections\ViewHelpers}
 <f:section name="Matomo">
 <script>
   var _paq = _paq || [];
@@ -8,7 +8,7 @@
   <f:if condition="{gp-id}>0">
     <f:then>
       <f:comment>track only valid ids, no table of contents etc.</f:comment>
-      <f:alias map="{collections: '{dc:collections(kitodoId:\"{gp-id}\",solrHost:\"{settings.collections.solrHost}\",solrTimeout:\"{settings.collections.solrTimeout}\")}'}">
+      <f:alias map="{collections: '{dc:collections(kitodoId:\'{gp-id}\',solrHost:\'{settings.collections.solrHost}\',solrTimeout:\'{settings.collections.solrTimeout}\')}'}">
         <f:if condition="{collections.response.docs.0.collection}">
           <f:then>
             <f:for each="{collections.response.docs.0.collection}" as="collection" iteration="iterator">
@@ -16,7 +16,7 @@
             </f:for>
           </f:then>
           <f:else>
-            <f:for each="{dc:xpath(xpath:'(//mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type=\"series\"]/mods:titleInfo/mods:title[@lang=\"ger\"])', returnArray:'TRUE')}" as="collection" iteration="iterator">
+            <f:for each="{dc:xpath(xpath:'(//mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type=\'series\']/mods:titleInfo/mods:title[@lang=\'ger\'])', returnArray:'TRUE')}" as="collection" iteration="iterator">
             _paq.push(['setCustomVariable', '{iterator.cycle}', 'Digitale Kollektionen', '{collection}', 'visit']);
             </f:for>
           </f:else>

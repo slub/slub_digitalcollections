@@ -1,5 +1,5 @@
 <?php
-namespace Slub\DigitalCollections\ViewHelpers;
+namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice
@@ -24,8 +24,8 @@ namespace Slub\DigitalCollections\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to get page info
@@ -41,10 +41,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @package TYPO3
  */
-class DownloadLinksViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class DownloadLinksViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * Initialize arguments.
      */
@@ -68,7 +66,7 @@ class DownloadLinksViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
         $type = $arguments['type'];
         $pagenumber = $arguments['pagenumber'];
 
-        $doc = GeneralUtility::makeInstance(\Slub\DigitalCollections\Helpers\GetDoc::class);
+        $doc = GeneralUtility::makeInstance(\Slub\SlubDigitalcollections\Helpers\GetDoc::class);
 
         switch ($type) {
           case 'page-right':

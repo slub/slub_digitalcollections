@@ -1,0 +1,25 @@
+#
+# Backendlayout: kitodo
+#
+mod.web_layout.BackendLayouts {
+	emptyworkview {
+		title = Kitodo: Digital Collections - Empty Workview
+		config {
+			backend_layout {
+                    colCount = 1
+                    rowCount = 1
+                    rows {
+                        1 {
+                            columns {
+                                1 {
+                                    name = Main
+                                    colPos = 0
+                                }
+                            }
+                        }
+                    }
+                }
+		}
+		icon = EXT:slub_digitalcollections/Resources/Public/Images/BackendLayouts/workview.png
+	}
+}

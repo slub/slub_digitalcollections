@@ -1,4 +1,4 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.ts">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.typoscript">
 
 # --------------------------------------------------------------------------------------------------------------------
 # search
@@ -36,8 +36,6 @@ plugin.tx_dlf_searchindocumenttool {
     // UID of dlfCore0
     solrcore = {$config.kitodo.solr.core}
 }
-# For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
-plugin.tx_dlf_toolsSearchindocument < plugin.tx_dlf_searchindocumenttool
 
 # --------------------------------------------------------------------------------------------------------------------
 # collections
@@ -229,16 +227,15 @@ plugin.tx_dlf_toolbox {
     fileGrpsImageDownload = MIN,DEFAULT,MAX
 
     # this overwrites the backend plugin settings --> avoid it here
-    tools = tx_slubdlfhacks_pdfdownload,tx_dlf_toolsImagedownload,tx_dlf_toolsFulltext,tx_dlf_toolsImagemanipulation
+    tools = tx_dlf_toolsImagedownload,tx_dlf_fulltexttool,tx_dlf_imagemanipulationtool
     templateFile = {$config.kitodo.templates.toolbox}
 }
 
 plugin.tx_dlf_fulltexttool {
     pages = {$config.kitodo.storagePid}
     templateFile = {$config.kitodo.templates.toolFullText}
+    activateFullTextInitially = 0
 }
-# For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
-plugin.tx_dlf_toolsFulltext < plugin.tx_dlf_fulltexttool
 
 plugin.tx_dlf_imagemanipulationtool {
     pages = {$config.kitodo.storagePid}
@@ -246,8 +243,7 @@ plugin.tx_dlf_imagemanipulationtool {
 }
 # For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
 # The following two lines could be removed with Kitodo.Presentation 3.1. Do not forget to adjust the fluid template!
-plugin.tx_dlf_imagemanipulationtool.parentContainer = .tx-dlf-toolbox
-plugin.tx_dlf_toolsImagemanipulation < plugin.tx_dlf_imagemanipulationtool
+#plugin.tx_dlf_imagemanipulationtool.parentContainer = .tx-dlf-toolbox
 
 # --------------------------------------------------------------------------------------------------------------------
 # newspaper navigation
@@ -265,6 +261,7 @@ lib.kitodo.newspaper.calendar {
     userFunc = Kitodo\Dlf\Plugin\Calendar->calendar
     pages = {$config.kitodo.storagePid}
     targetPid = {$config.kitodo.pageView}
+    showEmptyMonths = 0
     templateFile = {$config.kitodo.templates.newspaperCalendar}
 }
 

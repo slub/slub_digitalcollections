@@ -1,0 +1,19 @@
+# Add SLUB Digitialcollections to newContenElement wizard
+
+mod.wizards.newContentElement.wizardItems {
+  slub_digitalcollections {
+    header = SLUB Digitalcollections
+    elements {
+      slubdigitalcollections_singlecollection {
+        iconIdentifier = tx-dlf-collection
+        title = LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang.xlf:plugins.single_collection_view
+        description = LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang.xlf:plugins.single_collection_view.description
+        tt_content_defValues {
+          CType = list
+          list_type = slubdigitalcollections_singlecollection
+        }
+      }
+    }
+    show = *
+  }
+}

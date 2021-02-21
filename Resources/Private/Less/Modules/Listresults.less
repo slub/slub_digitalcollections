@@ -56,6 +56,38 @@
                 padding: 0 5px;
             }
         }
+        ul.f3-widget-paginator {
+            margin: 20px 0;
+            font-family: @font-sans-bold;
+            font-weight: bold;
+            -moz-font-feature-settings: "lnum";
+            -webkit-font-feature-settings: "lnum";
+            font-feature-settings: "lnum";
+            color: @secondary-color;
+            text-align: center;
+            li {
+                &:before {
+                    display: none;
+                }
+                display: inline-block;
+                text-align: center;
+                border: none;
+                padding: 10px 0;
+                margin: 0;
+                border: 1px solid @lightgrey-color;
+                border-radius: 15px;
+                margin: 0 5px;
+                padding: 0 5px;
+                min-width: 30px;
+                height: 30px;
+                background: white;
+                a {
+                    display: inline-block;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+            }
+        }
         @media screen and (min-width: @phoneLandscapeViewportWidth) {
             h2 {
                 font-size: 28px;

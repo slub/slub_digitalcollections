@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2020-03-04T16:36:33Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-12-14T21:40:46Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -68,6 +68,12 @@
 			<trans-unit id="gridpage.preview">
 				<source><![CDATA[Thumbnail Preview]]></source>
 			</trans-unit>
+			<trans-unit id="plugins.single_collection_view">
+				<source><![CDATA[Single Collection View]]></source>
+			</trans-unit>
+			<trans-unit id="plugins.single_collection_view.description">
+				<source><![CDATA[Show Collection with Search Form and Search Results.]]></source>
+			</trans-unit>
 			<trans-unit id="provider.email_provider">
 				<source><![CDATA[Email to data provider]]></source>
 			</trans-unit>
@@ -77,11 +83,23 @@
 			<trans-unit id="provider.slub_catalogue">
 				<source><![CDATA[SLUB Catalogue]]></source>
 			</trans-unit>
+			<trans-unit id="purl.document">
+				<source><![CDATA[Permalink document]]></source>
+			</trans-unit>
 			<trans-unit id="purl.singlePage">
 				<source><![CDATA[Permalink page]]></source>
 			</trans-unit>
-			<trans-unit id="purl.document">
-				<source><![CDATA[Permalink document]]></source>
+			<trans-unit id="listview.moredetails.show" xml:space="preserve">
+				<source>Show more details</source>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.hide" xml:space="preserve">
+				<source>Hide more details</source>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.toggle" xml:space="preserve">
+				<source>Toggle details</source>
+			</trans-unit>
+			<trans-unit id="nav.open" xml:space="preserve">
+				<source>Open page navigation</source>
 			</trans-unit>
 		</body>
 	</file>

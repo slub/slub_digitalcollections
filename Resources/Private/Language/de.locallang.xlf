@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-03-04T16:36:33Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-02-01T13:42:14Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -89,6 +89,30 @@
 				<source><![CDATA[Thumbnail Preview]]></source>
 				<target><![CDATA[Vorschaubilder]]></target>
 			</trans-unit>
+			<trans-unit id="listview.moredetails.hide" approved="yes">
+				<source><![CDATA[Hide more details]]></source>
+				<target><![CDATA[Details ausblenden]]></target>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.show" approved="yes">
+				<source><![CDATA[Show more details]]></source>
+				<target><![CDATA[Details einblenden]]></target>
+			</trans-unit>
+			<trans-unit id="listview.moredetails.toggle" approved="yes">
+				<source><![CDATA[Toggle details]]></source>
+				<target><![CDATA[Details ein-/ausblenden]]></target>
+			</trans-unit>
+			<trans-unit id="nav.open" approved="yes">
+				<source><![CDATA[Open page navigation]]></source>
+				<target><![CDATA[Seitennavigation öffnen]]></target>
+			</trans-unit>
+			<trans-unit id="plugins.single_collection_view" approved="yes">
+				<source><![CDATA[Single Collection View]]></source>
+				<target><![CDATA[Ansicht einer einzelne Kollektion]]></target>
+			</trans-unit>
+			<trans-unit id="plugins.single_collection_view.description" approved="yes">
+				<source><![CDATA[Show Collection with Search Form and Search Results.]]></source>
+				<target><![CDATA[Anzeige einer Kollektion mit Such-Formular und Ergebnissen.]]></target>
+			</trans-unit>
 			<trans-unit id="provider.email_provider" approved="yes">
 				<source><![CDATA[Email to data provider]]></source>
 				<target><![CDATA[Email an Datenprovider]]></target>
@@ -97,17 +121,17 @@
 				<source><![CDATA[Online Public Access Catalogue]]></source>
 				<target><![CDATA[Lokaler Katalog]]></target>
 			</trans-unit>
-			<trans-unit id="provider.slub_catalogue">
+			<trans-unit id="provider.slub_catalogue" approved="yes">
 				<source><![CDATA[SLUB Catalogue]]></source>
 				<target><![CDATA[SLUB Katalog]]></target>
-			</trans-unit>
-			<trans-unit id="purl.singlePage" approved="yes">
-				<source><![CDATA[Permalink page]]></source>
-				<target><![CDATA[Permalink Seite]]></target>
 			</trans-unit>
 			<trans-unit id="purl.document" approved="yes">
 				<source><![CDATA[Permalink document]]></source>
 				<target><![CDATA[Permalink Dokument]]></target>
+			</trans-unit>
+			<trans-unit id="purl.singlePage" approved="yes">
+				<source><![CDATA[Permalink page]]></source>
+				<target><![CDATA[Permalink Seite]]></target>
 			</trans-unit>
 		</body>
 	</file>
