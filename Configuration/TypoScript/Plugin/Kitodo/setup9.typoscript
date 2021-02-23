@@ -235,6 +235,8 @@ plugin.tx_dlf_fulltexttool {
     pages = {$config.kitodo.storagePid}
     templateFile = {$config.kitodo.templates.toolFullText}
     activateFullTextInitially = 0
+    fullTextScrollElement = html, body
+    searchHlElements = tx_dlf[highlight_word]
 }
 
 plugin.tx_dlf_imagemanipulationtool {
