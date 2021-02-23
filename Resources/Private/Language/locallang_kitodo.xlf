@@ -279,6 +279,12 @@
 			<trans-unit id="structure.year" xml:space="preserve">
 				<source>Date of Publication</source>
 			</trans-unit>
+			<trans-unit id="structure.manuscript_part" xml:space="preserve">
+				<source>Part of a Manuscript</source>
+			</trans-unit>
+			<trans-unit id="structure.multipart_manuscript" xml:space="preserve">
+				<source>Multipart Manuscript</source>
+			</trans-unit>
 			<trans-unit id="metadata.prod_id" xml:space="preserve">
 				<source>Kitodo Process Number</source>
 			</trans-unit>
