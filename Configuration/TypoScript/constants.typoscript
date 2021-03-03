@@ -56,11 +56,14 @@ config {
         listView = 5364
 
         css {
-            # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for all lists (eg. collections)
+            # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for optional base website design
+            base = EXT:slub_digitalcollections/Resources/Public/Css/BaseDesign.css
+
+            # cat=plugin.tx_slubdigitalcollections/advanced/0501; type=string; label=CSS file for all lists (eg. collections)
             lists = EXT:slub_digitalcollections/Resources/Public/Css/DigitalcollectionsLists.css
 
-            # cat=plugin.tx_slubdigitalcollections/advanced/0501; type=string; label=CSS file for kitodo pageview
-            page = EXT:slub_digitalcollections/Resources/Public/Css/Digitalcollections.css
+            # cat=plugin.tx_slubdigitalcollections/advanced/0502; type=string; label=CSS file for Kitodo pageview
+            pageview = EXT:slub_digitalcollections/Resources/Public/Css/Digitalcollections.css
         }
 
         templates {
