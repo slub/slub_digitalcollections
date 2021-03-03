@@ -15,6 +15,11 @@ page {
         viewport = width=device-width initial-scale=1.0
     }
 
+    includeCSS {
+        base = {$config.kitodo.css.base}
+        base.media = screen,projection
+    }
+
     10 = FLUIDTEMPLATE
     10 {
         # Template names will be generated automatically by converting the applied
