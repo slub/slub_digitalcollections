@@ -53,10 +53,6 @@ page {
         layoutRootPaths.0 = {$config.page.layoutRootPath}
         templateRootPaths.0 = {$config.page.templateRootPath}
         variables {
-            content < styles.content.get
-            sidebar < styles.content.get
-            sidebar.select.where = colPos=2
-
             rootPageId = TEXT
             rootPageId.value = {$config.kitodo.rootPage.pid}
 
