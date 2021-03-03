@@ -53,7 +53,13 @@ page {
             sidebar.select.where = colPos=2
 
             rootPageId = TEXT
-            rootPageId.value = {$config.rootPid}
+            rootPageId.value = {$config.kitodo.rootPage.pid}
+
+            rootPageTitle = TEXT
+            rootPageTitle.value = {$config.kitodo.rootPage.title}
+
+            rootPageCssClass = TEXT
+            rootPageCssClass.value = {$config.kitodo.rootPage.cssClass}
         }
     }
 

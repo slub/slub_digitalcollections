@@ -1,12 +1,9 @@
 config {
 
-    # cat=plugin.slub_digitalcollections/links/0100; type=int+; label= Rootpage Id
-    rootPid = 1
+    page {
+        layoutRootPath = EXT:slub_digitalcollections/Resources/Private/Layouts/
+        partialRootPath = EXT:slub_digitalcollections/Resources/Private/Partials/
+        templateRootPath = EXT:slub_digitalcollections/Resources/Private/Templates/
+    }
 
-}
-
-page {
-    layoutRootPath = EXT:slub_digitalcollections/Resources/Private/Layouts/
-    partialRootPath = EXT:slub_digitalcollections/Resources/Private/Partials/
-    templateRootPath = EXT:slub_digitalcollections/Resources/Private/Templates/
 }
