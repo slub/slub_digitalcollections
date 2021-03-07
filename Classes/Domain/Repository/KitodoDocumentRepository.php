@@ -68,7 +68,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ],
         ];
 
-
         $collecionsOrString = '';
         foreach ($collections as $index => $collection) {
             $collecionsOrString .= (($index > 0) ? ' OR ' : '') . '"' . $collection->getIndexName() . '"';

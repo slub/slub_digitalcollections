@@ -20,7 +20,7 @@ page {
     config.disableWrapInBaseClass = 1
 
     # switch to viewer css
-    page.includeCSS.kitodo = {$config.kitodo.css.page}
+    page.includeCSS.kitodo = {$config.kitodo.css.pageview}
 
     # switch to viewer js
     page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsScripts.js

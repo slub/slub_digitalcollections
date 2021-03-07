@@ -102,7 +102,7 @@ page {
                 gp-id = TEXT
                 gp-id {
                     data = GP:tx_dlf|id
-                    ifEmpty = 1
+                    ifEmpty = 0
                     stdWrap.intval = 1
                 }
 
@@ -126,6 +126,12 @@ page {
 
                 gp-pagegrid = TEXT
                 gp-pagegrid.data = GP:tx_dlf|pagegrid
+
+                # set after submitting search in years / anchors
+                gp-query = TEXT
+                gp-query {
+                    data = GP:tx_dlf|query
+                }
 
         }
     }
