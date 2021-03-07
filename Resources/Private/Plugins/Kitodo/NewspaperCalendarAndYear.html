@@ -1,0 +1,79 @@
+<!-- ###TEMPLATECALENDAR### begin -->
+<div class="tx-dlf-calendar">
+    <div class="year-anchor">
+        ###CALALLYEARS###
+    </div>
+    <div class="year">
+        ###CALYEAR###
+    </div>
+    <div class="calendar-list-selection">
+        <a class="select-calendar-view active">###LABEL_CALENDAR###</a>
+        <a class="select-list-view">###LABEL_LIST_VIEW###</a>
+    </div>
+    <div class="calendar-view">
+        <!-- ###CALMONTH### begin -->
+        ###CALYEAR###
+        <div class="month">
+            <table>
+                <caption>###MONTHNAME###</caption>
+                <tr>
+                    <th>###DAYMON_NAME###</th>
+                    <th>###DAYTUE_NAME###</th>
+                    <th>###DAYWED_NAME###</th>
+                    <th>###DAYTHU_NAME###</th>
+                    <th>###DAYFRI_NAME###</th>
+                    <th>###DAYSAT_NAME###</th>
+                    <th>###DAYSUN_NAME###</th>
+                </tr>
+                <!-- ###CALWEEK### begin -->
+                <tr>
+                    <td>###DAYMON###</td>
+                    <td>###DAYTUE###</td>
+                    <td>###DAYWED###</td>
+                    <td>###DAYTHU###</td>
+                    <td>###DAYFRI###</td>
+                    <td>###DAYSAT###</td>
+                    <td>###DAYSUN###</td>
+                </tr>
+                <!-- ###CALWEEK### end -->
+            </table>
+        </div>
+        <!-- ###CALMONTH### end -->
+    </div>
+    <!-- ###ISSUELIST### begin -->
+    <div class="list-view">
+        <ul>
+        <!-- ###SINGLEDAY### begin -->
+    <li>
+        <span class="listview-date">###DATE_STRING###</span>
+        ###ITEMS###
+    </li>
+        <!-- ###SINGLEDAY### end -->
+        </ul>
+    </div>
+    <!-- ###ISSUELIST### end -->
+
+</div>
+<!-- ###TEMPLATECALENDAR### end -->
+
+<!-- ###TEMPLATEYEAR### begin -->
+<div class="tx-dlf-calendar-years">
+    <div class="meta-header">
+        <div class="year-anchor">
+            ###CALALLYEARS###
+        </div>
+        <div class="meta-hint-year">
+            ###LABEL_CHOOSE_YEAR###
+        </div>
+    </div>
+    <div class="year-view">
+        <ul>
+            <!-- ###LISTYEAR### begin -->
+            <li class="year">
+                ###YEARNAME###
+            </li>
+            <!-- ###LISTYEAR### end -->
+        </ul>
+    </div>
+</div>
+<!-- ###TEMPLATEYEAR### end -->

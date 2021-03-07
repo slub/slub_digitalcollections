@@ -16,7 +16,7 @@ lib.kitodo.fulltext.search {
     solrcore = {$config.kitodo.solr.core}
     limit = {$config.kitodo.solr.searchLimit}
     // we activate fulltext here and search only in fulltext (see template)
-    fulltext = 0
+    fulltext = 1
     // search only in current document
     searchIn = document
     // doesn't work due to javascript inclusion of autocomplete in header
@@ -267,14 +267,14 @@ lib.kitodo.newspaper.calendar {
     templateFile = {$config.kitodo.templates.newspaperCalendar}
 }
 
-[userFunc = user_dlf_docTypeCheck(newspaper, {$config.kitodo.storagePid})]
+[getDocumentType("{$config.kitodo.storagePid}") == "ephemera"] || [getDocumentType("{$config.kitodo.storagePid}") == "newspaper"]
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_anchor
 }
 [END]
 
-[userFunc = user_dlf_docTypeCheck(year, {$config.kitodo.storagePid})]
+[getDocumentType("{$config.kitodo.storagePid}") == "year"]
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_year
@@ -301,7 +301,7 @@ page.2.postTitle.cObject {
 }
 [END]
 
-[userFunc = user_dlf_docTypeCheck(issue, {$config.kitodo.storagePid})]
+[getDocumentType("{$config.kitodo.storagePid}") == "issue"]
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_issue
