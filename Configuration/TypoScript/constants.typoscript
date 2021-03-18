@@ -38,7 +38,7 @@ config {
         storagePid = 4152
 
         # cat=plugin.tx_slubdigitalcollections/links/0321; type=int+; label= Kitodo Terms of Use Page
-        termsOfUsePid = 5345
+        termsOfUsePid =
 
         # cat=plugin.tx_slubdigitalcollections/links/0322; type=list; label= Pids for Navigation
         viewerNavigationPids = 4010, 5346, 9259, 4012, 10105
