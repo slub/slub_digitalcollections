@@ -217,16 +217,14 @@
                       </li>
                   </f:then>
                   <f:else>
-                      <li class="jpg-download">
-                          <f:if condition="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp/mets:file/@MIMETYPE)[{gp-page}]')} == 'application/vnd.kitodo.iiif'">
-                              <f:link.external
-                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"MAX\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
-                                  class="download-page image"
-                                  target="_blank"
-                                  title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
-                              </f:link.external>
-                          </f:if>
-                      </li>
+                    <li class="jpg-download">
+                      <f:link.external
+                          uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"MAX\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                          class="download-page image"
+                          target="_blank"
+                          title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
+                      </f:link.external>
+                    </li>
                   </f:else>
               </f:if>
 
