@@ -33,7 +33,7 @@
          arguments="{0:'{pageOffset + 1}',1:'{f:if(condition: \'{numDocuments} > {allDocuments}\', then: \'{allDocuments}\', else: \'{numDocuments}\')}', 2:'{allDocuments}'}" />
    </p>
 
-   <f:form section="showResults" action="search" name="searchParameter" method="get" class="tx-dlf-search-form">
+   <f:form section="showResults" action="search" name="searchParameter" method="post" class="tx-dlf-search-form">
       <div>
          <label for="form-orderBy">
             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
