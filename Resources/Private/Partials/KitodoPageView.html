@@ -206,13 +206,13 @@
                           <span class="multilink-label"><f:translate key="download.image.imageDownload" extensionName="slub_digitalcollections" /></span>
                           <div class="multilinks">
                               <f:link.external
-                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"MAX\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image left"
                                   target="_blank"
                                   title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" />
                               </f:link.external>
                               <f:link.external
-                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"MAX\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image right"
                                   target="_blank"
                                   title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" />
@@ -223,7 +223,7 @@
                   <f:else>
                     <li class="jpg-download">
                       <f:link.external
-                          uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"MAX\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                          uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                           class="download-page image"
                           target="_blank"
                           title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
