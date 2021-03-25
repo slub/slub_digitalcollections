@@ -71,7 +71,7 @@ class KitodoCollections extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObj
      * @return string $description
      */
     public function getDescription() {
-        return $this->ladescriptionbel;
+        return $this->description;
     }
 
 }
