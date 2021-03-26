@@ -27,7 +27,8 @@
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "typo3/cms-core": "~9.5.21"
+    "typo3/cms-core": "~9.5.26",
+    "kitodo/presentation": "^3.2|dev-master"
   },
   "autoload": {
     "psr-4": {
