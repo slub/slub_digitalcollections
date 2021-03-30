@@ -2,8 +2,8 @@
 # Backendlayout: kitodo
 #
 mod.web_layout.BackendLayouts {
-    default {
-        title = Default Layout
+    defaultLayout {
+        title = Kitodo: Digital Collections - Default Layout
         config {
             backend_layout {
                 colCount = 2
