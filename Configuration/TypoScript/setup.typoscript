@@ -150,11 +150,11 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
 # --------------------------------------------------------------------------------------------------------------------
-[globalVar = TSFE:id={$config.kitodo.collectionView}]
+[getTSFE().id == {$config.kitodo.collectionView}]
 page.bodyTag = <body class="collections">
 # render content parts only
 [END]
 
-[globalVar = TSFE:id={$config.kitodo.listView}]
+[getTSFE().id == {$config.kitodo.listView}]
 page.bodyTag = <body class="listview">
 [END]

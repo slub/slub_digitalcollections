@@ -182,8 +182,6 @@ plugin.tx_dlf_tableofcontents {
         7 < .6
     }
 }
-# For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
-plugin.tx_dlf_toc < plugin.tx_dlf_tableofcontents
 
 # --------------------------------------------------------------------------------------------------------------------
 # navigation
@@ -243,9 +241,6 @@ plugin.tx_dlf_imagemanipulationtool {
     pages = {$config.kitodo.storagePid}
     templateFile = {$config.kitodo.templates.toolsImageManipulation}
 }
-# For compatibiltiy of Fluid templates with Kitodo.Presentation 2.x
-# The following two lines could be removed with Kitodo.Presentation 3.1. Do not forget to adjust the fluid template!
-#plugin.tx_dlf_imagemanipulationtool.parentContainer = .tx-dlf-toolbox
 
 # --------------------------------------------------------------------------------------------------------------------
 # newspaper navigation
