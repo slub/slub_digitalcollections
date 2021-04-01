@@ -1,0 +1,28 @@
+#
+# Backendlayout: kitodo
+#
+mod.web_layout.BackendLayouts {
+    defaultLayout {
+        title = Kitodo: Digital Collections - Default Layout
+        config {
+            backend_layout {
+                colCount = 2
+                rowCount = 1
+                rows {
+                    1 {
+                        columns {
+                            1 {
+                                name = Content
+                                colPos = 0
+                            }
+                            2 {
+                                name = Sidebar
+                                colPos = 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

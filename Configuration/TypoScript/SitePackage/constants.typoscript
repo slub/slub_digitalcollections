@@ -1,0 +1,9 @@
+config {
+
+    page {
+        layoutRootPath = EXT:slub_digitalcollections/Resources/Private/Layouts/
+        partialRootPath = EXT:slub_digitalcollections/Resources/Private/Partials/
+        templateRootPath = EXT:slub_digitalcollections/Resources/Private/Templates/
+    }
+
+}

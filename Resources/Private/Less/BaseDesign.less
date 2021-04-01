@@ -1,0 +1,89 @@
+/*
+ *
+ * Lists
+ * ================================================
+ * Design for lists and collection views
+ *
+ * Author: Thomas Jung <thomas@jung.digital>
+ *
+ */
+
+// Helpers & variables
+@import "Helper/Variables.less";
+@import "Helper/Mixins.less";
+@import "Helper/Normalize.less";
+
+// Theming Options (see '/Resources/Private/Less/Themes' for more)
+// @import "Themes/Basictheme.less";
+@import "Themes/Slubtheme.less";
+
+.content {
+    position: relative;
+    padding: 30px 0;
+    min-height: 200px;
+    color: @basegrey-color;
+    line-height: 160%;
+    .main-column {
+        position: relative;
+        width: 100%;
+    }
+    aside.sidebar {
+        position: relative;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    @media screen and (min-width: @tabletViewportWidth) {
+        padding-bottom: 260px;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        padding: 0 0 300px 0;
+        min-height: auto;
+        .main-column {
+            width: 60%;
+            float: left;
+            padding-right: 50px;
+        }
+        aside.sidebar {
+            width: 30%;
+            float: left;
+        }
+    }
+    @media screen and (min-width: @desktopViewportWidth) {
+        padding-bottom: 400px;
+        .main-column {
+            padding-right: 110px;
+        }
+    }
+}
+
+#page {
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    background-size: 2200px auto;
+    @media screen and (min-width: @phoneLandscapeViewportWidth) {
+        background-size: 1600px auto;
+    }
+    @media screen and (min-width: @tabletViewportWidth) {
+        background-size: 2000px auto;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        background-size: 2400px auto;
+    }
+}
+
+.centring {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    @media screen and (min-width: @tabletViewportWidth) {
+        width: 750px;
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        width: 970px;
+    }
+    @media screen and (min-width: @desktopViewportWidth) {
+        width: 1170px;
+    }
+}

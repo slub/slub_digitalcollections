@@ -7,3 +7,10 @@ defined('TYPO3_MODE') or die();
     'Configuration/TypoScript',
     'SLUB Digital Collections'
 );
+
+// Add optional SitePackage Typoscript
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'slub_digitalcollections',
+    'Configuration/TypoScript/SitePackage',
+    'Optional Sitepackage for pure usage of SLUB Digital Collections.'
+);
