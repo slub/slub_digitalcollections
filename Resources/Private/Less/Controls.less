@@ -511,13 +511,15 @@
 /* ==============[ the image manipulation tools ]========================================= */
 .image-manipulation {
     position: absolute;
-    top: 70px;
-    right: 55px;
-    z-index: 1010;
+    top: 55px;
+    right: 5px;
     .slider-container {
         background: fade(@secondary-color, 90%);
         padding: 30px 20px 10px 56px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        &.open {
+            z-index: 1010;
+        }
         &:before {
             position: absolute;
             top: -10px;
@@ -616,7 +618,7 @@
             }
         }
         .checkbox {
-            margin-left: -36px;
+            margin-left: -37px;
             &:before {
                 background-position: -520px -40px;
             }
