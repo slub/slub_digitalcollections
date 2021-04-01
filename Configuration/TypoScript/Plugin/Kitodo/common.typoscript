@@ -16,7 +16,7 @@ page {
     }
 }
 
-[globalVar = TSFE:page|backend_layout = pagets__kitodo]||[globalVar = TSFE:page|backend_layout = pagets__emptyworkview]
+[page["backend_layout"] == 'pagets__kitodo'] || [page["backend_layout"] == 'pagets__emptyworkview']
     config.disableWrapInBaseClass = 1
 
     # switch to viewer css
@@ -33,7 +33,7 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # add opengraph social metatags in single view with a valid id
 # --------------------------------------------------------------------------------------------------------------------
-[globalVar = GP:tx_dlf|id > 0]
+[request.getQueryParams()['tx_dlf']['id'] > 0]
 
   page.2 = LOAD_REGISTER
   page.2 {
