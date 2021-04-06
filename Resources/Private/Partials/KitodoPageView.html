@@ -210,21 +210,34 @@
               </li>
 
               <f:comment><!-- [Image downloads (JPG)] ----------------------------- --></f:comment>
-              <f:variable name="mimeType" value="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp/mets:file/@MIMETYPE)[{gp-page}]')}" />
 
+              <!-- ORDER: ORIGINAL (best) -> MAX -> DEFAULT -->
+              <f:if condition="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}">
+                <f:then>
+                  <f:variable name="usedFileGrp" value="[@USE=\"ORIGINAL\"]" />
+                </f:then>
+                <f:else if="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp[@USE=\"MAX\"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}">
+                  <f:variable name="usedFileGrp" value="[@USE=\"MAX\"]" />
+                </f:else>
+                <f:else if="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp[@USE=\"DEFAULT\"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}">
+                  <f:variable name="usedFileGrp" value="[@USE=\"DEFAULT\"]" />
+                </f:else>
+              </f:if>
+
+              <f:variable name="mimeType" value="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp/mets:file/@MIMETYPE)[{gp-page}]')}" />
               <f:if condition="{gp-double} == 1">
                   <f:then>
                       <li class="jpg-download has-multilinks">
                           <span class="multilink-label"><f:translate key="download.image.imageDownload" extensionName="slub_digitalcollections" /></span>
                           <div class="multilinks">
                               <f:link.external
-                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image left"
                                   target="_blank"
                                   title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" />
                               </f:link.external>
                               <f:link.external
-                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                                  uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image right"
                                   target="_blank"
                                   title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" />
@@ -235,7 +248,7 @@
                   <f:else>
                     <li class="jpg-download">
                       <f:link.external
-                          uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"ORIGINAL\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
+                          uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                           class="download-page image"
                           target="_blank"
                           title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
