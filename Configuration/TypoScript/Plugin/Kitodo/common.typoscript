@@ -12,7 +12,7 @@ page {
     # we need jquery in head as it is used by pageview plugin
     # --> jQuery must be provided by Kitodo.Presentation --> include Template "Basis Configuration"
     includeJSFooterlibs {
-        kitodo-frontend = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsListScripts.js
+        kitodo-frontend = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsListScripts.js
     }
 }
 
@@ -23,7 +23,7 @@ page {
     page.includeCSS.kitodo = {$config.kitodo.css.pageview}
 
     # switch to viewer js
-    page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsScripts.js
+    page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsScripts.js
 
     # clear not required js
     page.includeJSFooterlibs.kitodo-frontend >
