@@ -18,17 +18,25 @@ module.exports = function(grunt) {
                 }
             }
         },
-        uglify: {
+        terser: {
             development: {
                 options: {
                     compress: true,
-                    preserveComments: false,
-                    yuicompress: true,
-                    optimization: 2
+                    output: {
+                        comments: false
+                    }
                 },
                 files: {
-                    "Resources/Public/Javascript/DigitalcollectionsScripts.js" : ['Resources/Private/Javascript/modernizrCustom.js', 'Resources/Private/Javascript/Cookies.js', 'Resources/Private/Javascript/DigitalcollectionsScripts.js'],
-                    "Resources/Public/Javascript/DigitalcollectionsListScripts.js" : ['Resources/Private/Javascript/modernizrCustom.js', 'Resources/Private/Javascript/colcade.js', 'Resources/Private/Javascript/DigitalcollectionsListScripts.js']
+                        "Resources/Public/Javascript/DigitalcollectionsScripts.js" : [
+                            'Resources/Private/Javascript/modernizrCustom.js',
+                            'Resources/Private/Javascript/Cookies.js',
+                            'Resources/Private/Javascript/DigitalcollectionsScripts.js',
+                        ],
+                        "Resources/Public/Javascript/DigitalcollectionsListScripts.js" : [
+                            'Resources/Private/Javascript/modernizrCustom.js',
+                            'Resources/Public/Javascript/Highlight/colcade.js',
+                            'Resources/Private/Javascript/DigitalcollectionsListScripts.js',
+                        ],
                 }
             }
         },
@@ -37,15 +45,18 @@ module.exports = function(grunt) {
                 files: ['Resources/Private/Less/**/*.less'],
                 tasks: ['less'],
                 options: {
-                    nospawn: true
+                    spawn: false
                 }
             },
             js: {
                 files: ['Resources/Private/Javascript/*.js'],
-                tasks: ['uglify']
-            }
+                tasks: ['terser'],
+                options: {
+                    spawn: false
+                }
+            },
         }
     });
     grunt.file.setBase('../')
-    grunt.registerTask('default', ['less','uglify','watch']);
+    grunt.registerTask('default', ['terser','less','watch']);
 };
