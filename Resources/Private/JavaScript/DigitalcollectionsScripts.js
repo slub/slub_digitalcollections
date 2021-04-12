@@ -200,8 +200,7 @@ $(function () {
     // Add class to  collection related DD elements in metadata lists
     $('dl.tx-dlf-metadata-titledata').find('dt:contains(mmlung), dt:contains(llection)').nextUntil('dt', 'dd').addClass('tx-dlf-metadata-collection');
 
-    // Finally all things are settled. Curtain up and bring back animations a second later.
-    $('body').removeClass('hidden');
+    // Finally all things are settled. Bring back animations a second later.
     setTimeout(function () {
         localStorage.clear();
         $('.fwds, .backs').removeClass('no-transition');
