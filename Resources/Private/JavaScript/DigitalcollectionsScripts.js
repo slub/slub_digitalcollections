@@ -102,7 +102,7 @@ $(function () {
         $('.control-bar .metadata-wrapper').append('<div class="metadata-toggle">' + metadataToggleLabelMore + '</div>');
         $('.metadata-toggle').on('click', function () {
             if (!$('.control-bar').hasClass('all-metadata')) {
-                Cookies.set('tx-dlf-allmetadata', 'true');
+                Cookies.set('tx-dlf-allmetadata', 'true', { sameSite: 'lax' });
                 $(this).text(metadataToggleLabelLess);
             } else {
                 Cookies.remove('tx-dlf-allmetadata');
@@ -234,7 +234,7 @@ function enterFullscreen() {
     }, 220);
     $("body").addClass('fullscreen');
     $('a.fullscreen').addClass('active');
-    Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true');
+    Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true', { sameSite: 'lax' });
 }
 
 // Exit fullscreen mode and drop cookie
