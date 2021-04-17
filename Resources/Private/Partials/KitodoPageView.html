@@ -323,6 +323,17 @@
                     </f:link.external>
                   </li>
                 </f:if>
+
+                <f:comment><!-- [IIIF downloads (JSON)] -------------------------- --></f:comment>
+                <f:if condition="{dc:xpath(xpath: '//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"]')}">
+                  <li class="iiif-download">
+                    <f:link.external
+                      uri="https://iiif.slub-dresden.de/iiif/2/{dc:xpath(xpath: '//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"]')}/manifest.json"
+                      class="download-document iiif"
+                      title="{f:translate(key: 'download.iiif', extensionName='slub_digitalcollections')}"><f:translate key="download.iiif" extensionName="slub_digitalcollections" />
+                    </f:link.external>
+                  </li>
+                </f:if>
             </ul>
           </li>
 

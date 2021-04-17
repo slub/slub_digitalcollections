@@ -56,6 +56,9 @@
 			<trans-unit id="download.work">
 				<source><![CDATA[Download whole work]]></source>
 			</trans-unit>
+			<trans-unit id="download.iiif">
+				<source><![CDATA[IIIF manifest (JSON)]]></source>
+			</trans-unit>
 			<trans-unit id="fullscreen">
 				<source><![CDATA[Fullscreen Mode]]></source>
 			</trans-unit>

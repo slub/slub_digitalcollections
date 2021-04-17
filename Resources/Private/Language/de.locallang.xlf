@@ -73,6 +73,10 @@
 				<source><![CDATA[Download whole work]]></source>
 				<target><![CDATA[Gesamtes Werk herunterladen (PDF)]]></target>
 			</trans-unit>
+			<trans-unit id="download.iiif" approved="yes">
+				<source><![CDATA[IIIF manifest (JSON)]]></source>
+				<target><![CDATA[IIIF Manifest (JSON)]]></target>
+			</trans-unit>
 			<trans-unit id="fullscreen" approved="yes">
 				<source><![CDATA[Fullscreen Mode]]></source>
 				<target><![CDATA[Vollansicht]]></target>
