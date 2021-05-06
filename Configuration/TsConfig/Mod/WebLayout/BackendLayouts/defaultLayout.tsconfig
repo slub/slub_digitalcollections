@@ -2,7 +2,7 @@
 # Backendlayout: kitodo
 #
 mod.web_layout.BackendLayouts {
-    defaultLayout {
+    default_layout {
         title = Kitodo: Digital Collections - Default Layout
         config {
             backend_layout {
