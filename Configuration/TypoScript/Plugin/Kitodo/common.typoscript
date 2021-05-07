@@ -12,18 +12,18 @@ page {
     # we need jquery in head as it is used by pageview plugin
     # --> jQuery must be provided by Kitodo.Presentation --> include Template "Basis Configuration"
     includeJSFooterlibs {
-        kitodo-frontend = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsListScripts.js
+        kitodo-frontend = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsListScripts.js
     }
 }
 
-[page["backend_layout"] == 'pagets__kitodo'] || [page["backend_layout"] == 'pagets__emptyworkview']
+[page["backend_layout"] == 'pagets__kitodo' or page["backend_layout"] == 'pagets__emptyworkview']
     config.disableWrapInBaseClass = 1
 
     # switch to viewer css
     page.includeCSS.kitodo = {$config.kitodo.css.pageview}
 
     # switch to viewer js
-    page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/Javascript/DigitalcollectionsScripts.js
+    page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsScripts.js
 
     # clear not required js
     page.includeJSFooterlibs.kitodo-frontend >
@@ -33,7 +33,7 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # add opengraph social metatags in single view with a valid id
 # --------------------------------------------------------------------------------------------------------------------
-[request.getQueryParams()['tx_dlf']['id'] > 0]
+[traverse(request.getQueryParams(), 'tx_dlf/id') > 0]
 
   page.2 = LOAD_REGISTER
   page.2 {
@@ -120,7 +120,7 @@ page {
         10 {
           table = tx_dlf_documents
           select {
-            pidInList = 4152
+            pidInList = {$config.kitodo.storagePid}
             selectFields=title,author,year,place
             where=uid=###postid###
             markers {
@@ -143,7 +143,7 @@ page {
               stdWrap.noTrimWrap = ||, |
             }
             30 = TEXT
-            30 {pagets__
+            30 {
               field = place
               stdWrap.if.isTrue.field = place
             }

@@ -1,4 +1,4 @@
 #
 # PageTS for SLUB Digitalcollections
 #
-<INCLUDE_TYPOSCRIPT: source="DIR:EXT:slub_digitalcollections/Configuration/TsConfig/" extensions="tsconfig">
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:slub_digitalcollections/Configuration/TsConfig/Mod/" extensions="tsconfig">

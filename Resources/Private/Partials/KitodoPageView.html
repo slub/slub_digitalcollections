@@ -78,26 +78,64 @@
       </f:else>
     </f:if>
     <div class="document-functions">
+      <div class="provider">
         <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
-        <div class="provider">
-          <f:alias map="{providerLogoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerLogo)[1]\')}',
-          providerTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:owner)[1]\')}',
-          providerUri: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerSiteURL)[1]\', htmlspecialchars:\'FALSE\')}'}">
-              <f:if condition="{settings.showProviderLogo} && {dc:providerLogoCached(logo:'{providerLogoUrl}')}">
-                  <f:if condition="{providerLogoUrl}">
-                    <f:link.external
-                      uri="{providerUri}"
-                      title="{providerTitle}">
-                      <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{providerLogoUrl}')}"
-                          width="108"
-                          title="{providerTitle}"
-                          alt="Logo von {providerTitle}"
-                      />
-                    </f:link.external>
+        <f:if condition="{settings.showProviderLogo}">
+          <ul>
+              <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerLogo)[1]\')}',
+                  logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:owner)[1]\')}',
+                  logoUri: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerSiteURL)[1]\', htmlspecialchars:\'FALSE\')}'}">
+                  <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
+                      <li>
+                          <f:link.external
+                              uri="{logoUri}"
+                              title="{logoTitle}">
+                              <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
+                                  width="108"
+                                  title="{logoTitle}"
+                                  alt="Logo von {logoTitle}"
+                              />
+                          </f:link.external>
+                      </li>
                   </f:if>
-              </f:if>
-          </f:alias>
-          <dl class="mobile-meta">
+              </f:alias>
+              <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregatorLogo)[1]\')}',
+                  logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregator)[1]\')}',
+                  logoUri: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregatorSiteURL)[1]\', htmlspecialchars:\'FALSE\')}'}">
+                  <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
+                      <li>
+                          <f:link.external
+                              uri="{logoUri}"
+                              title="{logoTitle}">
+                              <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
+                                  width="108"
+                                  title="{logoTitle}"
+                                  alt="Logo von {logoTitle}"
+                              />
+                          </f:link.external>
+                      </li>
+                  </f:if>
+              </f:alias>
+              <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsorLogo)[1]\')}',
+                  logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsor)[1]\')}',
+                  logoUri: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsorSiteURL)[1]\', htmlspecialchars:\'FALSE\')}'}">
+                  <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
+                      <li>
+                          <f:link.external
+                              uri="{logoUri}"
+                              title="{logoTitle}">
+                              <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
+                                  width="108"
+                                  title="{logoTitle}"
+                                  alt="Logo von {logoTitle}"
+                              />
+                          </f:link.external>
+                      </li>
+                  </f:if>
+              </f:alias>
+          </ul>
+        </f:if>
+        <dl class="mobile-meta">
             <dt class="tx-dlf-title">Titel</dt>
             <dd class="tx-dlf-title">
               <a href="#">{docTitle}</a>
@@ -105,8 +143,8 @@
             <dt>Autor</dt>
             <dd><dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type="host"]/mods:name[//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:name/mods:role/mods:roleTerm[@authority="marcrelator"][@type="code"]="aut"]/mods:displayForm)[1]' />
             </dd>
-          </dl>
-        </div>
+        </dl>
+      </div>
         <f:comment><!-- [link navigation] ----------------------------- --></f:comment>
         <ul>
           <li class="submenu links">
@@ -141,7 +179,11 @@
                 <f:then>
                   <f:comment><!-- the SLUB catalogue way --></f:comment>
                   <li>
-                    <f:link.external uri="https://katalog.slub-dresden.de/ppn/<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"])' />" class="local-catalog" title="<f:translate key='provider.slub_catalogue' extensionName='slub_digitalcollections' />">
+                    <f:link.external
+                      uri="https://katalog.slub-dresden.de/ppn/<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"])' />"
+                      class="local-catalog"
+                      target="_blank"
+                      title="<f:translate key='provider.slub_catalogue' extensionName='slub_digitalcollections' />">
                       <f:translate key='provider.slub_catalogue' extensionName='slub_digitalcollections' />
                     </f:link.external>
                   </li>
@@ -153,10 +195,22 @@
                       <li>
                         <f:if condition="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' />">
                           <f:then>
-                            <f:link.external uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />" class="local-catalog" title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' /></f:link.external>
+                            <f:link.external
+                              uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
+                              class="local-catalog"
+                              target="_blank"
+                              title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />">
+                                <dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' />
+                            </f:link.external>
                           </f:then>
                           <f:else>
-                            <f:link.external uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />" class="local-catalog" title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />"><f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' /></f:link.external>
+                            <f:link.external
+                              uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
+                              class="local-catalog"
+                              target="_blank"
+                              title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />">
+                                <f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />
+                            </f:link.external>
                           </f:else>
                         </f:if>
                       </li>
@@ -192,7 +246,8 @@
                             uri="<dc:downloadLinks type='work' />"
                             class="download-document"
                             target="_blank"
-                            title="<f:translate key='download.work' extensionName='slub_digitalcollections' />"><f:translate key="download.work"  extensionName="slub_digitalcollections" />
+                            title="<f:translate key='download.work' extensionName='slub_digitalcollections' />">
+                              <f:translate key="download.work"  extensionName="slub_digitalcollections" />
                           </f:link.external>
                       </f:if>
                       <f:alias map="{xpathDownload: '//mets:fileSec/mets:fileGrp[@USE=\'DOWNLOAD\']//mets:file/mets:FLocat/@xlink:href'}">
@@ -203,13 +258,15 @@
                                           uri="<dc:xpath xpath='({xpathDownload})[{gp-page}]' />"
                                           class="download-page pdf left"
                                           target="_blank"
-                                          title="<f:translate key='download.pdf.leftPage' extensionName='slub_digitalcollections' />"><f:translate key="download.pdf.leftPage" extensionName="slub_digitalcollections" />
+                                          title="<f:translate key='download.pdf.leftPage' extensionName='slub_digitalcollections' />">
+                                            <f:translate key="download.pdf.leftPage" extensionName="slub_digitalcollections" />
                                       </f:link.external>
                                       <f:link.external
                                           uri="<dc:xpath xpath='({xpathDownload})[{gp-page2}]' />"
                                           class="download-page pdf right"
                                           target="_blank"
-                                          title="<f:translate key='download.pdf.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.pdf.rightPage" extensionName="slub_digitalcollections" />
+                                          title="<f:translate key='download.pdf.rightPage' extensionName='slub_digitalcollections' />">
+                                            <f:translate key="download.pdf.rightPage" extensionName="slub_digitalcollections" />
                                       </f:link.external>
                                   </f:then>
                                   <f:else>
@@ -217,7 +274,8 @@
                                           uri="<dc:xpath xpath='({xpathDownload})[{gp-page}]' />"
                                           class="download-page pdf singlepage"
                                           target="_blank"
-                                          title="<f:translate key='download.pdf.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.pdf.singlePage" extensionName="slub_digitalcollections" />
+                                          title="<f:translate key='download.pdf.singlePage' extensionName='slub_digitalcollections' />">
+                                            <f:translate key="download.pdf.singlePage" extensionName="slub_digitalcollections" />
                                       </f:link.external>
                                   </f:else>
                               </f:if>
@@ -251,13 +309,15 @@
                                   uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image left"
                                   target="_blank"
-                                  title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" />
+                                  title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />">
+                                    <f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" />
                               </f:link.external>
                               <f:link.external
                                   uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                                   class="download-page image right"
                                   target="_blank"
-                                  title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" />
+                                  title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />">
+                                    <f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" />
                               </f:link.external>
                           </div>
                       </li>
@@ -268,7 +328,8 @@
                           uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif'\", then:'/full/full/0/default.jpg')}"
                           class="download-page image"
                           target="_blank"
-                          title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
+                          title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />">
+                            <f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
                       </f:link.external>
                     </li>
                   </f:else>
@@ -319,7 +380,9 @@
                     <f:link.external
                       uri="https://digital.slub-dresden.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:recordInfo/mods:recordIdentifier)' />"
                       class="download-document mets"
-                      title="<f:translate key='download.mets' extensionName='slub_digitalcollections' />"><f:translate key="download.mets" extensionName="slub_digitalcollections" />
+                      target="_blank"
+                      title="<f:translate key='download.mets' extensionName='slub_digitalcollections' />">
+                        <f:translate key="download.mets" extensionName="slub_digitalcollections" />
                     </f:link.external>
                   </li>
                 </f:if>

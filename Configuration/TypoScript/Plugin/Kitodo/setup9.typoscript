@@ -262,7 +262,7 @@ lib.kitodo.newspaper.calendar {
     templateFile = {$config.kitodo.templates.newspaperCalendar}
 }
 
-[getDocumentType("{$config.kitodo.storagePid}") == "ephemera"] || [getDocumentType("{$config.kitodo.storagePid}") == "newspaper"]
+[getDocumentType("{$config.kitodo.storagePid}") == "ephemera" or getDocumentType("{$config.kitodo.storagePid}") == "newspaper"]
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_anchor

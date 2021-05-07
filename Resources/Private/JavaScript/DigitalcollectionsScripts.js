@@ -102,7 +102,7 @@ $(function () {
         $('.control-bar .metadata-wrapper').append('<div class="metadata-toggle">' + metadataToggleLabelMore + '</div>');
         $('.metadata-toggle').on('click', function () {
             if (!$('.control-bar').hasClass('all-metadata')) {
-                Cookies.set('tx-dlf-allmetadata', 'true');
+                Cookies.set('tx-dlf-allmetadata', 'true', { sameSite: 'lax' });
                 $(this).text(metadataToggleLabelLess);
             } else {
                 Cookies.remove('tx-dlf-allmetadata');
@@ -200,8 +200,7 @@ $(function () {
     // Add class to  collection related DD elements in metadata lists
     $('dl.tx-dlf-metadata-titledata').find('dt:contains(mmlung), dt:contains(llection)').nextUntil('dt', 'dd').addClass('tx-dlf-metadata-collection');
 
-    // Finally all things are settled. Curtain up and bring back animations a second later.
-    $('body').removeClass('hidden');
+    // Finally all things are settled. Bring back animations a second later.
     setTimeout(function () {
         localStorage.clear();
         $('.fwds, .backs').removeClass('no-transition');
@@ -235,7 +234,7 @@ function enterFullscreen() {
     }, 220);
     $("body").addClass('fullscreen');
     $('a.fullscreen').addClass('active');
-    Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true');
+    Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true', { sameSite: 'lax' });
 }
 
 // Exit fullscreen mode and drop cookie
