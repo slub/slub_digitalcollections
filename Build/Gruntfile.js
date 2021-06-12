@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                         ],
                         "Resources/Public/JavaScript/DigitalcollectionsListScripts.js" : [
                             'Resources/Private/JavaScript/modernizrCustom.js',
-                            'Resources/Public/JavaScript/Highlight/colcade.js',
+                            'Resources/Private/JavaScript/colcade.js',
                             'Resources/Private/JavaScript/DigitalcollectionsListScripts.js',
                         ],
                 }
