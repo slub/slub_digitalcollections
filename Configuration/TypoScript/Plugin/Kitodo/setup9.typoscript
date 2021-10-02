@@ -262,14 +262,14 @@ lib.kitodo.newspaper.calendar {
     templateFile = {$config.kitodo.templates.newspaperCalendar}
 }
 
-[getDocumentType("{$config.kitodo.storagePid}") == "ephemera" or getDocumentType("{$config.kitodo.storagePid}") == "newspaper"]
+[getDocumentType({$config.kitodo.storagePid}) === 'ephemera' or getDocumentType({$config.kitodo.storagePid}) === 'newspaper']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_anchor
 }
 [END]
 
-[getDocumentType("{$config.kitodo.storagePid}") == "year"]
+[getDocumentType({$config.kitodo.storagePid}) === 'year']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_year
@@ -296,7 +296,7 @@ page.2.postTitle.cObject {
 }
 [END]
 
-[getDocumentType("{$config.kitodo.storagePid}") == "issue"]
+[getDocumentType({$config.kitodo.storagePid}) === 'issue']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_issue
