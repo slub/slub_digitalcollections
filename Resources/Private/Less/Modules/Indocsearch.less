@@ -113,6 +113,7 @@
                 color: @primary-color;
                 font-style: normal;
                 font-weight: bold;
+                font-size: 120%;
             }
             .textsnippet {
                 a {
@@ -162,7 +163,6 @@
                 .structure {
                     display: inline;
                 }
-                white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
@@ -275,6 +275,15 @@
                 .structure {
                     color: white;
                     opacity: .6;
+                }
+                .textsnippet {
+                    a {
+                        color: white;
+                    }
+                    &:before,
+                    &:after {
+                        content: "…";
+                    }
                 }
                 a {
                     color: white;
