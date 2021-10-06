@@ -119,6 +119,9 @@ config {
             # cat=plugin.tx_slubdigitalcollections/advanced/0416; type=string; label=ToolsImagemanipulation Template
             toolsImageManipulation = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/ToolsImagemanipulation.html
 
+            # cat=plugin.tx_slubdigitalcollections/advanced/0415; type=string; label=ToolFullText Template
+            toolFulltextdownload = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/FulltextDownloadTool.html
+
             # cat=plugin.tx_slubdigitalcollections/advanced/0417; type=string; label=NewspaperYear Template
             newspaperYear = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NewspaperYear.html
 
