@@ -242,6 +242,11 @@ plugin.tx_dlf_imagemanipulationtool {
     templateFile = {$config.kitodo.templates.toolsImageManipulation}
 }
 
+plugin.tx_dlf_fulltextdownloadtool {
+    pages = {$config.kitodo.storagePid}
+    templateFile = {$config.kitodo.templates.toolFulltextdownload}
+}
+
 # --------------------------------------------------------------------------------------------------------------------
 # newspaper navigation
 # --------------------------------------------------------------------------------------------------------------------

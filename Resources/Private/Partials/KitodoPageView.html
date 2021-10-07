@@ -369,6 +369,10 @@
                                 <dc:extractFulltext file="{dc:xpath(xpath:'(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}" />
                               </div>
                           </li>
+                          <f:comment><!-- [Fulltext downloads (TXT)] -------------------------- --></f:comment>
+                          <li class="txt-download">
+                            <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltextdownloadtool" />
+                          </li>
                       </f:else>
                   </f:if>
                 </f:if>
