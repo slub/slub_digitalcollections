@@ -86,9 +86,6 @@ config {
             # cat=plugin.tx_slubdigitalcollections/advanced/0405; type=string; label=SearchFullText Template
             searchFullText = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/SearchFullText.html
 
-            # cat=plugin.tx_slubdigitalcollections/advanced/0406; type=string; label=SearchInDocumentTool Template
-            searchInDocumentTool = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/SearchInDocumentTool.html
-
             # cat=plugin.tx_slubdigitalcollections/advanced/0407; type=string; label=Metadata Template
             metadata = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Metadata.html
 

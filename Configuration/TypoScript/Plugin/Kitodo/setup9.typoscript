@@ -31,7 +31,12 @@ lib.kitodo.fulltext.search {
 # ajax search in workview
 # --------------------------------------------------------------------------------------------------------------------
 plugin.tx_dlf_searchindocumenttool {
-    templateFile = {$config.kitodo.templates.searchInDocumentTool}
+    idInputName = tx_dlf[id]
+    queryInputName = tx_dlf[query]
+    startInputName = tx_dlf[start]
+    pageInputName = tx_dlf[page]
+    highlightWordInputName = tx_dlf[highlight_word]
+    encryptedInputName = tx_dlf[encrypted]
     pages = {$config.kitodo.storagePid}
     // UID of dlfCore0
     solrcore = {$config.kitodo.solr.core}
@@ -234,7 +239,6 @@ plugin.tx_dlf_fulltexttool {
     templateFile = {$config.kitodo.templates.toolFullText}
     activateFullTextInitially = 0
     fullTextScrollElement = html, body
-    searchHlParameters = tx_dlf[highlight_word]
 }
 
 plugin.tx_dlf_imagemanipulationtool {
