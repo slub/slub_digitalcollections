@@ -31,6 +31,12 @@ lib.kitodo.fulltext.search {
 # ajax search in workview
 # --------------------------------------------------------------------------------------------------------------------
 plugin.tx_dlf_searchindocumenttool {
+    idInputName = tx_dlf[id]
+    queryInputName = tx_dlf[query]
+    startInputName = tx_dlf[start]
+    pageInputName = tx_dlf[page]
+    highlightWordInputName = tx_dlf[highlight_word]
+    encryptedInputName = tx_dlf[encrypted]
     templateFile = {$config.kitodo.templates.searchInDocumentTool}
     pages = {$config.kitodo.storagePid}
     // UID of dlfCore0
@@ -234,6 +240,7 @@ plugin.tx_dlf_fulltexttool {
     templateFile = {$config.kitodo.templates.toolFullText}
     activateFullTextInitially = 0
     fullTextScrollElement = html, body
+    # TODO: Remove this once migration to v3.3 is completed
     searchHlParameters = tx_dlf[highlight_word]
 }
 
