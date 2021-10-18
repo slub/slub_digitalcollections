@@ -82,8 +82,9 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $filterQuery ='collection_faceting:(' . $collecionsOrString .')';
                 $highlight = [
                     'hl' => 'on',
-                    'hl.fl' => 'fulltext',
-                    'hl.method' => 'fastVector'
+                    'hl.ocr.fl' => 'fulltext',
+                    'hl.ocr.trackPages' => 'off',
+                    'hl.snippets' => 20,
                 ];
                 $filterList = 'uid,id,page,thumbnail,toplevel';
                 $solrQuery = 'fulltext:("' . $queryString . '")';
@@ -161,7 +162,9 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                         $searchResult['structure'] = $doc['type'];
                         $searchResult['title'] = $doc['title'];
                         if ($searchParams['fulltext'] == '1') {
-                            $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
+                            $hightlightSnippet = array_map(function ($snippet) {
+                                return $snippet['text'];
+                            }, $result['ocrHighlighting'][$doc['id']]['fulltext']['snippets'] ?? []);
                             $searchResult['highlighting'] = $hightlightSnippet;
                             // get the emphasized word between <em></em> to take it for word highlighting
                             $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
@@ -178,7 +181,9 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $searchResult = [];
                             $searchResult['page'] = $doc['page'];
                             $searchResult['thumbnail'] = $doc['thumbnail'];
-                            $hightlightSnippet = $result['highlighting'][$doc['id']]['fulltext'];
+                            $hightlightSnippet = array_map(function ($snippet) {
+                                return $snippet['text'];
+                            }, $result['ocrHighlighting'][$doc['id']]['fulltext']['snippets'] ?? []);
                             $searchResult['highlighting'] = $hightlightSnippet;
                             // get the emphasized word between <em></em> to take it for word highlighting
                             $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
