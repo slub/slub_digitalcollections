@@ -114,7 +114,7 @@
 </f:section>
 
 <f:section name="render.pageselect">
-    <div class="tx-dlf-navigation-pageselect">
+    <li class="pages">
         <f:form method="get" fieldNamePrefix="tx_dlf" addQueryString="1" argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[page]'}">
             <label for="{uniqueId}">
                 <f:translate key="selectPage"/>
@@ -125,7 +125,7 @@
                 additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
             </f:form.select>
         </f:form>
-    </div>
+    </li>
 </f:section>
 
 <f:section name="render.pageForward">
@@ -190,38 +190,30 @@
 </f:section>
 
 <f:section name="render.zoom">
-    <div class="tx-dlf-navigation-zoom-in">
-        <a href="#" title="{f:translate(key: 'zoomIn')}" onclick="tx_dlf_viewer.map.zoomIn();">
+    <li class="zoom">
+        <a href="#" class="in" title="{f:translate(key: 'zoomIn')}" onclick="tx_dlf_viewer.map.zoomIn();">
             <f:translate key="zoomIn"/>
         </a>
-    </div>
-    <div class="tx-dlf-navigation-zoom-out">
-        <a href="#" title="{f:translate(key: 'zoomOut')}" onclick="tx_dlf_viewer.map.zoomOut();">
+        <a href="#" class="out" title="{f:translate(key: 'zoomOut')}" onclick="tx_dlf_viewer.map.zoomOut();">
             <f:translate key="zoomOut"/>
         </a>
-    </div>
-    <div class="tx-dlf-navigation-fullscreen">
-        <a href="#" title="{f:translate(key: 'zoomFullscreen')}">
+        <a href="#" class="fullscreen" title="{f:translate(key: 'zoomFullscreen')}">
             <f:translate key="zoomFullscreen"/>
         </a>
-    </div>
+    </li>
 </f:section>
 
 <f:section name="render.rotation">
-    <div class="tx-dlf-navigation-rotate-left">
-        <a href="#" title="{f:translate(key: 'rotateLeft')}" onclick="tx_dlf_viewer.map.rotateLeft();">
+    <li class="rotate">
+        <a href="#" class="rotate-left" title="{f:translate(key: 'rotateLeft')}" onclick="tx_dlf_viewer.map.rotateLeft();">
             <f:translate key="rotateLeft"/>
         </a>
-    </div>
-    <div class="tx-dlf-navigation-rotate-right">
-        <a href="#" title="{f:translate(key: 'rotateRight')}" onclick="tx_dlf_viewer.map.rotateRight();">
+        <a href="#" class="rotate-right" title="{f:translate(key: 'rotateRight')}" onclick="tx_dlf_viewer.map.rotateRight();">
             <f:translate key="rotateRight"/>
         </a>
-    </div>
-    <div class="tx-dlf-navigation-rotate-reset">
-        <a href="#" title="{f:translate(key: 'rotateReset')}" onclick="tx_dlf_viewer.map.resetRotation();">
+        <a href="#" class="upend" title="{f:translate(key: 'rotateReset')}" onclick="tx_dlf_viewer.map.resetRotation();">
             <f:translate key="rotateReset"/>
         </a>
-    </div>
+    </li>
 </f:section>
 </html>

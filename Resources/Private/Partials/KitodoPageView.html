@@ -482,11 +482,6 @@
     <f:comment><!-- [rotate and zoom buttons in page view] -------------------------- --></f:comment>
     <div class="view-functions">
       <f:if condition="{gp-pagegrid} == 1">
-        <f:then>
-        <ul>
-          <f:cObject typoscriptObjectPath="lib.kitodo.navigation.viewfunction_deactivated" />
-        </ul>
-        </f:then>
         <f:else>
           <ul>
             <f:cObject typoscriptObjectPath="lib.kitodo.navigation.viewfunction" />

@@ -129,17 +129,7 @@ lib.kitodo.navigation.viewfunction < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.viewfunction {
     settings {
         pages = {$config.kitodo.storagePid}
-        pageStep = 10
-        templateFile = {$config.kitodo.templates.navigationViewfunction}
-    }
-}
-
-lib.kitodo.navigation.viewfunction_deactivated < tt_content.list.20.dlf_navigation
-lib.kitodo.navigation.viewfunction_deactivated {
-    settings {
-        pages = {$config.kitodo.storagePid}
-        pageStep = 10
-        templateFile = {$config.kitodo.templates.navigationViewfunction-deactivated}
+        features = pageselect,rotation,zoom
     }
 }
 
@@ -156,7 +146,6 @@ lib.kitodo.navigation.viewfunction_deactivated {
 # imagemanipulationtool
 # pdfdownloadtool
 # searchindocumenttool
-
 
 plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
 plugin.tx_dlf_toolbox {
