@@ -154,6 +154,9 @@ class GetDoc
      */
     protected function loadDocument()
     {
+        // class not needed anymore. Has to be removed later.
+        return;
+
       $piVarsSet = GeneralUtility::_GPmerged('set');
 
       $piVars = GeneralUtility::_GPmerged('tx_dlf');
