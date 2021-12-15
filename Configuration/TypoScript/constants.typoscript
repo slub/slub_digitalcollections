@@ -34,25 +34,28 @@ config {
             cssClass = dlf-slub-logo
         }
 
-        # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label= Dlf Storage Pid
+        # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label=Kitodo.Presentation (dlf) Storage Pid
         storagePid = 4152
 
-        # cat=plugin.tx_slubdigitalcollections/links/0321; type=int+; label= Kitodo Terms of Use Page
+        # cat=plugin.tx_slubdigitalcollections/links/0321; type=boolean; label=Allow access to other Storage Pids
+        excludeOther = 1
+
+        # cat=plugin.tx_slubdigitalcollections/links/0322; type=int+; label= Kitodo Terms of Use Page
         termsOfUsePid =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0322; type=list; label= Pids for Navigation
+        # cat=plugin.tx_slubdigitalcollections/links/0323; type=list; label= Pids for Navigation
         viewerNavigationPids = 4010, 5346, 9259, 4012, 10105
 
-        # cat=plugin.tx_slubdigitalcollections/links/0323; type=int+; label= Kitodo Pageview
+        # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= Kitodo Pageview
         pageView = 5363
 
-        # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= pagegrid limit (thumbnail preview)
+        # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= pagegrid limit (thumbnail preview)
         pagegrid.limit = 35
 
-        # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= Kitodo Collection Page
+        # cat=plugin.tx_slubdigitalcollections/links/0326; type=int+; label= Kitodo Collection Page
         collectionView = 5362
 
-        # cat=plugin.tx_slubdigitalcollections/links/0326; type=int+; label= Kitodo List Page
+        # cat=plugin.tx_slubdigitalcollections/links/0327; type=int+; label= Kitodo List Page
         listView = 5364
 
         css {

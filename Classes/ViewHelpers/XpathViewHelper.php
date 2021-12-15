@@ -24,8 +24,14 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+use Kitodo\Dlf\Domain\Model\Document;
+use Kitodo\Dlf\Domain\Repository\DocumentRepository;
 
 /**
  * ViewHelper to get page info
@@ -55,6 +61,13 @@ class XpathViewHelper extends AbstractViewHelper
     }
 
     /**
+     * documentRepository
+     *
+     * @var DocumentRepository
+     */
+    protected static $documentRepository = null;
+
+    /**
      * Render the supplied DateTime object as a formatted date.
      *
      * @param array $arguments
@@ -70,9 +83,34 @@ class XpathViewHelper extends AbstractViewHelper
         $htmlspecialchars = $arguments['htmlspecialchars'];
         $returnArray = $arguments['returnArray'];
 
-        $doc = GeneralUtility::makeInstance(\Slub\SlubDigitalcollections\Helpers\GetDoc::class);
+        $parameters = [];
 
-        $result = $doc->getXpath($xpath);
+        $parametersSet = GeneralUtility::_GPmerged('set');
+        $parametersDlf = GeneralUtility::_GPmerged('tx_dlf');
+        if (isset($parametersSet['mets']) && GeneralUtility::isValidUrl($parametersSet['mets'])) {
+            $parameters['location'] = $parametersSet['mets'];
+        } else if (isset($parametersDlf['id'])) {
+            if (MathUtility::canBeInterpretedAsInteger($parametersDlf['id'])) {
+                $parameters['id'] = $parametersDlf['id'];
+            } else if (GeneralUtility::isValidUrl($parametersDlf['id'])) {
+                $parameters['location'] = $parametersDlf['id'];
+            }
+        } else if (isset($parametersDlf['recordId'])) {
+            $parameters['recordId'] = $parametersDlf['recordId'];
+        }
+
+        $document = self::getDocumentRepository()->findOneByParameters($parameters);
+
+        if (!$document) {
+            return;
+        }
+
+        $document->getDoc()->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
+        $document->getDoc()->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $document->getDoc()->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
+        $document->getDoc()->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
+
+        $result = $document->getDoc()->mets->xpath($xpath);
 
         if (is_array($result)) {
           foreach ($result as $row) {
@@ -96,4 +134,23 @@ class XpathViewHelper extends AbstractViewHelper
             return $output;
         }
     }
+
+
+    /**
+     * Initialize the documentRepository
+     *
+     * return documentRepository
+     */
+    private static function getDocumentRepository()
+    {
+        if (null === static::$documentRepository) {
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            static::$documentRepository = $objectManager->get(
+                DocumentRepository::class
+            );
+        }
+
+        return static::$documentRepository;
+    }
+
 }

@@ -1,6 +1,9 @@
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.typoscript">
 
 plugin.tx_dlf {
+    persistence {
+        storagePid = {$config.kitodo.storagePid}
+    }
 	view {
 		templateRootPaths {
 			10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates
@@ -56,8 +59,7 @@ plugin.tx_dlf_listview {
 plugin.tx_dlf_metadata < tt_content.list.20.dlf_metadata
 plugin.tx_dlf_metadata {
     settings {
-        pages = {$config.kitodo.storagePid}
-        excludeOther = 0
+        excludeOther = {$config.kitodo.excludeOther}
         linkTitle = 0
         getTitle = 0
         showFull = 1
@@ -73,8 +75,7 @@ plugin.tx_dlf_metadata {
 plugin.tx_dlf_pageview < tt_content.list.20.dlf_pageview
 plugin.tx_dlf_pageview {
     settings {
-        pages = {$config.kitodo.storagePid}
-        excludeOther = 0
+        excludeOther = {$config.kitodo.excludeOther}
         features =
         elementId = tx-dlf-map
     }
@@ -86,9 +87,18 @@ plugin.tx_dlf_pageview {
 plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
 plugin.tx_dlf_pagegrid {
     settings {
-        pages = {$config.kitodo.storagePid}
         limit = {$config.kitodo.pagegrid.limit}
         targetPid = #
+        paginate {
+            itemsPerPage = 10
+            insertAbove = 1
+            insertBelow = 1
+            lessPages = 1
+            forcedNumberOfLinks = 5
+            pagesBefore = 3
+            pagesAfter = 3
+            section =
+        }
     }
 }
 # --------------------------------------------------------------------------------------------------------------------
@@ -98,8 +108,8 @@ plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
         pages = {$config.kitodo.storagePid}
-        excludeOther = 0
-        targetPid = {$config.kitodo.pageview}
+        excludeOther = {$config.kitodo.excludeOther}
+        targetPid = {$config.kitodo.pageView}
         menuConf {
             expAll = 1
         }
@@ -192,28 +202,44 @@ plugin.tx_dlf_searchindocumenttool {
         pages = {$config.kitodo.storagePid}
         // UID of dlfCore0
         solrcore = {$config.kitodo.solr.core}
-
     }
 }
+
+plugin.tx_dlf_pdfdownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_pdfdownloadtool {
+    settings {
+        tools = pdfdownloadtool
+    }
+}
+
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # newspaper navigation
 # --------------------------------------------------------------------------------------------------------------------
-lib.kitodo.newspaper.years = USER
+lib.kitodo.newspaper.years < tt_content.list.20.dlf_calendar
 lib.kitodo.newspaper.years {
-    userFunc = Kitodo\Dlf\Plugin\Calendar->years
-    pages = {$config.kitodo.storagePid}
-    targetPid = {$config.kitodo.pageView}
-    templateFile = {$config.kitodo.templates.newspaperYear}
+    switchableControllerActions {
+        Calendar {
+            1 = years
+        }
+    }
+    settings {
+        targetPid = {$config.kitodo.pageView}
+    }
 }
 
-lib.kitodo.newspaper.calendar = USER
+lib.kitodo.newspaper.calendar < tt_content.list.20.dlf_calendar
 lib.kitodo.newspaper.calendar {
-    userFunc = Kitodo\Dlf\Plugin\Calendar->calendar
-    pages = {$config.kitodo.storagePid}
-    targetPid = {$config.kitodo.pageView}
-    showEmptyMonths = 0
-    templateFile = {$config.kitodo.templates.newspaperCalendar}
+    switchableControllerActions {
+        Calendar {
+            1 = calendar
+        }
+    }
+    settings {
+        targetPid = {$config.kitodo.pageView}
+        showEmptyMonths = 0
+    }
 }
 
 [getDocumentType({$config.kitodo.storagePid}) === 'ephemera' or getDocumentType({$config.kitodo.storagePid}) === 'newspaper']
