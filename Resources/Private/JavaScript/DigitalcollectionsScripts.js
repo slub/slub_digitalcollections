@@ -267,6 +267,10 @@ function exitFullscreen(persist) {
     }
 }
 
+// This event is so that the video player, which uses "F" as keybinding to
+// toggle fullscreen, can request theater mode via keybinding "T" without
+// knowing about how this is implemented.
+// See https://github.com/slub/slub_web_sachsendigital/pull/14
 window.addEventListener('dlf-theater-mode', (e) => {
     if (e.detail === undefined) {
         console.warn("dlf-theater-mode: No parameter given");
