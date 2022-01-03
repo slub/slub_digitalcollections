@@ -101,7 +101,7 @@ class XpathViewHelper extends AbstractViewHelper
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
 
-        if (!$document) {
+        if ($document === null || $document->getDoc() === null) {
             return;
         }
 
