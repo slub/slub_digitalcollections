@@ -7,6 +7,22 @@
  *
  */
 
+window.DigitalCollections = (function (dc) {
+    dc.isInTheaterMode = function () {
+        return $('body.fullscreen').length > 0;
+    };
+
+    dc.toggleTheaterMode = function (persist) {
+        if (dc.isInTheaterMode()) {
+            exitFullscreen(persist);
+        } else {
+            enterFullscreen(persist);
+        }
+    }
+
+    return dc;
+})(window.DigitalCollections || {});
+
 $(function () {
 
     // inital javascript "hello, i'm here!"
@@ -114,11 +130,7 @@ $(function () {
 
     // enable click on fullscreen button
     $('a.fullscreen').on('click', function () {
-        if ($('body.fullscreen')[0]) {
-            exitFullscreen();
-        } else {
-            enterFullscreen();
-        }
+        window.DigitalCollections.toggleTheaterMode();
     });
 
     // if cookie for fullscreen view is present adapat initial page rendering
@@ -213,7 +225,7 @@ $(document).keyup(function (e) {
 
     // Check if ESC key is pressed. Then end fullscreen mode or close SRU form.
     if (e.key === 'Escape') {
-        if ($('body.fullscreen')[0]) {
+        if (window.DigitalCollections.isInTheaterMode()) {
             return exitFullscreen();
         }
         if ($('.document-functions .search.open')[0]) {
@@ -228,21 +240,46 @@ $(document).keyup(function (e) {
 });
 
 // Activate fullscreen mode and set corresponding cookie
-function enterFullscreen() {
+function enterFullscreen(persist) {
+    persist = persist === undefined ? true : persist;
+
     setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").addClass('fullscreen');
     $('a.fullscreen').addClass('active');
+
     Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true', { sameSite: 'lax' });
 }
 
 // Exit fullscreen mode and drop cookie
-function exitFullscreen() {
+function exitFullscreen(persist) {
+    persist = persist === undefined ? true : persist;
+
     setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").removeClass('fullscreen');
     $('a.fullscreen').removeClass('active');
-    Cookies.remove('tx-dlf-pageview-zoomFullscreen');
+
+    if (persist) {
+        Cookies.remove('tx-dlf-pageview-zoomFullscreen');
+    }
 }
+
+// This event is so that the video player, which uses "F" as keybinding to
+// toggle fullscreen, can request theater mode via keybinding "T" without
+// knowing about how this is implemented.
+// See https://github.com/slub/slub_web_sachsendigital/pull/14
+window.addEventListener('dlf-theater-mode', (e) => {
+    if (e.detail === undefined) {
+        console.warn("dlf-theater-mode: No parameter given");
+        return;
+    }
+
+    switch (e.detail.action) {
+        case 'toggle':
+            window.DigitalCollections.toggleTheaterMode(e.detail.persist);
+            break;
+    }
+});
