@@ -148,12 +148,14 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $children = $this->findSolrByPartof($documentSet, $searchParams);
 
             foreach ($result['response']['docs'] as $doc) {
+                if (empty($documents[$doc['uid']])) {
+                    $documents[$doc['uid']] = $allDocuments[$doc['uid']];
+                }
                 if ($doc['toplevel'] === false) {
                     // this maybe a chapter, article, ..., year
                     if ($doc['type'] == 'year') {
                         continue;
                     }
-                    $document = $allDocuments[$doc['uid']];
                     if (!empty($doc['page'])) {
                         // it's probably a fulltext or metadata search
                         $searchResult = [];
@@ -171,11 +173,10 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
                             $searchResult['highlight_word'] = $highlightWord;
                         }
-                        $document['searchResults'][] = $searchResult;
+                        $documents[$doc['uid']]['searchResults'][] = $searchResult;
                     }
                 } else if ($doc['toplevel'] === true) {
-                    $document = $allDocuments[$doc['uid']];
-                    if ($document) {
+                    if ($documents[$doc['uid']]) {
                         if ($searchParams['fulltext'] == '1') {
                             // page is only set on fulltext search
                             $searchResult = [];
@@ -189,20 +190,20 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                             $highlightWord = substr($hightlightSnippet[0], strpos($hightlightSnippet[0], '<em>') + 4);
                             $highlightWord = substr($highlightWord, 0, strpos($highlightWord, '</em>'));
                             $searchResult['highlight_word'] = $highlightWord;
-                            $document['searchResults'][] = $searchResult;
+                            $documents[$doc['uid']]['searchResults'][] = $searchResult;
                         } else {
-                            $document['page'] = 1;
+                            $documents[$doc['uid']]['page'] = 1;
                             if (empty($searchParams['query'])) {
                                 // find all child documents but not on active search
-                                if (is_array($children[$document['uid']])) {
-                                    $document['children'] = $this->findAllByUids($children[$document['uid']]);
+                                if (is_array($children[$documents[$doc['uid']]['uid']])) {
+                                    $documents[$doc['uid']]['children'] = $this->findAllByUids($children[$documents[$doc['uid']]['uid']]);
                                 }
                             }
                         }
                     }
                 }
-                $documents[] = $document;
             }
+//            $documents[] = $document;
         }
         return ['solrResults' => $result['response']['docs'], 'documents' => $documents];
     }
@@ -267,7 +268,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * Finds all collections
+     * Finds all documents with given uids
      *
      * @param string $uids separated by comma
      *

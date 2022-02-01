@@ -124,7 +124,6 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
      */
     public function showAction()
     {
-
         // if search was triggered, get search parameters from POST variables
         $searchParams = $this->getParametersSafely('searchParameter');
 
@@ -149,7 +148,6 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
             $widgetPage = ['currentPage' => 1];
         }
 
-        $this->view->assign('collection', $collection);
         $this->view->assign('documents', $solrResults['documents']);
         $this->view->assign('metadata', $metadata);
         $this->view->assign('widgetPage', $widgetPage);
