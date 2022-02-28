@@ -363,6 +363,9 @@
 			<trans-unit id="metadata.localtermsofuse" xml:space="preserve">
 				<source>Local Terms of Use</source>
 			</trans-unit>
+			<trans-unit id="metadata.localtermsofuse2" xml:space="preserve">
+				<source>Local Terms of Use</source>
+			</trans-unit>
 			<trans-unit id="sortinfo" xml:space="preserve">
 				<source>Entries %s to %s from %s.</source>
 			</trans-unit>
