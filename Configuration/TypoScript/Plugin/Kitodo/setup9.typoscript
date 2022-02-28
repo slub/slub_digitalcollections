@@ -14,44 +14,41 @@ plugin.tx_dlf {
 # --------------------------------------------------------------------------------------------------------------------
 # search
 # --------------------------------------------------------------------------------------------------------------------
-plugin.tx_dlf_search {
-  templateFile =  {$config.kitodo.templates.search}
-}
 
-lib.kitodo.fulltext.search = USER
+plugin.tx_dlf_search < tt_content.list.20.dlf_search
+
+lib.kitodo.fulltext.search < plugin.tx_dlf_search
 lib.kitodo.fulltext.search {
-    userFunc = Kitodo\Dlf\Plugin\Search->main
-    // storagePid of SLUB Digitale Sammlungen
-    pages = {$config.kitodo.storagePid}
-    // UID of dlfCore0
-    solrcore = {$config.kitodo.solr.core}
-    limit = {$config.kitodo.solr.searchLimit}
-    // we activate fulltext here and search only in fulltext (see template)
-    fulltext = 1
-    // search only in current document
-    searchIn = document
-    // doesn't work due to javascript inclusion of autocomplete in header
-    suggest = 0
-    targetPid = {$config.kitodo.listView}
-    // this feature doesn't work in our case. It always jumps to page 1
-    showSingleResult = 0
-    templateFile = {$config.kitodo.templates.searchFullText}
+    view {
+		templateRootPaths {
+			10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates/Fulltext
+		}
+	}
+    settings {
+        // UID of dlfCore0
+        solrcore = {$config.kitodo.solr.core}
+        limit = {$config.kitodo.solr.searchLimit}
+        // we activate fulltext here and search only in fulltext (see template)
+        fulltext = 1
+        // search only in current document
+        searchIn = document
+        // doesn't work due to javascript inclusion of autocomplete in header
+        suggest = 0
+        targetPid = {$config.kitodo.listView}
+        // this feature doesn't work in our case. It always jumps to page 1
+        showSingleResult = 0
+    }
 }
 
 # --------------------------------------------------------------------------------------------------------------------
 # collections
 # --------------------------------------------------------------------------------------------------------------------
-plugin.tx_dlf_collection {
-    templateFile = {$config.kitodo.templates.collections}
-}
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # listview
 # --------------------------------------------------------------------------------------------------------------------
-plugin.tx_dlf_listview {
-    templateFile = {$config.kitodo.templates.listView}
-    # getTitle = 1
-}
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # metadata
@@ -107,7 +104,6 @@ plugin.tx_dlf_pagegrid {
 plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
-        pages = {$config.kitodo.storagePid}
         excludeOther = {$config.kitodo.excludeOther}
         targetPid = {$config.kitodo.pageView}
         menuConf {
@@ -126,7 +122,6 @@ plugin.tx_dlf_tableofcontents {
 lib.kitodo.navigation.pagecontrol < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.pagecontrol {
     settings {
-        pages = {$config.kitodo.storagePid}
         pageStep = 10
         features = pageFirst,pageBack,pageStepBack,pageForward,pageStepForward,pageLast
     }
@@ -160,7 +155,6 @@ lib.kitodo.navigation.viewfunction {
 plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
 plugin.tx_dlf_toolbox {
     settings {
-        pages = {$config.kitodo.storagePid}
 #        fileGrpsImageDownload = MIN,DEFAULT,MAX
     }
 }
@@ -169,7 +163,6 @@ plugin.tx_dlf_fulltexttool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_fulltexttool {
     settings {
         tools = fulltexttool
-        pages = {$config.kitodo.storagePid}
         activateFullTextInitially = 0
         fullTextScrollElement = html, body
     }
