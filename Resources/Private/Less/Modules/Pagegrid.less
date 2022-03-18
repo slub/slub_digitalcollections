@@ -87,7 +87,7 @@ body.gridview {
     }
 }
 
-.tx-dlf-pagegrid-pagebrowser { // The stupid old paging. YEAH!
+.tx-dlf-pagegrid .f3-widget-paginator {
     position: absolute;
     bottom: 15px;
     height: 1px;
@@ -97,6 +97,7 @@ body.gridview {
     line-height: 0;
     background: green;
     .text-hide();
+    display: flex;
     a {
         position: absolute;
         bottom: 0;
@@ -128,6 +129,10 @@ body.gridview {
                 background-position: -280px -80px;
             }
         }
+    }
+    .current {
+        width: 40px;
+        height: 40px;
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
         height: 70px;
