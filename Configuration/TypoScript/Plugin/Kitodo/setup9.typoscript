@@ -91,7 +91,7 @@ plugin.tx_dlf_pagegrid {
         targetPid = #
         paginate {
             itemsPerPage = 10
-            insertAbove = 1
+            insertAbove = 0
             insertBelow = 1
             lessPages = 1
             forcedNumberOfLinks = 5
