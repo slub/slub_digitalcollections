@@ -93,6 +93,7 @@ $(function () {
         $('dl.mobile-meta').append('<dt class="mobile-page-number">No.</dt><dd class="mobile-page-number">' + $('.pages select option[selected]').text() + '</dd>');
     }
 
+    // Copy some controls for mobile (page select, fullscreen)
     $('.provider').append('<div class="mobile-controls" />');
     $('.view-functions .pages form, .view-functions .zoom a.fullscreen, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
 
