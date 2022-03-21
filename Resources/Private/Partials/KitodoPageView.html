@@ -239,52 +239,7 @@
             <ul>
                 <li class="pdf-download has-multilinks">
                     <f:cObject typoscriptObjectPath="plugin.tx_dlf_pdfdownloadtool" />
-                  </li>
-
-              <f:comment><!-- [Page downloads (PDF)] ------------------------------ --></f:comment>
-              <li class="pdf-download has-multilinks">
-                  <div class="multilinks">
-                      <f:if condition="{dc:downloadLinks(type:'work')}">
-                          <f:link.external
-                            uri="<dc:downloadLinks type='work' />"
-                            class="download-document"
-                            target="_blank"
-                            title="<f:translate key='download.work' extensionName='slub_digitalcollections' />">
-                              <f:translate key="download.work"  extensionName="slub_digitalcollections" />
-                          </f:link.external>
-                      </f:if>
-                      <f:alias map="{xpathDownload: '//mets:fileSec/mets:fileGrp[@USE=\'DOWNLOAD\']//mets:file/mets:FLocat/@xlink:href'}">
-                          <f:if condition="<dc:xpath xpath='({xpathDownload})[{gp-page}]' />">
-                              <f:if condition="{gp-double} == 1">
-                                  <f:then>
-                                      <f:link.external
-                                          uri="<dc:xpath xpath='({xpathDownload})[{gp-page}]' />"
-                                          class="download-document pdf left"
-                                          target="_blank"
-                                          title="<f:translate key='download.pdf.leftPage' extensionName='slub_digitalcollections' />">
-                                            <f:translate key="download.pdf.leftPage" extensionName="slub_digitalcollections" />
-                                      </f:link.external>
-                                      <f:link.external
-                                          uri="<dc:xpath xpath='({xpathDownload})[{gp-page2}]' />"
-                                          class="download-document pdf right"
-                                          target="_blank"
-                                          title="<f:translate key='download.pdf.rightPage' extensionName='slub_digitalcollections' />">
-                                            <f:translate key="download.pdf.rightPage" extensionName="slub_digitalcollections" />
-                                      </f:link.external>
-                                  </f:then>
-                                  <f:else>
-                                      <f:link.external
-                                          uri="<dc:xpath xpath='({xpathDownload})[{gp-page}]' />"
-                                          class="download-document pdf singlepage"
-                                          target="_blank"
-                                          title="<f:translate key='download.pdf.singlePage' extensionName='slub_digitalcollections' />">
-                                            <f:translate key="download.pdf.singlePage" extensionName="slub_digitalcollections" />
-                                      </f:link.external>
-                                  </f:else>
-                              </f:if>
-                          </f:if>
-                    </f:alias>
-                  </div>
+                </li>
               </li>
 
               <f:comment><!-- [Image downloads (JPG)] ----------------------------- --></f:comment>
