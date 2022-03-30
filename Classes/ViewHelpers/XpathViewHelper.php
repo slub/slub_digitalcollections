@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+use Kitodo\Dlf\Common\MetsDocument;
 use Kitodo\Dlf\Domain\Model\Document;
 use Kitodo\Dlf\Domain\Repository\DocumentRepository;
 
@@ -101,7 +102,7 @@ class XpathViewHelper extends AbstractViewHelper
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
 
-        if ($document === null || $document->getDoc() === null) {
+        if ($document === null || $document->getDoc() === null || !($document->getDoc() instanceof MetsDocument)) {
             return;
         }
 
