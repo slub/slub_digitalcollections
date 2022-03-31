@@ -120,9 +120,6 @@
                                 background: url('@{control-icons}') no-repeat 0 0;
                                 background-size: auto 120px;
                             }
-                            &.download-fulltext:before {
-                                background-position: -280px -40px;
-                            }
                             &.local-presentation:before {
                                 background-position: -440px -80px;
                             }
@@ -132,14 +129,20 @@
                             &.local-contact:before {
                                 background-position: -400px -40px;
                             }
-                            &.download-document:before,
-                            &[title$="Seite"]:before,
-                            &[title$="Page"]:before {
-                                background-position: -360px -40px;
+                            &.download-fulltext:before {
+                                background-position: -280px -40px;
+                            }
+                            &#tx-dlf-tools-fulltextdownload:before {
+                                background-position: -280px -40px;
                             }
                             &.download-page:before,
                             &[title$="ument"]:before {
                                 background-position: -320px -40px;
+                            }
+                            &.download-document:before,
+                            &[title$="Seite"]:before,
+                            &[title$="Page"]:before {
+                                background-position: -360px -40px;
                             }
                             &.persistence-document:before {
                                 background-position: -360px -80px;
