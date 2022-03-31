@@ -87,10 +87,9 @@ plugin.tx_dlf_pageview {
 plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
 plugin.tx_dlf_pagegrid {
     settings {
-        limit = {$config.kitodo.pagegrid.limit}
         targetPid = #
         paginate {
-            itemsPerPage = 10
+            itemsPerPage = {$config.kitodo.pagegrid.limit}
             insertAbove = 0
             insertBelow = 1
             lessPages = 1

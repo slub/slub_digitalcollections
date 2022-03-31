@@ -5,7 +5,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Templates, Styles and Configuration for the Kitodo.Presentation based Digital Collections by SLUB Dresden',
 	'category' => 'plugin',
 	'author' => 'Alexander Bigga',
-	'author_email' => 'alexander.bigga@slub-dresden.de',
+	'author_email' => 'typo3@slub-dresden.de',
 	'author_company' => 'SLUB Dresden',
 	'shy' => '',
 	'priority' => '',
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '2.1.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '9.5.31-9.5.99',
+			'typo3' => '9.5.31-10.4.99',
 		),
 	),
 );
