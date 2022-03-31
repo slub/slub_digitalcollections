@@ -142,7 +142,7 @@ $(function () {
     // TOC folding function to make sure that active pages are in viewport
     if ($('ul.toc ul li.current')[0]) {
         tocPlaceholderLabel = ($('html[lang^="de"]')[0]) ? 'Einige Einträge sind ausgeblendet' : 'Some entires are hidden';
-        tocPlaceholderTitle = ($('html[lang^="de"]')[0]) ? 'Hier klicken um alle Einträge zu ziegen' : 'Click to show all entries';
+        tocPlaceholderTitle = ($('html[lang^="de"]')[0]) ? 'Hier klicken um alle Einträge zu zeigen' : 'Click to show all entries';
         $('ul.toc ul li.current').first().prevAll(':eq(4)').prevUntil(':nth-child(2)').hide();
         $('ul.toc ul li:nth-child(2)').after('<li class="placeholder" title="' + tocPlaceholderTitle + '">' + tocPlaceholderLabel + '</li>');
         $('ul.toc ul li.placeholder').on('click', function () {
