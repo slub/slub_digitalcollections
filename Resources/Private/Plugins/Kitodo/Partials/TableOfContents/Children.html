@@ -15,22 +15,22 @@
 <f:for each="{children}" as="child">
     <f:switch expression="{child.ITEM_STATE}">
         <f:case value="ACT">
-            <li class="tx-dlf-toc-act">
+            <li class="active">
         </f:case>
         <f:case value="CUR">
-            <li class="tx-dlf-toc-cur">
+            <li class="current">
         </f:case>
         <f:case value="ACTIFSUB">
-            <li class="tx-dlf-toc-act tx-dlf-toc-ifsub">
+            <li class="active submenu">
         </f:case>
         <f:case value="CURIFSUB">
-            <li class="tx-dlf-toc-cur tx-dlf-toc-ifsub">
+            <li class="current submenu">
         </f:case>
         <f:case value="IFSUB">
-            <li class="tx-dlf-toc-no tx-dlf-toc-ifsub">
+            <li class="submenu">
         </f:case>
         <f:defaultCase>
-            <li class="tx-dlf-toc-no">
+            <li>
         </f:defaultCase>
     </f:switch>
 
@@ -63,7 +63,7 @@
         </span>
     </f:if>
 
-    <f:if condition="{child._SUB_MENU} && ({child.ITEM_STATE} == 'ACTIFSUB' || {child.ITEM_STATE} == 'CURIFSUB')">
+    <f:if condition="{child._SUB_MENU} && ({child.ITEM_STATE} == 'IFSUB' || {child.ITEM_STATE} == 'ACTIFSUB' || {child.ITEM_STATE} == 'CURIFSUB')">
         <ul>
             <f:render partial="TableOfContents/Children" arguments="{children: child._SUB_MENU}"/>
         </ul>
