@@ -59,13 +59,11 @@ lib.kitodo.fulltext.search {
 plugin.tx_dlf_metadata < tt_content.list.20.dlf_metadata
 plugin.tx_dlf_metadata {
     settings {
-        excludeOther = {$config.kitodo.excludeOther}
         linkTitle = 0
         getTitle = 0
         showFull = 1
         rootline = 1
         separator = #
-        templateFile = {$config.kitodo.templates.metadata}
     }
 }
 
@@ -75,7 +73,6 @@ plugin.tx_dlf_metadata {
 plugin.tx_dlf_pageview < tt_content.list.20.dlf_pageview
 plugin.tx_dlf_pageview {
     settings {
-        excludeOther = {$config.kitodo.excludeOther}
         features =
         elementId = tx-dlf-map
     }
@@ -106,7 +103,6 @@ plugin.tx_dlf_pagegrid {
 plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
-        excludeOther = {$config.kitodo.excludeOther}
         targetPid = {$config.kitodo.pageView}
         menuConf {
             expAll = 1
