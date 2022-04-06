@@ -104,9 +104,6 @@ plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
         targetPid = {$config.kitodo.pageView}
-        menuConf {
-            expAll = 1
-        }
     }
 }
 
@@ -131,7 +128,6 @@ lib.kitodo.navigation.pagecontrol {
 lib.kitodo.navigation.viewfunction < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.viewfunction {
     settings {
-        pages = {$config.kitodo.storagePid}
         features = pageselect,rotation,zoom
     }
 }
@@ -190,7 +186,6 @@ plugin.tx_dlf_searchindocumenttool {
         pageInputName = tx_dlf[page]
         highlightWordInputName = tx_dlf[highlight_word]
         encryptedInputName = tx_dlf[encrypted]
-        pages = {$config.kitodo.storagePid}
         // UID of dlfCore0
         solrcore = {$config.kitodo.solr.core}
     }
