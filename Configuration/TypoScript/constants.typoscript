@@ -34,7 +34,7 @@ config {
             cssClass = dlf-slub-logo
         }
 
-        # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label= Dlf Storage Pid
+        # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label=Kitodo.Presentation (dlf) Storage Pid
         storagePid = 4152
 
         # cat=plugin.tx_slubdigitalcollections/links/0321; type=int+; label= Kitodo Terms of Use Page
@@ -64,66 +64,6 @@ config {
 
             # cat=plugin.tx_slubdigitalcollections/advanced/0502; type=string; label=CSS file for Kitodo pageview
             pageview = EXT:slub_digitalcollections/Resources/Public/Css/Digitalcollections.css
-        }
-
-        templates {
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0400; type=string; label=Collections Template
-            collections = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Collections.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0401; type=string; label=Listview Template
-            listView = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Listview.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0402; type=string; label=Gridview Template
-            gridView = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Gridview.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0403; type=string; label=Pageview Template
-            pageView = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Pageview.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0404; type=string; label=Search Template
-            search = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Search.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0405; type=string; label=SearchFullText Template
-            searchFullText = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/SearchFullText.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0407; type=string; label=Metadata Template
-            metadata = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Metadata.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0408; type=string; label=Titledata Template
-            titledata = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Titledata.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0409; type=string; label=TableOfContents Template
-            tableOfContents = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/TableOfContents.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0410; type=string; label=NavigationPagecontrol Template
-            navigationPagecontrol = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NavigationPagecontrol.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0411; type=string; label=NavigationViewfunction Template
-            navigationViewfunction = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NavigationViewfunction.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0412; type=string; label=NavigationViewfunction deactivated Template
-            navigationViewfunction-deactivated = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NavigationViewfunction-deactivated.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0413; type=string; label=Toolbox Template
-            toolbox = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Toolbox.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0414; type=string; label=ToolsPdf Template
-            toolsPdf = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/ToolsPdf.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0415; type=string; label=ToolFullText Template
-            toolFullText = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/ToolFullText.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0416; type=string; label=ToolsImagemanipulation Template
-            toolsImageManipulation = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/ToolsImagemanipulation.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0415; type=string; label=ToolFullText Template
-            toolFulltextdownload = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/FulltextDownloadTool.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0417; type=string; label=NewspaperYear Template
-            newspaperYear = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NewspaperYear.html
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0418; type=string; label=NewspaperCalendar Template
-            newspaperCalendar = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/NewspaperCalendar.html
         }
 
     }

@@ -56,7 +56,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function findSolrByCollection($collections, $settings, $searchParams) {
 
         $this->settings = $settings;
-        $this->documentStructures = $this->getDocumentStructures();;
+        $this->documentStructures = $this->getDocumentStructures();
 
         /** @var RequestFactory $requestFactory */
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
@@ -320,7 +320,7 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         // make lookup-table of structures uid -> indexName
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_documents');
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_dlf_structures');
         // Fetch document info for UIDs in $documentSet from DB
         $kitodoStructures = $queryBuilder
             ->select(
@@ -328,9 +328,6 @@ class KitodoDocumentRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 'tx_dlf_structures.index_name AS indexName'
             )
             ->from('tx_dlf_structures')
-            ->where(
-                $queryBuilder->expr()->in('tx_dlf_structures.pid', $this->settings['storagePid'])
-            )
             ->execute();
 
         $allStructures = $kitodoStructures->fetchAll();
