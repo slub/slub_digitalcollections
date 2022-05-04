@@ -23,5 +23,6 @@ plugin.tx_slubdigitalcollections_singlecollection {
             host = {$config.kitodo.solr.host}/{$config.kitodo.solr.coreName}
             timeout = {$config.kitodo.solr.timeout}
         }
+        solrcore = {$config.kitodo.solr.coreName}
     }
 }
