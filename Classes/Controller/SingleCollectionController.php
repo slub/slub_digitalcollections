@@ -26,10 +26,10 @@ namespace Slub\SlubDigitalcollections\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Kitodo\Dlf\Common\Document;
-use Kitodo\Dlf\Domain\Repository\DocumentRepository as DocumentRepository;
-use Kitodo\Dlf\Domain\Repository\StructureRepository as StructureRepository;
-use Kitodo\Dlf\Domain\Repository\CollectionRepository as CollectionRepository;
-use Kitodo\Dlf\Domain\Repository\MetadataRepository as MetadataRepository;
+use Kitodo\Dlf\Domain\Repository\DocumentRepository;
+use Kitodo\Dlf\Domain\Repository\StructureRepository;
+use Kitodo\Dlf\Domain\Repository\CollectionRepository;
+use Kitodo\Dlf\Domain\Repository\MetadataRepository;
 
 class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
