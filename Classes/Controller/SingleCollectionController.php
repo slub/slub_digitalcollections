@@ -26,71 +26,71 @@ namespace Slub\SlubDigitalcollections\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Kitodo\Dlf\Common\Document;
-use Slub\SlubDigitalcollections\Domain\Repository\KitodoDocumentRepository;
-use Slub\SlubDigitalcollections\Domain\Repository\KitodoStructuresRepository;
-use Slub\SlubDigitalcollections\Domain\Repository\KitodoCollectionsRepository;
-use Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository;
+use Kitodo\Dlf\Domain\Repository\DocumentRepository;
+use Kitodo\Dlf\Domain\Repository\StructureRepository;
+use Kitodo\Dlf\Domain\Repository\CollectionRepository;
+use Kitodo\Dlf\Domain\Repository\MetadataRepository;
 
 class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
-     * kitodoDocumentRepository
+     * DocumentRepository
      *
-     * @var \Slub\SlubDigitalcollections\Domain\Repository\KitodoDocumentRepository
+     * @var \Kitodo\Dlf\Domain\Repository\DocumentRepository
      */
-    protected $kitodoDocumentRepository;
+    protected $documentRepository;
 
     /**
-     * kitodoStructuresRepository
+     * StructureRepository
      *
-     * @var \Slub\SlubDigitalcollections\Domain\Repository\KitodoStructuresRepository
+     * @var \Kitodo\Dlf\Domain\Repository\StructureRepository
      */
-    protected $kitodoStructuresRepository;
+    protected $structureRepository;
 
     /**
-     * kitodoCollectionsRepository
+     * CollectionRepository
      *
-     * @var \Slub\SlubDigitalcollections\Domain\Repository\KitodoCollectionsRepository
+     * @var \Kitodo\Dlf\Domain\Repository\CollectionRepository
      */
-    protected $kitodoCollectionsRepository;
+    protected $collectionRepository;
 
     /**
-     * kitodoMetadataRepository
+     * MetadataRepository
      *
-     * @var \Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository
+     * @var \Kitodo\Dlf\Domain\Repository\MetadataRepository
      */
-    protected $kitodoMetadataRepository;
+    protected $metadataRepository;
 
     /**
-     * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoDocumentRepository $kitodoDocumentRepository
+     * @param \Kitodo\Dlf\Domain\Repository\DocumentRepository $documentRepository
      */
-    public function injectKitodoDocumentRepository(KitodoDocumentRepository $kitodoDocumentRepository)
+    public function injectDocumentRepository(DocumentRepository $documentRepository)
     {
-        $this->kitodoDocumentRepository = $kitodoDocumentRepository;
+        $this->documentRepository = $documentRepository;
     }
 
 	/**
-     * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoStructuresRepository $kitodoStructuresRepository
+     * @param \Kitodo\Dlf\Domain\Repository\StructureRepository $structureRepository
      */
-    public function injectKitodoStructuresRepository(KitodoStructuresRepository $kitodoStructuresRepository)
+    public function injectStructureRepository(StructureRepository $structureRepository)
     {
-        $this->kitodoStructuresRepository = $kitodoStructuresRepository;
+        $this->structureRepository = $structureRepository;
     }
 
 	/**
-     * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoCollectionsRepository $kitodoCollectionsRepository
+     * @param \Kitodo\Dlf\Domain\Repository\CollectionRepository $collectionRepository
      */
-    public function injectKitodoCollectionsRepository(KitodoCollectionsRepository $kitodoCollectionsRepository)
+    public function injectCollectionRepository(CollectionRepository $collectionRepository)
     {
-        $this->kitodoCollectionsRepository = $kitodoCollectionsRepository;
+        $this->collectionRepository = $collectionRepository;
     }
 
 	/**
-     * @param \Slub\SlubDigitalcollections\Domain\Repository\KitodoMetadataRepository $kitodoMetadataRepository
+     * @param \Kitodo\Dlf\Domain\Repository\MetadataRepository $metadataRepository
      */
-    public function injectKitodoMetadataRepository(KitodoMetadataRepository $kitodoMetadataRepository)
+    public function injectMetadataRepository(MetadataRepository $metadataRepository)
     {
-        $this->kitodoMetadataRepository = $kitodoMetadataRepository;
+        $this->metadataRepository = $metadataRepository;
     }
 
     /**
@@ -133,13 +133,16 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
             $searchParams['order'] = 'asc';
         }
 
-        $collections = $this->kitodoCollectionsRepository->findAllByUids(GeneralUtility::intExplode(',', $this->settings['collections'], true));
+        $collections = $this->collectionRepository->findAllByUids(GeneralUtility::intExplode(',', $this->settings['collections'], true));
+
+        // get all metadata records to be shown in results
+        $listedMetadata = $this->metadataRepository->findByIsListed(true);
 
         // find all documents from Solr
-        $solrResults = $this->kitodoDocumentRepository->findSolrByCollection($collections, $this->settings, $searchParams);
+        $solrResults = $this->documentRepository->findSolrByCollection($collections, $this->settings, $searchParams, $listedMetadata);
 
         // get all sortable Metadata from Kitodo.Presentation
-        $metadata = $this->kitodoMetadataRepository->findByIsSortable(true);
+        $metadata = $this->metadataRepository->findByIsSortable(true);
 
         // Pagination of Results
         // pass the currentPage to the fluid template to calculate current index of search result
