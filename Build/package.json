@@ -14,7 +14,7 @@
   "homepage": "https://digital.slub-dresden.de",
   "devDependencies": {
     "grunt": "^1.5.2",
-    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-terser": "^2.0.0",
