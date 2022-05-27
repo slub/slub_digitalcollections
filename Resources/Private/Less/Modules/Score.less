@@ -1,10 +1,10 @@
 /*
  *
- * Fulltext
+ * Score
  * ================================================
- * Specials for the fulltext view
+ * Specials for the score view
  *
- * Author: Thomas Jung <thomas@jung.digital>
+ * Author: Matthias Richter <matthias.richter@slub-dresden.de>
  *
  */
 
@@ -16,13 +16,13 @@
     background: rgba(255, 255, 255, 0.95);
     text-align: left;
     .transition();
-    #tx-dlf-fulltextselection {
+    #tx-dlf-score, {
         position: relative;
         top: 0;
         right: 0;
         width: 100%;
         height: 100%;
-        padding: 60px 20px;
+        padding: 60px 20px 60px 0px;
         overflow: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -38,7 +38,7 @@
                 content: " ";
             }
         }
-        .fulltext-visible & {
+        .score-visible & {
             display: block;
         }
     }
@@ -46,8 +46,8 @@
         top: 0;
     }
     @media screen and (min-width: @tabletViewportWidth) {
-        #tx-dlf-fulltextselection {
-            padding: 60px 15%;
+        #tx-dlf-score {
+            padding: 60px 70px 60px 0px;
         }
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
@@ -59,7 +59,7 @@
         &:after {
             height: 80px;
         }
-        #tx-dlf-fulltextselection {
+        #tx-dlf-score {
             padding: 80px 100px 60px 30px;
             line-height: 1.8;
             border-left: 1px solid @secondary-color-light;
