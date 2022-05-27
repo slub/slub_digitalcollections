@@ -37,6 +37,7 @@
                       <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
                     </div>
                     <div id="tx-dlf-fulltextselection"></div>
+					<div id="tx-dlf-score"></div>
                   </div>
                 </f:if>
               </f:then>
@@ -71,6 +72,7 @@
                       </f:if>
                     </div>
                     <div id="tx-dlf-fulltextselection"></div>
+					<div id="tx-dlf-score"></div>
                   </div>
               </f:else>
             </f:if>
@@ -395,6 +397,20 @@
                   </f:if>
                 </f:else>
               </f:if>
+            </li>
+          </f:if>
+
+          <f:comment><!-- [score switch (on/off)] -------------------------- --></f:comment>
+          <f:if condition="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"SCORE\"]/mets:file[1]/mets:FLocat/@xlink:href)[1]' />">
+            <li class="score">
+			  <f:if condition="{gp-pagegrid} == 1">
+				<f:then>
+				  <span class="select switchoff" id="tx-dlf-tools-score" title="<f:translate key='score.no_score_gridpage' extensionName='slub_digitalcollections' />"><f:translate key='score.no_score_gridpage' extensionName='slub_digitalcollections' /></span>
+				</f:then>
+				<f:else>
+				  <f:cObject typoscriptObjectPath="plugin.tx_dlf_scoretool" />
+				</f:else>
+			  </f:if>
             </li>
           </f:if>
 
