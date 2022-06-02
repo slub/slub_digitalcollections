@@ -4,7 +4,7 @@ namespace Slub\SlubDigitalcollections\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 Alexander Bigga <alexander.bigga@slub-dresden.de>
+ *  (c) 2020 Alexander Bigga <typo3@slub-dresden.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
