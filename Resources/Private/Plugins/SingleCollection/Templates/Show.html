@@ -25,7 +25,7 @@
    <f:variable name="pageOffset" value="{settings.list.paginate.itemsPerPage * currentPage}" />
    <f:variable name="allDocuments" value="{documents->f:count()}" />
    <f:variable name="numDocuments" value="{pageOffset + settings.list.paginate.itemsPerPage}" />
-   <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults->f:count()} Treffer in {allDocuments} Dokumenten.</p>
+   <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults.numFound} Treffer in {allDocuments} Dokumenten.</p>
    <p class="tx-dlf-sortinfo">
       <f:translate
          key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
