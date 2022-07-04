@@ -95,6 +95,9 @@ class XpathViewHelper extends AbstractViewHelper
                 $parameters['id'] = $parametersDlf['id'];
             } else if (GeneralUtility::isValidUrl($parametersDlf['id'])) {
                 $parameters['location'] = $parametersDlf['id'];
+                if (isset($parametersDlf['transform'])) {
+                  $parameters['transform'] = $parametersDlf['transform'];
+                }
             }
         } else if (isset($parametersDlf['recordId'])) {
             $parameters['recordId'] = $parametersDlf['recordId'];
