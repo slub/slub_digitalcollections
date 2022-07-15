@@ -139,7 +139,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
         $listedMetadata = $this->metadataRepository->findByIsListed(true);
 
         // find all documents from Solr
-        $solrResults = $this->documentRepository->findSolrByCollection($collections, $this->settings, $searchParams, $listedMetadata);
+        $solrSearch = $this->documentRepository->findSolrByCollection($collections, $this->settings, $searchParams, $listedMetadata);
 
         // get all sortable Metadata from Kitodo.Presentation
         $metadata = $this->metadataRepository->findByIsSortable(true);
@@ -151,11 +151,11 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
             $widgetPage = ['currentPage' => 1];
         }
 
-        $this->view->assign('documents', $solrResults['documents']);
+        $this->view->assign('documents', $solrSearch);
         $this->view->assign('metadata', $metadata);
         $this->view->assign('widgetPage', $widgetPage);
         $this->view->assign('lastSearch', $searchParams);
-        $this->view->assign('rawResults', $solrResults['solrResults']);
+        $this->view->assign('rawResults', $solrSearch->getSolrResults());
 
     }
 
