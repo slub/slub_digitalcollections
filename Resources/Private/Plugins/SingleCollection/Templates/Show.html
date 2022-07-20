@@ -183,9 +183,9 @@
                                           <p class="page"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.page' extensionName='slub_digitalcollections' /> {result.page}</p>
                                        </f:else>
                                     </f:if>
-                                    <f:for each="{result.highlighting}" as="highlighting">
-                                       <p class="textsnippet">[...] <f:format.raw>{highlighting}</f:format.raw> [...]</p>
-                                    </f:for>
+                                    <f:if condition="{result.snippet}">
+                                       <p class="textsnippet">[...] <f:format.raw>{result.snippet}</f:format.raw> [...]</p>
+                                    </f:if>
                                  </div>
                               </div>
                            </f:link.page>
