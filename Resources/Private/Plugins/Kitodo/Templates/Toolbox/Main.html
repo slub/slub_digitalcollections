@@ -114,34 +114,42 @@
 
 <f:if condition="{pdfdownloadtool}">
     <f:then>
-        <li>
-            <f:if condition="{double} === 0">
-                <f:then>
-                    <f:link.external uri="{pageLinks.0}" class="download-document">
-                        <f:translate key="downloadSinglePage" /> (PDF)
-                    </f:link.external>
-                </f:then>
-                <f:else>
-                    <f:link.external uri="{pageLinks.0}" class="download-document">
-                        <f:translate key="downloadLeftPage" /> (PDF)
-                    </f:link.external>
-                    <f:if condition="{pageLinks.1}">
-                        <f:then>
-                            <f:link.external uri="{pageLinks.1}" class="download-document">
-                                <f:translate key="downloadRightPage" /> (PDF)
-                            </f:link.external>
-                        </f:then>
-                    </f:if>
-                </f:else>
-            </f:if>
-            <f:if condition="{workLink}">
-                <f:then>
+        <f:if condition="{double} === 0">
+            <f:then>
+                <f:if condition="{pageLinks.0}">
+                    <li>
+                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                            <f:translate key="downloadSinglePage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:if condition="{pageLinks.0}">
+                    <li>
+                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                            <f:translate key="downloadLeftPage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+                <f:if condition="{pageLinks.1}">
+                    <li>
+                        <f:link.external uri="{pageLinks.1}" class="download-document">
+                            <f:translate key="downloadRightPage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+            </f:else>
+        </f:if>
+        <f:if condition="{workLink}">
+            <f:then>
+                <li>
                     <f:link.external uri="{workLink}" class="download-document">
                         <f:translate key="downloadWork"/> (PDF)
                     </f:link.external>
-                </f:then>
-            </f:if>
-        </li>
+                </li>
+            </f:then>
+        </f:if>
     </f:then>
 </f:if>
 
