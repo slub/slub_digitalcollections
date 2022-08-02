@@ -25,7 +25,7 @@
    <f:variable name="pageOffset" value="{settings.list.paginate.itemsPerPage * currentPage}" />
    <f:variable name="allDocuments" value="{documents->f:count()}" />
    <f:variable name="numDocuments" value="{pageOffset + settings.list.paginate.itemsPerPage}" />
-   <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults->f:count()} Treffer in {allDocuments} Dokumenten.</p>
+   <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults.numFound} Treffer in {allDocuments} Dokumenten.</p>
    <p class="tx-dlf-sortinfo">
       <f:translate
          key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
@@ -37,7 +37,7 @@
          <label for="form-orderBy">
             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
          </label>
-         <f:form.select id="form-orderBy" property="orderBy" value="{lastSearch.orderBy}" onclick="javascript:this.form.submit();">
+         <f:form.select id="form-orderBy" property="orderBy" value="{lastSearch.orderBy}" additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
             <f:for each="{metadata}" as="meta">
                <f:form.select.option value="{meta.indexName}_usi">
                   <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{meta.indexName}' extensionName='slub_digitalcollections' />
@@ -47,7 +47,7 @@
          <label for="form-order">
             <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order' extensionName='slub_digitalcollections' />
          </label>
-         <f:form.select id="form-order" property="order" value="{lastSearch.order}" onclick="javascript:this.form.submit();">
+         <f:form.select id="form-order" property="order" value="{lastSearch.order}" additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
             <f:form.select.option value="asc">
                <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.asc' extensionName='slub_digitalcollections' />
             </f:form.select.option>
@@ -71,11 +71,15 @@
                additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}"
                class=""
                title="{docTitle}">
-                  <div class="tx-dlf-listview-thumbnail">
-                     <f:if condition="{document.thumbnail}">
+                  <f:comment>
+                     slub_digitalcollections uses the :empty CSS selector to check for missing thumbnail.
+                     The HTML comments make sure there is no whitespace in that case.
+                  </f:comment>
+                  <div class="tx-dlf-listview-thumbnail"><!--
+                     --><f:if condition="{document.thumbnail}">
                         <img src="{document.thumbnail}" alt="Vorschaubild von {docTitle}" />
-                     </f:if>
-                  </div>
+                     </f:if><!--
+                  --></div>
                   <dl>
                      <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
                      <dd class="tx-dlf-title">{docTitle}</dd>
@@ -127,11 +131,11 @@
                                  additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
                                  class=""
                                  title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                                    <div class="tx-dlf-listview-thumbnail">
-                                       <f:if condition="{child.thumbnail}">
+                                    <div class="tx-dlf-listview-thumbnail"><!--
+                                       --><f:if condition="{child.thumbnail}">
                                           <img src="{child.thumbnail}" alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
-                                       </f:if>
-                                    </div>
+                                       </f:if><!--
+                                    --></div>
                                     <dl>
                                        <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
                                        <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
@@ -163,11 +167,11 @@
                            additionalParams="{tx_dlf:{page:'{result.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word: '{result.highlight_word}'}}"
                            class=""
                            title="{f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}, Seite {result.page}">
-                              <div class="tx-dlf-listview-thumbnail">
-                                 <f:if condition="{result.thumbnail}">
+                              <div class="tx-dlf-listview-thumbnail"><!--
+                                 --><f:if condition="{result.thumbnail}">
                                     <img src="{result.thumbnail}" alt="Vorschaubild von {f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}" />
-                                 </f:if>
-                              </div>
+                                 </f:if><!--
+                              --></div>
                               <div>
                                  <div class="tx-dlf-listview-preview">
                                     <f:if condition="{result.structure} && {result.title}">

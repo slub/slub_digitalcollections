@@ -20,7 +20,7 @@
         </f:then>
         <f:else>
             <span class="meta-type-icon meta-type-{child.type}">{child.type}</span>
-            <f:format.crop maxCharacters="55" append="&nbsp;..."><f:format.htmlspecialchars doubleEncode="false">{child.type}</f:format.htmlspecialchars><f:if condition="{entry.volume}"> &nbsp;<f:format.htmlspecialchars doubleEncode="false">{child.volume}</f:format.htmlspecialchars></f:if></f:format.crop>
+            <f:format.crop maxCharacters="55" append="&nbsp;..."><f:format.htmlspecialchars doubleEncode="false">{child.type}</f:format.htmlspecialchars><f:if condition="{child.volume}"> &nbsp;<f:format.htmlspecialchars doubleEncode="false">{child.volume}</f:format.htmlspecialchars></f:if></f:format.crop>
         </f:else>
     </f:if>
 </span>
