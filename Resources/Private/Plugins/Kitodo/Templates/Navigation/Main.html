@@ -78,25 +78,25 @@
             </f:if>
         </span>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			document.querySelector('.page-first')
-				.addEventListener('click', function(e) {
-					e.preventDefault();
-					document.body.dispatchEvent(
-						new CustomEvent(
-							'tx-dlf-pageChanged',
-							{
-								'detail': { 
-									'page': 1,
-									'target': e.target
-								}
-							}
-						)
-					);
-				});
-		});
-	</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('.page-first')
+                .addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.body.dispatchEvent(
+                        new CustomEvent(
+                            'tx-dlf-pageChanged',
+                            {
+                                'detail': {
+                                    'page': 1,
+                                    'target': e.target
+                                }
+                            }
+                        )
+                    );
+                });
+        });
+    </script>
 </f:section>
 
 <f:section name="render.pageBack">
