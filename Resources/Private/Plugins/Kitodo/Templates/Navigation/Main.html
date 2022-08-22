@@ -79,7 +79,7 @@
         </span>
 </f:section>
 
-<f:section name="render.pageBack">
+<f:section name="render.pageStepBack">
     <span class="rwnd">
         <f:if condition="{viewData.requestData.page} > {pageSteps}">
             <f:then>
@@ -96,7 +96,7 @@
     </span>
 </f:section>
 
-<f:section name="render.pageStepBack">
+<f:section name="render.pageBack">
         <span class="prev">
             <f:if condition="{viewData.requestData.page} > {viewData.requestData.double + 1}">
                 <f:then>
