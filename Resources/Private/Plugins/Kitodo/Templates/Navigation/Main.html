@@ -69,8 +69,7 @@
         <span class="first">
             <f:if condition="{viewData.requestData.page} > 1">
                 <f:then>
-                    <f:link.action addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'1'}" class="first"
-                                   argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[measure]'}">
+                    <f:link.action class="first page-first" addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'1'}" argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[measure]'}">
                         <f:translate key="firstPage"/>
                     </f:link.action>
                 </f:then>
@@ -81,6 +80,26 @@
                 </f:else>
             </f:if>
         </span>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelector('.page-first')
+				.addEventListener('click', function(e) {
+					e.preventDefault();
+					document.body.dispatchEvent(
+						new CustomEvent(
+							'tx-dlf-pageChanged',
+							{
+								'detail': { 
+									'page': 1,
+									'target': e.target
+								}
+							}
+						)
+					);
+				});
+		});
+	</script>
 </f:section>
 
 <f:section name="render.pageBack">
