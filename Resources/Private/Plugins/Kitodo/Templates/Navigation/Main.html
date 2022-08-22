@@ -69,7 +69,7 @@
         <span class="first">
             <f:if condition="{viewData.requestData.page} > 1">
                 <f:then>
-                    <f:link.action addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'1','tx_dlf[id]':'{viewData.partlyEncodedId}'}" class="first"
+                    <f:link.action addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'1','tx_dlf[id]':'{viewData.partlyEncodedId}'}" class="first page-first"
                                    argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[measure]', 1: 'tx_dlf[id]'}">
                         <f:translate key="firstPage"/>
                     </f:link.action>
@@ -81,6 +81,26 @@
                 </f:else>
             </f:if>
         </span>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelector('.page-first')
+				.addEventListener('click', function(e) {
+					e.preventDefault();
+					document.body.dispatchEvent(
+						new CustomEvent(
+							'tx-dlf-pageChanged',
+							{
+								'detail': { 
+									'page': 1,
+									'target': e.target
+								}
+							}
+						)
+					);
+				});
+		});
+	</script>
 </f:section>
 
 <f:section name="render.pageBack">
