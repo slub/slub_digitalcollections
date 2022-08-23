@@ -102,10 +102,9 @@
             <label for="tx-dlf-page-{viewData.uniqueId}">
                 <f:translate key="selectPage"/>
             </label>
-            <f:form.select id="tx-dlf-page-{viewData.uniqueId}" name="tx_dlf[page]"
+            <f:form.select class="page-select" id="tx-dlf-page-{viewData.uniqueId}" name="tx_dlf[page]"
                 options="{pageOptions}"
-                value="{viewData.requestData.page}"
-                additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
+                value="{viewData.requestData.page}">
             </f:form.select>
         </form>
     </li>
