@@ -178,7 +178,7 @@
             <f:then>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-page">
+                        <f:link.external uri="{pageLinks.0}" class="download-page" additionalAttributes="{'data-page-link': 0}">
                             <f:translate key="downloadSinglePage" /> (PDF)
                         </f:link.external>
                     </li>
@@ -187,14 +187,14 @@
             <f:else>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-page">
+                        <f:link.external uri="{pageLinks.0}" class="download-page" additionalAttributes="{'data-page-link': 0}">
                             <f:translate key="downloadLeftPage" /> (PDF)
                         </f:link.external>
                     </li>
                 </f:if>
                 <f:if condition="{pageLinks.1}">
                     <li>
-                        <f:link.external uri="{pageLinks.1}" class="download-page">
+                        <f:link.external uri="{pageLinks.1}" class="download-page" additionalAttributes="{'data-page-link': 1}">
                             <f:translate key="downloadRightPage" /> (PDF)
                         </f:link.external>
                     </li>
@@ -264,5 +264,15 @@
         </div>
     </f:then>
 </f:if>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        // Avoid instantiating dlfToolbox multiple times;
+        // TODO: Rethink how it's done
+        if (!window.tx_dlf_toolbox) {
+            window.tx_dlf_toolbox = new dlfToolbox();
+        }
+    });
+</script>
 
 </html>
