@@ -213,12 +213,6 @@ $(function () {
     // Add class to  collection related DD elements in metadata lists
     $('dl.tx-dlf-metadata-titledata').find('dt:contains(mmlung), dt:contains(llection)').nextUntil('dt', 'dd').addClass('tx-dlf-metadata-collection');
 
-    // Update URL in page grid button
-    document.body.addEventListener('tx-dlf-stateChanged', e => {
-        $('#digitalcollections-enable-grid-view')
-            .attr('href', tx_dlf_loaded.makePageUrl(e.detail.page, true));
-    });
-
     // Finally all things are settled. Bring back animations a second later.
     setTimeout(function () {
         localStorage.clear();
@@ -227,6 +221,23 @@ $(function () {
     }, 1000);
 
 });
+
+(function () {
+    let docController = null;
+    window.addEventListener('tx-dlf-documentLoaded', e => {
+        docController = e.detail.docController;
+    });
+
+    // Update URL in page grid button
+    document.body.addEventListener('tx-dlf-stateChanged', e => {
+        if (docController === null) {
+            return;
+        }
+
+        $('#digitalcollections-enable-grid-view')
+            .attr('href', docController.makePageUrl(e.detail.page, true));
+    });
+})();
 
 $(document).keyup(function (e) {
 
