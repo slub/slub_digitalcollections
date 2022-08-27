@@ -172,20 +172,16 @@
                 <f:translate key="downloadSinglePage" /> (PDF)
             </f:link.external>
         </li>
-        <f:if condition="{pageLinks.0}">
-            <li class="shown-if-double">
-                <f:link.external uri="{pageLinks.0}" class="download-page" additionalAttributes="{'data-page-link': 0}">
-                    <f:translate key="downloadLeftPage" /> (PDF)
-                </f:link.external>
-            </li>
-        </f:if>
-        <f:if condition="{pageLinks.1}">
-            <li class="shown-if-double">
-                <f:link.external uri="{pageLinks.1}" class="download-page" additionalAttributes="{'data-page-link': 1}">
-                    <f:translate key="downloadRightPage" /> (PDF)
-                </f:link.external>
-            </li>
-        </f:if>
+        <li class="shown-if-double">
+            <f:link.external uri="{pageLinks.0}" class="download-page" additionalAttributes="{'data-page-link': 0}">
+                <f:translate key="downloadLeftPage" /> (PDF)
+            </f:link.external>
+        </li>
+        <li class="shown-if-double">
+            <f:link.external uri="{pageLinks.1}" class="download-page" additionalAttributes="{'data-page-link': 1}">
+                <f:translate key="downloadRightPage" /> (PDF)
+            </f:link.external>
+        </li>
         <f:if condition="{workLink}">
             <f:then>
                 <li>
