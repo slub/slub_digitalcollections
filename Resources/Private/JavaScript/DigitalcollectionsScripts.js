@@ -226,16 +226,16 @@ $(function () {
     let docController = null;
     window.addEventListener('tx-dlf-documentLoaded', e => {
         docController = e.detail.docController;
-    });
 
-    // Update URL in page grid button
-    document.body.addEventListener('tx-dlf-stateChanged', e => {
-        if (docController === null) {
-            return;
-        }
+        // Update URL in page grid button
+        docController.eventTarget.addEventListener('tx-dlf-stateChanged', e => {
+            if (docController === null) {
+                return;
+            }
 
-        $('#digitalcollections-enable-grid-view')
-            .attr('href', docController.makePageUrl(e.detail.page, true));
+            $('#digitalcollections-enable-grid-view')
+                .attr('href', docController.makePageUrl(e.detail.page, true));
+        });
     });
 })();
 
