@@ -24,7 +24,7 @@
 </div>
 
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        new dlfTableOfContents();
+    window.addEventListener('tx-dlf-documentLoaded', (e) => {
+        new dlfTableOfContents(e.detail.docController);
     });
 </script>
