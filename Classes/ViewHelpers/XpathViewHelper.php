@@ -102,16 +102,16 @@ class XpathViewHelper extends AbstractViewHelper
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
 
-        if ($document === null || $document->getDoc() === null || !($document->getDoc() instanceof MetsDocument)) {
+        if ($document === null || $document->getCurrentDocument() === null || !($document->getCurrentDocument() instanceof MetsDocument)) {
             return;
         }
+        $currentDocument = $document->getCurrentDocument();
+        $currentDocument->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
+        $currentDocument->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $currentDocument->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
+        $currentDocument->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
 
-        $document->getDoc()->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
-        $document->getDoc()->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
-        $document->getDoc()->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
-        $document->getDoc()->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
-
-        $result = $document->getDoc()->mets->xpath($xpath);
+        $result = $currentDocument->mets->xpath($xpath);
 
         if (is_array($result)) {
           foreach ($result as $row) {
