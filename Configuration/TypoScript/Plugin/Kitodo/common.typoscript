@@ -239,18 +239,44 @@ page {
   page.headerData.300 {
     10 = TEXT
     10.value (
-  <link rel="canonical" href="{register:pageUrlDigital}" />
-  <meta property="og:title" content="{register:postTitle}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="{register:pageUrlDigital}" />
+       <meta property="og:type" content="website" />
     )
-    10.insertData = 1
 
     11 = TEXT
     11 {
       data = register:postDescription
       wrap = <meta property="og:description" content="|" />
       required = {register:postDescription}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    12 = TEXT
+    12 {
+      data = register:postTitle
+      wrap = <meta property="og:title" content="|" />
+      required = {register:postTitle}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    13 = TEXT
+    13 {
+      data = register:pageUrlDigital
+      wrap = <link rel="canonical" href="|" />
+      required = {register:pageUrlDigital}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    14 = TEXT
+    14 {
+      data = register:pageUrlDigital
+      wrap = <meta property="og:url" content="|" />
+      required = {register:pageUrlDigital}
       trim = 1
       htmlSpecialChars = 1
       htmlSpecialChars.preserveEntities = 1
