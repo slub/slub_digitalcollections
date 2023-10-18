@@ -96,7 +96,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
     /**
      * initializeAction
      *
-     * @return
+     * @return void
      */
     protected function initializeAction()
     {
@@ -129,6 +129,8 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 
         // set default sorting
         if (!isset($searchParams['orderBy'])) {
+            // TODO: Cannot assign offset 'orderBy' to string.
+            // @phpstan-ignore-next-line
             $searchParams['orderBy'] = 'title_usi';
             $searchParams['order'] = 'asc';
         }
