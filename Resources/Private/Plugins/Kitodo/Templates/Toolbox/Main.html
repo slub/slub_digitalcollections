@@ -12,7 +12,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:if condition="{annotationtool}">
+<f:if condition="{renderAnnotationTool}">
     <f:then>
         <li>
             <span class="tx-dlf-tools-annotations">
@@ -33,7 +33,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{imagemanipulationtool}">
+<f:if condition="{renderImageManipulationTool}">
     <f:then>
         <span>
             <span class="tx-dlf-tools-imagetools" id="tx-dlf-tools-imagetools"
@@ -44,7 +44,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{imagedownloadtool} && {imageDownload}">
+<f:if condition="{renderImageDownloadTool} && {imageDownload}">
     <f:then>
         <li>
             <span class="tx-dlf-tools-imagedownload">
@@ -74,7 +74,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{fulltexttool}">
+<f:if condition="{renderFulltextTool}">
     <f:then>
         <f:if condition="{fulltext}">
             <f:then>
@@ -92,7 +92,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{fulltextdownloadtool}">
+<f:if condition="{renderFulltextDownloadTool}">
     <f:then>
         <li>
             <f:if condition="{fulltextDownload}">
@@ -112,7 +112,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{pdfdownloadtool}">
+<f:if condition="{renderPdfDownloadTool}">
     <f:then>
         <f:if condition="{double} === 0">
             <f:then>
@@ -153,7 +153,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{searchindocumenttool} && {searchInDocument}">
+<f:if condition="{renderSearchInDocumentTool} && {searchInDocument}">
     <f:then>
         <f:if condition="{settings.searchUrl}">
             <f:then>
