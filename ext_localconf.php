@@ -3,14 +3,14 @@ defined('TYPO3_MODE') or die();
 
 // plugins
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Slub.SlubDigitalcollections',
+    'SlubDigitalcollections',
     'SingleCollection',
     [
-        'SingleCollection' => 'show,search'
+        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'show,search'
     ],
     // non-cacheable actions
     [
-        'SingleCollection' => 'search'
+        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'search'
     ]
 );
 
