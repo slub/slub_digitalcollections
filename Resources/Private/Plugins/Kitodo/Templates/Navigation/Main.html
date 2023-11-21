@@ -74,22 +74,22 @@
 </f:section>
 
 <f:section name="render.pageStepBack">
-    <span class="rwnd">
-        <f:variable name="backTextTemplate" value="{f:translate(key: 'backXPages', arguments: '{0: \'PAGE_STEPS\'}')}" />
-        <f:comment>Make sure that no negative number is put into tx_dlf[page], so that a route enhancer that requires matches against "\d+" won't fail</f:comment>
-        <f:if condition="{viewData.requestData.page} > {pageSteps}">
-            <f:then>
-                <f:link.action class="page-step-back" addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'{viewData.requestData.page - pageSteps}','tx_dlf[id]':'{viewData.partlyEncodedId}'}" additionalAttributes="{'data-text': '{backTextTemplate}'}" argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[measure]', 1: 'tx_dlf[id]'}">
-                    <f:translate key="backXPages" arguments="{0: '{pageSteps}'}"/>
-                </f:link.action>
-            </f:then>
-            <f:else>
-                <f:link.action class="page-step-back disabled" additionalAttributes="{'data-text': '{backTextTemplate}'}">
-                    <f:translate key="backXPages" arguments="{0: '{pageSteps}'}"/>
-                </f:link.action>
-            </f:else>
-        </f:if>
-    </span>
+        <span class="rwnd">
+            <f:variable name="backTextTemplate" value="{f:translate(key: 'backXPages', arguments: '{0: \'PAGE_STEPS\'}')}" />
+            <f:comment>Make sure that no negative number is put into tx_dlf[page], so that a route enhancer that requires matches against "\d+" won't fail</f:comment>
+            <f:if condition="{viewData.requestData.page} > {pageSteps}">
+                <f:then>
+                    <f:link.action class="page-step-back" addQueryString="untrusted" additionalParams="{'tx_dlf[page]':'{viewData.requestData.page - pageSteps}','tx_dlf[id]':'{viewData.partlyEncodedId}'}" additionalAttributes="{'data-text': '{backTextTemplate}'}" argumentsToBeExcludedFromQueryString="{0: 'tx_dlf[measure]', 1: 'tx_dlf[id]'}">
+                        <f:translate key="backXPages" arguments="{0: '{pageSteps}'}"/>
+                    </f:link.action>
+                </f:then>
+                <f:else>
+                    <f:link.action class="page-step-back disabled" additionalAttributes="{'data-text': '{backTextTemplate}'}">
+                        <f:translate key="backXPages" arguments="{0: '{pageSteps}'}"/>
+                    </f:link.action>
+                </f:else>
+            </f:if>
+        </span>
 </f:section>
 
 <f:section name="render.pageBack">
