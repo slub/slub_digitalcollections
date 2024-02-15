@@ -56,12 +56,6 @@ $(function () {
         }
     });
 
-    // Add click event to complete collections element on intro page
-    $('.tx-dlf-collection-item .tx-dlf-collection-thumbnail img').each(function () {
-        thumbnailUrl = $(this).parent().parent().find('h4 a').attr('href');
-        $(this).wrap('<a href="' + thumbnailUrl + '" />');
-    });
-
     // Add a switch and function for alphabetical order of collections elements on intro page
     var labelGallery = ($('html[lang="de-DE"]')[0]) ? 'Galerie' : 'Gallery',
         labelAlphabetical = ($('html[lang="de-DE"]')[0]) ? 'Alphabetisch' : 'Alphabetical',

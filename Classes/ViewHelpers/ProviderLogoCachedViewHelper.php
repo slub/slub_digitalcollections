@@ -3,7 +3,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Alexander Bigga <alexander.bigga@slub-dresden.de>
+ *  (c) 2019 Alexander Bigga <typo3@slub-dresden.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -61,9 +61,9 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
             $cacheIdentifier = md5($logoUrl) . '.' . $logoInfo['extension'];
             $logoFile = Environment::getPublicPath() . '/typo3temp/assets/images/' . $cacheIdentifier;
             // if file exists and is not too old - take it
-            if (file_exists($LogoFile)) {
+            if (file_exists($logoFile)) {
                 // if not older than one day:
-                if ((time() - filemtime($calfile) < 86400)) {
+                if ((time() - filemtime($logoFile) < 86400)) {
                     return $cacheIdentifier;
                 }
             }

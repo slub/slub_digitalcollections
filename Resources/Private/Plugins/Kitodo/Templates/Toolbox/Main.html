@@ -115,12 +115,7 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
         <f:if condition="{fulltext}">
             <f:then>
                 <a class="select switchoff" id="tx-dlf-tools-fulltext" title=""
-                    data-dic="fulltext:{f:translate(key: 'tools.fulltext')}
-                            ;fulltext-on:{f:translate(key: 'tools.fulltext.on')}
-                            ;fulltext-off:{f:translate(key: 'tools.fulltext.off')}
-                            ;activate-full-text-initially:{activateFullTextInitially}
-                            ;full-text-scroll-element:{settings.fullTextScrollElement}
-                            ;search-hl-parameters:{settings.searchHlParameters}">
+                    data-dic="fulltext:{f:translate(key: 'tools.fulltext')};fulltext-loading:{f:translate(key: 'tools.fulltext.loading')};fulltext-on:{f:translate(key: 'tools.fulltext.on')};fulltext-off:{f:translate(key: 'tools.fulltext.off')};activate-full-text-initially:{activateFullTextInitially};full-text-scroll-element:{settings.fullTextScrollElement};search-hl-parameters:{settings.searchHlParameters}">
                     &nbsp;
                 </a>
             </f:then>
@@ -155,39 +150,49 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
 
 <f:if condition="{pdfdownloadtool}">
     <f:then>
-        <li>
-            <f:if condition="{double} === 0">
-                <f:then>
-                    <f:link.external uri="{pageLinks.0}" class="download-document">
-                        <f:translate key="downloadSinglePage" /> (PDF)
-                    </f:link.external>
-                </f:then>
-                <f:else>
-                    <f:link.external uri="{pageLinks.0}" class="download-document">
-                        <f:translate key="downloadLeftPage" /> (PDF)
-                    </f:link.external>
-                    <f:if condition="{pageLinks.1}">
-                        <f:then>
-                            <f:link.external uri="{pageLinks.1}" class="download-document">
-                                <f:translate key="downloadRightPage" /> (PDF)
-                            </f:link.external>
-                        </f:then>
-                    </f:if>
-                </f:else>
-            </f:if>
-            <f:if condition="{workLink}">
-                <f:then>
+        <f:if condition="{double} === 0">
+            <f:then>
+                <f:if condition="{pageLinks.0}">
+                    <li>
+                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                            <f:translate key="downloadSinglePage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:if condition="{pageLinks.0}">
+                    <li>
+                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                            <f:translate key="downloadLeftPage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+                <f:if condition="{pageLinks.1}">
+                    <li>
+                        <f:link.external uri="{pageLinks.1}" class="download-document">
+                            <f:translate key="downloadRightPage" /> (PDF)
+                        </f:link.external>
+                    </li>
+                </f:if>
+            </f:else>
+        </f:if>
+        <f:if condition="{workLink}">
+            <f:then>
+                <li>
                     <f:link.external uri="{workLink}" class="download-document">
                         <f:translate key="downloadWork"/> (PDF)
                     </f:link.external>
-                </f:then>
-            </f:if>
-              <a href="#" id="tx_dlf_mididownload"  class="download-document">
-                  <f:translate key="mididownload"/> (MIDI)
-              </a>
-              <a href="#" id="tx_dlf_scoredownload" class="download-document">
-                  <f:translate key="scoredownload"/> (PDF)
-              </a>
+                </li>
+            </f:then>
+        </f:if>
+        <li>
+            <a href="#" id="tx_dlf_mididownload"  class="download-document">
+                <f:translate key="mididownload"/> (MIDI)
+            </a>
+            <a href="#" id="tx_dlf_scoredownload" class="download-document">
+                <f:translate key="scoredownload"/> (PDF)
+            </a>
         </li>
     </f:then>
 </f:if>
