@@ -349,10 +349,6 @@
 				<source><![CDATA[Manuscript]]></source>
 				<target><![CDATA[Manuscript]]></target>
 			</trans-unit>
-			<trans-unit id="structure.manuscript_part" approved="yes">
-				<source><![CDATA[Part of a Manuscript]]></source>
-				<target><![CDATA[Teil einer Handschrift]]></target>
-			</trans-unit>
 			<trans-unit id="structure.map" approved="yes">
 				<source><![CDATA[Map]]></source>
 				<target><![CDATA[Karte]]></target>
@@ -368,10 +364,6 @@
 			<trans-unit id="structure.month" approved="yes">
 				<source><![CDATA[Month]]></source>
 				<target><![CDATA[Monat]]></target>
-			</trans-unit>
-			<trans-unit id="structure.multipart_manuscript" approved="yes">
-				<source><![CDATA[Multipart Manuscript]]></source>
-				<target><![CDATA[Mehrteilige Handschrift]]></target>
 			</trans-unit>
 			<trans-unit id="structure.multivolume_work" approved="yes">
 				<source><![CDATA[Multivolume Work]]></source>
