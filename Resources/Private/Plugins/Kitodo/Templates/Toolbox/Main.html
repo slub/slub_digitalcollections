@@ -118,7 +118,7 @@
             <f:then>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                        <f:link.external uri="{pageLinks.0}" class="download-page">
                             <f:translate key="downloadSinglePage" /> (PDF)
                         </f:link.external>
                     </li>
@@ -127,14 +127,14 @@
             <f:else>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                        <f:link.external uri="{pageLinks.0}" class="download-page">
                             <f:translate key="downloadLeftPage" /> (PDF)
                         </f:link.external>
                     </li>
                 </f:if>
                 <f:if condition="{pageLinks.1}">
                     <li>
-                        <f:link.external uri="{pageLinks.1}" class="download-document">
+                        <f:link.external uri="{pageLinks.1}" class="download-page">
                             <f:translate key="downloadRightPage" /> (PDF)
                         </f:link.external>
                     </li>
