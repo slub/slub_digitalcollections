@@ -65,7 +65,7 @@ class PageInfoViewHelper extends AbstractViewHelper
       ) {
         $pageUid = $arguments['uid'];
         $field = $arguments['field'];
-        if (0 === $uid) {
+        if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
         }
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);

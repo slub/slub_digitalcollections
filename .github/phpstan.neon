@@ -1,0 +1,10 @@
+parameters:
+    ignoreErrors:
+            - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsListed\(\)\.#'
+            - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsSortable\(\)\.#'
+            - '#Parameter \#1 \$uids of method Kitodo\\Dlf\\Domain\\Repository\\CollectionRepository::findAllByUids\(\) expects string, array\<int\> given\.#'
+            - '#Parameter \#1 \$collection of method Kitodo\\Dlf\\Domain\\Repository\\DocumentRepository::findSolrByCollection\(\) expects Kitodo\\Dlf\\Domain\\Model\\Collection\|TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult, TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface given\.#'
+    level: 5
+    paths:
+        - ../Classes/
+    treatPhpDocTypesAsCertain: false

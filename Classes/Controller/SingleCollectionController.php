@@ -96,7 +96,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
     /**
      * initializeAction
      *
-     * @return
+     * @return void
      */
     protected function initializeAction()
     {
@@ -165,7 +165,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
      *
      * @param string $parameterName
      *
-     * @return null|string
+     * @return null|string|array
      */
     protected function getParametersSafely($parameterName)
     {
