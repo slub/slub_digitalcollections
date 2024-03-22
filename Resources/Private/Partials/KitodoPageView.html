@@ -5,6 +5,7 @@
 
 <f:section name="PageView">
   <div class="document-view">
+    <f:cObject typoscriptObjectPath="plugin.tx_dlf_document" />
     <f:if condition="{gp-pagegrid} == 1">
       <f:then>
         <f:cObject typoscriptObjectPath="plugin.tx_dlf_pagegrid" />
@@ -412,7 +413,7 @@
                           <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'0'}}" class="active" title="<f:translate key='double.singlePageView' extensionName='slub_digitalcollections' />"><f:translate key='double.singlePageView' extensionName='slub_digitalcollections' /></f:link.page>
                       </f:then>
                       <f:else>
-                          <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'1'}}" title="<f:translate key='gridpage.preview' extensionName='slub_digitalcollections' />"><f:translate key='gridpage.preview' extensionName='slub_digitalcollections' /></f:link.page>
+                          <f:link.page id="digitalcollections-enable-grid-view" pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'1'}}" title="<f:translate key='gridpage.preview' extensionName='slub_digitalcollections' />"><f:translate key='gridpage.preview' extensionName='slub_digitalcollections' /></f:link.page>
                       </f:else>
                     </f:if>
                   </f:then>
