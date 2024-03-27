@@ -2,8 +2,6 @@ parameters:
     ignoreErrors:
             - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsListed\(\)\.#'
             - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsSortable\(\)\.#'
-            - '#Parameter \#1 \$uids of method Kitodo\\Dlf\\Domain\\Repository\\CollectionRepository::findAllByUids\(\) expects string, array\<int\> given\.#'
-            - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\DocumentRepository::findSolrByCollections\(\)\.#'
     level: 5
     paths:
         - ../Classes/
