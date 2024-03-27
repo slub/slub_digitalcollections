@@ -175,22 +175,7 @@
               </f:if>
 
               <f:comment><!-- [catalouge search ] ----------------------------- --></f:comment>
-              <f:if condition="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"])' />">
-                <f:then>
-                  <f:comment><!-- the SLUB catalogue way --></f:comment>
-                  <li>
-                    <f:link.external
-                      uri="https://katalog.slub-dresden.de/ppn/<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"])' />"
-                      class="local-catalog"
-                      target="_blank"
-                      title="<f:translate key='provider.slub_catalogue' extensionName='slub_digitalcollections' />">
-                      <f:translate key='provider.slub_catalogue' extensionName='slub_digitalcollections' />
-                    </f:link.external>
-                  </li>
-                </f:then>
-                <f:else>
-                  <f:comment><!-- the DFG-Viewer way --></f:comment>
-                  <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
+              <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
                     <f:if condition="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />">
                       <li>
                         <f:if condition="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' />">
@@ -216,8 +201,6 @@
                       </li>
                     </f:if>
                   </f:for>
-                </f:else>
-              </f:if>
 
               <f:comment><!-- [License informations] ------------------------------ --></f:comment>
               <f:if condition="{settings.termsOfUsePid}">
