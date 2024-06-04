@@ -1,200 +1,83 @@
 <div id="showResults"></div>
 <f:form section="showResults" action="search" name="searchParameter" method="post" class="tx-dlf-search-form">
-   <div>
-      <!-- Never change the @id of this input field! Otherwise search suggestions won't work! -->
-      <label for="tx-dlf-search-query"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query' extensionName='slub_digitalcollections' />
-      </label>
-      <f:form.textfield type="text" id="tx-dlf-search-query" property="query" value="{lastSearch.query}" placeholder="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query', extensionName='slub_digitalcollections')}"></f:form.textfield>
-      <button type="submit" title="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search', extensionName='slub_digitalcollections')}">
-         <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search' extensionName='slub_digitalcollections' />
-      </button>
+    <div>
+        <!-- Never change the @id of this input field! Otherwise search suggestions won't work! -->
+        <label for="tx-dlf-search-query"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query' extensionName='slub_digitalcollections' /></label>
+        <f:form.textfield type="text" id="tx-dlf-search-query" property="query" value="{lastSearch.query}"
+            placeholder="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.query', extensionName='slub_digitalcollections')}">
+        </f:form.textfield>
+        <button type="submit"
+            title="{f:translate(key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search', extensionName='slub_digitalcollections')}">
+            <f:translate
+                key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.search'
+                extensionName='slub_digitalcollections' />
+        </button>
 
-      <div class="fulltext-switch">
-         <f:form.radio id="form-fulltext-no" property="fulltext" value="0" checked="{lastSearch.fulltext} == 0" />
-         <label for="form-fulltext-no">in Metadaten</label>
-         <f:form.radio id="form-fulltext-yes" property="fulltext" value="1" checked="{lastSearch.fulltext} == 1" />
-         <label for="form-fulltext-yes">in Volltext</label>
-      </div>
-      <f:form.hidden property="orderBy" value="{lastSearch.orderBy}" />
-      <f:form.hidden property="order" value="{lastSearch.order}" />
-   </div>
+        <div class="fulltext-switch">
+            <f:form.radio id="form-fulltext-no" property="fulltext" value="0" checked="{lastSearch.fulltext} == 0" />
+            <label for="form-fulltext-no">in Metadaten</label>
+            <f:form.radio id="form-fulltext-yes" property="fulltext" value="1" checked="{lastSearch.fulltext} == 1" />
+            <label for="form-fulltext-yes">in Volltext</label>
+        </div>
+        <f:form.hidden property="orderBy" value="{lastSearch.orderBy}" />
+        <f:form.hidden property="order" value="{lastSearch.order}" />
+    </div>
 </f:form>
 
 <div class="tx-dlf-listview">
-   <f:variable name="currentPage" value="{widgetPage.currentPage - 1}" />
-   <f:variable name="pageOffset" value="{settings.list.paginate.itemsPerPage * currentPage}" />
-   <f:variable name="allDocuments" value="{documents->f:count()}" />
-   <f:variable name="numDocuments" value="{pageOffset + settings.list.paginate.itemsPerPage}" />
-   <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults.numFound} Treffer in {allDocuments} Dokumenten.</p>
-   <p class="tx-dlf-sortinfo">
-      <f:translate
-         key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
-         arguments="{0:'{pageOffset + 1}',1:'{f:if(condition: \'{numDocuments} > {allDocuments}\', then: \'{allDocuments}\', else: \'{numDocuments}\')}', 2:'{allDocuments}'}" />
-   </p>
+    <f:variable name="currentPage" value="{pagination.currentPageNumber - 1}" />
+    <f:variable name="pageOffset" value="{settings.list.paginate.itemsPerPage * currentPage}" />
+    <f:variable name="allDocuments" value="{documents->f:count()}" />
+    <f:variable name="numDocuments" value="{pageOffset + settings.list.paginate.itemsPerPage}" />
+    <p class="tx-dlf-search-numHits">Die Suche ergab {rawResults.numFound} Treffer in {allDocuments} Dokumenten.</p>
+    <p class="tx-dlf-sortinfo">
+        <f:translate
+            key="LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:sortinfo"
+            arguments="{0:'{pageOffset + 1}',1:'{f:if(condition: \'{numDocuments} > {allDocuments}\', then: \'{allDocuments}\', else: \'{numDocuments}\')}', 2:'{allDocuments}'}" />
+    </p>
 
-   <f:form section="showResults" action="search" name="searchParameter" method="post" class="tx-dlf-search-form">
-      <div>
-         <label for="form-orderBy">
-            <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy' extensionName='slub_digitalcollections' />
-         </label>
-         <f:form.select id="form-orderBy" property="orderBy" value="{lastSearch.orderBy}" additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
-            <f:for each="{metadata}" as="meta">
-               <f:form.select.option value="{meta.indexName}_usi">
-                  <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{meta.indexName}' extensionName='slub_digitalcollections' />
-               </f:form.select.option>
-            </f:for>
-         </f:form.select>
-         <label for="form-order">
-            <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order' extensionName='slub_digitalcollections' />
-         </label>
-         <f:form.select id="form-order" property="order" value="{lastSearch.order}" additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
-            <f:form.select.option value="asc">
-               <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.asc' extensionName='slub_digitalcollections' />
-            </f:form.select.option>
-            <f:form.select.option value="desc">
-               <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.desc' extensionName='slub_digitalcollections' />
-            </f:form.select.option>
-         </f:form.select>
-         <f:form.hidden property="collections" value="{settings.collections}" />
-         <f:form.hidden property="query" value="{lastSearch.query}" />
-         <f:form.hidden property="fulltext" value="{lastSearch.fulltext}" />
-      </div>
-   </f:form>
+    <f:form section="showResults" action="search" name="searchParameter" method="post" class="tx-dlf-search-form">
+        <div>
+            <label for="form-orderBy">
+                <f:translate
+                    key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.orderBy'
+                    extensionName='slub_digitalcollections' />
+            </label>
+            <f:form.select id="form-orderBy" property="orderBy" value="{lastSearch.orderBy}"
+                additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
+                <f:for each="{metadata}" as="meta">
+                    <f:form.select.option value="{meta.indexName}_usi">
+                        <f:translate
+                            key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{meta.indexName}'
+                            extensionName='slub_digitalcollections' />
+                    </f:form.select.option>
+                </f:for>
+            </f:form.select>
+            <label for="form-order">
+                <f:translate
+                    key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order'
+                    extensionName='slub_digitalcollections' />
+            </label>
+            <f:form.select id="form-order" property="order" value="{lastSearch.order}"
+                additionalAttributes="{'onchange': 'javascript:this.form.submit();'}">
+                <f:form.select.option value="asc">
+                    <f:translate
+                        key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.asc'
+                        extensionName='slub_digitalcollections' />
+                </f:form.select.option>
+                <f:form.select.option value="desc">
+                    <f:translate
+                        key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:form.order.desc'
+                        extensionName='slub_digitalcollections' />
+                </f:form.select.option>
+            </f:form.select>
+            <f:form.hidden property="collections" value="{settings.collections}" />
+            <f:form.hidden property="query" value="{lastSearch.query}" />
+            <f:form.hidden property="fulltext" value="{lastSearch.fulltext}" />
+        </div>
+    </f:form>
 
-   <f:widget.paginate objects="{documents}" as="paginatedDocuments" configuration="{settings.list.paginate}">
-      <ol class="tx-dlf-abstracts">
-         <f:for each="{paginatedDocuments}" as="document" iteration="docIterator">
-            <f:variable name="docTitle" value="{f:if(condition:'{document.title}', then:'{document.title}', else:'{document.metsOrderlabel}')}" />
-            <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
-               <f:link.page
-               pageUid="{settings.kitodo.pageView}"
-               additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}"
-               class=""
-               title="{docTitle}">
-                  <f:comment>
-                     slub_digitalcollections uses the :empty CSS selector to check for missing thumbnail.
-                     The HTML comments make sure there is no whitespace in that case.
-                  </f:comment>
-                  <div class="tx-dlf-listview-thumbnail"><!--
-                     --><f:if condition="{document.thumbnail}">
-                        <img src="{document.thumbnail}" loading="lazy" alt="Vorschaubild von {docTitle}" />
-                     </f:if><!--
-                  --></div>
-                  <dl>
-                     <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
-                     <dd class="tx-dlf-title">{docTitle}</dd>
-                     <f:for each="{document.metadata}" as="metadata" key="label">
-
-                        <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-
-                           <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                           <f:if condition="{label} == 'year'">
-                              <f:then>
-                                 <f:comment>Todo: ViewHelper to check given date string and format with f:format.date if possible</f:comment>
-                                 <dd>{metadata.0}</dd>
-                              </f:then>
-                              <f:else>
-                                 <dd>{metadata.0}</dd>
-                              </f:else>
-                           </f:if>
-                        </f:if>
-                     </f:for>
-                     <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                     <dd class="tx-dlf-type">
-                        <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure}' extensionName='slub_digitalcollections' />
-                     </dd>
-                  </dl>
-               </f:link.page>
-               <f:if condition="{document.children} || {document.searchResults}">
-                  <button class="tx-dlf-morevolumes" title="{f:translate(key='listview.moredetails.toggle')}"><f:translate key='listview.moredetails.toggle' /></button>
-               </f:if>
-               <f:if condition="{document.children}">
-                  <ol class="tx-dlf-volume">
-                     <f:for each="{document.children}" as="child" iteration="childIterator">
-                        <f:if condition="{document.structure} == 'ephemera' || {document.structure} == 'newspaper'">
-                           <f:then>
-                              <f:comment>Special output for Newspaper / Ephemera</f:comment>
-                              <li value="{childIterator.index}" class="years">
-                                 <f:link.page
-                                 pageUid="{settings.kitodo.pageView}"
-                                 additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                                 class=""
-                                 title="{f:if(condition:'{child.metsOrderlabel}', then:'{child.metsOrderlabel}', else:'[{document.title}]')}">
-                                 {child.metsOrderlabel}
-                                 </f:link.page>
-                              </li>
-                           </f:then>
-                           <f:else>
-                              <li value="{childIterator.index}" class="pageresult">
-                                 <f:link.page
-                                 pageUid="{settings.kitodo.pageView}"
-                                 additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                                 class=""
-                                 title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                                    <div class="tx-dlf-listview-thumbnail"><!--
-                                       --><f:if condition="{child.thumbnail}">
-                                          <img src="{child.thumbnail}" loading="lazy" alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
-                                       </f:if><!--
-                                    --></div>
-                                    <dl>
-                                       <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
-                                       <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
-                                       <f:for each="{child.metadata}" as="metadata" key="label">
-                                          <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                                             <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                                             <dd>{metadata.0}</dd>
-                                          </f:if>
-                                       </f:for>
-                                       <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                                       <dd class="tx-dlf-type">
-                                          <f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' />
-                                       </dd>
-                                    </dl>
-                                 </f:link.page>
-                              </li>
-                           </f:else>
-                        </f:if>
-                     </f:for>
-                  </ol>
-               </f:if>
-
-               <f:if condition="{document.searchResults}">
-                  <ol class="tx-dlf-volume">
-                     <f:for each="{document.searchResults}" as="result" iteration="resultIterator">
-                        <li value="{resultIterator.index}" class="pageresult">
-                           <f:link.page
-                           pageUid="{settings.kitodo.pageView}"
-                           additionalParams="{tx_dlf:{page:'{result.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word: '{result.highlight_word}'}}"
-                           class=""
-                           title="{f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}, Seite {result.page}">
-                              <div class="tx-dlf-listview-thumbnail"><!--
-                                 --><f:if condition="{result.thumbnail}">
-                                    <img src="{result.thumbnail}" loading="lazy" alt="Vorschaubild von {f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}" />
-                                 </f:if><!--
-                              --></div>
-                              <div>
-                                 <div class="tx-dlf-listview-preview">
-                                    <f:if condition="{result.structure} && {result.title}">
-                                       <f:then>
-                                          <p class="page"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{result.structure}' extensionName='slub_digitalcollections' />: {result.title}</p>
-                                          <p><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.page' extensionName='slub_digitalcollections' /> {result.page}</p>
-                                       </f:then>
-                                       <f:else>
-                                          <p class="page"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.page' extensionName='slub_digitalcollections' /> {result.page}</p>
-                                       </f:else>
-                                    </f:if>
-                                    <f:if condition="{result.snippet}">
-                                       <p class="textsnippet">[...] <f:format.raw>{result.snippet}</f:format.raw> [...]</p>
-                                    </f:if>
-                                 </div>
-                              </div>
-                           </f:link.page>
-                        </li>
-                     </f:for>
-                  </ol>
-               </f:if>
-            </li>
-         </f:for>
-      </ol>
-   </f:widget.paginate>
+    <f:render partial="Pagination" arguments="{_all}" />
+    <f:render partial="Results" arguments="{_all}" />
+    <f:render partial="Pagination" arguments="{_all}" />
 </div>

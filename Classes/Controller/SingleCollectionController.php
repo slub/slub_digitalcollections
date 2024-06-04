@@ -25,52 +25,39 @@ namespace Slub\SlubDigitalcollections\Controller;
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Kitodo\Dlf\Common\Document;
-use Kitodo\Dlf\Domain\Repository\DocumentRepository;
+use Kitodo\Dlf\Common\SolrPaginator;
+use Kitodo\Dlf\Controller\AbstractController;
 use Kitodo\Dlf\Domain\Repository\StructureRepository;
 use Kitodo\Dlf\Domain\Repository\CollectionRepository;
 use Kitodo\Dlf\Domain\Repository\MetadataRepository;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 
-class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class SingleCollectionController extends AbstractController
 {
-    /**
-     * DocumentRepository
-     *
-     * @var \Kitodo\Dlf\Domain\Repository\DocumentRepository
-     */
-    protected $documentRepository;
 
     /**
      * StructureRepository
      *
-     * @var \Kitodo\Dlf\Domain\Repository\StructureRepository
+     * @var StructureRepository
      */
     protected $structureRepository;
 
     /**
      * CollectionRepository
      *
-     * @var \Kitodo\Dlf\Domain\Repository\CollectionRepository
+     * @var CollectionRepository
      */
     protected $collectionRepository;
 
     /**
      * MetadataRepository
      *
-     * @var \Kitodo\Dlf\Domain\Repository\MetadataRepository
+     * @var MetadataRepository
      */
     protected $metadataRepository;
 
-    /**
-     * @param \Kitodo\Dlf\Domain\Repository\DocumentRepository $documentRepository
-     */
-    public function injectDocumentRepository(DocumentRepository $documentRepository)
-    {
-        $this->documentRepository = $documentRepository;
-    }
-
 	/**
-     * @param \Kitodo\Dlf\Domain\Repository\StructureRepository $structureRepository
+     * @param StructureRepository $structureRepository
      */
     public function injectStructureRepository(StructureRepository $structureRepository)
     {
@@ -78,7 +65,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
     }
 
 	/**
-     * @param \Kitodo\Dlf\Domain\Repository\CollectionRepository $collectionRepository
+     * @param CollectionRepository $collectionRepository
      */
     public function injectCollectionRepository(CollectionRepository $collectionRepository)
     {
@@ -86,7 +73,7 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
     }
 
 	/**
-     * @param \Kitodo\Dlf\Domain\Repository\MetadataRepository $metadataRepository
+     * @param MetadataRepository $metadataRepository
      */
     public function injectMetadataRepository(MetadataRepository $metadataRepository)
     {
@@ -133,46 +120,35 @@ class SingleCollectionController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
             $searchParams['order'] = 'asc';
         }
 
+        // Get current page from request data because the parameter is shared between plugins
+        $currentPage = $this->requestData['page'] ?? 1;
+
         $collections = $this->collectionRepository->findAllByUids(GeneralUtility::intExplode(',', $this->settings['collections'], true));
 
         // get all metadata records to be shown in results
         $listedMetadata = $this->metadataRepository->findByIsListed(true);
 
         // find all documents from Solr
-        $solrSearch = $this->documentRepository->findSolrByCollections($collections, $this->settings, $searchParams, $listedMetadata);
+        $solrResults = $this->documentRepository->findSolrByCollections($collections, $this->settings, $searchParams, $listedMetadata);
+
+        $itemsPerPage = $this->settings['list']['paginate']['itemsPerPage'];
+        if (empty($itemsPerPage)) {
+            $itemsPerPage = 25;
+        }
+        $solrPaginator = new SolrPaginator($solrResults, $currentPage, $itemsPerPage);
+        $simplePagination = new SimplePagination($solrPaginator);
+
+        $pagination = $this->buildSimplePagination($simplePagination, $solrPaginator);
+        $this->view->assignMultiple([ 'pagination' => $pagination, 'paginator' => $solrPaginator ]);
 
         // get all sortable Metadata from Kitodo.Presentation
         $metadata = $this->metadataRepository->findByIsSortable(true);
 
-        // Pagination of Results
-        // pass the currentPage to the fluid template to calculate current index of search result
-        $widgetPage = $this->getParametersSafely('@widget_0');
-        if (empty($widgetPage)) {
-            $widgetPage = ['currentPage' => 1];
-        }
-
-        $this->view->assign('documents', $solrSearch);
+        $this->view->assign('documents', $solrResults);
         $this->view->assign('metadata', $metadata);
-        $this->view->assign('widgetPage', $widgetPage);
+        $this->view->assign('page', $currentPage);
         $this->view->assign('lastSearch', $searchParams);
-        $this->view->assign('rawResults', $solrSearch->getSolrResults());
+        $this->view->assign('rawResults', $solrResults->getSolrResults());
 
     }
-
-    /**
-     * Safely gets Parameters from request
-     * if they exist
-     *
-     * @param string $parameterName
-     *
-     * @return null|string|array
-     */
-    protected function getParametersSafely($parameterName)
-    {
-        if ($this->request->hasArgument($parameterName)) {
-            return $this->request->getArgument($parameterName);
-        }
-        return null;
-    }
-
 }
