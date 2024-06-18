@@ -1,0 +1,77 @@
+/*
+ *
+ * Score
+ * ================================================
+ * Specials for the score view
+ *
+ * Author: Matthias Richter <matthias.richter@slub-dresden.de>
+ *
+ */
+
+.fulltext-container {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    text-align: left;
+    .transition();
+    #tx-dlf-score, {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        padding: 60px 20px 60px 0px;
+        overflow: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        line-height: 1.6em;
+        font-size: 16px;
+        color: @basegrey-color;
+        display: none;
+        &:empty {
+            padding: 0;
+        }
+        .textline {
+            &:after {
+                content: " ";
+            }
+        }
+        .score-visible & {
+            display: block;
+        }
+    }
+    .fullscreen & {
+        top: 0;
+    }
+    @media screen and (min-width: @tabletViewportWidth) {
+        #tx-dlf-score {
+            padding: 60px 70px 60px 0px;
+        }
+    }
+    @media screen and (min-width: @tabletLandscapeViewportWidth) {
+        top: 0;
+        max-width: 71.7%;
+        &:before {
+            height: 100px;
+        }
+        &:after {
+            height: 80px;
+        }
+        #tx-dlf-score {
+            padding: 80px 100px 60px 30px;
+            line-height: 1.8;
+            border-left: 1px solid @secondary-color-light;
+            .highlight {
+                padding: 3px 0;
+                background: lighten(@secondary-color-light,30%);
+            }
+        }
+    }
+    @media screen and (min-width: @desktopViewportWidth) {
+        max-width: 50%;
+    }
+}
+
+// EOF

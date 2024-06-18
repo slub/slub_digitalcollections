@@ -89,6 +89,10 @@
 				<source><![CDATA[No fulltext in gridpage mode.]]></source>
 				<target><![CDATA[Keine Volltexte in der Vorschau-Ansicht.]]></target>
 			</trans-unit>
+			<trans-unit id="score.no_score_gridpage" approved="yes">
+				<source><![CDATA[No fulltext in gridpage mode.]]></source>
+				<target><![CDATA[Keine Notentexte in der Vorschau-Ansicht.]]></target>
+			</trans-unit>
 			<trans-unit id="gridpage.preview" approved="yes">
 				<source><![CDATA[Thumbnail Preview]]></source>
 				<target><![CDATA[Vorschaubilder]]></target>
