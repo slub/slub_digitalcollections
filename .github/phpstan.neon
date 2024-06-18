@@ -1,0 +1,8 @@
+parameters:
+    ignoreErrors:
+            - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsListed\(\)\.#'
+            - '#Call to an undefined method Kitodo\\Dlf\\Domain\\Repository\\[a-zA-Z]+Repository::findByIsSortable\(\)\.#'
+    level: 5
+    paths:
+        - ../Classes/
+    treatPhpDocTypesAsCertain: false

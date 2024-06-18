@@ -31,7 +31,6 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 use Kitodo\Dlf\Common\MetsDocument;
-use Kitodo\Dlf\Domain\Model\Document;
 use Kitodo\Dlf\Domain\Repository\DocumentRepository;
 
 /**
@@ -102,37 +101,37 @@ class XpathViewHelper extends AbstractViewHelper
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
 
-        if ($document === null || $document->getDoc() === null || !($document->getDoc() instanceof MetsDocument)) {
+        if ($document === null || $document->getCurrentDocument() === null || !($document->getCurrentDocument() instanceof MetsDocument)) {
             return;
         }
+        $currentDocument = $document->getCurrentDocument();
+        $currentDocument->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
+        $currentDocument->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $currentDocument->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
+        $currentDocument->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
 
-        $document->getDoc()->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
-        $document->getDoc()->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
-        $document->getDoc()->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
-        $document->getDoc()->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
+        $result = $currentDocument->mets->xpath($xpath);
 
-        $result = $document->getDoc()->mets->xpath($xpath);
-
-        if (is_array($result)) {
-          foreach ($result as $row) {
-            if ($returnArray) {
-              $output[] = $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row);
-            } else {
-              $output .= $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row) . ' ';
-            }
-          }
+        if ($returnArray) {
+            $output = [];
         } else {
-          if ($returnArray) {
-            $output[] = $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row);
-          } else {
-            $output = $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row);
-          }
+            $output = '';
         }
 
-        if (! $returnArray) {
-            return trim($output);
-        } else {
+        if (is_array($result)) {
+            foreach ($result as $row) {
+                if ($returnArray) {
+                    $output[] = $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row);
+                } else {
+                    $output .= $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row) . ' ';
+                }
+            }
+        }
+
+        if ($returnArray) {
             return $output;
+        } else {
+            return trim($output);
         }
     }
 

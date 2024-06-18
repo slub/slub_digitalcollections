@@ -12,7 +12,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:if condition="{annotationtool}">
+<f:if condition="{renderAnnotationTool}">
     <f:then>
         <li>
             <span class="tx-dlf-tools-annotations">
@@ -33,7 +33,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{imagemanipulationtool}">
+<f:if condition="{renderImageManipulationTool}">
     <f:then>
         <span>
             <span class="tx-dlf-tools-imagetools" id="tx-dlf-tools-imagetools"
@@ -44,7 +44,7 @@
     </f:then>
 </f:if>
 
-<f:if condition="{imagedownloadtool} && {imageDownload}">
+<f:if condition="{renderImageDownloadTool} && {imageDownload}">
     <f:then>
         <li>
             <span class="tx-dlf-tools-imagedownload">
@@ -110,7 +110,7 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
     </f:then>
 </f:if>
 
-<f:if condition="{fulltexttool}">
+<f:if condition="{renderFulltextTool}">
     <f:then>
         <f:if condition="{fulltext}">
             <f:then>
@@ -128,7 +128,7 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
     </f:then>
 </f:if>
 
-<f:if condition="{fulltextdownloadtool}">
+<f:if condition="{renderFulltextDownloadTool}">
     <f:then>
         <li>
             <f:if condition="{fulltextDownload}">
@@ -148,13 +148,13 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
     </f:then>
 </f:if>
 
-<f:if condition="{pdfdownloadtool}">
+<f:if condition="{renderPdfDownloadTool}">
     <f:then>
         <f:if condition="{double} === 0">
             <f:then>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                        <f:link.external uri="{pageLinks.0}" class="download-page">
                             <f:translate key="downloadSinglePage" /> (PDF)
                         </f:link.external>
                     </li>
@@ -163,14 +163,14 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
             <f:else>
                 <f:if condition="{pageLinks.0}">
                     <li>
-                        <f:link.external uri="{pageLinks.0}" class="download-document">
+                        <f:link.external uri="{pageLinks.0}" class="download-page">
                             <f:translate key="downloadLeftPage" /> (PDF)
                         </f:link.external>
                     </li>
                 </f:if>
                 <f:if condition="{pageLinks.1}">
                     <li>
-                        <f:link.external uri="{pageLinks.1}" class="download-document">
+                        <f:link.external uri="{pageLinks.1}" class="download-page">
                             <f:translate key="downloadRightPage" /> (PDF)
                         </f:link.external>
                     </li>
@@ -197,14 +197,14 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
     </f:then>
 </f:if>
 
-<f:if condition="{searchindocumenttool} && {searchInDocument}">
+<f:if condition="{renderSearchInDocumentTool} && {searchInDocument}">
     <f:then>
         <f:if condition="{settings.searchUrl}">
             <f:then>
                 <f:variable name="actionUrl" value="{settings.searchUrl}" />
             </f:then>
             <f:else>
-                <f:variable name="actionUrl" value="{f:uri.page(pageUid='{viewData.requestData.pageUid}')}" />
+                <f:variable name="actionUrl" value="{f:uri.page(pageUid='{viewData.pageUid}')}" />
             </f:else>
         </f:if>
         <form class="tx-dlf-search-form" id="tx-dlf-search-in-document-form" action="{actionUrl}" method="get" enctype="multipart/form-data">
@@ -213,13 +213,14 @@ http://www.w3.org/1999/xhtml" id="midiPlayer_bar" style="width: 250px;"><div id=
                     <f:translate key="search.query"/>
                 </label>
                 <!-- Never change the @id of this input field! Otherwise search won't work! -->
-                <input type="text" id="tx-dlf-search-in-document-query" placeholder="{f:translate(key: 'tools.searchindocument.searchInDocument')}" name="{LABEL_QUERY_URL}" />
+                <input type="text" id="tx-dlf-search-in-document-query" placeholder="{f:translate(key: 'tools.searchindocument.searchInDocument')}" name="{searchInDocument.labelQueryUrl}" />
                 <input type="submit" id="tx-dlf-search-in-document-button" value="{f:translate(key: 'search.submit')}" onclick="resetStart();" />
-                <input type="hidden" id="tx-dlf-search-in-document-start" name="{searchInDocument.LABEL_START}" value="0" />
-                <input type="hidden" id="tx-dlf-search-in-document-id" name="{searchInDocument.LABEL_ID}" value="{searchInDocument.CURRENT_DOCUMENT}" />
-                <input type="hidden" id="tx-dlf-search-in-document-page" name="{searchInDocument.LABEL_PAGE_URL}" />
-                <input type="hidden" id="tx-dlf-search-in-document-highlight-word" name="{searchInDocument.LABEL_HIGHLIGHT_WORD}" />
-                <input type="hidden" id="tx-dlf-search-in-document-encrypted" name="{searchInDocument.LABEL_ENCRYPTED}" value="{searchInDocument.SOLR_ENCRYPTED}" />
+                <input type="hidden" id="tx-dlf-search-in-document-start" name="{searchInDocument.labelStart}" value="0" />
+                <input type="hidden" id="tx-dlf-search-in-document-id" name="{searchInDocument.labelId}" value="{searchInDocument.documentId}" />
+                <input type="hidden" id="tx-dlf-search-in-document-pid" name="{searchInDocument.labelPid}" value="{searchInDocument.documentPageId}" />
+                <input type="hidden" id="tx-dlf-search-in-document-page" name="{searchInDocument.labelPageUrl}" />
+                <input type="hidden" id="tx-dlf-search-in-document-highlight-word" name="{searchInDocument.labelHighlightWord}" />
+                <input type="hidden" id="tx-dlf-search-in-document-encrypted" name="{searchInDocument.labelEncrypted}" value="{searchInDocument.solrEncrypted}" />
             </div>
         </form>
         <div id="tx-dlf-search-in-document-loading" style="display: none;"><f:translate key="tools.searchindocument.loading"/>...</div>

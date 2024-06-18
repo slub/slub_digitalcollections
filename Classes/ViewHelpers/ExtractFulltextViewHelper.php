@@ -23,7 +23,6 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -62,13 +61,9 @@ class ExtractFulltextViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
       ) {
         $file= $arguments['file'];
-
+        $rawText = '';
         $altoXml = @simplexml_load_file($file);
-        if($altoXml ===  FALSE)
-        {
-          // fulltext not accessible
-          $rawText = '';
-        } else {
+        if($altoXml !== FALSE) {
           $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
           // Get all (presumed) words of the text.
           $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
@@ -77,7 +72,6 @@ class ExtractFulltextViewHelper extends AbstractViewHelper
           }
         }
         return $rawText;
-
       }
 
 }

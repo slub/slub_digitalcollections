@@ -27,8 +27,8 @@
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "typo3/cms-core": "~9.5|^10.4",
-    "kitodo/presentation": "^4.0|dev-master"
+    "typo3/cms-core": "^10.4|^11.5",
+    "kitodo/presentation": "^5.0|dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -38,6 +38,12 @@
   "extra": {
     "typo3/cms": {
       "extension-key": "slub_digitalcollections"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
     }
   }
 }

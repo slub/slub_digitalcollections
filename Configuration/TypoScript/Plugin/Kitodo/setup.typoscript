@@ -158,7 +158,7 @@ plugin.tx_dlf_fulltexttool {
     settings {
         tools = fulltexttool
         activateFullTextInitially = 0
-        fullTextScrollElement = html, body
+        fullTextScrollElement = #tx-dlf-fulltextselection
     }
 }
 
@@ -188,6 +188,7 @@ plugin.tx_dlf_searchindocumenttool {
     settings {
         tools = searchindocumenttool
         idInputName = tx_dlf[id]
+        pidInputName = tx_dlf[pid]
         queryInputName = tx_dlf[query]
         startInputName = tx_dlf[start]
         pageInputName = tx_dlf[page]

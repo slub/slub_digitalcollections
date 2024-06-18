@@ -3,22 +3,21 @@ defined('TYPO3_MODE') or die();
 
 // plugins
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Slub.SlubDigitalcollections',
+    'SlubDigitalcollections',
     'SingleCollection',
     [
-        'SingleCollection' => 'show,search'
+        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'show,search'
     ],
     // non-cacheable actions
     [
-        'SingleCollection' => 'search'
+        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'search'
     ]
 );
 
 // cache configurations
 // Cache for Collection ViewHelper (Matomo statistics)
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections'] = [];
-}
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections'] ??= [];
+
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections']['backend'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend';
 }
@@ -27,9 +26,8 @@ if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][
 }
 
 // Cache for Collection Plugin
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections'] = [];
-}
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections'] ??= [];
+
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections']['backend'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend';
 }

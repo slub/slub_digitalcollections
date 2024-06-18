@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Slub.SlubDigitalcollections',
+    'SlubDigitalcollections',
     'SingleCollection',
     'LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang.xlf:plugins.single_collection_view'
 );
