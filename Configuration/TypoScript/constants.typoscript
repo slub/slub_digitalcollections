@@ -25,7 +25,7 @@ config {
         # basic id config
         rootPage {
             # cat=plugin.tx_slubdigitalcollections/links/0300; type=int+; label= Kitodo Rootpage
-            pid  = 5346
+            pid =
 
             # cat=plugin.tx_slubdigitalcollections/links/0301; type=string; label= Kitodo Title
             title = Digitale Sammlungen
@@ -35,25 +35,25 @@ config {
         }
 
         # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label=Kitodo.Presentation (dlf) Storage Pid
-        storagePid = 4152
+        storagePid =
 
         # cat=plugin.tx_slubdigitalcollections/links/0321; type=int+; label= Kitodo Terms of Use Page
         termsOfUsePid =
 
         # cat=plugin.tx_slubdigitalcollections/links/0322; type=list; label= Pids for Navigation
-        viewerNavigationPids = 4010, 5346, 9259, 4012, 10105
+        viewerNavigationPids =
 
         # cat=plugin.tx_slubdigitalcollections/links/0323; type=int+; label= Kitodo Pageview
-        pageView = 5363
+        pageView =
 
         # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= pagegrid limit (thumbnail preview)
         pagegrid.limit = 35
 
         # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= Kitodo Collection Page
-        collectionView = 5362
+        collectionView =
 
         # cat=plugin.tx_slubdigitalcollections/links/0326; type=int+; label= Kitodo List Page
-        listView = 5364
+        listView =
 
         css {
             # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for optional base website design
