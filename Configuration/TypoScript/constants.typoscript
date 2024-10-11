@@ -2,70 +2,63 @@
 # All used Constants for SLUB Digital Collections
 ###################################################
 config {
-    kitodo {
+    # basic solr config
+    solr {
+        # cat=plugin.tx_slubdigitalcollections/links/0200; type=int+; label= SOLR core uid
+        coreUid = 1
 
-        # basic solr config
-        solr {
-            # cat=plugin.tx_slubdigitalcollections/links/0200; type=int+; label= solr core uid
-            core = 1
+        # cat=plugin.tx_slubdigitalcollections/links/0201; type=int+; label= SOLR search query limit
+        searchLimit = 1000
 
-            # cat=plugin.tx_slubdigitalcollections/links/0201; type=int+; label= solr search query limit
-            searchLimit = 1000
+        # cat=plugin.tx_slubdigitalcollections/links/0202; type=string; label= SOLR URL including scheme, port and path
+        host = http://sdvsolr2.slub-dresden.de:8983/solr
 
-            # cat=plugin.tx_slubdigitalcollections/links/0202; type=string; label= solr url including scheme, port and path
-            host = http://sdvsolr2.slub-dresden.de:8983/solr
+        # cat=plugin.tx_slubdigitalcollections/links/0203; type=string; label= SOLR core name
+        coreName = dlfCore0
 
-            # cat=plugin.tx_slubdigitalcollections/links/0203; type=string; label= solr core name
-            coreName = dlfCore0
-
-            # cat=plugin.tx_slubdigitalcollections/links/0204; type=int+; label= solr connection timeout (s)
-            timeout = 5
+        # cat=plugin.tx_slubdigitalcollections/links/0204; type=int+; label= SOLR connection timeout (s)
+        timeout = 5
         }
 
-        # basic id config
-        rootPage {
-            # cat=plugin.tx_slubdigitalcollections/links/0300; type=int+; label= Kitodo Rootpage
-            pid =
+    # basic id config
+    rootPage {
+        # cat=plugin.tx_slubdigitalcollections/links/0300; type=int+; label= Kitodo root page pid
+        pid =
 
-            # cat=plugin.tx_slubdigitalcollections/links/0301; type=string; label= Kitodo Title
-            title = Digitale Sammlungen
+        # cat=plugin.tx_slubdigitalcollections/links/0301; type=string; label= Kitodo Title
+        title = Digitale Sammlungen
 
-            # cat=plugin.tx_slubdigitalcollections/links/0302; type=string; label= Kitodo CSS-class
-            cssClass = dlf-slub-logo
-        }
+        # cat=plugin.tx_slubdigitalcollections/links/0302; type=string; label= Kitodo CSS class
+        cssClass = dlf-slub-logo
+    }
 
-        # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label=Kitodo.Presentation (dlf) Storage Pid
-        storagePid =
+    # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label= Kitodo Terms of Use Page pid
+    termsOfUsePid =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0321; type=int+; label= Kitodo Terms of Use Page
-        termsOfUsePid =
+    # cat=plugin.tx_slubdigitalcollections/links/0321; type=list; label= Pids for Navigation
+    viewerNavigationPids =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0322; type=list; label= Pids for Navigation
-        viewerNavigationPids =
+    # cat=plugin.tx_slubdigitalcollections/links/0322; type=int+; label= Kitodo Pageview pid
+    pageView =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0323; type=int+; label= Kitodo Pageview
-        pageView =
+    # cat=plugin.tx_slubdigitalcollections/links/0323; type=int+; label= pagegrid limit (thumbnail preview)
+    pagegrid.limit = 35
 
-        # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= pagegrid limit (thumbnail preview)
-        pagegrid.limit = 35
+    # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= Kitodo Collection View Page pid
+    collectionView =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= Kitodo Collection Page
-        collectionView =
+    # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= Kitodo List View Page pid
+    listView =
 
-        # cat=plugin.tx_slubdigitalcollections/links/0326; type=int+; label= Kitodo List Page
-        listView =
+    css {
+        # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for optional base website design
+        base = EXT:slub_digitalcollections/Resources/Public/Css/BaseDesign.css
 
-        css {
-            # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for optional base website design
-            base = EXT:slub_digitalcollections/Resources/Public/Css/BaseDesign.css
+        # cat=plugin.tx_slubdigitalcollections/advanced/0501; type=string; label=CSS file for all lists (eg. collections)
+        lists = EXT:slub_digitalcollections/Resources/Public/Css/DigitalcollectionsLists.css
 
-            # cat=plugin.tx_slubdigitalcollections/advanced/0501; type=string; label=CSS file for all lists (eg. collections)
-            lists = EXT:slub_digitalcollections/Resources/Public/Css/DigitalcollectionsLists.css
-
-            # cat=plugin.tx_slubdigitalcollections/advanced/0502; type=string; label=CSS file for Kitodo pageview
-            pageview = EXT:slub_digitalcollections/Resources/Public/Css/Digitalcollections.css
-        }
-
+        # cat=plugin.tx_slubdigitalcollections/advanced/0502; type=string; label=CSS file for Kitodo pageview
+        pageview = EXT:slub_digitalcollections/Resources/Public/Css/Digitalcollections.css
     }
 
     # matomo configuration (maybe overwritten)

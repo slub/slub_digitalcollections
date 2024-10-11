@@ -6,7 +6,7 @@
 
 page {
   includeCSS {
-        kitodo = {$config.kitodo.css.lists}
+        kitodo = {$config.css.lists}
         kitodo.media = screen,projection
     }
     # we need jquery in head as it is used by pageview plugin
@@ -20,7 +20,7 @@ page {
     config.disableWrapInBaseClass = 1
 
     # switch to viewer css
-    page.includeCSS.kitodo = {$config.kitodo.css.pageview}
+    page.includeCSS.kitodo = {$config.css.pageview}
 
     # switch to viewer js
     page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsScripts.js
@@ -120,7 +120,7 @@ page {
         10 {
           table = tx_dlf_documents
           select {
-            pidInList = {$config.kitodo.storagePid}
+            pidInList = {$plugin.tx_dlf.persistence.storagePid}
             selectFields=title,author,year,place
             where=uid=###postid###
             markers {
@@ -161,7 +161,7 @@ page {
 
           table = tx_dlf_documents
           select {
-            pidInList = {$config.kitodo.storagePid}
+            pidInList = {$plugin.tx_dlf.persistence.storagePid}
             selectFields=title,author,year,place
             where=uid=###postid###
             markers {
@@ -227,7 +227,7 @@ page {
   page.headerData.10 = TEXT
   page.headerData.10 {
     wrap = <title> | </title>
-    value = {$config.kitodo.rootPage.title}: {register:postTitle}
+    value = {$config.rootPage.title}: {register:postTitle}
     insertData = 1
     htmlSpecialChars = 1
   }
