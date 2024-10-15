@@ -7,11 +7,11 @@ plugin.tx_slubdigitalcollections_singlecollection {
 
     }
     persistence {
-        storagePid = {$config.kitodo.storagePid}
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
     }
     settings {
-        kitodo.pageView = {$config.kitodo.pageView}
-        storagePid = {$config.kitodo.storagePid}
+        pageView = {$config.pageView}
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
         list.paginate {
             itemsPerPage = 25
             insertAbove = 1
@@ -20,9 +20,9 @@ plugin.tx_slubdigitalcollections_singlecollection {
             section = showResults
         }
         solr {
-            host = {$config.kitodo.solr.host}/{$config.kitodo.solr.coreName}
-            timeout = {$config.kitodo.solr.timeout}
+            host = {$config.solr.host}/{$config.solr.coreName}
+            timeout = {$config.solr.timeout}
         }
-        solrcore = {$config.kitodo.solr.coreName}
+        solrcore = {$config.solr.coreName}
     }
 }

@@ -9,7 +9,7 @@
 lib.navigation.kitodo = HMENU
 lib.navigation.kitodo {
     special = list
-    special.value = {$config.kitodo.viewerNavigationPids}
+    special.value = {$config.viewerNavigationPids}
     includeNotInMenu = 1
     1 = TMENU
     1 {
@@ -64,12 +64,12 @@ page {
         templateRootPaths.10 = {$config.templateRootPath}
         settings {
             rootPage {
-                pid = {$config.kitodo.rootPage.pid}
-                title = {$config.kitodo.rootPage.title}
-                cssClass = {$config.kitodo.rootPage.cssClass}
+                pid = {$config.rootPage.pid}
+                title = {$config.rootPage.title}
+                cssClass = {$config.rootPage.cssClass}
             }
 
-            termsOfUsePid = {$config.kitodo.termsOfUsePid}
+            termsOfUsePid = {$config.termsOfUsePid}
 
             matomo {
                 hostname = {$config.piwik_hostname}
@@ -78,8 +78,8 @@ page {
             }
 
             collections {
-                solrHost = {$config.kitodo.solr.host}/{$config.kitodo.solr.coreName}
-                solrTimeout = {$config.kitodo.solr.timeout}
+                solrHost = {$config.solr.host}/{$config.solr.coreName}
+                solrTimeout = {$config.solr.timeout}
             }
 
             showProviderLogo = 0
@@ -149,11 +149,11 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
 # --------------------------------------------------------------------------------------------------------------------
-[getTSFE().id == {$config.kitodo.collectionView}]
+[getTSFE().id == {$config.collectionView}]
 page.bodyTag = <body class="collections">
 # render content parts only
 [END]
 
-[getTSFE().id == {$config.kitodo.listView}]
+[getTSFE().id == {$config.listView}]
 page.bodyTag = <body class="listview">
 [END]

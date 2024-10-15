@@ -16,7 +16,7 @@ page {
     }
 
     includeCSS {
-        base = {$config.kitodo.css.base}
+        base = {$config.css.base}
         base.media = screen,projection
     }
 
@@ -54,13 +54,13 @@ page {
         templateRootPaths.0 = {$config.page.templateRootPath}
         variables {
             rootPageId = TEXT
-            rootPageId.value = {$config.kitodo.rootPage.pid}
+            rootPageId.value = {$config.rootPage.pid}
 
             rootPageTitle = TEXT
-            rootPageTitle.value = {$config.kitodo.rootPage.title}
+            rootPageTitle.value = {$config.rootPage.title}
 
             rootPageCssClass = TEXT
-            rootPageCssClass.value = {$config.kitodo.rootPage.cssClass}
+            rootPageCssClass.value = {$config.rootPage.cssClass}
         }
     }
 

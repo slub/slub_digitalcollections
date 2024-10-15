@@ -2,7 +2,7 @@
 
 plugin.tx_dlf {
     persistence {
-        storagePid = {$config.kitodo.storagePid}
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
     }
 	view {
 		partialRootPaths {
@@ -29,15 +29,15 @@ lib.kitodo.fulltext.search {
 	}
     settings {
         // UID of dlfCore0
-        solrcore = {$config.kitodo.solr.core}
-        limit = {$config.kitodo.solr.searchLimit}
+        solrcore = {$config.solr.coreUid}
+        limit = {$config.solr.searchLimit}
         // we activate fulltext here and search only in fulltext (see template)
         fulltext = 1
         // search only in current document
         searchIn = document
         // doesn't work due to javascript inclusion of autocomplete in header
         suggest = 0
-        targetPid = {$config.kitodo.listView}
+        targetPid = {$config.listView}
         // this feature doesn't work in our case. It always jumps to page 1
         showSingleResult = 0
     }
@@ -84,9 +84,9 @@ plugin.tx_dlf_pageview {
 plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
 plugin.tx_dlf_pagegrid {
     settings {
-        targetPid = {$config.kitodo.pageView}
+        targetPid = {$config.pageView}
         paginate {
-            itemsPerPage = {$config.kitodo.pagegrid.limit}
+            itemsPerPage = {$config.pagegrid.limit}
             insertAbove = 0
             insertBelow = 1
             lessPages = 1
@@ -103,7 +103,7 @@ plugin.tx_dlf_pagegrid {
 plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
-        targetPid = {$config.kitodo.pageView}
+        targetPid = {$config.pageView}
     }
 }
 
@@ -195,7 +195,7 @@ plugin.tx_dlf_searchindocumenttool {
         highlightWordInputName = tx_dlf[highlight_word]
         encryptedInputName = tx_dlf[encrypted]
         // UID of dlfCore0
-        solrcore = {$config.kitodo.solr.core}
+        solrcore = {$config.solr.coreUid}
     }
 }
 
@@ -219,7 +219,7 @@ lib.kitodo.newspaper.years {
         }
     }
     settings {
-        targetPid = {$config.kitodo.pageView}
+        targetPid = {$config.pageView}
     }
 }
 
@@ -231,19 +231,19 @@ lib.kitodo.newspaper.calendar {
         }
     }
     settings {
-        targetPid = {$config.kitodo.pageView}
+        targetPid = {$config.pageView}
         showEmptyMonths = 0
     }
 }
 
-[getDocumentType({$config.kitodo.storagePid}) === 'ephemera' or getDocumentType({$config.kitodo.storagePid}) === 'newspaper']
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'ephemera' or getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'newspaper']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_anchor
 }
 [END]
 
-[getDocumentType({$config.kitodo.storagePid}) === 'year']
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'year']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_year
@@ -270,7 +270,7 @@ page.2.postTitle.cObject {
 }
 [END]
 
-[getDocumentType({$config.kitodo.storagePid}) === 'issue']
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'issue']
 page.10.variables {
   isNewspaper = TEXT
   isNewspaper.value = newspaper_issue
