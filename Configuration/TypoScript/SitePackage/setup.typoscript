@@ -66,4 +66,4 @@ page {
 
 }
 
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/SitePackage/navigation.typoscript">
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/SitePackage/navigation.typoscript'
