@@ -25,7 +25,6 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -144,10 +143,7 @@ class XpathViewHelper extends AbstractViewHelper
     private static function getDocumentRepository()
     {
         if (null === static::$documentRepository) {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            static::$documentRepository = $objectManager->get(
-                DocumentRepository::class
-            );
+            static::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
         }
 
         return static::$documentRepository;
