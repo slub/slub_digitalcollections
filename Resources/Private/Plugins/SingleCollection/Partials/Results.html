@@ -6,7 +6,7 @@
         <f:for each="{paginator.paginatedItems}" as="document" iteration="docIterator">
             <f:variable name="docTitle" value="{f:if(condition:'{document.title}', then:'{document.title}', else:'{document.metsOrderlabel}')}" />
             <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
-                <f:link.page pageUid="{settings.kitodo.pageView}"
+                <f:link.page pageUid="{settings.pageView}"
                     additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}"
                     class="" title="{docTitle}">
                     <f:comment>
@@ -52,7 +52,7 @@
                                 <f:then>
                                     <f:comment>Special output for Newspaper / Ephemera</f:comment>
                                     <li value="{childIterator.index}" class="years">
-                                        <f:link.page pageUid="{settings.kitodo.pageView}"
+                                        <f:link.page pageUid="{settings.pageView}"
                                             additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
                                             class=""
                                             title="{f:if(condition:'{child.metsOrderlabel}', then:'{child.metsOrderlabel}', else:'[{document.title}]')}">
@@ -62,7 +62,7 @@
                                 </f:then>
                                 <f:else>
                                     <li value="{childIterator.index}" class="pageresult">
-                                        <f:link.page pageUid="{settings.kitodo.pageView}"
+                                        <f:link.page pageUid="{settings.pageView}"
                                             additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
                                             class=""
                                             title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
@@ -96,7 +96,7 @@
                     <ol class="tx-dlf-volume">
                         <f:for each="{document.searchResults}" as="result" iteration="resultIterator">
                             <li value="{resultIterator.index}" class="pageresult">
-                                <f:link.page pageUid="{settings.kitodo.pageView}"
+                                <f:link.page pageUid="{settings.pageView}"
                                     additionalParams="{tx_dlf:{page:'{result.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word: '{result.highlight_word}'}}"
                                     class=""
                                     title="{f:if(condition:'{result.title}', then:'{result.title}', else:'[{document.title}]')}, Seite {result.page}">
