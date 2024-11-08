@@ -142,18 +142,16 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # The condition is necessary because you cannot nest TypoScript conditions. But inside the included TypoScript files,
 # more conditions appear.
-
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/singleCollection.typoscript">
-
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup.typoscript'
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/singleCollection.typoscript'
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
 # --------------------------------------------------------------------------------------------------------------------
-[getTSFE().id == {$config.collectionView}]
+[getTSFE() && getTSFE().id == {$config.collectionView}]
 page.bodyTag = <body class="collections">
 # render content parts only
 [END]
 
-[getTSFE().id == {$config.listView}]
+[getTSFE() && getTSFE().id == {$config.listView}]
 page.bodyTag = <body class="listview">
 [END]
