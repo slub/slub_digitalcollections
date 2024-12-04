@@ -1,4 +1,4 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.typoscript">
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.typoscript'
 
 plugin.tx_dlf {
     persistence {
