@@ -74,13 +74,11 @@
     </f:then>
 </f:if>
 
-<<<<<<< Updated upstream
-=======
-<f:if condition="{renderModelDownloadTool} && {modelDownloadUrl}">
+<f:if condition="{renderModelDownloadTool} && {modelUrl}">
     <f:then>
         <li>
             <span class="tx-dlf-tools-modeldownload">
-                <f:link.external uri="{modelDownloadUrl}">
+                <f:link.external uri="{modelUrl}">
                     <f:translate key="downloadModel" />
                 </f:link.external>
             </span>
@@ -109,7 +107,6 @@
     </f:then>
 </f:if>
 
->>>>>>> Stashed changes
 <f:if condition="{settings.tools} == 'scoretool'">
     <f:then>
         <f:if condition="{score}">
