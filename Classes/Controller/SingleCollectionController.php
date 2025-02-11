@@ -120,6 +120,8 @@ class SingleCollectionController extends AbstractController
             $searchParams['order'] = 'asc';
         }
 
+        $searchParams['collection'] = $this->settings['collections'];
+
         // Get current page from request data because the parameter is shared between plugins
         $currentPage = $this->requestData['page'] ?? 1;
 
