@@ -1,4 +1,5 @@
 #
 # PageTS for SLUB Digitalcollections
 #
-<INCLUDE_TYPOSCRIPT: source="DIR:EXT:slub_digitalcollections/Configuration/TsConfig/Mod/" extensions="tsconfig">
+@import 'EXT:slub_digitalcollections/Configuration/TsConfig/Mod/WebLayout/BackendLayouts/*.tsconfig'
+@import 'EXT:slub_digitalcollections/Configuration/TsConfig/Mod/Wizards/NewContentElement/*.tsconfig'

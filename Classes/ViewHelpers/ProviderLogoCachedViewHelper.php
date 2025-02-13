@@ -55,7 +55,7 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
     ) {
         $logoUrl = $arguments['logo'];
         // is valid uri?
-        if (GeneralUtility::isValidUrl($logoUrl)) {
+        if (isset($logoUrl) && GeneralUtility::isValidUrl($logoUrl)) {
             // calculate cache identifier
             $logoInfo = pathinfo($logoUrl);
             $cacheIdentifier = md5($logoUrl) . '.' . $logoInfo['extension'];
