@@ -72,37 +72,26 @@
                             </f:then>
                             <f:else>
                                 <li value="{childIterator.cycle}" class="pageresult">
-                                    <f:link.page
-                                    pageUid="{settings.targetPidPageView}"
-                                    additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                                    class=""
-                                    title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                                        <div class="tx-dlf-listview-thumbnail"><!--
+                                    <f:variable name="childTitle" value="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                    <div class="tx-dlf-listview-thumbnail"><!--
                                         --><f:if condition="{child.thumbnail}">
-                                            <img src="{child.thumbnail}" loading="lazy" alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                            <img src="{child.thumbnail}" loading="lazy" alt="Vorschaubild von {childTitle}" />
                                         </f:if><!--
-                                        --></div>
-                                        <dl>
+                                    --></div>
+                                    <dl>
                                         <dt class="tx-dlf-title"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_metadata.xlf:metadata.title' /></dt>
-                                        <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
+                                        <dd class="tx-dlf-title"><f:link.page pageUid="{settings.targetPidPageView}" additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}" title="{childTitle}">{childTitle}</f:link.page></dd>
                                         <f:for each="{listedMetadata}" as="metadata">
                                             <f:if condition="{child.metadata.{metadata.indexName}.0} && {metadata.indexName} != 'type' && {metadata.indexName} != 'title'">
-                                                <dt class="tx-dlf-metadata-{metadata.indexName}">
-                                                    {metadata.label}
-                                                </dt>
+                                                <dt class="tx-dlf-metadata-{metadata.indexName}">{metadata.label}</dt>
                                                 <f:for each="{child.metadata.{metadata.indexName}}" as="metadataentry">
-                                                    <dd class="tx-dlf-metadata-{metadata.indexName}">
-                                                            {metadataentry}
-                                                    </dd>
+                                                    <dd class="tx-dlf-metadata-{metadata.indexName}">{metadataentry}</dd>
                                                 </f:for>
                                             </f:if>
                                         </f:for>
                                         <dt class="tx-dlf-type"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_metadata.xlf:metadata.type' /></dt>
-                                        <dd class="tx-dlf-type">
-                                            <f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{child.structure}' />
-                                        </dd>
-                                        </dl>
-                                    </f:link.page>
+                                        <dd class="tx-dlf-type"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{child.structure}' /></dd>
+                                    </dl>
 
                                     <f:render partial="Basket/AddToBasket" arguments="{result: child}" />
 

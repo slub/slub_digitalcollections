@@ -59,29 +59,24 @@
                                 </f:then>
                                 <f:else>
                                     <li value="{childIterator.index}" class="pageresult">
-                                        <f:link.page pageUid="{settings.pageView}"
-                                            additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                                            class=""
-                                            title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                                            <div class="tx-dlf-listview-thumbnail">
-                                                <f:if condition="{child.thumbnail}">
-                                                    <img src="{child.thumbnail}" loading="lazy"
-                                                        alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                        <f:variable name="childTitle" value="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                        <div class="tx-dlf-listview-thumbnail">
+                                            <f:if condition="{child.thumbnail}">
+                                                <img src="{child.thumbnail}" loading="lazy" alt="Vorschaubild von {childTitle}" />
+                                            </f:if>
+                                        </div>
+                                        <dl>
+                                            <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
+                                            <dd class="tx-dlf-title"><f:link.page pageUid="{settings.pageView}" additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}" title="{childTitle}">{childTitle}</f:link.page></dd>
+                                            <f:for each="{child.metadata}" as="metadata" key="label">
+                                                <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
+                                                    <dt class="tx-dlf-{label}"><f:translate  key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
+                                                    <dd>{metadata.0}</dd>
                                                 </f:if>
-                                            </div>
-                                            <dl>
-                                                <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
-                                                <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
-                                                <f:for each="{child.metadata}" as="metadata" key="label">
-                                                    <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                                                        <dt class="tx-dlf-{label}"><f:translate  key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                                                        <dd>{metadata.0}</dd>
-                                                    </f:if>
-                                                </f:for>
-                                                <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                                                <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' /></dd>
-                                            </dl>
-                                        </f:link.page>
+                                            </f:for>
+                                            <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
+                                            <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' /></dd>
+                                        </dl>
                                     </li>
                                 </f:else>
                             </f:if>
