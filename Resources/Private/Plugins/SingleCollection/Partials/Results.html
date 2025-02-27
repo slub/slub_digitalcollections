@@ -6,40 +6,37 @@
         <f:for each="{paginator.paginatedItems}" as="document" iteration="docIterator">
             <f:variable name="docTitle" value="{f:if(condition:'{document.title}', then:'{document.title}', else:'{document.metsOrderlabel}')}" />
             <li value="{settings.list.paginate.itemsPerPage * pageOffset + docIterator.index}">
-                <f:link.page pageUid="{settings.pageView}"
-                    additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}"
-                    class="" title="{docTitle}">
-                    <f:comment>
-                        slub_digitalcollections uses the :empty CSS selector to check for missing thumbnail.
-                        The HTML comments make sure there is no whitespace in that case.
-                    </f:comment>
-                    <div class="tx-dlf-listview-thumbnail">
-                        <f:if condition="{document.thumbnail}">
-                            <img src="{document.thumbnail}" loading="lazy" alt="Vorschaubild von {docTitle}" />
-                        </f:if>
-                    </div>
-                    <dl>
-                        <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
-                        <dd class="tx-dlf-title">{docTitle}</dd>
-                        <f:for each="{document.metadata}" as="metadata" key="label">
-                            <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                                <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' />
-                                </dt>
-                                <f:if condition="{label} == 'year'">
-                                    <f:then>
-                                        <f:comment>Todo: ViewHelper to check given date string and format with f:format.date if possible</f:comment>
-                                        <dd>{metadata.0}</dd>
-                                    </f:then>
-                                    <f:else>
-                                        <dd>{metadata.0}</dd>
-                                    </f:else>
-                                </f:if>
+                <f:comment>
+                    slub_digitalcollections uses the :empty CSS selector to check for missing thumbnail.
+                    The HTML comments make sure there is no whitespace in that case.
+                </f:comment>
+                <div class="tx-dlf-listview-thumbnail"><!--
+                    --><f:if condition="{document.thumbnail}">
+                        <img src="{document.thumbnail}" loading="lazy" alt="Vorschaubild von {docTitle}" />
+                    </f:if><!--
+                --></div>
+                <dl>
+                    <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
+                    <dd class="tx-dlf-title"><f:link.page pageUid="{settings.pageView}" additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}" title="{docTitle}">{docTitle}</f:link.page></dd>
+                    <f:for each="{document.metadata}" as="metadata" key="label">
+                        <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
+                            <dt class="tx-dlf-{label}"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' />
+                            </dt>
+                            <f:if condition="{label} == 'year'">
+                                <f:then>
+                                    <f:comment>Todo: ViewHelper to check given date string and format with f:format.date if possible</f:comment>
+                                    <dd>{metadata.0}</dd>
+                                </f:then>
+                                <f:else>
+                                    <dd>{metadata.0}</dd>
+                                </f:else>
                             </f:if>
-                        </f:for>
-                        <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                            <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure}' extensionName='slub_digitalcollections' /></dd>
-                    </dl>
-                </f:link.page>
+                        </f:if>
+                    </f:for>
+                    <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
+                    <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{document.structure}' extensionName='slub_digitalcollections' /></dd>
+                </dl>
+
                 <f:if condition="{document.children} || {document.searchResults}">
                     <button class="tx-dlf-morevolumes" title="{f:translate(key='listview.moredetails.toggle')}">
                         <f:translate key='listview.moredetails.toggle' />
@@ -62,29 +59,24 @@
                                 </f:then>
                                 <f:else>
                                     <li value="{childIterator.index}" class="pageresult">
-                                        <f:link.page pageUid="{settings.pageView}"
-                                            additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}"
-                                            class=""
-                                            title="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}">
-                                            <div class="tx-dlf-listview-thumbnail">
-                                                <f:if condition="{child.thumbnail}">
-                                                    <img src="{child.thumbnail}" loading="lazy"
-                                                        alt="Vorschaubild von {f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                        <f:variable name="childTitle" value="{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}" />
+                                        <div class="tx-dlf-listview-thumbnail">
+                                            <f:if condition="{child.thumbnail}">
+                                                <img src="{child.thumbnail}" loading="lazy" alt="Vorschaubild von {childTitle}" />
+                                            </f:if>
+                                        </div>
+                                        <dl>
+                                            <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
+                                            <dd class="tx-dlf-title"><f:link.page pageUid="{settings.pageView}" additionalParams="{tx_dlf:{page:'1', double:'0', id:'{child.uid}', pagegrid:'0'}}" title="{childTitle}">{childTitle}</f:link.page></dd>
+                                            <f:for each="{child.metadata}" as="metadata" key="label">
+                                                <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
+                                                    <dt class="tx-dlf-{label}"><f:translate  key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
+                                                    <dd>{metadata.0}</dd>
                                                 </f:if>
-                                            </div>
-                                            <dl>
-                                                <dt class="tx-dlf-title"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.title' extensionName='slub_digitalcollections' /></dt>
-                                                <dd class="tx-dlf-title">{f:if(condition:'{child.title}', then:'{child.title}', else:'[{document.title}]')}</dd>
-                                                <f:for each="{child.metadata}" as="metadata" key="label">
-                                                    <f:if condition="{label} && {metadata.0} && {label} != 'type' && {label} != 'title'">
-                                                        <dt class="tx-dlf-{label}"><f:translate  key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:metadata.{label}' extensionName='slub_digitalcollections' /></dt>
-                                                        <dd>{metadata.0}</dd>
-                                                    </f:if>
-                                                </f:for>
-                                                <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
-                                                <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' /></dd>
-                                            </dl>
-                                        </f:link.page>
+                                            </f:for>
+                                            <dt class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure' extensionName='slub_digitalcollections' /></dt>
+                                            <dd class="tx-dlf-type"><f:translate key='LLL:EXT:slub_digitalcollections/Resources/Private/Language/locallang_kitodo.xlf:structure.{child.structure}' extensionName='slub_digitalcollections' /></dd>
+                                        </dl>
                                     </li>
                                 </f:else>
                             </f:if>
