@@ -65,40 +65,25 @@
             <a href="#" title="Links">Links</a>
             <ul>
                 <f:comment><!-- [Permalink] ----------------------------------------- --></f:comment>
-                <f:if
-                    condition="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\"
-                    purl\"])[1]' />">
-                <li class="permalink">
-                    <f:link.external
-                        uri="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\"
-                        purl\"])[1]' />"
-                    class="persistence-document"
-                    target="_blank"
-                    title="
-                    <f:translate key='purl.document' extensionName='slub_digitalcollections' />">
-                    <span class="perma-label">
-                        <f:translate key='purl.document' extensionName='slub_digitalcollections' />
-                    </span>
-                    <dc:xpath
-                        xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' />
-                    </f:link.external>
-                </li>
-                <li class="permalink">
-                    <f:link.external
-                        uri="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\"
-                        purl\"])[1]' />/{gp-page}"
-                    class="persistence-page"
-                    target="_blank"
-                    title="
-                    <f:translate key='purl.singlePage' extensionName='slub_digitalcollections' />">
-                    <span class="perma-label">
-                        <f:translate key='purl.singlePage' extensionName='slub_digitalcollections' />
-                    </span>
-                    <dc:xpath
-                        xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' />
-                    /{gp-page}
-                    </f:link.external>
-                </li>
+                <f:if condition="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\"purl\"])[1]' />">
+                    <li class="permalink">
+                        <f:link.external uri="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\" purl\"])[1]' />"
+                        class="persistence-document"
+                        target="_blank"
+                        title="<f:translate key='purl.document' extensionName='slub_digitalcollections' />">
+                            <span class="perma-label"><f:translate key='purl.document' extensionName='slub_digitalcollections' /></span>
+                            <dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' />
+                        </f:link.external>
+                    </li>
+                    <li class="permalink">
+                        <f:link.external uri="<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type=\"purl\"])[1]' />/{gp-page}"
+                        class="persistence-page"
+                        target="_blank"
+                        title="<f:translate key='purl.singlePage' extensionName='slub_digitalcollections' />">
+                            <span class="perma-label"><f:translate key='purl.singlePage' extensionName='slub_digitalcollections' /></span>
+                            <dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' />/{gp-page}
+                        </f:link.external>
+                    </li>
                 </f:if>
 
                 <f:comment><!-- [reference links ] ----------------------------- --></f:comment>
@@ -107,25 +92,16 @@
                     <li>
                         <f:if condition="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' />">
                         <f:then>
-                            <f:link.external
-                                uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
+                            <f:link.external uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
                             class="local-catalog"
                             target="_blank"
-                            title="
-                            <f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />">
-                            <dc:xpath
-                                xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' />
-                            </f:link.external>
+                            title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' /></f:link.external>
                         </f:then>
                         <f:else>
-                            <f:link.external
-                                uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
+                            <f:link.external uri="<dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:reference)[{index}]' />"
                             class="local-catalog"
                             target="_blank"
-                            title="
-                            <f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />">
-                            <f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />
-                            </f:link.external>
+                            title="<f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' />"><f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' /></f:link.external>
                         </f:else>
                         </f:if>
                     </li>
