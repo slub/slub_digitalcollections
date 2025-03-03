@@ -6,7 +6,7 @@
 
 page {
   includeCSS {
-        kitodo = {$config.css.lists}
+        kitodo = {$plugin.tx_slubdigitalcollections.css.lists}
         kitodo.media = screen,projection
     }
     # we need jquery in head as it is used by pageview plugin
@@ -17,10 +17,10 @@ page {
 }
 
 [page["backend_layout"] == 'pagets__kitodo' or page["backend_layout"] == 'pagets__emptyworkview']
-    config.disableWrapInBaseClass = 1
+    plugin.tx_slubdigitalcollections.disableWrapInBaseClass = 1
 
     # switch to viewer css
-    page.includeCSS.kitodo = {$config.css.pageview}
+    page.includeCSS.kitodo = {$plugin.tx_slubdigitalcollections.css.pageview}
 
     # switch to viewer js
     page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsScripts.js
@@ -227,7 +227,7 @@ page {
   page.headerData.10 = TEXT
   page.headerData.10 {
     wrap = <title> | </title>
-    value = {$config.rootPage.title}: {register:postTitle}
+    value = {$plugin.tx_slubdigitalcollections.rootPage.title}: {register:postTitle}
     insertData = 1
     htmlSpecialChars = 1
   }

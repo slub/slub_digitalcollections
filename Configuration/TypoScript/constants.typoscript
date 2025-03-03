@@ -1,7 +1,7 @@
 ###################################################
 # All used Constants for SLUB Digital Collections
 ###################################################
-config {
+plugin.tx_slubdigitalcollections {
     # basic solr config
     solr {
         # cat=plugin.tx_slubdigitalcollections/links/0200; type=int+; label= SOLR core uid
@@ -18,7 +18,7 @@ config {
 
         # cat=plugin.tx_slubdigitalcollections/links/0204; type=int+; label= SOLR connection timeout (s)
         timeout = 5
-        }
+    }
 
     # basic id config
     rootPage {
@@ -63,11 +63,14 @@ config {
 
     # matomo configuration (maybe overwritten)
     # cat=plugin.tx_slubdigitalcollections/piwik/0310; type=string; label=Matomo Hostname
-    piwik_hostname = matomo.slub-dresden.de
-    # cat=plugin.tx_slubdigitalcollections/piwik/0320; type=int+; label=Matomo Idsite
-    piwik_idsite =
-    # cat=plugin.tx_slubdigitalcollections/piwik/0330; type=string; label=Matomo Domains (optional)
-    piwik_domains = *.slub-dresden.de
+    piwik {
+        # cat=plugin.tx_slubdigitalcollections/piwik/0310; type=string; label=Matomo Hostname
+        hostname = matomo.slub-dresden.de
+        # cat=plugin.tx_slubdigitalcollections/piwik/0320; type=int+; label=Matomo Idsite
+        idsite =
+        # cat=plugin.tx_slubdigitalcollections/piwik/0330; type=string; label=Matomo Domains (optional)
+        domains = *.slub-dresden.de
+    }
 
     # template path config
     templateRootPath = EXT:slub_digitalcollections/Resources/Private/Templates/

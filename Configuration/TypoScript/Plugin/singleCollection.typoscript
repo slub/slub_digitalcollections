@@ -10,7 +10,7 @@ plugin.tx_slubdigitalcollections_singlecollection {
         storagePid = {$plugin.tx_dlf.persistence.storagePid}
     }
     settings {
-        pageView = {$config.pageView}
+        pageView = {$plugin.tx_slubdigitalcollections.pageView}
         storagePid = {$plugin.tx_dlf.persistence.storagePid}
         list.paginate {
             itemsPerPage = 25
@@ -20,9 +20,9 @@ plugin.tx_slubdigitalcollections_singlecollection {
             section = showResults
         }
         solr {
-            host = {$config.solr.host}/{$config.solr.coreName}
-            timeout = {$config.solr.timeout}
+            host = {$plugin.tx_slubdigitalcollections.solr.host}/{$plugin.tx_slubdigitalcollections.solr.coreName}
+            timeout = {$plugin.tx_slubdigitalcollections.solr.timeout}
         }
-        solrcore = {$config.solr.coreName}
+        solrcore = {$plugin.tx_slubdigitalcollections.solr.coreName}
     }
 }
