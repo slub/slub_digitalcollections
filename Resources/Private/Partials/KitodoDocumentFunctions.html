@@ -124,9 +124,7 @@
         <li class="submenu downloads">
             <a href="#" title="Downloads">Downloads</a>
             <ul>
-                <li class="pdf-download has-multilinks">
-                    <f:cObject typoscriptObjectPath="plugin.tx_dlf_pdfdownloadtool" />
-                </li>
+                <f:cObject typoscriptObjectPath="plugin.tx_dlf_pdfdownloadtool" />
         </li>
 
         <f:comment><!-- [Image downloads (JPG)] ----------------------------- --></f:comment>
@@ -150,31 +148,23 @@
                 <li class="jpg-download has-multilinks">
                     <div class="multilinks">
                         <f:link.external
-                            uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"
-                            {mimeType}=='application/vnd.kitodo.iiif' \", then:'/full/full/0/default.jpg')}"
+                            uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif' \", then:'/full/full/0/default.jpg')}"
                             class="download-document image left" target="_blank"
-                            title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />">
-                            <f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" />
-                        </f:link.external>
+                            title="<f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.leftPage" extensionName="slub_digitalcollections" /></f:link.external>
                         <f:link.external
                             uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:\"
                             {mimeType}=='application/vnd.kitodo.iiif' \", then:'/full/full/0/default.jpg')}"
                             class="download-document image right" target="_blank"
-                            title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />">
-                            <f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" />
-                        </f:link.external>
+                            title="<f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.rightPage" extensionName="slub_digitalcollections" /></f:link.external>
                     </div>
                 </li>
             </f:then>
             <f:else>
                 <li class="jpg-download">
                     <f:link.external
-                        uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"
-                        {mimeType}=='application/vnd.kitodo.iiif' \", then:'/full/full/0/default.jpg')}"
+                        uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:\"{mimeType}=='application/vnd.kitodo.iiif' \", then:'/full/full/0/default.jpg')}"
                         class="download-document image" target="_blank"
-                        title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />">
-                        <f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" />
-                    </f:link.external>
+                        title="<f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.image.singlePage" extensionName="slub_digitalcollections" /></f:link.external>
                 </li>
             </f:else>
         </f:if>
@@ -185,45 +175,30 @@
             <f:then>
                 <li class="xml-download has-multilinks">
                     <div class="multilinks">
-                        <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"
-                            FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />"
+                        <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />"
                         class="download-fulltext fulltext left"
                         target="_blank"
-                        title="
-                        <f:translate key='download.fulltext.leftPage' extensionName='slub_digitalcollections' />
-                        ">
-                        <f:translate key="download.fulltext.leftPage" extensionName="slub_digitalcollections" />
-                        </f:link.external>
-                        <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"
-                            FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />"
+                        title="<f:translate key='download.fulltext.leftPage' extensionName='slub_digitalcollections' />
+                        "><f:translate key="download.fulltext.leftPage" extensionName="slub_digitalcollections" /></f:link.external>
+                        <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />"
                         class="download-fulltext fulltext right"
                         target="_blank"
-                        title="
-                        <f:translate key='download.fulltext.rightPage' extensionName='slub_digitalcollections' />">
-                        <f:translate key="download.fulltext.rightPage" extensionName="slub_digitalcollections" />
-                        </f:link.external>
+                        title="<f:translate key='download.fulltext.rightPage' extensionName='slub_digitalcollections' />"><f:translate key="download.fulltext.rightPage" extensionName="slub_digitalcollections" /></f:link.external>
                     </div>
                 </li>
             </f:then>
             <f:else>
                 <li class="xml-download">
-                    <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"
-                        FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />"
+                    <f:link.external uri="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />"
                     class="download-fulltext ocr"
                     target="_blank"
-                    title="
-                    <f:translate key='download.fulltext.singlePage' extensionName='slub_digitalcollections' />">
-                    <f:translate key="download.fulltext.singlePage" extensionName="slub_digitalcollections" />
-                    </f:link.external>
+                    title="<f:translate key='download.fulltext.singlePage' extensionName='slub_digitalcollections' />"><f:translate key="download.fulltext.singlePage" extensionName="slub_digitalcollections" /></f:link.external>
                     <div style="display:none;">
-                        <dc:extractFulltext file="{dc:xpath(xpath:'(//mets:fileSec/mets:fileGrp[@USE=\"
-                            FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}" />
+                        <dc:extractFulltext file="{dc:xpath(xpath:'(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]//mets:file/mets:FLocat/@xlink:href)[{gp-page}]')}" />
                     </div>
                 </li>
                 <f:comment><!-- [Fulltext downloads (TXT)] -------------------------- --></f:comment>
-                <li class="txt-download">
-                    <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltextdownloadtool" />
-                </li>
+                <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltextdownloadtool" />
             </f:else>
         </f:if>
         </f:if>
@@ -237,23 +212,17 @@
                 <f:link.external
                     uri="https://digital.slub-dresden.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=<dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:recordInfo/mods:recordIdentifier)' />"
                     class="download-page mets" target="_blank"
-                    title="<f:translate key='download.mets' extensionName='slub_digitalcollections' />">
-                    <f:translate key="download.mets" extensionName="slub_digitalcollections" />
-                </f:link.external>
+                    title="<f:translate key='download.mets' extensionName='slub_digitalcollections' />"><f:translate key="download.mets" extensionName="slub_digitalcollections" /></f:link.external>
             </li>
         </f:if>
 
         <f:comment><!-- [IIIF downloads (JSON)] -------------------------- --></f:comment>
-        <f:if condition="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp[@USE=\"
-            DEFAULT\"]/mets:file/mets:FLocat/@xlink:href)[1]')}">
+        <f:if condition="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp[@USE=\"DEFAULT\"]/mets:file/mets:FLocat/@xlink:href)[1]')}">
             <f:if condition="{dc:xpath(xpath: '//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"]')}">
                 <li class="iiif-download">
                     <f:link.external
-                        uri="https://iiif.slub-dresden.de/iiif/2/{dc:xpath(xpath: '//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"
-                        digital\"]')}/manifest.json" class="download-page iiif" target="_blank"
-                        title="{f:translate(key: 'download.iiif', extensionName='slub_digitalcollections')}">
-                        <f:translate key="download.iiif" extensionName="slub_digitalcollections" />
-                    </f:link.external>
+                        uri="https://iiif.slub-dresden.de/iiif/2/{dc:xpath(xpath: '//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type=\"digital\"]')}/manifest.json" class="download-page iiif" target="_blank"
+                        title="{f:translate(key: 'download.iiif', extensionName='slub_digitalcollections')}"><f:translate key="download.iiif" extensionName="slub_digitalcollections" /></f:link.external>
                 </li>
             </f:if>
         </f:if>
