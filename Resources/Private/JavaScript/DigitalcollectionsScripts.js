@@ -217,12 +217,16 @@ $(function () {
 });
 
 $(document).ready(function () {
-    // Add a error message if no map element in document viewer given
-    if (!$('.tx-dlf-map').children()[0]) {
-        $('.tx-dlf-map').remove();
-        emptyMessage = ($('html[lang^="de"]')[0]) ? 'Kein Band ausgew&auml;hlt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.' : 'No volume selected. Click to jump to the first available volume.';
-        $('.tx-dlf-pageview').append('<div class="tx-dlf-empty"><a class="tx-dlf-emptyToFirstVol" href="' + $('.tx-dlf-toc ul li ul li:first-child a').attr('href') + '"><span class="error-arrow">&larr;</span>' + emptyMessage + '</a></div>');
+    function showEmpty() {
+        // Add a error message if no map element in document viewer given
+        if (!$('.tx-dlf-map').children()[0]) {
+            $('.tx-dlf-map').remove();
+            emptyMessage = ($('html[lang^="de"]')[0]) ? 'Kein Band ausgew&auml;hlt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.' : 'No volume selected. Click to jump to the first available volume.';
+            $('.tx-dlf-pageview').append('<div class="tx-dlf-empty"><a class="tx-dlf-emptyToFirstVol" href="' + $('.tx-dlf-toc ul li ul li:first-child a').attr('href') + '"><span class="error-arrow">&larr;</span>' + emptyMessage + '</a></div>');
+        }
     }
+
+    setTimeout(showEmpty, 4000);
 });
 
 $(document).keyup(function (e) {
