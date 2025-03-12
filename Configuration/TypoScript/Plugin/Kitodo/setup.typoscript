@@ -29,15 +29,15 @@ lib.kitodo.fulltext.search {
 	}
     settings {
         // UID of dlfCore0
-        solrcore = {$config.solr.coreUid}
-        limit = {$config.solr.searchLimit}
+        solrcore = {$plugin.tx_slubdigitalcollections.solr.coreUid}
+        limit = {$plugin.tx_slubdigitalcollections.solr.searchLimit}
         // we activate fulltext here and search only in fulltext (see template)
         fulltext = 1
         // search only in current document
         searchIn = document
         // doesn't work due to javascript inclusion of autocomplete in header
         suggest = 0
-        targetPid = {$config.listView}
+        targetPid = {$plugin.tx_slubdigitalcollections.listView}
         // this feature doesn't work in our case. It always jumps to page 1
         showSingleResult = 0
     }
@@ -84,9 +84,9 @@ plugin.tx_dlf_pageview {
 plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
 plugin.tx_dlf_pagegrid {
     settings {
-        targetPid = {$config.pageView}
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
         paginate {
-            itemsPerPage = {$config.pagegrid.limit}
+            itemsPerPage = {$plugin.tx_slubdigitalcollections.pagegrid.limit}
             insertAbove = 0
             insertBelow = 1
             lessPages = 1
@@ -103,7 +103,7 @@ plugin.tx_dlf_pagegrid {
 plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
-        targetPid = {$config.pageView}
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
     }
 }
 
@@ -195,7 +195,7 @@ plugin.tx_dlf_searchindocumenttool {
         highlightWordInputName = tx_dlf[highlight_word]
         encryptedInputName = tx_dlf[encrypted]
         // UID of dlfCore0
-        solrcore = {$config.solr.coreUid}
+        solrcore = {$plugin.tx_slubdigitalcollections.solr.coreUid}
     }
 }
 
@@ -219,7 +219,7 @@ lib.kitodo.newspaper.years {
         }
     }
     settings {
-        targetPid = {$config.pageView}
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
     }
 }
 
@@ -231,7 +231,7 @@ lib.kitodo.newspaper.calendar {
         }
     }
     settings {
-        targetPid = {$config.pageView}
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
         showEmptyMonths = 0
     }
 }
