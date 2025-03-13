@@ -47,13 +47,11 @@
                         </f:for>
                         <f:if condition="{document.structure} == 'year'">
                             <dt class="tx-dlf-metadata-year"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_metadata.xlf:metadata.year' /></dt>
-                            <dd class="tx-dlf-metadata-year">{document.metsOrderlabel} </dd>
+                            <dd class="tx-dlf-metadata-year">{document.metsOrderlabel}</dd>
                         </f:if>
                     </f:if>
                     <dt class="tx-dlf-type"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_metadata.xlf:metadata.type' /></dt>
-                    <dd class="tx-dlf-type">
-                        <f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.structure}" default="{document.structure}"/>
-                    </dd>
+                    <dd class="tx-dlf-type"><f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.structure}" default="{document.structure}"/></dd>
                 </dl>
             </f:link.page>
 
