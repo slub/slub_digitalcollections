@@ -72,9 +72,9 @@ page {
             termsOfUsePid = {$plugin.tx_slubdigitalcollections.termsOfUsePid}
 
             matomo {
-                hostname = {$plugin.tx_slubdigitalcollections.piwik.hostname}
-                siteId = {$plugin.tx_slubdigitalcollections.piwik.idsite}
-                setdomains = {$plugin.tx_slubdigitalcollections.piwik.domains}
+                hostname = {$plugin.tx_slubdigitalcollections.matomo.hostname}
+                siteId = {$plugin.tx_slubdigitalcollections.matomo.idsite}
+                setdomains = {$plugin.tx_slubdigitalcollections.matomo.domains}
             }
 
             collections {
