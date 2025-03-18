@@ -339,11 +339,7 @@
                             </f:link.page>
                         </f:then>
                         <f:else>
-                            <f:link.page pageUid="{kitodo.pageView}"
-                                additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'1'}}"
-                                title="<f:translate key='gridpage.preview' extensionName='slub_digitalcollections' />">
-                                <f:translate key='gridpage.preview' extensionName='slub_digitalcollections' />
-                            </f:link.page>
+                            <f:link.page id="digitalcollections-enable-grid-view" pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'1'}}" title="<f:translate key='gridpage.preview' extensionName='slub_digitalcollections' />"><f:translate key='gridpage.preview' extensionName='slub_digitalcollections' /></f:link.page>
                         </f:else>
                     </f:if>
                 </f:then>
