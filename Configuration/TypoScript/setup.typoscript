@@ -9,7 +9,7 @@
 lib.navigation.kitodo = HMENU
 lib.navigation.kitodo {
     special = list
-    special.value = {$config.viewerNavigationPids}
+    special.value = {$plugin.tx_slubdigitalcollections.viewerNavigationPids}
     includeNotInMenu = 1
     1 = TMENU
     1 {
@@ -59,27 +59,27 @@ page {
             ifEmpty = Default
         }
 
-        layoutRootPaths.10 = {$config.layoutRootPath}
-        partialRootPaths.10 = {$config.partialRootPath}
-        templateRootPaths.10 = {$config.templateRootPath}
+        layoutRootPaths.10 = {$plugin.tx_slubdigitalcollections.layoutRootPath}
+        partialRootPaths.10 = {$plugin.tx_slubdigitalcollections.partialRootPath}
+        templateRootPaths.10 = {$plugin.tx_slubdigitalcollections.templateRootPath}
         settings {
             rootPage {
-                pid = {$config.rootPage.pid}
-                title = {$config.rootPage.title}
-                cssClass = {$config.rootPage.cssClass}
+                pid = {$plugin.tx_slubdigitalcollections.rootPage.pid}
+                title = {$plugin.tx_slubdigitalcollections.rootPage.title}
+                cssClass = {$plugin.tx_slubdigitalcollections.rootPage.cssClass}
             }
 
-            termsOfUsePid = {$config.termsOfUsePid}
+            termsOfUsePid = {$plugin.tx_slubdigitalcollections.termsOfUsePid}
 
             matomo {
-                hostname = {$config.piwik_hostname}
-                siteId = {$config.piwik_idsite}
-                setdomains = {$config.piwik_domains}
+                hostname = {$plugin.tx_slubdigitalcollections.matomo.hostname}
+                siteId = {$plugin.tx_slubdigitalcollections.matomo.idsite}
+                setdomains = {$plugin.tx_slubdigitalcollections.matomo.domains}
             }
 
             collections {
-                solrHost = {$config.solr.host}/{$config.solr.coreName}
-                solrTimeout = {$config.solr.timeout}
+                solrHost = {$plugin.tx_slubdigitalcollections.solr.host}/{$plugin.tx_slubdigitalcollections.solr.coreName}
+                solrTimeout = {$plugin.tx_slubdigitalcollections.solr.timeout}
             }
 
             showProviderLogo = 0
@@ -147,11 +147,11 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
 # --------------------------------------------------------------------------------------------------------------------
-[getTSFE() && getTSFE().id == {$config.collectionView}]
+[getTSFE() && getTSFE().id == {$plugin.tx_slubdigitalcollections.collectionView}]
 page.bodyTag = <body class="collections">
 # render content parts only
 [END]
 
-[getTSFE() && getTSFE().id == {$config.listView}]
+[getTSFE() && getTSFE().id == {$plugin.tx_slubdigitalcollections.listView}]
 page.bodyTag = <body class="listview">
 [END]

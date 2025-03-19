@@ -16,7 +16,7 @@ page {
     }
 
     includeCSS {
-        base = {$config.css.base}
+        base = {$plugin.tx_slubdigitalcollections.css.base}
         base.media = screen,projection
     }
 
@@ -49,18 +49,18 @@ page {
             }
             ifEmpty = Default
         }
-        partialRootPaths.0 = {$config.page.partialRootPath}
-        layoutRootPaths.0 = {$config.page.layoutRootPath}
-        templateRootPaths.0 = {$config.page.templateRootPath}
+        partialRootPaths.0 = {$plugin.tx_slubdigitalcollections.page.partialRootPath}
+        layoutRootPaths.0 = {$plugin.tx_slubdigitalcollections.page.layoutRootPath}
+        templateRootPaths.0 = {$plugin.tx_slubdigitalcollections.page.templateRootPath}
         variables {
             rootPageId = TEXT
-            rootPageId.value = {$config.rootPage.pid}
+            rootPageId.value = {$plugin.tx_slubdigitalcollections.rootPage.pid}
 
             rootPageTitle = TEXT
-            rootPageTitle.value = {$config.rootPage.title}
+            rootPageTitle.value = {$plugin.tx_slubdigitalcollections.rootPage.title}
 
             rootPageCssClass = TEXT
-            rootPageCssClass.value = {$config.rootPage.cssClass}
+            rootPageCssClass.value = {$plugin.tx_slubdigitalcollections.rootPage.cssClass}
         }
     }
 

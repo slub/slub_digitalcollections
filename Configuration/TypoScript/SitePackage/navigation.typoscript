@@ -52,7 +52,7 @@ lib.menu {
         20 = HMENU
         20 {
             special = directory
-            special.value = {$config.metaNav}
+            special.value = {$plugin.tx_slubdigitalcollections.metaNav}
             1 = TMENU
             1 {
                 expAll = 1
