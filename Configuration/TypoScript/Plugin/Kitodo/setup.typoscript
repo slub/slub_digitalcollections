@@ -2,16 +2,23 @@
 
 plugin.tx_dlf {
     persistence {
+        // PID of DLF - Mandant: SLUB
         storagePid = {$plugin.tx_dlf.persistence.storagePid}
     }
-	view {
-		partialRootPaths {
-			10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Partials
-		}
-		templateRootPaths {
-			10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates
-		}
-	}
+    settings {
+        // UID of dlfCore0
+        solrcore = {$config.solr.coreUid}
+        // PID of DLF - Mandant: SLUB
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
+    }
+    view {
+        partialRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Partials
+        }
+        templateRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates
+        }
+    }
 }
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -23,13 +30,11 @@ plugin.tx_dlf_search < tt_content.list.20.dlf_search
 lib.kitodo.fulltext.search < plugin.tx_dlf_search
 lib.kitodo.fulltext.search {
     view {
-		templateRootPaths {
-			10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates/Fulltext
-		}
-	}
+        templateRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates/Fulltext
+        }
+    }
     settings {
-        // UID of dlfCore0
-        solrcore = {$config.solr.coreUid}
         limit = {$config.solr.searchLimit}
         // we activate fulltext here and search only in fulltext (see template)
         fulltext = 1
@@ -194,8 +199,6 @@ plugin.tx_dlf_searchindocumenttool {
         pageInputName = tx_dlf[page]
         highlightWordInputName = tx_dlf[highlight_word]
         encryptedInputName = tx_dlf[encrypted]
-        // UID of dlfCore0
-        solrcore = {$config.solr.coreUid}
     }
 }
 
