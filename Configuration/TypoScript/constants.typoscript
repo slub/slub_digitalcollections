@@ -18,12 +18,12 @@ config {
 
         # cat=plugin.tx_slubdigitalcollections/links/0204; type=int+; label= SOLR connection timeout (s)
         timeout = 5
-        }
+    }
 
     # basic id config
     rootPage {
         # cat=plugin.tx_slubdigitalcollections/links/0300; type=int+; label= Kitodo root page pid
-        pid =
+        pid = 5346
 
         # cat=plugin.tx_slubdigitalcollections/links/0301; type=string; label= Kitodo Title
         title = Digitale Sammlungen
@@ -33,22 +33,22 @@ config {
     }
 
     # cat=plugin.tx_slubdigitalcollections/links/0320; type=int+; label= Kitodo Terms of Use Page pid
-    termsOfUsePid =
+    termsOfUsePid = 5364
 
     # cat=plugin.tx_slubdigitalcollections/links/0321; type=list; label= Pids for Navigation
-    viewerNavigationPids =
+    viewerNavigationPids = 4010, 5346, 9259, 4012, 10105
 
     # cat=plugin.tx_slubdigitalcollections/links/0322; type=int+; label= Kitodo Pageview pid
-    pageView =
+    pageView = 5363
 
     # cat=plugin.tx_slubdigitalcollections/links/0323; type=int+; label= pagegrid limit (thumbnail preview)
     pagegrid.limit = 35
 
     # cat=plugin.tx_slubdigitalcollections/links/0324; type=int+; label= Kitodo Collection View Page pid
-    collectionView =
+    collectionView = 5362
 
     # cat=plugin.tx_slubdigitalcollections/links/0325; type=int+; label= Kitodo List View Page pid
-    listView =
+    listView = 5364
 
     css {
         # cat=plugin.tx_slubdigitalcollections/advanced/0500; type=string; label=CSS file for optional base website design
