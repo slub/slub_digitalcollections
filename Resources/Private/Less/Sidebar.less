@@ -586,6 +586,7 @@
                 &.submenu {
                     a {
                         padding-right: 15px;
+                        color: #333;
                     }
                     &:before {
                         top: 12px;
@@ -594,9 +595,9 @@
                     }
                 }
                 &.current {
-                    background: @secondary-color-light;
-                    a {
+                    > a {
                         color: white;
+                        background: @secondary-color;
                         .meta-type-icon {
                             background-position-y: 0 !important;
                             opacity: .8;
