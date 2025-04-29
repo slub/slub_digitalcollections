@@ -71,8 +71,10 @@ class PageInfoViewHelper extends AbstractViewHelper
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
 
-        $output = $page[$field];
+        if (!is_array($page) || !isset($page[$field])) {
+            return '';
+        }
 
-        return $output;
+        return $page[$field];
     }
 }
