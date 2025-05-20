@@ -33,7 +33,7 @@ page {
 # --------------------------------------------------------------------------------------------------------------------
 # add opengraph social metatags in single view with a valid id
 # --------------------------------------------------------------------------------------------------------------------
-[traverse(request.getQueryParams(), 'tx_dlf/id') > 0]
+[request && traverse(request.getQueryParams(), 'tx_dlf/id') > 0]
 
   page.2 = LOAD_REGISTER
   page.2 {
