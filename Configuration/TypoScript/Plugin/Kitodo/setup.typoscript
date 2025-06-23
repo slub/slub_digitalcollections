@@ -144,6 +144,7 @@ lib.kitodo.navigation.viewfunction {
 # available tools:
 
 # fulltexttool
+# adddocumenttool
 # annotationtool
 # fulltextdownloadtool
 # imagedownloadtool
@@ -164,6 +165,13 @@ plugin.tx_dlf_fulltexttool {
         tools = fulltexttool
         activateFullTextInitially = 0
         fullTextScrollElement = #tx-dlf-fulltextselection
+    }
+}
+
+plugin.tx_dlf_adddocumenttool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_adddocumenttool {
+    settings {
+        tools = adddocumenttool
     }
 }
 
