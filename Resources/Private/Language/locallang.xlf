@@ -84,7 +84,7 @@
 				<source><![CDATA[Online Public Access Catalog]]></source>
 			</trans-unit>
 			<trans-unit id="provider.slub_catalogue">
-				<source><![CDATA[SLUB Catalo]]></source>
+				<source><![CDATA[SLUB Catalog]]></source>
 			</trans-unit>
 			<trans-unit id="purl.document">
 				<source><![CDATA[Permalink document]]></source>
