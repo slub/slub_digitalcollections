@@ -81,10 +81,10 @@
 				<source><![CDATA[Email to data provider]]></source>
 			</trans-unit>
 			<trans-unit id="provider.local_catalogue">
-				<source><![CDATA[Online Public Access Catalogue]]></source>
+				<source><![CDATA[Online Public Access Catalog]]></source>
 			</trans-unit>
 			<trans-unit id="provider.slub_catalogue">
-				<source><![CDATA[SLUB Catalogue]]></source>
+				<source><![CDATA[SLUB Catalo]]></source>
 			</trans-unit>
 			<trans-unit id="purl.document">
 				<source><![CDATA[Permalink document]]></source>
