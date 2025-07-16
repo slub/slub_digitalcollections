@@ -47,7 +47,7 @@ class PageInfoViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('uid', 'integer', 'uid of page', true);
