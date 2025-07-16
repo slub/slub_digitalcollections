@@ -23,6 +23,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -66,8 +67,10 @@ class PageInfoViewHelper extends AbstractViewHelper
       ) {
         $pageUid = (int) $arguments['uid'];
         $field = $arguments['field'];
+
+        // If uid is 0, take the current page from routing context
         if ($pageUid === 0) {
-            /** @var RenderingContext $renderingContext */
+            /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
             $request = $renderingContext->getRequest();
             $pageArguments = $request->getAttribute('routing');
             $pageUid = $pageArguments->getPageId();
