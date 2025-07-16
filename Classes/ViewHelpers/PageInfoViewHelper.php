@@ -23,7 +23,9 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -46,7 +48,7 @@ class PageInfoViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('uid', 'integer', 'uid of page', true);
@@ -63,10 +65,15 @@ class PageInfoViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
       ) {
-        $pageUid = $arguments['uid'];
+        $pageUid = (int)$arguments['uid'];
         $field = $arguments['field'];
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+
+        // If uid is 0, take the current page from routing context
+        if ($pageUid === 0) {
+            /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
+            $request = $renderingContext->getRequest();
+            $pageArguments = $request->getAttribute('routing');
+            $pageUid = $pageArguments->getPageId();
         }
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
