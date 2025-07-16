@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3') or die();
+defined('TYPO3') or die('Access denied.');
 
 // plugins
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

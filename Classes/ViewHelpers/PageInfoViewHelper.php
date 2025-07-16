@@ -46,7 +46,7 @@ class PageInfoViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('uid', 'integer', 'uid of page', true);
@@ -63,7 +63,7 @@ class PageInfoViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
       ) {
-        $pageUid = $arguments['uid'];
+        $pageUid = (int) $arguments['uid'];
         $field = $arguments['field'];
         if (0 === $pageUid) {
             $pageUid = $GLOBALS['TSFE']->id;
@@ -71,8 +71,6 @@ class PageInfoViewHelper extends AbstractViewHelper
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
 
-        $output = $page[$field];
-
-        return $output;
+        return array_key_exists($field, $page) ? (string) $page[$field] : '';
     }
 }
