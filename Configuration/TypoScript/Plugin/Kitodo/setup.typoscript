@@ -80,7 +80,7 @@ plugin.tx_dlf_pageview {
     settings {
         features =
         elementId = tx-dlf-map
-        multiViewType = composition
+        multiViewType =
     }
 }
 
