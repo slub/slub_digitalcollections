@@ -4,12 +4,41 @@
       lang="en">
 
 <f:section name="PageView">
-  <div class="document-view">
-    <f:format.raw>{content}</f:format.raw>
-    <div class="document-functions">
-        <f:format.raw>{sidebar}</f:format.raw>
+    <div class="document-view">
+        <f:if condition="{gp-pagegrid} == 1">
+            <f:then>
+                <f:cObject typoscriptObjectPath="plugin.tx_dlf_pagegrid" />
+            </f:then>
+            <f:else>
+                <f:render partial="KitodoNewspaper" arguments="{_all}" />
+            </f:else>
+        </f:if>
+        <f:render partial="KitodoDocumentFunctions" arguments="{_all}" />
+
+        <f:comment><!-- [rotate and zoom buttons in page view] -------------------------- --></f:comment>
+        <div class="view-functions">
+            <f:if condition="{gp-pagegrid} == 1">
+                <f:else>
+                    <ul>
+                        <f:cObject typoscriptObjectPath="lib.kitodo.navigation.viewfunction" />
+                        <li class="tx-dlf-imagemanipulationtool">
+                            <f:cObject typoscriptObjectPath="plugin.tx_dlf_imagemanipulationtool" />
+                        </li>
+                    </ul>
+                </f:else>
+            </f:if>
+        </div>
+
+        <f:comment><!-- [navigation site forward -------------------------- --></f:comment>
+        <f:if condition="{gp-pagegrid} == 1">
+            <f:else>
+                <div class="page-control">
+                    <f:cObject typoscriptObjectPath="lib.kitodo.navigation.pagecontrol" />
+                </div>
+            </f:else>
+        </f:if>
+
     </div>
-  </div>
 </f:section>
 
 </html>
