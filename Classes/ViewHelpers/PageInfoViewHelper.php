@@ -23,7 +23,10 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -65,8 +68,21 @@ class PageInfoViewHelper extends AbstractViewHelper
       ) {
         $pageUid = (int) $arguments['uid'];
         $field = $arguments['field'];
-        if (0 === $pageUid) {
-            $pageUid = $GLOBALS['TSFE']->id;
+
+        // If uid is 0, take the current page from routing context
+        if ($pageUid === 0) {
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 11.3) {
+                // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
+                /** @var RenderingContext $renderingContext */
+                $request = $renderingContext->getRequest(); // @phpstan-ignore-line
+
+                if ($request->getAttribute('applicationType') === 1) {
+                    $pageUid = $request->getAttribute('routing')->getPageId();
+                }
+            } else {
+                // TYPO3 < 11.3
+                $pageUid = $GLOBALS['TSFE']->id;
+            }
         }
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
