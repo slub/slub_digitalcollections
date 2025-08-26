@@ -84,8 +84,27 @@ class XpathViewHelper extends AbstractViewHelper
 
         $parameters = [];
 
-        $parametersSet = GeneralUtility::_GPmerged('set');
-        $parametersDlf = GeneralUtility::_GPmerged('tx_dlf');
+        if (method_exists(GeneralUtility::class, '_GPmerged')) {
+            $parametersSet = GeneralUtility::_GPmerged('set');
+            $parametersDlf = GeneralUtility::_GPmerged('tx_dlf');
+        } else {
+            $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+            if ($request === null) {
+                $parametersSet = [];
+                $parametersDlf = [];
+            } else {
+                $queryParams = $request->getQueryParams();
+                $parsedBody  = $request->getParsedBody();
+                $parametersSet = array_merge(
+                    $queryParams['set'] ?? [],
+                    $parsedBody['set'] ?? []
+                );
+                $parametersSet = array_merge(
+                    $queryParams['tx_dlf'] ?? [],
+                    $parsedBody['tx_dlf'] ?? []
+                );
+            }
+        }
         if (isset($parametersSet['mets']) && GeneralUtility::isValidUrl($parametersSet['mets'])) {
             $parameters['location'] = $parametersSet['mets'];
         } else if (isset($parametersDlf['id'])) {
