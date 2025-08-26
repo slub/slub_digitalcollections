@@ -98,10 +98,10 @@ class SingleCollectionController extends AbstractController
     {
 
         // if search was triggered, get search parameters from POST variables
-        $searchParams = $this->getParametersSafely('searchParameter');
+        $searchParams = $this->getParametersSafely('search');
 
         // output is done by show action
-        $this->redirect('show', null, null, ['searchParameter' => $searchParams]);
+        $this->redirect('show', null, null, ['search' => $searchParams]);
     }
 
     /**
@@ -112,7 +112,7 @@ class SingleCollectionController extends AbstractController
     public function showAction()
     {
         // if search was triggered, get search parameters from POST variables
-        $searchParams = $this->getParametersSafely('searchParameter');
+        $searchParams = $this->getParametersSafely('search');
 
         // set default sorting
         if (!isset($searchParams['orderBy'])) {
