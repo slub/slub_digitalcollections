@@ -28,8 +28,8 @@
   "license": "GPL-3.0-or-later",
   "require": {
     "php": "8.1 - 8.4",
-    "typo3/cms-core": "^11.5|^12.4|^13.4",
-    "kitodo/presentation": "^6.0|dev-main"
+    "typo3/cms-core": "^12.4|^13.4",
+    "kitodo/presentation": "dev-main"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.12"
@@ -49,5 +49,11 @@
       "typo3/class-alias-loader": true,
       "typo3/cms-composer-installers": true
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "github",
+      "url": "https://github.com/kitodo/php-iiif-prezi-reader.git"
+    }
+  ]
 }

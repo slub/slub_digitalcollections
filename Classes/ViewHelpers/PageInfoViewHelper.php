@@ -74,7 +74,7 @@ class PageInfoViewHelper extends AbstractViewHelper
             if (GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 11.3) {
                 // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
                 /** @var RenderingContext $renderingContext */
-                $request = $renderingContext->getRequest(); // @phpstan-ignore-line
+                $request = $renderingContext->getRequest();
 
                 if ($request->getAttribute('applicationType') === 1) {
                     $pageUid = $request->getAttribute('routing')->getPageId();
