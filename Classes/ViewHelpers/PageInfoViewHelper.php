@@ -71,17 +71,12 @@ class PageInfoViewHelper extends AbstractViewHelper
 
         // If uid is 0, take the current page from routing context
         if ($pageUid === 0) {
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 11.3) {
-                // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
-                /** @var RenderingContext $renderingContext */
-                $request = $renderingContext->getRequest();
+            // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
+            /** @var RenderingContext $renderingContext */
+            $request = $renderingContext->getRequest();
 
-                if ($request->getAttribute('applicationType') === 1) {
-                    $pageUid = $request->getAttribute('routing')->getPageId();
-                }
-            } else {
-                // TYPO3 < 11.3
-                $pageUid = $GLOBALS['TSFE']->id;
+            if ($request->getAttribute('applicationType') === 1) {
+                $pageUid = $request->getAttribute('routing')->getPageId();
             }
         }
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
