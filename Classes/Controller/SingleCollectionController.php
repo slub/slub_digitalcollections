@@ -85,7 +85,7 @@ class SingleCollectionController extends AbstractController
      *
      * @return void
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
     }
 
@@ -128,7 +128,7 @@ class SingleCollectionController extends AbstractController
         $collections = $this->collectionRepository->findAllByUids(GeneralUtility::intExplode(',', $this->settings['collections'], true));
 
         // get all metadata records to be shown in results
-        $listedMetadata = $this->metadataRepository->findByIsListed(true);
+        $listedMetadata = $this->metadataRepository->findByIsListed(true); // @phpstan-ignore-line
 
         // find all documents from Solr
         $solrResults = $this->documentRepository->findSolrByCollections($collections, $this->settings, $searchParams, $listedMetadata);
@@ -144,7 +144,7 @@ class SingleCollectionController extends AbstractController
         $this->view->assignMultiple([ 'pagination' => $pagination, 'paginator' => $solrPaginator ]);
 
         // get all sortable Metadata from Kitodo.Presentation
-        $metadata = $this->metadataRepository->findByIsSortable(true);
+        $metadata = $this->metadataRepository->findByIsSortable(true); // @phpstan-ignore-line
 
         $this->view->assign('documents', $solrResults);
         $this->view->assign('metadata', $metadata);
