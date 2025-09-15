@@ -16,7 +16,7 @@ page {
     }
 }
 
-[page["backend_layout"] == 'pagets__kitodo' or page["backend_layout"] == 'pagets__emptyworkview']
+[traverse(page, 'backend_layout') == 'pagets__kitodo' or traverse(page, 'backend_layout') == 'pagets__emptyworkview']
     config.disableWrapInBaseClass = 1
 
     # switch to viewer css
@@ -28,7 +28,7 @@ page {
     # clear not required js
     page.includeJSFooterlibs.kitodo-frontend >
 
-[global]
+[GLOBAL]
 
 # --------------------------------------------------------------------------------------------------------------------
 # add opengraph social metatags in single view with a valid id
