@@ -11,7 +11,7 @@ plugin.tx_slubdigitalcollections {
         searchLimit = 1000
 
         # cat=plugin.tx_slubdigitalcollections/links/0202; type=string; label= SOLR URL including scheme, port and path
-        host = http://sdvsolr2.slub-dresden.de:8983/solr
+        host =
 
         # cat=plugin.tx_slubdigitalcollections/links/0203; type=string; label= SOLR core name
         coreName = dlfCore0
