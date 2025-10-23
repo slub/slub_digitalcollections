@@ -15,12 +15,28 @@
 <f:if condition="{renderAddDocumentTool}">
     <f:then>
         <a href="#" title="{f:translate(key:'tools.adddocument.label', extensionName:'dlf')}">{f:translate(key:'tools.adddocument.label', extensionName:'dlf')}</a>
-        <f:form method="post" pluginName="pageview" action="addDocument" addQueryString="untrusted" name="formAddDocument" object="{formAddDocument}" extensionName="dlf" controller="PageView">
+        <form id="formAddDocument" >
             <p class="add-document-description">{f:translate(key:'tools.adddocument.description', extensionName:'dlf')}</p>
             <label for="location-field">{f:translate(key:'tools.adddocument.label', extensionName:'dlf')}</label>
             <f:form.textfield property="location" id="location-field" placeholder="{f:translate(key:'tools.adddocument.placeholder', extensionName:'dlf')}" required="required" />
             <f:form.button>{f:translate(key:'tools.adddocument.submit', extensionName:'dlf')}</f:form.button>
-        </f:form>
+        </form>
+        <script>
+            document.getElementById('formAddDocument').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const url = new URL(window.location.href);
+                const params = [...url.searchParams.keys()];
+                const multiview = params.filter(p => p.startsWith("tx_dlf[multiview]"));
+                if (multiview.length === 0) {
+                    url.searchParams.append("tx_dlf[multiview]", 1);
+                }
+                const multiViewSources = params.filter(p => p.startsWith("tx_dlf[multiViewSource]["));
+                const nextIndex = multiViewSources.length;
+                const urlValue = document.getElementById('location-field').value.trim();
+                url.searchParams.append(`tx_dlf[multiViewSource][${nextIndex}]`, urlValue);
+                window.location.href = url.toString();
+            });
+        </script>
     </f:then>
 </f:if>
 
