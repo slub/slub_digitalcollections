@@ -144,7 +144,7 @@ lib.kitodo.navigation.viewfunction {
 # available tools:
 
 # fulltexttool
-# multiviewsaddourcetool
+# multiviewsaddsourcetool
 # annotationtool
 # fulltextdownloadtool
 # imagedownloadtool
