@@ -143,7 +143,6 @@ page {
 # The condition is necessary because you cannot nest TypoScript conditions. But inside the included TypoScript files,
 # more conditions appear.
 @import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/setup.typoscript'
-@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/singleCollection.typoscript'
 # --------------------------------------------------------------------------------------------------------------------
 # body class overrides
 # --------------------------------------------------------------------------------------------------------------------
