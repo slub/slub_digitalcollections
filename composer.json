@@ -10,13 +10,25 @@
   ],
   "authors": [
     {
-      "name": "Alexander Bigga",
+      "name": "SLUB TYPO3 Team",
       "email": "typo3@slub-dresden.de",
+      "homepage": "https://www.slub-dresden.de",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Alexander Bigga",
+      "role": "Developer"
+    },
+    {
+      "name": "Christof Rodejohann",
       "role": "Developer"
     },
     {
       "name": "Norman Steger",
-      "email": "norman.steger@slub-dresden.de",
+      "role": "Developer"
+    },
+    {
+      "name": "Beatrycze Volk",
       "role": "Developer"
     },
     {
@@ -26,6 +38,11 @@
     }
   ],
   "license": "GPL-3.0-or-later",
+  "support": {
+    "email": "typo3@slub-dresden.de",
+    "issues": "https://github.com/slub/slub_digitalcollections/issues",
+    "source": "https://github.com/slub/slub_digitalcollections"
+  },
   "require": {
     "php": "8.1 - 8.4",
     "typo3/cms-core": "^12.4|^13.4",
