@@ -80,7 +80,6 @@ plugin.tx_dlf_pageview {
     settings {
         features =
         elementId = tx-dlf-map
-        multiViewType =
     }
 }
 
@@ -145,7 +144,7 @@ lib.kitodo.navigation.viewfunction {
 # available tools:
 
 # fulltexttool
-# adddocumenttool
+# multiviewsaddsourcetool
 # annotationtool
 # fulltextdownloadtool
 # imagedownloadtool
@@ -169,10 +168,10 @@ plugin.tx_dlf_fulltexttool {
     }
 }
 
-plugin.tx_dlf_adddocumenttool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_adddocumenttool {
+plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_multiviewaddsourcetool {
     settings {
-        tools = adddocumenttool
+        tools = multiviewaddsourcetool
     }
 }
 
