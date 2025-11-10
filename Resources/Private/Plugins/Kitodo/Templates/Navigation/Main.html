@@ -127,6 +127,9 @@
             <f:if condition="{viewData.requestData.double}">
                 <f:form.hidden name="tx_dlf[double]" value="{viewData.requestData.double}"/>
             </f:if>
+            <f:if condition="{viewData.requestData.multiviewembedded} == 1">
+                <f:form.hidden name="tx_dlf[multiviewembedded]" value="{viewData.requestData.multiviewembedded}"/>
+            </f:if>
             <label for="tx-dlf-page-{viewData.uniqueId}">
                 <f:translate key="selectPage"/>
             </label>
@@ -202,18 +205,14 @@
 </f:section>
 
 <f:section name="render.zoom">
-    <f:if condition="{multiview} != 1">
-        <f:then>
-            <li class="zoom">
-                <a href="#" class="in" title="{f:translate(key: 'zoomIn')}" onclick="tx_dlf_viewer.map.zoomIn();">
-                    <f:translate key="zoomIn"/>
-                </a>
-                <a href="#" class="out" title="{f:translate(key: 'zoomOut')}" onclick="tx_dlf_viewer.map.zoomOut();">
-                    <f:translate key="zoomOut"/>
-                </a>
-            </li>
-        </f:then>
-    </f:if>
+    <li class="zoom">
+        <a href="#" class="in" title="{f:translate(key: 'zoomIn')}" onclick="tx_dlf_viewer.map.zoomIn();">
+            <f:translate key="zoomIn"/>
+        </a>
+        <a href="#" class="out" title="{f:translate(key: 'zoomOut')}" onclick="tx_dlf_viewer.map.zoomOut();">
+            <f:translate key="zoomOut"/>
+        </a>
+    </li>
     <li class="fullscreen">
         <a href="#" class="fullscreen" title="{f:translate(key: 'zoomFullscreen')}">
             <f:translate key="zoomFullscreen"/>
@@ -222,27 +221,23 @@
 </f:section>
 
 <f:section name="render.rotation">
-    <f:if condition="{multiview} != 1">
-        <f:then>
-            <li class="rotate">
-                <a href="#" class="rotate-left" title="{f:translate(key: 'rotateLeft')}" onclick="tx_dlf_viewer.map.rotateLeft();">
-                    <f:translate key="rotateLeft"/>
-                </a>
-                <a href="#" class="rotate-right" title="{f:translate(key: 'rotateRight')}" onclick="tx_dlf_viewer.map.rotateRight();">
-                    <f:translate key="rotateRight"/>
-                </a>
-                <a href="#" class="upend" title="{f:translate(key: 'rotateReset')}" onclick="tx_dlf_viewer.map.resetRotation();">
-                    <f:translate key="rotateReset"/>
-                </a>
-            </li>
-        </f:then>
-    </f:if>
+     <li class="rotate">
+        <a href="#" class="rotate-left" title="{f:translate(key: 'rotateLeft')}" onclick="tx_dlf_viewer.map.rotateLeft();">
+            <f:translate key="rotateLeft"/>
+        </a>
+        <a href="#" class="rotate-right" title="{f:translate(key: 'rotateRight')}" onclick="tx_dlf_viewer.map.rotateRight();">
+            <f:translate key="rotateRight"/>
+        </a>
+        <a href="#" class="upend" title="{f:translate(key: 'rotateReset')}" onclick="tx_dlf_viewer.map.resetRotation();">
+            <f:translate key="rotateReset"/>
+        </a>
+    </li>
 </f:section>
 
 <f:section name="render.measureBack">
     <f:if condition="{numMeasures} > 0 && {double} != 1">
         <f:then>
-            <div class="measureBacks" style="top: 100px;">
+            <div class="measureBacks">
                 <span class="prev">
                     <f:if condition="{currentMeasure} > 1">
                         <f:then>
@@ -266,7 +261,7 @@
 <f:section name="render.measureForward">
     <f:if condition="{numMeasures} > 0 && {double} != 1">
         <f:then>
-            <div class="measureFwds" style="top: 200px;">
+            <div class="measureFwds">
                 <span class="next">
                     <f:if condition="{currentMeasure} < {numMeasures}">
                         <f:then>
