@@ -99,7 +99,7 @@ class XpathViewHelper extends AbstractViewHelper
                     $queryParams['set'] ?? [],
                     $parsedBody['set'] ?? []
                 );
-                $parametersSet = array_merge(
+                $parametersDlf = array_merge(
                     $queryParams['tx_dlf'] ?? [],
                     $parsedBody['tx_dlf'] ?? []
                 );
@@ -119,9 +119,10 @@ class XpathViewHelper extends AbstractViewHelper
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
 
-        if ($document === null || $document->getCurrentDocument() === null || !($document->getCurrentDocument() instanceof MetsDocument)) {
+        if ($document === null || !($document->getCurrentDocument() instanceof MetsDocument)) {
             return;
         }
+        /** @var MetsDocument $currentDocument */
         $currentDocument = $document->getCurrentDocument();
         $currentDocument->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
         $currentDocument->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
@@ -155,9 +156,9 @@ class XpathViewHelper extends AbstractViewHelper
 
 
     /**
-     * Initialize the documentRepository
+     * Initialize the document repository
      *
-     * return documentRepository
+     * @return DocumentRepository
      */
     private static function getDocumentRepository()
     {
