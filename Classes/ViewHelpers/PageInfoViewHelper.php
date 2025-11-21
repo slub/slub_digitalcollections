@@ -72,8 +72,8 @@ class PageInfoViewHelper extends AbstractViewHelper
         // If uid is 0, take the current page from routing context
         if ($pageUid === 0) {
             // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
-            /** @var RenderingContext $renderingContext */
-            $request = $renderingContext->getRequest();
+            /** @var RenderingContext $renderingContext */ // @phpstan-ignore-line
+            $request = $renderingContext->getRequest(); // @phpstan-ignore-line
 
             if ($request->getAttribute('applicationType') === 1) {
                 $pageUid = $request->getAttribute('routing')->getPageId();
