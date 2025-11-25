@@ -62,4 +62,30 @@
     }
 }
 
+
+/*
+ * Override DlfMediaPlayerStyles for SLUB Digital Collections
+ */
+
+.document-view .combined-container {
+    .sxnd-modal {
+        background-color: @secondary-color;
+    }
+
+    /*
+     * Override ShakaFrontend for SLUB Digital Collections
+     *
+     * packages/kitodo-presentation/Resources/Private/Less/DlfMediaPlayer/ShakaFrontend.less
+     *
+     */
+
+    .tx-dlf-view {
+        .dlf-shaka {
+            &[data-mode="audio"] {
+                background: lighten(@secondary-color-light, 40%);
+            }
+        }
+    }
+}
+
 // EOF

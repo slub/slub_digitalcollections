@@ -242,10 +242,6 @@
             &.grid {
                 > a, > span {
                     background-position: -160px 0;
-
-                    &.mediaplayer-view {
-                        background-position: -640px 0;
-                    }
                 }
                 a.active:before {
                     position: absolute;
@@ -399,6 +395,50 @@
                                 }
                             }
                         }
+                    }
+                }
+                &.tx_dlf_audiovideotool {
+                    cursor: pointer;
+                    opacity: 1;
+                    overflow: hidden;
+                    width: auto;
+                    height: auto;
+                    display: inline;
+                    margin: 0;
+                    > a {
+                        position: relative;
+                        display: inline-block;
+                        width: 40px;
+                        height: 40px;
+                        .text-hide();
+                        border-radius: 20px;
+                        margin: 0 5px;
+                        background: white url('@{control-icons}') no-repeat -640px 0;
+                        background-size: auto 120px;
+                        &.active:before {
+                            position: absolute;
+                            top: 2px;
+                            right: 0;
+                            width: 8px;
+                            height: 8px;
+                            border-radius: 8px;
+                            border: 2px solid white;
+                            background: @primary-color;
+                            display: block;
+                            content: " ";
+                        }
+                    }
+                    &.tx-dlf-tools-audiolabelimage > a {
+                        background: white url('@{control-icons}') no-repeat -679px -40px;
+                    }
+                    &.tx-dlf-tools-videomediaplayer > a {
+                        background: white url('@{control-icons}') no-repeat -679px 0px;
+                    }
+                    &.tx-dlf-tools-equalizer > a {
+                        background: white url('@{control-icons}') no-repeat -679px -82px;
+                    }
+                    &.tx-dlf-tools-markertable > a {
+                        background: white url('@{control-icons}') no-repeat -639px -39px;
                     }
                 }
                 &.tx-dlf-imagemanipulationtool {

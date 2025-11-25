@@ -146,6 +146,7 @@ lib.kitodo.navigation.viewfunction {
 # fulltexttool
 # multiviewsaddsourcetool
 # annotationtool
+# audiovideotool
 # fulltextdownloadtool
 # imagedownloadtool
 # imagemanipulationtool
@@ -172,6 +173,13 @@ plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_multiviewaddsourcetool {
     settings {
         tools = multiviewaddsourcetool
+    }
+}
+
+plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_audiovideotool {
+    settings {
+        tools = audiovideotool
     }
 }
 
