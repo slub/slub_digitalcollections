@@ -22,6 +22,15 @@ plugin.tx_dlf {
 }
 
 # --------------------------------------------------------------------------------------------------------------------
+# document
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_document < tt_content.list.20.dlf_document
+plugin.tx_dlf_document {
+    settings {
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
 # search
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -109,6 +118,7 @@ plugin.tx_dlf_pagegrid {
 plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
+        showFull = 1
         targetPid = {$plugin.tx_slubdigitalcollections.pageView}
     }
 }
@@ -124,7 +134,7 @@ lib.kitodo.navigation.pagecontrol < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.pagecontrol {
     settings {
         pageStep = 10
-        features = pageFirst,pageBack,pageStepBack,pageForward,pageStepForward,pageLast
+        features = pageFirst,pageStepBack,pageBack,pageForward,pageStepForward,pageLast
     }
 }
 

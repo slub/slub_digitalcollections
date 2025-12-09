@@ -222,6 +222,23 @@ $(function () {
 
 });
 
+(function () {
+    let docController = null;
+    window.addEventListener('tx-dlf-documentLoaded', e => {
+        docController = e.detail.docController;
+
+        // Update URL in page grid button
+        docController.eventTarget.addEventListener('tx-dlf-stateChanged', e => {
+            if (docController === null) {
+                return;
+            }
+
+            $('#digitalcollections-enable-grid-view')
+                .attr('href', docController.makePageUrl(e.detail.page, true));
+        });
+    });
+})();
+
 $(document).keyup(function (e) {
 
     // Check if ESC key is pressed. Then end fullscreen mode or close SRU form.
