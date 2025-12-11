@@ -56,6 +56,33 @@
     </f:then>
 </f:if>
 
+<f:if condition="{renderAudioVideoTool}">
+    <f:if condition="{settings.isVideo} == 1">
+        <li class="tx_dlf_audiovideotool tx-dlf-tools-videomediaplayer" id="tx-dlf-tools-videomediaplayer" data-tool="videomediaplayer">
+            <a href="#" class="button-videomediaplayer" title="{f:translate(key: 'tools.audiovideotool.videomediaplayer')}">
+                <f:translate key="tools.audiovideotool.videomediaplayer"/>
+            </a>
+        </li>
+    </f:if>
+    <f:if condition="{settings.constants.showAudioLabelImage} == 1 && {settings.isAudio} == 1 && {hasAudioLabelImage}">
+        <li class="tx_dlf_audiovideotool tx-dlf-tools-audiolabelimage" id="tx-dlf-tools-audiolabelimage" data-tool="audiolabelimage">
+            <a href="#" class="button-audiolabelimage" title="{f:translate(key: 'tools.audiovideotool.audiolabelimage')}">
+                <f:translate key="tools.audiovideotool.audiolabelimage"/>
+            </a>
+        </li>
+    </f:if>
+    <li class="tx_dlf_audiovideotool tx-dlf-tools-equalizer" id="tx-dlf-tools-equalizer" data-tool="equalizer">
+        <a href="#" class="button-equalizer" title="{f:translate(key: 'tools.audiovideotool.equalizer')}">
+            <f:translate key="tools.audiovideotool.equalizer"/>
+        </a>
+    </li>
+    <li class="tx_dlf_audiovideotool tx-dlf-tools-markertable" id="tx-dlf-tools-markertable" data-tool="markertable">
+        <a href="#" class="button-markertable" title="{f:translate(key: 'tools.audiovideotool.markertable')}">
+            <f:translate key="tools.audiovideotool.markertable"/>
+        </a>
+    </li>
+</f:if>
+
 <f:if condition="{renderImageDownloadTool} && {imageDownload}">
     <f:then>
         <li>
@@ -127,7 +154,7 @@
             </a>
         </li>
         <li class="score">
-            <a id="tx-dlf-tools-midi" >
+            <a id="tx-dlf-tools-score-midi" <f:if condition="{scoreMidiPlayerSoundFont}">data-midi-player-sound-font="{scoreMidiPlayerSoundFont}"</f:if>>
                 <f:translate key="tools.score.player"/>
             </a>
         </li>
@@ -213,11 +240,11 @@
         <f:if condition="{scoreLinks}">
             <f:then>
                 <li>
-                    <a href="#" id="tx_dlf_mididownload" class="download-document">
+                    <a href="#" id="tx-dlf-score-midi-download" class="download-document">
                         <f:translate key="mididownload"/>
                         (MIDI)
                     </a>
-                    <a href="#" id="tx_dlf_scoredownload" class="download-document">
+                    <a href="#" id="tx-dlf-score-download" class="download-document">
                         <f:translate key="scoredownload"/>
                         (PDF)
                     </a>

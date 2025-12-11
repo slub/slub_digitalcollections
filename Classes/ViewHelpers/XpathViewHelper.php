@@ -64,7 +64,7 @@ class XpathViewHelper extends AbstractViewHelper
      *
      * @var DocumentRepository
      */
-    protected static DocumentRepository $documentRepository;
+    protected static $documentRepository = null;
 
     /**
      * Render the supplied DateTime object as a formatted date.
@@ -161,7 +161,7 @@ class XpathViewHelper extends AbstractViewHelper
      *
      * @return DocumentRepository
      */
-    private static function getDocumentRepository(): DocumentRepository
+    private static function getDocumentRepository()
     {
         if (null === static::$documentRepository) {
             static::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
