@@ -78,7 +78,7 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
             $logo = @file_get_contents($logoUrl, false, $context, 0, 1024*100);
             // Save value in cache
             if ($logo) {
-                GeneralUtility::writeFile($logoFile, $logo);
+                GeneralUtility::writeFileToTypo3tempDir($logoFile, $logo);
                 return $cacheIdentifier;
             }
         }
