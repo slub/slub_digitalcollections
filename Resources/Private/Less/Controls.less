@@ -55,14 +55,47 @@
             }
         }
     }
+
+    form {
+        select {
+            border: 1px solid @secondary-color;
+            color: @secondary-color;
+            background: white url('data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAyMCAxMiI+PHN0eWxlPi5zdDB7ZmlsbDpub25lO3N0cm9rZTojNGU2NDY2O3N0cm9rZS13aWR0aDoyO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoxMH08L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMy40IDMuMkw3IDkuNi42IDMuMiIgaWQ9IlhNTElEXzFfIi8+PC9zdmc+') no-repeat right center;
+            background-size: 16px auto;
+            font-weight: 700;
+            line-height: 1.2;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding: 10px 20px 10px 14px;
+            background-size: 20px 12px;
+            margin: 0 6px;
+            font-size: 16px;
+            outline: none;
+            border-radius: 20px;
+            cursor: pointer;
+
+            .no-touchevents & {
+              .transition();
+                &:hover {
+                  border: 1px solid @secondary-color;
+                  background-color: desaturate(lighten(@secondary-color, 65%), 25%);
+                  color: @basegrey-color;
+                }
+            }
+        }
+    }
 }
 
 /* ==============[ document functions for downloads, double page eg. ]===================== */
 .document-functions {
     > ul {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
         bottom: 15px;
         left: 15px;
         right: 15px;
+
         > li {
             > a:focus {
                 outline: none;
@@ -370,31 +403,6 @@
                         position: absolute;
                         top: 0;
                         right: 0;
-                        select {
-                            border: 1px solid @secondary-color;
-                            color: @secondary-color;
-                            background: white url('data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAyMCAxMiI+PHN0eWxlPi5zdDB7ZmlsbDpub25lO3N0cm9rZTojNGU2NDY2O3N0cm9rZS13aWR0aDoyO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoxMH08L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMy40IDMuMkw3IDkuNi42IDMuMiIgaWQ9IlhNTElEXzFfIi8+PC9zdmc+') no-repeat right center;
-                            background-size: 16px auto;
-                            font-weight: 700;
-                            line-height: 1.2;
-                            -webkit-appearance: none;
-                            -moz-appearance: none;
-                            padding: 10px 20px 10px 14px;
-                            background-size: 20px 12px;
-                            margin: 0 6px;
-                            font-size: 16px;
-                            outline: none;
-                            border-radius: 20px;
-                            cursor: pointer;
-                            .no-touchevents & {
-                                .transition();
-                                &:hover {
-                                    border: 1px solid @secondary-color;
-                                    background-color: desaturate(lighten(@secondary-color, 65%), 25%);
-                                    color: @basegrey-color;
-                                }
-                            }
-                        }
                     }
                 }
                 &.tx_dlf_audiovideotool {
