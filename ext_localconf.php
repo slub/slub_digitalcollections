@@ -1,19 +1,6 @@
 <?php
 defined('TYPO3') or die('Access denied.');
 
-// plugins
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'SlubDigitalcollections',
-    'SingleCollection',
-    [
-        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'show,search'
-    ],
-    // non-cacheable actions
-    [
-        \Slub\SlubDigitalcollections\Controller\SingleCollectionController::class => 'search'
-    ]
-);
-
 // cache configurations
 // Cache for Collection ViewHelper (Matomo statistics)
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_matomo_collections'] ??= [];
@@ -34,4 +21,3 @@ if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections']['options']['defaultLifeTime'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['slub_digitalcollections_collections']['options']['defaultLifeTime'] = 3600; // 3600 = 1 hour
 }
-
