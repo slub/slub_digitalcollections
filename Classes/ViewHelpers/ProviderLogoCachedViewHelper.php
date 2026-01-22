@@ -58,7 +58,7 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
         if (isset($logoUrl) && GeneralUtility::isValidUrl($logoUrl)) {
             // calculate cache identifier
             $logoInfo = pathinfo($logoUrl);
-            $cacheIdentifier = md5($logoUrl) . '.' . $logoInfo['extension'];
+            $cacheIdentifier = md5($logoUrl) . '.' . $logoInfo['basename'];
             $logoFile = Environment::getPublicPath() . '/typo3temp/assets/images/' . $cacheIdentifier;
             // if file exists and is not too old - take it
             if (file_exists($logoFile)) {
