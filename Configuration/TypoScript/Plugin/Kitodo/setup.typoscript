@@ -133,7 +133,7 @@ lib.kitodo.navigation.pagecontrol {
 lib.kitodo.navigation.viewfunction < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.viewfunction {
     settings {
-        features = pageselect,rotation,zoom
+        features = pageSelect,rotation,zoom
     }
 }
 
