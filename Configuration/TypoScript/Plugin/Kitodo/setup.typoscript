@@ -117,13 +117,13 @@ plugin.tx_dlf_tableofcontents {
 # --------------------------------------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------------------------------------
-# foward and back buttons in page view
+# forward and backward buttons in page view
 # --------------------------------------------------------------------------------------------------------------------
 lib.kitodo.navigation.pagecontrol < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.pagecontrol {
     settings {
         pageStep = 10
-        features = pageFirst,pageBack,pageStepBack,pageForward,pageStepForward,pageLast
+        features = pagesBackward,pagesForward
     }
 }
 
