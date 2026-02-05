@@ -156,7 +156,7 @@ lib.kitodo.navigation.viewfunction {
 plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
 plugin.tx_dlf_toolbox {
     settings {
-#        fileGrpsImageDownload = MIN,DEFAULT,MAX
+        solrCoreUid = {$plugin.tx_slubdigitalcollections.solr.coreUid}
     }
 }
 
@@ -224,8 +224,6 @@ plugin.tx_dlf_pdfdownloadtool {
         tools = pdfdownloadtool
     }
 }
-
-
 
 # --------------------------------------------------------------------------------------------------------------------
 # newspaper navigation
