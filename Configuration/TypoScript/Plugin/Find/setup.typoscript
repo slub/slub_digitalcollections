@@ -1,0 +1,167 @@
+##
+## general find plugin configuration
+##
+plugin.tx_find {
+    view {
+        templateRootPath >
+        templateRootPaths {
+            0 = {$plugin.tx_find.view.templateRootPath}
+#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Templates/
+        }
+        partialRootPath >
+        partialRootPaths {
+            0 = {$plugin.tx_find.view.partialRootPath}
+            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Partials/
+        }
+        layoutRootPath >
+        layoutRootPaths {
+            0 = {$plugin.tx_find.view.layoutRootPath}
+#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Layouts/
+        }
+    }
+}
+
+##
+## SOLR-related configuration options for find 
+##
+plugin.tx_find.settings {
+    # disable ping requests
+    testConnection = 0
+
+    # enable empty search queries to show a starting page
+    allowNoSearch = 1
+
+    jumpToID = 
+
+    # SOLR connections
+    connections {
+        default {
+            options {
+                scheme = http
+                host = v12-sachsen-digital.ddev.site
+                port = 8983
+                path = /
+                timeout = 30
+                core = dlfCore0
+            }
+        }
+    }
+	
+    standardFields {
+        title = title
+    }
+
+    # result list paging options
+    paging {
+        perPage = 20
+        maximumPerPage = 1000
+        detailPagePaging = 1
+        menu {
+            0 = 5
+            1 = 10
+            2 = 20
+            3 = 50
+            4 = 100
+        }
+    }
+	
+    # Limit the requested data fields for different query types:
+    # Only request the minimum by default and load all fields for displaying
+    # full records or loading data.
+    dataFields {
+        default {
+            default {
+                f0 = score
+                f1 = *
+            }
+        }
+        detail {
+            default {
+                f0 = *
+            }
+        }
+        data < plugin.tx_find.settings.dataFields.detail
+    }
+
+    # define sort criteria
+    sort {
+        0 {
+            id = default
+            sortCriteria = score desc
+        }
+        1 {
+            id = nameAsc
+            sortCriteria = title asc
+        }
+        2 {
+            id = nameDesc
+            sortCriteria = title desc
+        }
+        3 {
+            id = newerFirst
+            sortCriteria = timestamp desc
+        }
+        4 {
+            id = olderFirst
+            sortCriteria = timestamp asc
+        }
+    }
+	
+    # sort options
+    sortOptions {
+        menu {
+            0 = default
+            1 = nameAsc
+            2 = nameDesc
+            3 = newerFirst
+            4 = olderFirst
+        }
+        selected = default
+    }
+}
+
+# add modifier, used for facet excluding
+plugin.tx_find.settings.modifier {
+  not = NOT %s
+}
+
+## 
+## Facet configuration
+##
+# default values applied to all facet configurations
+plugin.tx_find.settings.facets >
+plugin.tx_find.settings.facets {
+    1 {
+		id = collection
+		field = collection
+		query = collection:"%s"
+		excludeOwnFilter = 1
+		queryStyle = or
+    }
+
+    2 {
+        id = type
+        field = type
+        query = type:"%s"
+        excludeOwnFilter = 1
+        queryStyle = or
+    }
+}
+
+plugin.tx_find.settings.shards >
+
+##
+## Configure query fields, including those for extended search
+##
+plugin.tx_find.settings.queryFields >
+plugin.tx_find.settings.queryFields {
+
+    # text query field
+    10 {
+        id = default
+        query = {!edismax qf="title^200 collection"}%s
+        noescape = 0
+        phrase = 0
+        type = Text
+    }
+}
