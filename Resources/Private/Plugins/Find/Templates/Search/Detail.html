@@ -1,0 +1,30 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:layout name="Default"/>
+<f:comment>
+	Template for a basic Detail view of all fields in the document.
+
+	Sets up the page with its title, CSS, JavaScript, the search form and pager,
+	uses the field configured as a heading and creates
+	a definition list of all field contents.
+
+	This can be a good starting point for refining the detail view for your
+	data model.
+</f:comment>
+
+<f:section name="main">
+	<f:comment><s:page.title>{document.fields.id} – {config.pageTitle}</s:page.title></f:comment>
+	<f:render partial="Page/Standard" arguments="{_all}"/>
+	<f:render partial="Components/DetailResultPager" arguments="{_all}"/>
+
+	<article class="detail">
+		<h1>
+			<f:render partial="Display/Field/Inline" arguments="{results:results, document:document, field:settings.standardFields.title, separator:', '}"/>
+		</h1>
+
+		<dl>
+			<f:for each="{document.fields}" as="value" key="fieldName">
+				<f:render partial="Display/DLField" arguments="{results:results, document:document, field:fieldName}"/>
+			</f:for>
+		</dl>
+	</article>
+</f:section>

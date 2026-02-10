@@ -6,7 +6,7 @@ plugin.tx_find {
         templateRootPath >
         templateRootPaths {
             0 = {$plugin.tx_find.view.templateRootPath}
-#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Templates/
+            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Templates/
         }
         partialRootPath >
         partialRootPaths {

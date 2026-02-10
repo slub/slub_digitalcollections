@@ -1,0 +1,42 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:layout name="Default"/>
+<f:comment>
+	Template for a the search results view.
+
+	Sets up the page with its title, the search form, pager and result count
+	information. Then displays the configured facets and a result list using the
+	fields configured as standardFields.title and standardFields.snippet.
+	Results are linked to the respective documents’ detail pages.
+
+	This result display is sufficient for basic result lists.
+</f:comment>
+
+<f:section name="main">
+	<f:comment><s:page.title>
+		<f:render partial="Components/QueryString" arguments="{query:arguments.q, facets:config.activeFacets}"/>
+		–
+		{config.pageTitle}
+	</s:page.title></f:comment>
+	<f:render partial="Page/Standard" arguments="{_all}"/>
+
+	<div class="results">
+		<div class="navigation top">
+			<f:render partial="Components/ResultCount" arguments="{_all}"/>
+			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+		</div>
+
+		<f:render partial="Facets/Facet/List/ActiveFacets" arguments="{_all}"/>
+
+		<f:render partial="Facets/Facets" arguments="{_all}"/>
+
+		<ol id="c{config.uid}-resultList" class="resultList" start="{config.counterStart}">
+			<f:for each="{results.documents}" as="document">
+				<f:render partial="Display/Result" arguments="{_all}"/>
+			</f:for>
+		</ol>
+
+		<div class="navigation bottom">
+			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+		</div>
+	</div>
+</f:section>
