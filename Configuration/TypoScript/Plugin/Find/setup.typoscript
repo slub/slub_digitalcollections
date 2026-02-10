@@ -6,14 +6,17 @@ plugin.tx_find {
         templateRootPath >
         templateRootPaths {
             0 = {$plugin.tx_find.view.templateRootPath}
+#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Templates/
         }
         partialRootPath >
         partialRootPaths {
             0 = {$plugin.tx_find.view.partialRootPath}
+            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Partials/
         }
         layoutRootPath >
         layoutRootPaths {
             0 = {$plugin.tx_find.view.layoutRootPath}
+#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Layouts/
         }
     }
 }
