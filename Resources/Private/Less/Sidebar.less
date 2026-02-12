@@ -442,7 +442,7 @@
 }
 
 /* ==============[ toc (inside the respective wrap > see above) ]========================= */
-.tx-dlf-toc {
+.tx-dlf-tableofcontents {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -450,14 +450,14 @@
     left: 15px;
     overflow: hidden;
     overflow-y: auto;
-    ul.toc {
+    ul.tx-dlf-tableofcontents-list {
         position: relative;
         line-height: 1.2;
         font-size: 14px;
         border-top: 1px solid fade(@lightgrey-color,20%);
         ul li {
             position: relative;
-            &.submenu {
+            &.tx-dlf-tableofcontents-submenu {
                 a {
                     padding-right: 10px;
                 }
@@ -473,7 +473,7 @@
                     border-top-color: white;
                 }
             }
-            &.current {
+            &.tx-dlf-tableofcontents-current {
                 background: white;
                 a {
                     color: @secondary-color;
@@ -550,7 +550,7 @@
             }
         }
     }
-    .tx-dlf-wincontent > ul.toc > li > a { // Based on old shitty markup, it selects the issue title
+    .tx-dlf-wincontent > ul.tx-dlf-tableofcontents-list > li > a { // Based on old shitty markup, it selects the issue title
         color: white;
         font-size: 16px;
         padding: 5px 0;
@@ -576,14 +576,14 @@
             background: @lightgrey-color;
             content: " ";
         }
-        ul.toc {
+        ul.tx-dlf-tableofcontents-list {
             font-size: 12px;
             .transition();
             ul li {
                 &:nth-child(even) {
                     background: lighten(@secondary-color-light, 40%);
                 }
-                &.submenu {
+                &.tx-dlf-tableofcontents-submenu {
                     a {
                         padding-right: 15px;
                         color: #333;
@@ -594,7 +594,7 @@
                         border-top-color: fade(@secondary-color-light, 40%);
                     }
                 }
-                &.current {
+                &.tx-dlf-tableofcontents-current {
                     > a {
                         color: white;
                         background: @secondary-color;
@@ -647,7 +647,7 @@
                 }
             }
         }
-        .tx-dlf-wincontent > ul.toc > li > a { // Based on old shitty markup, it selects the issue title (again)
+        .tx-dlf-wincontent > ul.tx-dlf-tableofcontents > li > a { // Based on old shitty markup, it selects the issue title (again)
             color: @basegrey-color;
         }
     }
