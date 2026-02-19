@@ -28,6 +28,8 @@ plugin.tx_find.settings {
     # disable ping requests
     testConnection = 0
 
+    languageRootPath = EXT:slub_digitalcollections/Resources/Private/Language/
+
     # enable empty search queries to show a starting page
     allowNoSearch = 1
 
@@ -48,6 +50,7 @@ plugin.tx_find.settings {
     }
 	
     standardFields {
+        snippet = type
         title = title
     }
 
@@ -86,7 +89,7 @@ plugin.tx_find.settings {
     # define sort criteria
     sort {
         0 {
-            id = default
+            id = relevance
             sortCriteria = score desc
         }
         1 {
@@ -98,25 +101,29 @@ plugin.tx_find.settings {
             sortCriteria = title desc
         }
         3 {
-            id = newerFirst
-            sortCriteria = timestamp desc
+            id = authorAsc
+            sortCriteria = author_faceting desc
         }
         4 {
-            id = olderFirst
-            sortCriteria = timestamp asc
+            id = authorDesc
+            sortCriteria = author_faceting asc
         }
     }
 	
     # sort options
     sortOptions {
         menu {
-            0 = default
+            0 = relevance
             1 = nameAsc
             2 = nameDesc
-            3 = newerFirst
-            4 = olderFirst
+            3 = authorAsc
+            4 = authorDesc
         }
-        selected = default
+        selected = relevance
+    }
+
+    additionalFilters {
+        
     }
 }
 
@@ -125,26 +132,54 @@ plugin.tx_find.settings.modifier {
   not = NOT %s
 }
 
+# Page ID used for linking detail pages
+#plugin.tx_find.settings.kitodoPageView = ${plugin.tx_slubdigitalcollections.kitodoPageView}
+plugin.tx_find.settings.kitodoPageView = 6
+
 ## 
 ## Facet configuration
 ##
 # default values applied to all facet configurations
 plugin.tx_find.settings.facets >
 plugin.tx_find.settings.facets {
+    # author
     1 {
+        id = author
+        field = author_faceting
+        query = author_faceting:"%s"
+        queryStyle = and
+    }
+
+    # publ location
+    2 {
+        id = place
+        field = place_faceting
+        query = place_faceting:"%s"
+        queryStyle = and
+    }
+
+    # publ year
+    3 {
+        id = year
+        field = year_faceting
+        query = year_faceting:"%s"
+        queryStyle = and
+    }
+
+    # collections
+    4 {
 		id = collection
 		field = collection
 		query = collection:"%s"
-		excludeOwnFilter = 1
-		queryStyle = or
+		queryStyle = and
     }
 
-    2 {
+    # type
+    5 {
         id = type
         field = type
         query = type:"%s"
-        excludeOwnFilter = 1
-        queryStyle = or
+        queryStyle = and
     }
 }
 
@@ -159,7 +194,7 @@ plugin.tx_find.settings.queryFields {
     # text query field
     10 {
         id = default
-        query = {!edismax qf="title^200 collection"}%s
+        query = {!edismax qf="title_tsi^200 collection author_tsi place_tsi"}%s
         noescape = 0
         phrase = 0
         type = Text

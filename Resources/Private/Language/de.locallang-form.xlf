@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-02-18T10:59:49Z" product-name="find">
+		<header/>
+		<body>
+			<trans-unit id="input.sort" xml:space="preserve">
+				<source>Sort By</source>
+				<target>Sortierung</target>
+			</trans-unit>
+			<trans-unit id="input.sort-relevance" xml:space="preserve">
+				<source>Relevance</source>
+				<target>Relevanz</target>
+			</trans-unit>
+			<trans-unit id="input.sort-nameAsc" xml:space="preserve">
+				<source>Name A-Z</source>
+				<target>Name A-Z</target>
+			</trans-unit>
+			<trans-unit id="input.sort-nameDesc" xml:space="preserve">
+				<source>Name Z-A</source>
+				<target>Name Z-A</target>
+			</trans-unit>
+			<trans-unit id="input.sort-authorAsc" xml:space="preserve">
+				<source>Author A-Z</source>
+				<target>Autor A-Z</target>
+			</trans-unit>
+			<trans-unit id="input.sort-authorDesc" xml:space="preserve">
+				<source>Author Z-A</source>
+				<target>Autor Z-A</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

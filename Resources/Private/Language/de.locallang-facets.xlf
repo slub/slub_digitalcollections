@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-02-18T10:59:49Z" product-name="find">
+		<header/>
+		<body>
+			<trans-unit id="facet.type" xml:space="preserve" approved="yes">
+				<source>Type</source>
+				<target>Strukturtyp</target>
+			</trans-unit>
+			<trans-unit id="facet.author" xml:space="preserve" approved="yes">
+				<source>Author</source>
+				<target>Autor</target>
+			</trans-unit>
+			<trans-unit id="facet.place" xml:space="preserve" approved="yes">
+				<source>Place of Publication</source>
+				<target>Erscheinungsort</target>
+			</trans-unit>
+			<trans-unit id="facet.year" xml:space="preserve" approved="yes">
+				<source>Year of Publication</source>
+				<target>Erscheinungsjahr</target>
+			</trans-unit>
+			<trans-unit id="facet.collection" xml:space="preserve" approved="yes">
+				<source>Collection(s)</source>
+				<target>Sammlung(en)</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
