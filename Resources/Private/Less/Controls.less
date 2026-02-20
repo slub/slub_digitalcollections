@@ -482,68 +482,64 @@
                         }
                     }
                 }
-                &.rotate {
-                    .rotate-left {
+                &.tx-dlf-navigation-rotate-left {
                         background-position: -240px 0;
-                    }
-                    .rotate-right {
-                        background-position: -240px -40px;
-                    }
-                    .upend {
-                        background-position: -280px 0;
-                    }
                 }
-                &.zoom {
-                    .in {
-                        background-position: -360px 0;
-                    }
-                    .out {
-                        background-position: -400px 0;
-                    }
-                    .fullscreen { // The fullscreen button
-                        position: relative;
-                        flex: 0 0 40px;
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 20px;
-                        .text-hide();
-                        z-index: 1000;
-                        background: white;
-                        &:before,
-                        &:after {
-                            position: absolute;
-                            width: 12px;
-                            height: 12px;
-                            background: url('@{control-icons}') no-repeat -574px -54px;
-                            background-size: auto 120px;
-                            display: block;
-                            content: " ";
-                            .transition();
-                            pointer-events: none;
-                            .static & {
-                                .transition(none);
-                            }
+                &.tx-dlf-navigation-rotate-right {
+                        background-position: -240px -40px;
+                }
+                &.tx-dlf-navigation-rotate-reset{
+                    background-position: -280px 0;
+                }
+                &.tx-dlf-navigation-zoom-in {
+                    background-position: -360px 0;
+                }
+                &.tx-dlf-navigation-zoom-out {
+                    background-position: -400px 0;
+                }
+                &.tx-dlf-navigation-zoom-fullscreen { // The fullscreen button
+                    position: relative;
+                    flex: 0 0 40px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 20px;
+                    .text-hide();
+                    z-index: 1000;
+                    background: white;
+                    &:before,
+                    &:after {
+                        position: absolute;
+                        width: 12px;
+                        height: 12px;
+                        background: url('@{control-icons}') no-repeat -574px -54px;
+                        background-size: auto 120px;
+                        display: block;
+                        content: " ";
+                        .transition();
+                        pointer-events: none;
+                        .static & {
+                            .transition(none);
                         }
+                    }
+                    &:before {
+                        top: 9px;
+                        right: 9px;
+                    }
+                    &:after {
+                        bottom: 9px;
+                        left: 9px;
+                        .transform(rotate(180deg));
+                    }
+                    &.active {
                         &:before {
-                            top: 9px;
-                            right: 9px;
-                        }
-                        &:after {
-                            bottom: 9px;
-                            left: 9px;
                             .transform(rotate(180deg));
                         }
-                        &.active {
-                            &:before {
-                                .transform(rotate(180deg));
-                            }
-                            &:after {
-                                .transform(rotate(0));
-                            }
+                        &:after {
+                            .transform(rotate(0));
                         }
-                        .fullscreen & {
-                            top: 5px !important;
-                        }
+                    }
+                    .fullscreen & {
+                        top: 5px !important;
                     }
                 }
             }
@@ -747,14 +743,14 @@
             span {
                 opacity: 0.3;
             }
-            &.next {
+            &.tx-dlf-navigation-next {
                 display: block;
                 a:before, span:before {
                     right: 0;
                     background-position: -280px -80px;
                 }
             }
-            &.prev {
+            &.tx-dlf-navigation-back {
                 display: block;
                 a:before, span:before {
                     left: 0;
@@ -763,10 +759,10 @@
             }
         }
     }
-    .backs {
+    .tx-dlf-navigation-backward {
         left: 0;
     }
-    .fwds {
+    .tx-dlf-navigation-forward {
         right: 0;
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
@@ -827,7 +823,7 @@
                     transition: none !important;
                 }
             }
-            &.backs {
+            &.tx-dlf-navigation-backward {
                 left: 10px;
                 span {
                     a, span {
@@ -838,7 +834,7 @@
                             left: 20px;
                         }
                     }
-                    &.prev {
+                    &.tx-dlf-navigation-back {
                         a, span {
                             top: 0;
                             height: 80px;
@@ -853,7 +849,7 @@
                             }
                         }
                     }
-                    &.rwnd {
+                    &.tx-dlf-navigation-prev {
                         a, span {
                             top: 0;
                             color: fade(@primary-color, 0%);
@@ -869,7 +865,7 @@
                             opacity: 0;
                         }
                     }
-                    &.first {
+                    &.tx-dlf-navigation-first {
                         a, span {
                             bottom: 0;
                             opacity: 0;
@@ -882,12 +878,12 @@
                 }
                 &.over {
                     span {
-                        &.prev {
+                        &.tx-dlf-navigation-back {
                             a, span {
                                 color: @primary-color;
                             }
                         }
-                        &.rwnd {
+                        &.tx-dlf-navigation-prev {
                             a, span {
                                 top: -45px;
                                 color: @primary-color;
@@ -903,7 +899,7 @@
                                 opacity: .3;
                             }
                         }
-                        &.first {
+                        &.tx-dlf-navigation-first {
                             a, span {
                                 bottom: -45px;
                             }
@@ -917,7 +913,7 @@
                     }
                 }
             }
-            &.fwds {
+            &.tx-dlf-navigation-forward {
                 right: 10px;
                 span {
                     a, span {
@@ -928,7 +924,7 @@
                             right: 20px;
                         }
                     }
-                    &.next {
+                    &.tx-dlf-navigation-next {
                         a, span {
                             top: 0;
                             height: 80px;
@@ -943,7 +939,7 @@
                             }
                         }
                     }
-                    &.fwd {
+                    &.tx-dlf-navigation-fwd {
                         a, span {
                             top: 0;
                             color: fade(@primary-color, 0%);
@@ -955,7 +951,7 @@
                             }
                         }
                     }
-                    &.last {
+                    &.tx-dlf-navigation-last {
                         a, span {
                             bottom: 0;
                             opacity: 0;
@@ -967,12 +963,12 @@
                 }
                 &.over {
                     span {
-                        &.next {
+                        &.tx-dlf-navigation-next {
                             a, span {
                                 color: @primary-color;
                             }
                         }
-                        &.fwd {
+                        &.tx-dlf-navigation-fwd {
                             a, span {
                                 top: -45px;
                                 color: @primary-color;
@@ -985,7 +981,7 @@
                                 }
                             }
                         }
-                        &.last {
+                        &.tx-dlf-navigation-last {
                             a, span {
                                 bottom: -45px;
                             }

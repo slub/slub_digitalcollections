@@ -95,7 +95,7 @@ $(function () {
 
     // Copy some controls for mobile (page select, fullscreen)
     $('.provider').append('<div class="mobile-controls" />');
-    $('.view-functions .pages form, .view-functions .zoom a.fullscreen, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
+    $('.view-functions .pages form, .view-functions .tx-dlf-navigation-fullscreen a, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
 
     // Shorten mobile meta title
     shortenMobileMetaElement = $('.provider dl.mobile-meta dd.tx-dlf-title a');
@@ -137,18 +137,18 @@ $(function () {
     // if cookie for fullscreen view is present adapat initial page rendering
     if (Cookies.get('tx-dlf-pageview-zoomFullscreen')) {
         $('body').addClass('fullscreen static');
-        $('.zoom .fullscreen').addClass('active');
+        $('.tx-dlf-navigation-fullscreen').addClass('active');
     }
 
     // TOC folding function to make sure that active pages are in viewport
-    if ($('ul.toc ul li.current')[0]) {
+    if ($('ul.tx-dlf-tableofcontents-list ul li.tx-dlf-tableofcontents-current')[0]) {
         tocPlaceholderLabel = ($('html[lang^="de"]')[0]) ? 'Einige Einträge sind ausgeblendet' : 'Some entires are hidden';
         tocPlaceholderTitle = ($('html[lang^="de"]')[0]) ? 'Hier klicken um alle Einträge zu zeigen' : 'Click to show all entries';
-        $('ul.toc ul li.current').first().prevAll(':eq(4)').prevUntil(':nth-child(2)').hide();
-        $('ul.toc ul li:nth-child(2)').after('<li class="placeholder" title="' + tocPlaceholderTitle + '">' + tocPlaceholderLabel + '</li>');
-        $('ul.toc ul li.placeholder').on('click', function () {
+        $('ul.tx-dlf-tableofcontents-list ul li.tx-dlf-tableofcontents-current').first().prevAll(':eq(4)').prevUntil(':nth-child(2)').hide();
+        $('ul.tx-dlf-tableofcontents-list ul li:nth-child(2)').after('<li class="placeholder" title="' + tocPlaceholderTitle + '">' + tocPlaceholderLabel + '</li>');
+        $('ul.tx-dlf-tableofcontents-list ul li.placeholder').on('click', function () {
             $(this).remove();
-            $('ul.toc ul li').slideDown();
+            $('ul.tx-dlf-tableofcontents-list ul li').slideDown();
         });
     }
 
@@ -165,7 +165,7 @@ $(function () {
 
     // Complex page turning mechanism and check if a click on page control was made and unfold next/back navigation
     if (Modernizr.touchevents) {
-        $('.fwds, .backs')
+        $('.tx-dlf-navigation-forward, .tx-dlf-navigation-backward')
             .on('touchstart', function () {
                 $(this).addClass('over');
                 triggeredElement = $(this);
@@ -179,7 +179,7 @@ $(function () {
         $('body').on('touchstart', function (event) {
             target = $(event.target);
             if (!target.closest('.page-control')[0]) {
-                $('.fwds, .backs').removeClass('over enable-touchevent');
+                $('.tx-dlf-navigation-forward, .tx-dlf-navigation-backward').removeClass('over enable-touchevent');
                 localStorage.clear();
             }
         });
@@ -188,7 +188,7 @@ $(function () {
             localStorage.clear();
         }
     } else {
-        $('.fwds, .backs')
+        $('.tx-dlf-navigation-forward, .tx-dlf-navigation-backward')
             .on('mouseenter', function () {
                 $(this).addClass('over');
             })
@@ -228,7 +228,7 @@ $(function () {
     // Finally all things are settled. Bring back animations a second later.
     setTimeout(function () {
         localStorage.clear();
-        $('.fwds, .backs').removeClass('no-transition');
+        $('.tx-dlf-navigation-forward, .tx-dlf-navigation-backward').removeClass('no-transition');
         $('body').removeClass('static');
     }, 1000);
 
@@ -273,7 +273,7 @@ function exitFullscreen(persist) {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").removeClass('fullscreen');
-    $('a.fullscreen').removeClass('active');
+    $('.tx-dlf-navigation-fullscreen a').removeClass('active');
 
     if (persist) {
         Cookies.remove('tx-dlf-pageview-zoomFullscreen');
