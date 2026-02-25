@@ -143,20 +143,36 @@ lib.kitodo.navigation.viewfunction {
 
 # available tools:
 
-# fulltexttool
-# multiviewsaddsourcetool
 # annotationtool
 # audiovideotool
 # fulltextdownloadtool
+# fulltexttool
 # imagedownloadtool
 # imagemanipulationtool
+# modeldownloadtool
+# multiviewsaddsourcetool
 # pdfdownloadtool
 # searchindocumenttool
+# scoretool
 
 plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
 plugin.tx_dlf_toolbox {
     settings {
         solrCoreUid = {$plugin.tx_slubdigitalcollections.solr.coreUid}
+    }
+}
+
+plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_audiovideotool {
+    settings {
+        tools = audiovideotool
+    }
+}
+
+plugin.tx_dlf_fulltextdownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_fulltextdownloadtool {
+    settings {
+        tools = fulltextdownloadtool
     }
 }
 
@@ -169,27 +185,6 @@ plugin.tx_dlf_fulltexttool {
     }
 }
 
-plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_multiviewaddsourcetool {
-    settings {
-        tools = multiviewaddsourcetool
-    }
-}
-
-plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_audiovideotool {
-    settings {
-        tools = audiovideotool
-    }
-}
-
-plugin.tx_dlf_scoretool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_scoretool {
-    settings {
-        tools = scoretool
-    }
-}
-
 plugin.tx_dlf_imagemanipulationtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_imagemanipulationtool {
     settings {
@@ -197,10 +192,24 @@ plugin.tx_dlf_imagemanipulationtool {
     }
 }
 
-plugin.tx_dlf_fulltextdownloadtool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_fulltextdownloadtool {
+plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_multiviewaddsourcetool {
     settings {
-        tools = fulltextdownloadtool
+        tools = multiviewaddsourcetool
+    }
+}
+
+plugin.tx_dlf_pdfdownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_pdfdownloadtool {
+    settings {
+        tools = pdfdownloadtool
+    }
+}
+
+plugin.tx_dlf_scoretool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_scoretool {
+    settings {
+        tools = scoretool
     }
 }
 
@@ -215,13 +224,6 @@ plugin.tx_dlf_searchindocumenttool {
         pageInputName = tx_dlf[page]
         highlightWordInputName = tx_dlf[highlight_word]
         encryptedInputName = tx_dlf[encrypted]
-    }
-}
-
-plugin.tx_dlf_pdfdownloadtool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_pdfdownloadtool {
-    settings {
-        tools = pdfdownloadtool
     }
 }
 
