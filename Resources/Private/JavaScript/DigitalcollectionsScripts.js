@@ -130,14 +130,14 @@ $(function () {
     }
 
     // enable click on fullscreen button
-    $('a.fullscreen').on('click', function () {
+    $('li.tx-dlf-navigation-fullscreen a').on('click', function () {
         window.DigitalCollections.toggleTheaterMode();
     });
 
-    // if cookie for fullscreen view is present adapat initial page rendering
+    // if cookie for fullscreen view is present adapt initial page rendering
     if (Cookies.get('tx-dlf-pageview-zoomFullscreen')) {
         $('body').addClass('fullscreen static');
-        $('.tx-dlf-navigation-fullscreen').addClass('active');
+        $('li.tx-dlf-navigation-fullscreen a').addClass('active');
     }
 
     // TOC folding function to make sure that active pages are in viewport
@@ -260,7 +260,7 @@ function enterFullscreen(persist) {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").addClass('fullscreen');
-    $('a.fullscreen').addClass('active');
+    $('li.tx-dlf-navigation-fullscreen a').addClass('active');
 
     Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true', { sameSite: 'lax' });
 }
@@ -273,7 +273,7 @@ function exitFullscreen(persist) {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").removeClass('fullscreen');
-    $('.tx-dlf-navigation-fullscreen a').removeClass('active');
+    $('li.tx-dlf-navigation-fullscreen a').removeClass('active');
 
     if (persist) {
         Cookies.remove('tx-dlf-pageview-zoomFullscreen');
