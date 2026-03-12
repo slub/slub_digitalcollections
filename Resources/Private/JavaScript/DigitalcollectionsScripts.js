@@ -46,13 +46,13 @@ $(function () {
     });
 
     // calendar dropdowns on click/touch
-    $('.calendar-view div.issues h4').on('click', function (event) {
-        var issuelinks = $(this).parents('div.issues').find('div ul li a');
-        if (issuelinks.length == 1) {
+    $('.tx-dlf-calendar-calendar-view div.tx-dlf-calendar-issues h4').on('click', function (event) {
+        var issueLinks = $(this).parents('div.tx-dlf-calendar-issues').find('div ul li a');
+        if (issueLinks.length === 1) {
             // if only one issue, open this directly
-            window.open(issuelinks[0].href, '_self');
+            window.open(issueLinks[0].href, '_self');
         } else {
-            $('.calendar-view table td.open').not($(this).parents('td')).removeClass('open');
+            $('.tx-dlf-calendar-calendar-view table td.open').not($(this).parents('td')).removeClass('open');
             $(this).parents('td').toggleClass('open');
         }
     });
@@ -64,11 +64,11 @@ $(function () {
     $('.tx-dlf-pagegrid-list').parents('body').addClass('gridview');
 
     // Inject view switch functions for calendar/list view (initial show calendar)
-    if ($('.tx-dlf-calendar .calendar-list-selection a.select-calendar-view').hasClass('active')) {
-        $('.tx-dlf-calendar .calendar-list-selection a.select-calendar-view').removeClass('active');
+    if ($('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view').hasClass('active')) {
+        $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view').removeClass('active');
     }
-    $('.tx-dlf-calendar .calendar-list-selection a.select-calendar-view, .tx-dlf-calendar .calendar-view').addClass('active');
-    $('.tx-dlf-calendar .calendar-list-selection a').on('click', function (event) {
+    $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view, .tx-dlf-calendar .calendar-view').addClass('active');
+    $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a').on('click', function (event) {
         if (!$(this).hasClass('active')) {
             var targetElement = '.' + $(this).attr('class').replace('select-', '');
             $('.tx-dlf-calendar .active').removeClass('active');
@@ -95,7 +95,7 @@ $(function () {
 
     // Copy some controls for mobile (page select, fullscreen)
     $('.provider').append('<div class="mobile-controls" />');
-    $('.view-functions .pages form, .view-functions .tx-dlf-navigation-fullscreen a, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
+    $('.view-functions .pages form, .view-functions .tx-dlf-tools-fullscreen a, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
 
     // Shorten mobile meta title
     shortenMobileMetaElement = $('.provider dl.mobile-meta dd.tx-dlf-title a');
@@ -130,14 +130,14 @@ $(function () {
     }
 
     // enable click on fullscreen button
-    $('li.tx-dlf-navigation-fullscreen a').on('click', function () {
+    $('li.tx-dlf-tools-fullscreen a').on('click', function () {
         window.DigitalCollections.toggleTheaterMode();
     });
 
     // if cookie for fullscreen view is present adapt initial page rendering
     if (Cookies.get('tx-dlf-pageview-zoomFullscreen')) {
         $('body').addClass('fullscreen static');
-        $('li.tx-dlf-navigation-fullscreen a').addClass('active');
+        $('li.tx-dlf-tools-fullscreen a').addClass('active');
     }
 
     // TOC folding function to make sure that active pages are in viewport
@@ -260,7 +260,7 @@ function enterFullscreen(persist) {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").addClass('fullscreen');
-    $('li.tx-dlf-navigation-fullscreen a').addClass('active');
+    $('li.tx-dlf-tools-fullscreen a').addClass('active');
 
     Cookies.set('tx-dlf-pageview-zoomFullscreen', 'true', { sameSite: 'lax' });
 }
@@ -273,7 +273,7 @@ function exitFullscreen(persist) {
         window.dispatchEvent(new Event('resize'));
     }, 220);
     $("body").removeClass('fullscreen');
-    $('li.tx-dlf-navigation-fullscreen a').removeClass('active');
+    $('li.tx-dlf-tools-fullscreen a').removeClass('active');
 
     if (persist) {
         Cookies.remove('tx-dlf-pageview-zoomFullscreen');

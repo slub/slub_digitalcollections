@@ -48,7 +48,7 @@ body.calendar {
 
 /* ==============[ all volumes of this newspapers ]======================================== */
 .tx-dlf-calendar-years {
-    .year-anchor {
+    .tx-dlf-calendar-year-anchor {
         border-bottom: 1px solid @lightgrey-color;
         line-height: 1.4;
         font-family: @font-sans-bold;
@@ -58,7 +58,7 @@ body.calendar {
             color: @secondary-color;
         }
     }
-    .meta-hint-year {
+    .tx-dlf-calendar-meta-hint-year {
         display: none;
     }
     ul {
@@ -76,10 +76,10 @@ body.calendar {
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
         vertical-align: middle;
-        .year-anchor {
+        .tx-dlf-calendar-year-anchor {
             padding: 0 0 10px 30px;
         }
-        .meta-hint-year {
+        .tx-dlf-calendar-meta-hint-year {
             display: block;
             opacity: .5;
             padding: 5px 0 0 30px;
@@ -121,10 +121,10 @@ body.calendar {
 
 /* ==============[ monthly navigation with day dropdowns ]================================ */
 .tx-dlf-calendar {
-    .calendar-list-selection, .list-view {
+    .tx-dlf-calendar-list-selection, .tx-dlf-calendar-list-view {
         display: none;
     }
-    .year-anchor {
+    .tx-dlf-calendar-year-anchor {
         border-bottom: 1px solid @lightgrey-color;
         line-height: 1.4;
         font-family: @font-sans-bold;
@@ -134,17 +134,17 @@ body.calendar {
             color: @secondary-color;
         }
     }
-    .year {
+    .tx-dlf-calendar-year {
         font-size: 20px;
         margin: 20px 0 -20px 0;
         font-weight: bold;
         line-height: 1.4;
         text-align: center;
     }
-    .calendar-view {
+    .tx-dlf-calendar-view {
         position: relative;
         margin: 30px 0 0 0;
-        .year {
+        .tx-dlf-calendar-year {
             flex: 0 0 calc(100% - 60px);
             font-family: @font-serif-bold;
             font-size: 20px;
@@ -261,10 +261,10 @@ body.calendar {
         }
     }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
-        .calendar-list-selection {
+        .tx-dlf-calendar-list-selection {
             display: block;
         }
-        .calendar-list-selection {
+        .tx-dlf-calendar-list-selection {
             position: absolute;
             top: 85px;
             right: 85px;
@@ -302,14 +302,14 @@ body.calendar {
                 }
             }
         }
-        .year-anchor {
+        .tx-dlf-calendar-year-anchor {
             padding: 0 0 10px 30px
         }
-        .year {
+        .tx-dlf-calendar-year {
             font-weight: normal;
             font-size: 30px;
         }
-        .calendar-view, .list-view {
+        .tx-dlf-calendar-calendar-view, .tx-dlf-calendar-list-view {
             position: absolute;
             top: 160px;
             right: 30px;
@@ -327,11 +327,11 @@ body.calendar {
                 pointer-events: all;
             }
         }
-        .calendar-view {
+        .tx-dlf-calendar-calendar-view {
             margin: 0 -30px;
             display: flex;
             flex-wrap: wrap;
-            .month {
+            .tx-dlf-calendar-month {
                 position: relative;
                 padding: 30px;
                 flex: 1 0 auto;
@@ -370,7 +370,7 @@ body.calendar {
                 }
             }
         }
-        .list-view {
+        .tx-dlf-calendar-list-view {
             ul {
                 li {
                     padding: 10px;
@@ -380,7 +380,7 @@ body.calendar {
                     &:nth-child(even) {
                         background: lighten(@secondary-color-light, 40%);
                     }
-                    .listview-date {
+                    .tx-dlf-calendar-list-view-date {
                         line-height: 25px;
                         &:after {
                             content: ": ";
@@ -408,12 +408,12 @@ body.calendar {
         }
     }
     @media screen and (min-width: @desktopViewportWidth) {
-        .calendar-list-selection {
+        .tx-dlf-calendar-list-selection {
             top: 40px;
         }
-        .calendar-view {
+        .tx-dlf-calendar-view {
             justify-content: center;
-            .month {
+            .tx-dlf-calendar-month {
                 flex: 0 0 auto;
             }
         }
