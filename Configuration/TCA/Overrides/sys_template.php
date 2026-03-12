@@ -1,23 +1,30 @@
 <?php
 defined('TYPO3') or die('Access denied.');
 
-// Add default Typoscript
+// Add default TypoScript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'slub_digitalcollections',
-    'Configuration/TypoScript',
-    'SLUB Digital Collections'
+    'Configuration/TypoScript/Kitodo/WorkView',
+    'SLUB Digital Collections - Workview'
 );
 
-// Add optional SitePackage Typoscript
+// Add optional Lists and Collection configuration TypoScript
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'slub_digitalcollections',
+    'Configuration/TypoScript/Kitodo/Lists',
+    'SLUB Digital Collections - Optional Lists and Collection configuration'
+);
+
+// Add optional SitePackage TypoScript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'slub_digitalcollections',
     'Configuration/TypoScript/SitePackage',
-    'Optional Sitepackage for pure usage of SLUB Digital Collections.'
+    'SLUB Digital Collections - Optional Sitepackage'
 );
 
-// Add optional find configuration Typoscript
+// Add optional find configuration TypoScript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'slub_digitalcollections',
-    'Configuration/TypoScript/Plugin/Find',
-    'Optional find configuration for SLUB Digital Collections.'
+    'Configuration/TypoScript/Find',
+    'SLUB Digital Collections - Optional Find configuration'
 );

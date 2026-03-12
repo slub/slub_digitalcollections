@@ -1,4 +1,144 @@
-@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/common.typoscript'
+# --------------------------------------------------------------------------------------------------------------------
+# Typoscript setup for SLUB Digital Collections
+# --------------------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------------------
+# pageview navigation
+# --------------------------------------------------------------------------------------------------------------------
+
+lib.navigation.kitodo = HMENU
+lib.navigation.kitodo {
+    special = list
+    special.value = {$plugin.tx_slubdigitalcollections.viewerNavigationPids}
+    includeNotInMenu = 1
+    1 = TMENU
+    1 {
+        expAll = 1
+        insertData = 1
+        noBlur = 1
+        NO = 1
+        NO {
+            wrapItemAndSub = <li>|</li>
+            ATagTitle.field = description // title
+        }
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# render new page in pageview / workview
+# --------------------------------------------------------------------------------------------------------------------
+
+page {
+    # assume "10"
+    10 {
+        # Template names will be generated automatically by converting the applied
+        # backend_layout, there is no explicit mapping necessary anymore.
+        #
+        # BackendLayout Key
+        # subnavigation_right_2_columns -> SubnavigationRight2Columns.html
+        #
+        # Backend Record
+        # uid: 1 -> 1.html
+        #
+        # Database Entry
+        # value: -1 -> None.html
+        # value: pagets__subnavigation_right_2_columns -> SubnavigationRight2Columns.html
+        templateName = TEXT
+        templateName {
+            cObject = TEXT
+            cObject {
+                data = pagelayout
+                required = 1
+                case = uppercamelcase
+                split {
+                    token = pagets__
+                    cObjNum = 1
+                    1.current = 1
+                }
+            }
+            ifEmpty = Default
+        }
+
+        layoutRootPaths.10 = {$plugin.tx_slubdigitalcollections.layoutRootPath}
+        partialRootPaths.10 = {$plugin.tx_slubdigitalcollections.partialRootPath}
+        templateRootPaths.10 = {$plugin.tx_slubdigitalcollections.templateRootPath}
+        settings {
+            rootPage {
+                pid = {$plugin.tx_slubdigitalcollections.rootPage.pid}
+                title = {$plugin.tx_slubdigitalcollections.rootPage.title}
+                cssClass = {$plugin.tx_slubdigitalcollections.rootPage.cssClass}
+            }
+
+            termsOfUsePid = {$plugin.tx_slubdigitalcollections.termsOfUsePid}
+
+            matomo {
+                hostname = {$plugin.tx_slubdigitalcollections.matomo.hostname}
+                siteId = {$plugin.tx_slubdigitalcollections.matomo.idsite}
+                setdomains = {$plugin.tx_slubdigitalcollections.matomo.domains}
+            }
+
+            collections {
+                solrHost = {$plugin.tx_slubdigitalcollections.solr.host}/{$plugin.tx_slubdigitalcollections.solr.coreName}
+                solrTimeout = {$plugin.tx_slubdigitalcollections.solr.timeout}
+            }
+
+            showProviderLogo = 0
+        }
+        variables {
+                content < styles.content.get
+                sidebar < styles.content.get
+                sidebar.select.where = colPos=1
+
+                isKitodoPageView = TEXT
+                isKitodoPageView.value = 1
+
+                docTitle = TEXT
+                docTitle {
+                    value = {register:postTitle}
+                    insertData = 1
+                }
+
+                # kitodo vars
+                gp-id = TEXT
+                gp-id {
+                    data = GP:tx_dlf|id
+                    ifEmpty = 0
+                    stdWrap.intval = 1
+                }
+
+                gp-page = TEXT
+                gp-page {
+                    data = GP:tx_dlf|page
+                    ifEmpty = 1
+                    stdWrap.intval = 1
+                }
+
+                gp-page2 = TEXT
+                gp-page2 {
+                    cObject = TEXT
+                    cObject.data = GP:tx_dlf|page
+                    cObject.wrap = | +1
+                    prioriCalc = 1
+                }
+
+                gp-double = TEXT
+                gp-double.data = GP:tx_dlf|double
+
+                gp-pagegrid = TEXT
+                gp-pagegrid.data = GP:tx_dlf|pagegrid
+
+                # set after submitting search in years / anchors
+                gp-query = TEXT
+                gp-query {
+                    data = GP:tx_dlf|query
+                }
+
+        }
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Kitodo/setup.typoscript'
 
 plugin.tx_dlf {
     persistence {
