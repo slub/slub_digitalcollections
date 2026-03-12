@@ -29,7 +29,7 @@ jobs:
       working-directory: ./Build
       run: |
         npm install -g grunt-cli
-        npm audit fix
+        npm update grunt grunt-terser
         echo "Running `grunt less`"
         grunt less
         echo "Running `grunt terser`"
