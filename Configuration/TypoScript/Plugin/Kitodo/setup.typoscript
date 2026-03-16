@@ -109,6 +109,16 @@ plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
 plugin.tx_dlf_tableofcontents {
     settings {
         targetPid = {$plugin.tx_slubdigitalcollections.pageView}
+        titleReplacements {
+            0 {
+                type = issue
+                fields = type,year
+            }
+            1 {
+                type = volume
+                fields = type,volume
+            }
+        }
     }
 }
 
