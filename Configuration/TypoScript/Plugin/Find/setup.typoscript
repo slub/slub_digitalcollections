@@ -194,7 +194,7 @@ plugin.tx_find.settings.queryFields {
     # text query field
     10 {
         id = default
-        query = {!edismax qf="title_tsi^200 collection author_tsi place_tsi"}%s
+        query = {!edismax qf="title^200 default"}%s
         noescape = 0
         phrase = 0
         type = Text
