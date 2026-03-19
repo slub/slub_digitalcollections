@@ -133,27 +133,29 @@ lib.kitodo.navigation.pagecontrol {
 lib.kitodo.navigation.viewfunction < tt_content.list.20.dlf_navigation
 lib.kitodo.navigation.viewfunction {
     settings {
-        features = pageSelect,rotation,zoom
+        features = pageSelect
     }
 }
 
 # --------------------------------------------------------------------------------------------------------------------
-# Tools like imagemanipulation, fulltext and downloads eg.
+# Tools like image manipulation, fulltext and downloads eg.
 # --------------------------------------------------------------------------------------------------------------------
 
 # available tools:
 
-# annotationtool
-# audiovideotool
-# fulltextdownloadtool
-# fulltexttool
-# imagedownloadtool
-# imagemanipulationtool
-# modeldownloadtool
-# multiviewsaddsourcetool
-# pdfdownloadtool
-# searchindocumenttool
-# scoretool
+# annotationTool
+# audioVideoTool
+# fulltextDownloadTool
+# fulltextTool
+# imageDownloadTool
+# imageManipulationTool
+# modelDownloadTool
+# multiViewAddSourceTool
+# pdfDownloadTool
+# rotationTool
+# searchInDocumentTool
+# scoreTool
+# zoomTool
 
 plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
 plugin.tx_dlf_toolbox {
@@ -165,21 +167,21 @@ plugin.tx_dlf_toolbox {
 plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_audiovideotool {
     settings {
-        tools = audiovideotool
+        tools = audioVideoTool
     }
 }
 
 plugin.tx_dlf_fulltextdownloadtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_fulltextdownloadtool {
     settings {
-        tools = fulltextdownloadtool
+        tools = fulltextDownloadTool
     }
 }
 
 plugin.tx_dlf_fulltexttool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_fulltexttool {
     settings {
-        tools = fulltexttool
+        tools = fulltextTool
         activateFullTextInitially = 0
         fullTextScrollElement = #tx-dlf-fulltextselection
     }
@@ -188,35 +190,36 @@ plugin.tx_dlf_fulltexttool {
 plugin.tx_dlf_imagemanipulationtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_imagemanipulationtool {
     settings {
-        tools = imagemanipulationtool
+        tools = rotationTool,zoomTool,imageManipulationTool
+        showAsList = 0
     }
 }
 
 plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_multiviewaddsourcetool {
     settings {
-        tools = multiviewaddsourcetool
+        tools = multiViewAddSourceTool
     }
 }
 
 plugin.tx_dlf_pdfdownloadtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_pdfdownloadtool {
     settings {
-        tools = pdfdownloadtool
+        tools = pdfDownloadTool
     }
 }
 
 plugin.tx_dlf_scoretool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_scoretool {
     settings {
-        tools = scoretool
+        tools = scoreTool
     }
 }
 
 plugin.tx_dlf_searchindocumenttool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_searchindocumenttool {
     settings {
-        tools = searchindocumenttool
+        tools = searchInDocumentTool
         idInputName = tx_dlf[id]
         pidInputName = tx_dlf[pid]
         queryInputName = tx_dlf[query]
