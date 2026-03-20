@@ -455,36 +455,28 @@
                         background: white url('@{control-icons}') no-repeat -639px -39px;
                     }
                 }
-                &.tx-dlf-imagemanipulationtool {
-                    > ul > li {
-                        opacity: 1;
-                        overflow: hidden;
-                        width: auto;
-                        height: auto;
-                        display: inline;
-                        margin: 0;
-                        > span > a {
-                            position: relative;
-                            display: inline-block;
-                            width: 40px;
-                            height: 40px;
-                            .text-hide();
-                            border-radius: 20px;
-                            margin: 0 5px;
-                            background: white url('@{control-icons}') no-repeat -200px 0;
-                            background-size: auto 120px;
-                            &.active:before {
-                                position: absolute;
-                                top: 2px;
-                                right: 0;
-                                width: 8px;
-                                height: 8px;
-                                border-radius: 8px;
-                                border: 2px solid white;
-                                background: @primary-color;
-                                display: block;
-                                content: " ";
-                            }
+                &.tx-dlf-tools-imagemanipulation {
+                    > span > a {
+                        position: relative;
+                        display: inline-block;
+                        width: 40px;
+                        height: 40px;
+                        .text-hide();
+                        border-radius: 20px;
+                        margin: 0 5px;
+                        background: white url('@{control-icons}') no-repeat -200px 0;
+                        background-size: auto 120px;
+                        &.active:before {
+                            position: absolute;
+                            top: 2px;
+                            right: 0;
+                            width: 8px;
+                            height: 8px;
+                            border-radius: 8px;
+                            border: 2px solid white;
+                            background: @primary-color;
+                            display: block;
+                            content: " ";
                         }
                     }
                 }
