@@ -104,6 +104,9 @@
 			<trans-unit id="nav.open" xml:space="preserve">
 				<source>Open page navigation</source>
 			</trans-unit>
+            <trans-unit id="sru.search">
+                <target><![CDATA[Search]]></target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

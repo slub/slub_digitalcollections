@@ -307,13 +307,7 @@
     </li>
 
     <f:comment><!-- [SRU Search] -------------------------- --></f:comment>
-    <f:if condition="<dc:xpath xpath='//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE=\"DVLINKS\"]/mets:xmlData/dv:links/dv:sru' />">
-    <f:then>
-        <li class="submenu search">
-            <a href="#" title="Search">Search</a>
-        </li>
-    </f:then>
-    </f:if>
+    <f:render partial="Kitodo/DocumentFunctions/SruSearch" arguments="{_all}" />
     </ul>
 </div>
 
