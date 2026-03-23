@@ -291,23 +291,7 @@
     </li>
 
     <f:comment><!-- [fulltext switch (on/off)] -------------------------- --></f:comment>
-    <f:if condition="<dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE=\"FULLTEXT\"]/mets:file[1]/mets:FLocat/@xlink:href)[1]' />">
-        <f:if condition="{gp-double} == 1">
-            <f:then>
-                <li class="tx-dlf-tools-fulltext">
-                    <span class="select switchoff" id="tx-dlf-tools-fulltext" title="<f:translate key='fulltext.no_fulltext_double' extensionName='slub_digitalcollections' />"><f:translate key='fulltext.no_fulltext_double' extensionName='slub_digitalcollections' /></span>
-                </li>
-            </f:then>
-            <f:else if="{gp-pagegrid} == 1">
-                <li class="tx-dlf-tools-fulltext">
-                    <span class="select switchoff" id="tx-dlf-tools-fulltext" title="<f:translate key='fulltext.no_fulltext_gridpage' extensionName='slub_digitalcollections' />"><f:translate key='fulltext.no_fulltext_gridpage' extensionName='slub_digitalcollections' /></span>
-                </li>
-            </f:else>
-            <f:else>
-                <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltexttool" />
-            </f:else>
-        </f:if>
-    </f:if>
+    <f:render partial="Kitodo/DocumentFunctions/Fulltext" arguments="{_all}" />
 
     <f:comment><!-- [pagegrid switch (on/off)] -------------------------- --></f:comment>
     <li class="grid">
