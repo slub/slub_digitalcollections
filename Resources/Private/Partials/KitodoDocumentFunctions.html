@@ -4,49 +4,7 @@
 <div class="document-functions">
     <div class="provider">
         <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
-        <f:if condition="{settings.showProviderLogo}">
-            <ul>
-                <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerLogo)[1]\')}', logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:owner)[1]\')}',
-                    logoUri: '{dc:xpath(xpath:\'
-                    (//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:ownerSiteURL)[1]\',
-                    htmlspecialchars:\'FALSE\')}'}">
-                    <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
-                        <li>
-                            <f:link.external uri="{logoUri}" title="{logoTitle}">
-                                <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
-                                    width="108" title="{logoTitle}" alt="Logo von {logoTitle}" />
-                            </f:link.external>
-                        </li>
-                    </f:if>
-                </f:alias>
-                <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregatorLogo)[1]\')}', logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregator)[1]\')}',
-                    logoUri: '{dc:xpath(xpath:\'
-                    (//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:aggregatorSiteURL)[1]\',
-                    htmlspecialchars:\'FALSE\')}'}">
-                    <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
-                        <li>
-                            <f:link.external uri="{logoUri}" title="{logoTitle}">
-                                <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
-                                    width="108" title="{logoTitle}" alt="Logo von {logoTitle}" />
-                            </f:link.external>
-                        </li>
-                    </f:if>
-                </f:alias>
-                <f:alias map="{logoUrl: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsorLogo)[1]\')}', logoTitle: '{dc:xpath(xpath:\'(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsor)[1]\')}',
-                    logoUri: '{dc:xpath(xpath:\'
-                    (//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE=\"DVRIGHTS\"]/mets:xmlData/dv:rights/dv:sponsorSiteURL)[1]\',
-                    htmlspecialchars:\'FALSE\')}'}">
-                    <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
-                        <li>
-                            <f:link.external uri="{logoUri}" title="{logoTitle}">
-                                <img src="/typo3temp/assets/images/{dc:providerLogoCached(logo:'{logoUrl}')}"
-                                    width="108" title="{logoTitle}" alt="Logo von {logoTitle}" />
-                            </f:link.external>
-                        </li>
-                    </f:if>
-                </f:alias>
-            </ul>
-        </f:if>
+        <f:render partial="Kitodo/DocumentFunctions/Provider" arguments="{_all}" />
         <dl class="mobile-meta">
             <dt class="tx-dlf-title">Titel</dt>
             <dd class="tx-dlf-title">
