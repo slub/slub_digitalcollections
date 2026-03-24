@@ -1,0 +1,21 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true" lang="en">
+
+<li class="doublepage">
+    <f:if condition="{gp-double} == 1">
+        <f:then>
+            <f:variable name="rectoVerso"><f:translate key="double.RectoVerso" extensionName="slub_digitalcollections" /></f:variable>
+            <f:variable name="singlePageView"><f:translate key="double.singlePageView" extensionName="slub_digitalcollections" /></f:variable>
+            <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOff" title="{singlePageView}">{singlePageView}</f:link.page>
+            <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page + 1}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doublePlusOne" title="{rectoVerso}">
+                <span>{rectoVerso}</span>
+            </f:link.page>
+        </f:then>
+        <f:else>
+            <f:variable name="doublePageView"><f:translate key="double.doublePageView" extensionName="slub_digitalcollections" /></f:variable>
+            <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOn" title="{doublePageView}">{doublePageView}</f:link.page>
+        </f:else>
+    </f:if>
+</li>
+
+</html>

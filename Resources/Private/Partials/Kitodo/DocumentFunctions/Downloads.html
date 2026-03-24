@@ -1,0 +1,111 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:dc="http://typo3.org/ns/Slub/SlubDigitalcollections/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
+
+<li class="submenu downloads">
+    <a href="#" title="Downloads">Downloads</a>
+    <ul>
+        <li class="pdf-download has-multilinks">
+            <f:cObject typoscriptObjectPath="plugin.tx_dlf_pdfdownloadtool" />
+        </li>
+
+        <f:comment><!-- [Image downloads (JPG)] ----------------------------- --></f:comment>
+        <!-- ORDER: ORIGINAL (best) -> MAX -> DEFAULT -->
+        <f:variable name="originalXpath"><dc:xpath xpath='(/mets:mets/mets:fileSec/mets:fileGrp[@USE="ORIGINAL"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
+        <f:variable name="maxXpath"><dc:xpath xpath='(/mets:mets/mets:fileSec/mets:fileGrp[@USE="MAX"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
+        <f:variable name="defaultXpath"><dc:xpath xpath='(/mets:mets/mets:fileSec/mets:fileGrp[@USE="DEFAULT"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
+        <f:if condition="{originalXpath}">
+            <f:then>
+                <f:variable name="usedFileGrp">[@USE="ORIGINAL"]</f:variable>
+            </f:then>
+            <f:else if="{maxXpath}">
+                <f:variable name="usedFileGrp">[@USE="MAX"]</f:variable>
+            </f:else>
+            <f:else if="{defaultXpath}">
+                <f:variable name="usedFileGrp">[@USE="DEFAULT"]</f:variable>
+            </f:else>
+        </f:if>
+
+        <f:variable name="mimeType" value="{dc:xpath(xpath:'(/mets:mets/mets:fileSec/mets:fileGrp/mets:file/@MIMETYPE)[{gp-page}]')}" />
+        <f:variable name="downloadImage"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:"{mimeType}=='application/vnd.kitodo.iiif' ", then:'/full/full/0/default.jpg')}</f:variable>
+        <f:if condition="{gp-double} == 1">
+            <f:then>
+                <f:variable name="downloadImageLeftPage"><f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' /></f:variable>
+                <f:variable name="downloadImageRight"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:"{mimeType}=='application/vnd.kitodo.iiif' ", then:'/full/full/0/default.jpg')}</f:variable>
+                <f:variable name="downloadImageRightPage"><f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' /></f:variable>
+                <li class="jpg-download has-multilinks">
+                    <div class="multilinks">
+                        <f:link.external uri="{downloadImage}" class="download-document image left" target="_blank" title="{downloadImageLeftPage}">{downloadImageLeftPage}</f:link.external>
+                        <f:link.external uri="{downloadImageRight}" class="download-document image right" target="_blank"
+                        title="{downloadImageRightPage}">{downloadImageRightPage}</f:link.external>
+                    </div>
+                </li>
+            </f:then>
+            <f:else>
+                <f:variable name="downloadImageSinglePage"><f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' /></f:variable>
+                <li class="jpg-download">
+                    <f:link.external uri="{downloadImage}" lass="download-document image" target="_blank" title="{downloadImageSinglePage}">{downloadImageSinglePage}</f:link.external>
+                </li>
+            </f:else>
+        </f:if>
+
+        <f:comment><!-- [Fulltext downloads (XML)] -------------------------- --></f:comment>
+        <f:variable name="fulltextXpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="FULLTEXT"]/mets:file[1]/mets:FLocat/@xlink:href)[1]' /></f:variable>
+        <f:if condition="{fulltextXpath}">
+            <f:variable name="fulltextPageXpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="FULLTEXT"]/mets:file[1]/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
+            <f:if condition="{gp-double} == 1">
+                <f:then>
+                    <f:variable name="downloadFulltextLeftPage"><f:translate key='download.fulltext.leftPage' extensionName='slub_digitalcollections' /></f:variable>
+                    <f:variable name="fulltextRightPageXpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="FULLTEXT"]/mets:file[1]/mets:FLocat/@xlink:href)[{gp-page2}]' /></f:variable>
+                    <f:variable name="downloadFulltextRightPage"><f:translate key='download.fulltext.rightPage' extensionName='slub_digitalcollections' /></f:variable>
+                    <li class="xml-download has-multilinks">
+                        <div class="multilinks">
+                            <f:link.external uri="{fulltextPageXpath}" class="download-fulltext fulltext left" target="_blank"
+                            title="{downloadFulltextLeftPage}">{downloadFulltextLeftPage}</f:link.external>
+                            <f:link.external uri="{fulltextRightPageXpath}" class="download-fulltext fulltext right" target="_blank"
+                            title="{downloadFulltextRightPage}">{downloadFulltextRightPage}</f:link.external>
+                        </div>
+                    </li>
+                </f:then>
+                <f:else>
+                    <f:variable name="downloadFulltextSinglePage"><f:translate key='download.fulltext.singlePage' extensionName='slub_digitalcollections' /></f:variable>
+                    <li class="xml-download">
+                        <f:link.external uri="{fulltextPageXpath}" class="download-fulltext ocr" target="_blank" title="{downloadFulltextSinglePage}">{downloadFulltextSinglePage}</f:link.external>
+                        <div style="display:none;">
+                            <dc:extractFulltext file="{fulltextPageXpath}" />
+                        </div>
+                    </li>
+                    <f:comment><!-- [Fulltext downloads (TXT)] -------------------------- --></f:comment>
+                    <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltextdownloadtool" />
+                </f:else>
+            </f:if>
+        </f:if>
+
+        <f:comment><!-- [METS downloads (XML)] -------------------------- --></f:comment>
+        <f:variable name="recordIdentifierSourceXpath"><dc:xpath xpath='/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:recordInfo/mods:recordIdentifier/@source' /></f:variable>
+        <f:if condition="{recordIdentifierSourceXpath} == 'http://digital.slub-dresden.de/oai/'">
+            <f:comment>
+                <!-- access via OAI does only work for slub-dresden.de -> access of the location field would be better -------------------------- -->
+            </f:comment>
+            <f:variable name="recordIdentifierXpath"><dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:recordInfo/mods:recordIdentifier)' /></f:variable>
+            <f:variable name="downloadMets"><f:translate key='download.mets' extensionName='slub_digitalcollections' /></f:variable>
+            <li class="mets-download">
+                <f:link.external uri="https://digital.slub-dresden.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier={recordIdentifierXpath}" class="download-page mets" target="_blank" title="{downloadMets}">{downloadMets}</f:link.external>
+            </li>
+        </f:if>
+
+        <f:comment><!-- [IIIF downloads (JSON)] -------------------------- --></f:comment>
+        <f:variable name="fileXpath"><dc:xpath xpath='(/mets:mets/mets:fileSec/mets:fileGrp[@USE="DEFAULT"]/mets:file/mets:FLocat/@xlink:href)[1]' /></f:variable>
+        <f:if condition="{fileXpath}">
+            <f:variable name="digitalXpath"><dc:xpath xpath='//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/slub:slub/slub:id[@type="digital"]' /></f:variable>
+            <f:variable name="downloadIiif"><f:translate key="download.iiif" extensionName="slub_digitalcollections" /></f:variable>
+            <f:if condition="{digitalXpath}">
+                <li class="iiif-download">
+                    <f:link.external uri="https://iiif.slub-dresden.de/iiif/2/{digitalXpath}/manifest.json" class="download-page iiif" target="_blank"
+                    title="{downloadIiif}">{downloadIiif}</f:link.external>
+                </li>
+            </f:if>
+        </f:if>
+    </ul>
+</li>
+
+</html>

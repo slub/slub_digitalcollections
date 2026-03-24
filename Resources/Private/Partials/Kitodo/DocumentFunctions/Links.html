@@ -1,0 +1,57 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:dc="http://typo3.org/ns/Slub/SlubDigitalcollections/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
+
+<li class="submenu links">
+    <a href="#" title="Links">Links</a>
+    <ul>
+        <f:comment><!-- [Permalink] ----------------------------------------- --></f:comment>
+        <f:variable name="purlXpath"><dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' /></f:variable>
+        <f:if condition="{purlXpath}">
+            <f:variable name="purlDocument"><f:translate key='purl.document' extensionName='slub_digitalcollections' /></f:variable>
+            <li class="permalink">
+                <f:link.external uri="{purlXpath}" class="persistence-document" target="_blank" title="{purlDocument}">
+                    <span class="perma-label">{purlDocument}</span>
+                    {purlXpath}
+                </f:link.external>
+            </li>
+            <f:variable name="purlSinglePage"><f:translate key='purl.singlePage' extensionName='slub_digitalcollections' /></f:variable>
+            <li class="permalink">
+                <f:link.external uri="{purlXpath}/{gp-page}" class="persistence-page" target="_blank" title="{purlSinglePage}">
+                    <span class="perma-label">{purlSinglePage}</span>
+                    {purlXpath}/{gp-page}
+                </f:link.external>
+            </li>
+        </f:if>
+
+        <f:comment><!-- [reference links ] ----------------------------- --></f:comment>
+        <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
+            <f:variable name="referenceXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference)[{index}]' /></f:variable>
+            <f:if condition="{referenceXpath}">
+                <li>
+                    <f:variable name="referenceLinkXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' /></f:variable>
+                    <f:variable name="localCatalogue"><f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' /></f:variable>
+                    <f:if condition="{referenceLinkXpath}">
+                        <f:then>
+                            <f:link.external uri="{referenceXpath}" class="local-catalog" target="_blank" title="{localCatalogue}">{referenceLinkXpath}</f:link.external>
+                        </f:then>
+                        <f:else>
+                            <f:link.external uri="{referenceXpath}" class="local-catalog" target="_blank" title="{localCatalogue}">{localCatalogue}</f:link.external>
+                        </f:else>
+                    </f:if>
+                </li>
+            </f:if>
+        </f:for>
+
+        <f:comment><!-- [License information] ------------------------------ --></f:comment>
+        <f:if condition="{settings.termsOfUsePid}">
+            <li class="license">
+                <f:link.page pageUid="{settings.termsOfUsePid}" class="terms-of-use" target="_blank"
+                             title="{dc:pageInfo(uid:'{settings.termsOfUsePid}', field:'title')}">
+                    {dc:pageInfo(uid:'{settings.termsOfUsePid}', field:'title')}
+                </f:link.page>
+            </li>
+        </f:if>
+    </ul>
+</li>
+
+</html>

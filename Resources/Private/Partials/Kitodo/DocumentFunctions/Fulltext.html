@@ -1,0 +1,28 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:dc="http://typo3.org/ns/Slub/SlubDigitalcollections/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
+
+<f:variable name="xpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="FULLTEXT"]/mets:file[1]/mets:FLocat/@xlink:href)[1]' /></f:variable>
+
+<f:if condition="{xpath}">
+    <f:if condition="{gp-double} == 1">
+        <f:then>
+            <f:variable name="noFulltext"><f:translate key='fulltext.no_fulltext_double' extensionName='slub_digitalcollections' /></f:variable>
+        </f:then>
+        <f:else if="{gp-pagegrid} == 1">
+            <f:variable name="noFulltext"><f:translate key='fulltext.no_fulltext_gridpage' extensionName='slub_digitalcollections' /></f:variable>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{gp-double} == 1 || {gp-pagegrid} == 1">
+        <f:then>
+            <li class="tx-dlf-tools-fulltext">
+                <span class="select switchoff" id="tx-dlf-tools-fulltext" title="{noFulltext}">{noFulltext}</span>
+            </li>
+        </f:then>
+        <f:else>
+            <f:cObject typoscriptObjectPath="plugin.tx_dlf_fulltexttool" />
+        </f:else>
+    </f:if>
+</f:if>
+
+</html>
