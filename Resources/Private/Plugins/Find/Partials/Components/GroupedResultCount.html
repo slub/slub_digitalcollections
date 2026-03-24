@@ -1,0 +1,44 @@
+{namespace s=Slub\SlubDigitalcollections\ViewHelpers}
+
+<f:comment>
+	Creates a div.resultCount.
+
+	It displays the current range and total number of results as appropriate.
+	If an error occurred it indicates the error.
+</f:comment>
+<div class="resultCount">
+
+	<f:if condition="{grouping.matches}==0">
+		<f:then>
+			<f:if condition="{error}">
+				<f:then>
+					<f:translate key="Error"/>
+				</f:then>
+				<f:else>
+					<f:translate key="no results"/>
+				</f:else>
+			</f:if>
+		</f:then>
+		<f:else>
+			<f:if condition="{grouping.matches}==1">
+				<f:then>
+					<f:translate key="1 result"/>
+				</f:then>
+				<f:else>
+					<f:if condition="{groupedResults.numberOfGroups} < {settings.count}">
+						<f:then>
+							{grouping.numberOfGroups} <f:translate key="results"/>
+						</f:then>
+						<f:else>
+							
+							{config.counterStart}-<f:if condition="{groupedResults.numberOfGroups} < {config.counterEnd}"><f:then>{f:count(subject:groupedResults.valueGroups)}</f:then><f:else>{config.counterEnd}</f:else></f:if>
+							<f:translate key="of"/>
+							{grouping.numberOfGroups}
+							
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+</div>

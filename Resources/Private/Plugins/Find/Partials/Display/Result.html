@@ -7,45 +7,74 @@
 </f:comment>
 <li id="c{config.uid}-result-{document.id}">
 	<div>
-		<h3>
-            <f:link.page pageUid="{settings.kitodoPageView}" 
-                additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}" >
-				<f:if condition="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}">
-					<f:then>
-						<f:render
-							partial="Display/Field/Inline"
-							arguments="{
-								config:config,
-								results:results,
-								document:document,
-								field:settings.standardFields.title,
-								separator:', '
-							}"/>
-					</f:then>
-					<f:else>
-						ID: {document.id}
-					</f:else>
-				</f:if>
-            </f:link.page>
-		</h3>
+		<f:link.page pageUid="{settings.kitodoPageView}" 
+			additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}" >
 
-        <f:if condition="{settings.standardFields}">
-	        <dl>
-                <f:for each="{settings.standardFields}" as="stdFieldValue" key="stdFieldKey">
-                    <f:if condition="{stdFieldValue} && {stdFieldKey} != 'title'">
-						<f:render
-							partial="Display/Field/Inline"
-							arguments="{
-								config:config,
-								results:results,
-								document:document,
-								field: stdFieldValue,
-								separator:', '
-							}"/>
-                    </f:if>
-                </f:for>
-	        </dl>
-        </f:if>
+			<f:comment> thumbnail </f:comment>
+			<f:if condition="{document.thumbnail}">
+				<f:then>
+					<img src="{document.thumbnail}" alt="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:thumbnail')} {f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:page')} {document.page}" title="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:page')} {document.page}" />
+				</f:then>
+				<f:else>
+					<f:if condition="{settings.placeholder}">
+						<f:then>
+							<f:image src="{settings.placeholder}" alt="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:thumbnail')} {f:translate(key: 'page')} {document.page}" title="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:page')} {document.page}" maxWidth="250" />
+						</f:then>
+						<f:else>
+							<f:image src="EXT:dlf/Resources/Public/Images/PageGridPlaceholder.jpg" alt="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:thumbnail')} {f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:page')} {document.page}" title="{f:translate(key: 'LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:page')} {document.page}" maxWidth="250" />
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
+
+			<f:comment> title </f:comment>
+			<f:if condition="{document.title}">
+				<f:then>
+					<f:render
+						partial="Display/Field/Inline"
+						arguments="{
+							config:config,
+							results:results,
+							document:document,
+							field:settings.standardFields.title,
+							separator:', '
+						}"/>
+
+				</f:then>
+				<f:else>
+					<dt class="field-label field-label-title"><f:translate key='LLL:EXT:dlf/Resources/Private/Language/locallang_metadata.xlf:metadata.title' /></dt>
+					<dd class="field-title">
+						<f:if condition="{additionalTitleInfo.{document.id}}">
+							<f:then>
+								{additionalTitleInfo.{document.id}}
+							</f:then>
+							<f:else>
+								ID: {document.id}
+							</f:else>
+						</f:if>
+					</dd>
+				</f:else>
+			</f:if>
+
+			<f:comment> additional fields </f:comment>
+			<dl class="additional-fields">
+				<f:if condition="{settings.standardFields}">
+					<f:for each="{settings.standardFields}" as="stdFieldValue" key="stdFieldKey">
+						<f:if condition="{stdFieldValue} && {stdFieldKey} != 'title'">
+							<f:render
+								partial="Display/Field/Inline"
+								arguments="{
+									config:config,
+									results:results,
+									document:document,
+									field: stdFieldValue,
+									separator:', '
+								}"/>
+						</f:if>
+					</f:for>
+				</f:if>
+			</dl>
+
+		</f:link.page>
 	</div>
 </li>
-

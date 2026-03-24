@@ -21,8 +21,18 @@
 
 	<div class="results">
 		<div class="navigation top">
-			<f:render partial="Components/ResultCount" arguments="{_all}"/>
-			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+			<f:if condition="{resultGroupingActive}">
+				<f:then>
+					<f:alias map="{grouping: groupedResults}">
+						<f:render partial="Components/GroupedResultCount" arguments="{_all}"/>
+						<f:render partial="Pager/GroupedListPager" arguments="{_all}"/>
+					</f:alias>
+				</f:then>
+				<f:else>
+					<f:render partial="Components/ResultCount" arguments="{_all}"/>
+					<f:render partial="Pager/ListPager" arguments="{_all}"/>
+				</f:else>
+			</f:if>
 		</div>
 
 		<f:render partial="Facets/Facet/List/ActiveFacets" arguments="{_all}"/>
@@ -30,9 +40,67 @@
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
 		<ol id="c{config.uid}-resultList" class="resultList" start="{config.counterStart}">
-			<f:for each="{results.documents}" as="document">
-				<f:render partial="Display/Result" arguments="{_all}"/>
-			</f:for>
+			<f:if condition="{resultGroupingActive}">
+				<f:then>
+					<f:for each="{groupedResults.valueGroups}" as="group">
+						<f:if condition="{group.numFound} == 1">
+							<f:then>
+								<f:alias map="{document : group.documents.0 }">
+									<f:render partial="Display/Result" arguments="{document: document, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
+								</f:alias>
+								
+								<f:comment>
+								<f:alias map="{sdoc: '{allDocuments.{group.value}}'}">
+									<f:if condition="{sdoc.children}">
+									<div class="children-container" style="background-color: blanchedalmond;">
+										<ul class="children-list">
+											<f:for each="{sdoc.children}" as="subDocument">
+												<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results}"/>
+											</f:for>
+										</ul>
+									</div>
+									</f:if>
+								</f:alias>
+								</f:comment>
+							</f:then>
+							<f:else>
+								<f:alias map="{document: '{allDocuments.{group.value}}'}">
+								<f:render partial="Display/Result" arguments="{document: document, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
+
+								<div class="children-container">
+									<ul class="children-list">
+										<f:for each="{group.documents}" as="subDocument">
+											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
+										</f:for>
+									</ul>
+								</div>
+
+								<f:comment>
+								<f:if condition="{document.children}">
+								<div class="children-container">
+									<ul class="children-list">
+										<f:for each="{document.children}" as="subDocument">
+											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results}"/>
+										</f:for>
+									</ul>
+								</div>
+								</f:if>
+								</f:comment>
+								
+								</f:alias>
+							</f:else>
+						</f:if>
+					</f:for>
+
+				</f:then>
+				<f:else>
+
+					<f:for each="{results.documents}" as="document">
+						<f:render partial="Display/Result" arguments="{_all}"/>
+					</f:for>
+
+				</f:else>
+			</f:if>
 		</ol>
 
 		<div class="navigation bottom">

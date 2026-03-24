@@ -1,0 +1,68 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<nav class="pager listPager">
+<f:alias map="{pp: '{f:if(condition: arguments.count, then: arguments.count, else: settings.paging.perPage)}'}">
+	<f:alias map="{pager:'{s:find.pageList(currentPage:arguments.page, perPage:pp, resultCount:groupedResults.numberOfGroups)}'}">
+	<f:if condition="{f:count(subject:pager.pages)}>1">
+		<span class="previous">
+			<f:if condition="{pager.previous}">
+				<f:then>
+					<f:link.action
+						arguments="{page:pager.previous}"
+						addQueryString="TRUE"
+						section="{settings.jumpToID}"
+						class="internal"
+						title="{f:translate(key:'Go to previous page of results. (Page %s)', arguments:'{1:pager.previous}')}"
+						additionalAttributes="{id:'previousPage', data-page:'{pager.previous}'}">
+						<i class="fas fa-chevron-left pull-left"></i>
+					</f:link.action>
+				</f:then>
+				<f:else>
+					<i class="fas fa-chevron-left disabled pull-left"></i>
+				</f:else>
+			</f:if>
+		</span>
+		<ol class="listPager page-count-{f:count(subject:pager.pages)}">
+			<f:for each="{pager.pages}" as="page">
+				<li class="{f:if(condition:'{page.current}', then:'current')} {f:if(condition:'{page.gap}', then:'gap')}">
+					<f:if condition="{current:page.current, gap:page.gap} == {current:FALSE , gap:FALSE}">
+						<f:then>
+							<f:link.action
+								title="{f:translate(key:'Go to page %s of the search results.', arguments:'{1:page.number}')}"
+								arguments="{page:page.number}"
+								addQueryString="TRUE"
+								section="{settings.jumpToID}"
+								class="internal"
+								additionalAttributes="{data-page: '{page.number}'}"
+							>
+								{page.text}
+							</f:link.action>
+						</f:then>
+						<f:else>
+							<span class="disabled" style="padding:0.4em">{page.text}</span>
+						</f:else>
+					</f:if>
+				</li>
+			</f:for>
+		</ol>
+		<span class="next">
+			<f:if condition="{pager.next}">
+				<f:then>
+					<f:link.action
+						arguments="{page:pager.next}"
+						addQueryString="TRUE"
+						section="{settings.jumpToID}"
+						class="internal"
+						title="{f:translate(key:'Go to next page of results. (Page %s)', arguments:'{1:pager.next}')}"
+						additionalAttributes="{id:'nextPage', data-page:'{pager.next}'}">
+						<i class="fas fa-chevron-right pull-right"></i>
+					</f:link.action>
+				</f:then>
+				<f:else>
+					<i class="fas fa-chevron-right disabled pull-right"></i>
+				</f:else>
+			</f:if>
+		</span>
+	</f:if>
+	</f:alias>
+</f:alias>
+</nav>

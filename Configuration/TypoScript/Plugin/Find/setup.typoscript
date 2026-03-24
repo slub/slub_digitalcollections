@@ -38,6 +38,7 @@ plugin.tx_find.settings {
     # SOLR connections
     connections {
         default {
+            provider = Slub\SlubDigitalcollections\Service\SlubSolrServiceProvider
             options {
                 scheme = http
                 host = v12-sachsen-digital.ddev.site
@@ -50,7 +51,7 @@ plugin.tx_find.settings {
     }
 	
     standardFields {
-        snippet = type
+        type = type
         title = title
     }
 
@@ -66,6 +67,12 @@ plugin.tx_find.settings {
             3 = 50
             4 = 100
         }
+    }
+
+    # configure result grouping
+    grouping {
+        field = uid
+        limit = 100
     }
 	
     # Limit the requested data fields for different query types:
