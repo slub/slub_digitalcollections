@@ -30,7 +30,7 @@
         <f:if condition="{gp-id} > 0">
             <!-- gp-id must be integer otherwise the search in document won't work -->
             <div class="fulltext-container">
-                <div class="tx-dlf-toolsFulltextsearch">
+                <div class="tx-dlf-tools-searchindocument">
                     <div class="fulltext-search-toggle"></div>
                     <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
                 </div>
@@ -45,7 +45,7 @@
                 <f:if condition="{gp-id} > 0">
                     <!-- gp-id must be integer otherwise the search in document won't work -->
                     <div class="fulltext-container">
-                        <div class="tx-dlf-toolsFulltextsearch">
+                        <div class="tx-dlf-tools-searchindocument">
                             <div class="fulltext-search-toggle"></div>
                             <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
                         </div>
@@ -78,12 +78,10 @@
                     <f:cObject typoscriptObjectPath="plugin.tx_dlf_pageview" />
                 </div>
                 <div class="fulltext-container">
-                    <div class="tx-dlf-toolsFulltextsearch">
+                    <div class="tx-dlf-tools-searchindocument">
                         <div class="fulltext-search-toggle"></div>
                         <f:if condition="{f:cObject(typoscriptObjectPath:'plugin.tx_dlf_searchindocumenttool')}">
-                            <f:then>
-                                <f:cObject typoscriptObjectPath="plugin.tx_dlf_searchindocumenttool" />
-                            </f:then>
+                            <f:cObject typoscriptObjectPath="plugin.tx_dlf_searchindocumenttool" />
                         </f:if>
                     </div>
                     <div id="tx-dlf-fulltextselection"></div>

@@ -153,10 +153,10 @@ $(function () {
     }
 
     // Toggle and setup for the 'in document search'
-    if ($('.tx-dlf-toolsFulltextsearch form')[0]) {
+    if ($('.tx-dlf-tools-searchindocument form')[0]) {
         $('.fulltext-search-toggle').on('click', function () { // selector should be semantically: .search-indocument-toggle
             $('body').toggleClass('search-indocument-active');
-            $('.tx-dlf-toolsFulltextsearch').css({top: ($(this).offset().top - 60) + 'px'});
+            $('.tx-dlf-tools-searchindocument').css({top: ($(this).offset().top - 60) + 'px'});
             $('body.search-indocument-active #tx-dlf-search-in-document-query').trigger('focus');
         });
     } else {
