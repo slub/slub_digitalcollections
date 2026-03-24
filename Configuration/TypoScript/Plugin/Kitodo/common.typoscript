@@ -16,7 +16,7 @@ page {
     }
 }
 
-[traverse(page, 'backend_layout') == 'pagets__kitodo' or traverse(page, 'backend_layout') == 'pagets__emptyworkview']
+[traverse(page, 'backend_layout') == 'pagets__kitodo']
     plugin.tx_slubdigitalcollections.disableWrapInBaseClass = 1
 
     # switch to viewer css
