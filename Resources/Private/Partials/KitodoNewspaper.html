@@ -29,13 +29,7 @@
         <f:cObject typoscriptObjectPath="lib.kitodo.newspaper.years" />
         <f:if condition="{gp-id} > 0">
             <!-- gp-id must be integer otherwise the search in document won't work -->
-            <div class="fulltext-container">
-                <div class="tx-dlf-tools-searchindocument">
-                    <div class="fulltext-search-toggle"></div>
-                    <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
-                </div>
-                <div id="tx-dlf-fulltextselection"></div>
-            </div>
+            <f:render partial="Kitodo/Newspaper/FulltextContainer" arguments="{_all}" />
         </f:if>
     </f:then>
     <f:else>
@@ -44,13 +38,7 @@
                 <f:cObject typoscriptObjectPath="lib.kitodo.newspaper.calendar" />
                 <f:if condition="{gp-id} > 0">
                     <!-- gp-id must be integer otherwise the search in document won't work -->
-                    <div class="fulltext-container">
-                        <div class="tx-dlf-tools-searchindocument">
-                            <div class="fulltext-search-toggle"></div>
-                            <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
-                        </div>
-                        <div id="tx-dlf-fulltextselection"></div>
-                    </div>
+                    <f:render partial="Kitodo/Newspaper/FulltextContainer" arguments="{_all}" />
                 </f:if>
             </f:then>
             <f:else>
@@ -61,7 +49,7 @@
                     </f:then>
                 </f:if>
                 <f:if condition="{isNewspaper} == 'newspaper_issue'">
-                    <!-- it's an newspaper! -->
+                    <!-- it's a newspaper! -->
                 </f:if>
                 <div class="tx-dlf-pageview">
                     <f:comment>
@@ -78,10 +66,12 @@
                     <f:cObject typoscriptObjectPath="plugin.tx_dlf_pageview" />
                 </div>
                 <div class="fulltext-container">
-                    <div class="tx-dlf-tools-searchindocument">
+                    <div class="tx-dlf-toolsFulltextsearch">
                         <div class="fulltext-search-toggle"></div>
                         <f:if condition="{f:cObject(typoscriptObjectPath:'plugin.tx_dlf_searchindocumenttool')}">
-                            <f:cObject typoscriptObjectPath="plugin.tx_dlf_searchindocumenttool" />
+                            <f:then>
+                                <f:cObject typoscriptObjectPath="plugin.tx_dlf_searchindocumenttool" />
+                            </f:then>
                         </f:if>
                     </div>
                     <div id="tx-dlf-fulltextselection"></div>
