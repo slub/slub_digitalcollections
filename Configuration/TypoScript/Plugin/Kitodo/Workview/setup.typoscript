@@ -344,6 +344,133 @@ plugin.tx_dlf_pageview {
 }
 
 # --------------------------------------------------------------------------------------------------------------------
+# Audio/Video Mediaplayer
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_mediaplayer < tt_content.list.20.dlf_mediaplayer
+plugin.tx_dlf_mediaplayer {
+    settings {
+	    elementId = tx-dlf-media
+
+        playerTranslations {
+            baseFile = EXT:dlf/Resources/Private/Language/locallang_media.xlf
+        }
+
+        shareButtons {
+            0 {
+                type = material
+                icon = email
+                titleTranslationKey = share.email.tooltip
+                hrefTemplate = mailto:?body={url}%0A%0A
+            }
+
+            1 {
+                type = material
+                icon = qr_code
+                titleTranslationKey = share.qr_code.tooltip
+                hrefTemplate = dlf:qr_code
+            }
+
+            2 {
+                type = image
+                src = EXT:dlf/Resources/Public/Images/mastodon-logo-purple.svg
+                titleTranslationKey = share.mastodon.tooltip
+                hrefTemplate = dlf:mastodon_share
+            }
+        }
+
+        screenshotCaptions {
+            0 {
+                h = left
+                v = bottom
+                text = {host}
+            }
+
+            1 {
+                h = right
+                v = bottom
+                text = {title} - {hh}:{mm}:{ss}.{ff}
+            }
+        }
+
+        constants {
+            # prevChapterTolerance = 5
+            # volumeStep = 0.05
+            # forceLandscapeOnFullscreen = 1
+            screenshotFilenameTemplate = slub_digitalcollections_screenshot_{title}_h{hh}m{mm}s{ss}f{ff}
+            seekStep = 5
+            showPoster = 0
+            showAudioLabelImage = 1
+            screenshotCommentTemplate (
+Screenshot taken on SLUB Digitale Sammlungen.
+
+{url}
+)
+        }
+
+        equalizer {
+            enabled = 1
+
+            default = 3-band
+
+            presets {
+                3-band {
+                    group = graphic
+                    mode = band-iso
+                    label = 3-Band
+                    octaveStep = 3.32
+                }
+
+                10-band {
+                    group = graphic
+                    mode = band-iso
+                    label = 10-Band
+                    octaveStep = 1
+                }
+
+                riaa {
+                    group = riaa
+                    mode = riaa
+                    label = RIAA
+                    params {
+                        trebleCut = 75
+                        baseBoost = 318
+                        baseBoostRolloff = 3180
+                    }
+                }
+
+                riaa-iec {
+                    group = riaa
+                    mode = riaa
+                    label = Enhanced RIAA / IEC
+                    params {
+                        trebleCut = 75
+                        baseBoost = 318
+                        baseBoostRolloff = 3180
+                        deepBaseRolloff = 7950
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Set variables for audio and video to control the display of the Mediaplayer in the page view.
+page.10.variables {
+    isAudio = TEXT
+    isAudio.value = 0
+    isVideo = TEXT
+    isVideo.value = 0
+}
+
+[isAudio({$plugin.tx_dlf.persistence.storagePid})]
+    page.10.variables.isAudio.value = 1
+[END]
+
+[isVideo({$plugin.tx_dlf.persistence.storagePid})]
+    page.10.variables.isVideo.value = 1
+[END]
+
+# --------------------------------------------------------------------------------------------------------------------
 # thumbnail previews
 # --------------------------------------------------------------------------------------------------------------------
 plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
@@ -438,6 +565,13 @@ plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_audiovideotool {
     settings {
         tools = audioVideoTool
+
+        # copy constants from Mediaplayer into the plugin
+        constants < plugin.tx_dlf_mediaplayer.settings.constants
+
+        # copy page.10 Mediaplayer variables into the plugin
+        isAudio < page.10.variables.isAudio.value
+        isVideo < page.10.variables.isVideo.value
     }
 }
 
