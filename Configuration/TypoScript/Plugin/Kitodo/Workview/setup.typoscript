@@ -1,0 +1,716 @@
+
+[traverse(page, 'backend_layout') == 'pagets__kitodo']
+    plugin.tx_slubdigitalcollections.disableWrapInBaseClass = 1
+
+    # switch to viewer css
+    page.includeCSS.kitodo = {$plugin.tx_slubdigitalcollections.css.pageview}
+
+    # switch to viewer js
+    page.includeJSFooterlibs.kitodo = EXT:slub_digitalcollections/Resources/Public/JavaScript/DigitalcollectionsScripts.js
+
+    # clear not required js
+    page.includeJSFooterlibs.kitodo-frontend >
+
+[GLOBAL]
+
+# --------------------------------------------------------------------------------------------------------------------
+# add opengraph social metatags in single view with a valid id
+# --------------------------------------------------------------------------------------------------------------------
+[request && traverse(request.getQueryParams(), 'tx_dlf/id') > 0]
+
+  page.2 = LOAD_REGISTER
+  page.2 {
+
+    pageUrlDigital {
+      cObject = COA
+      cObject {
+        10 = TEXT
+        10 {
+          dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:purl
+          wrap3={|}
+          insertData=1
+        }
+        20 = TEXT
+        20 {
+          data = GP:tx_dlf|page
+          required = 1
+          wrap=/|
+        }
+      }
+    }
+
+    currentTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:title
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    # sometimes partOf is set...
+    partOf {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:partof
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    partOfTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOf}:title
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    # sometimes partOfpartOf (root anchor) is set...
+    partOfPartOf {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOf}:partof
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    partOfPartOfTitle {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{register:partOfPartOf}:title
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    # if year is set
+    yearDate {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:year
+        wrap3={|}
+        insertData=1
+      }
+    }
+
+    postDescription {
+      cObject = COA
+      cObject {
+        10 = CONTENT
+        10 {
+          table = tx_dlf_documents
+          select {
+            pidInList = {$plugin.tx_dlf.persistence.storagePid}
+            selectFields=title,author,year,place
+            where=uid=###postid###
+            markers {
+              postid.data = register:partOf
+            }
+          }
+
+          renderObj=COA
+          renderObj {
+            10 = TEXT
+            10 {
+              field = author
+              stdWrap.if.isTrue.field = author
+              stdWrap.noTrimWrap = ||: |
+            }
+            20 = TEXT
+            20 {
+              field = title
+              stdWrap.if.isTrue.field = title
+              stdWrap.noTrimWrap = ||, |
+            }
+            30 = TEXT
+            30 {
+              field = place
+              stdWrap.if.isTrue.field = place
+            }
+            40 = TEXT
+            40 {
+              field = year
+              stdWrap.if.isTrue.field = year
+              stdWrap.noTrimWrap = |, ||
+            }
+          }
+        }
+
+        20 = CONTENT
+        20 {
+
+          table = tx_dlf_documents
+          select {
+            pidInList = {$plugin.tx_dlf.persistence.storagePid}
+            selectFields=title,author,year,place
+            where=uid=###postid###
+            markers {
+              # would work, but we want the year too...
+              #postid.data = register:partOf // GP:tx_dlf|id
+              postid.data = GP:tx_dlf|id
+            }
+          }
+
+          renderObj=COA
+          renderObj {
+            10 = TEXT
+            10 {
+              field = author
+              stdWrap.if.isTrue.field = author
+              stdWrap.noTrimWrap = ||: |
+            }
+            20 = TEXT
+            20 {
+              field = title
+              stdWrap.if.isTrue.field = title
+              stdWrap.noTrimWrap = ||, |
+            }
+            30 = TEXT
+            30 {
+              field = place
+              stdWrap.if.isTrue.field = place
+            }
+            40 = TEXT
+            40 {
+              field = year
+              stdWrap.if.isTrue.field = year
+              stdWrap.noTrimWrap = | | |
+            }
+          }
+        }
+      }
+    }
+
+    postTitle {
+      cObject = COA
+      cObject {
+          10 = TEXT
+          10.data = register:currentTitle
+
+          20 = TEXT
+          20.data = register:partOfTitle
+          20.required = 1
+          20.noTrimWrap = | | |
+
+          25 = TEXT
+          25.data = register:partOfPartOfTitle
+          25.required = 1
+          25.noTrimWrap = | | |
+      }
+    }
+  }
+
+
+  # overwrite page title:
+  config.noPageTitle = 2
+  page.headerData.10 >
+  page.headerData.10 = TEXT
+  page.headerData.10 {
+    wrap = <title> | </title>
+    value = {$plugin.tx_slubdigitalcollections.rootPage.title}: {register:postTitle}
+    insertData = 1
+    htmlSpecialChars = 1
+  }
+
+  # overwrite page.meta.description with blog teaser
+  page.meta.description.data = register:postDescription
+
+  page.headerData.300 = COA
+  page.headerData.300 {
+    10 = TEXT
+    10.value (
+       <meta property="og:type" content="website" />
+    )
+
+    11 = TEXT
+    11 {
+      data = register:postDescription
+      wrap = <meta property="og:description" content="|" />
+      required = {register:postDescription}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    12 = TEXT
+    12 {
+      data = register:postTitle
+      wrap = <meta property="og:title" content="|" />
+      required = {register:postTitle}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    13 = TEXT
+    13 {
+      data = register:pageUrlDigital
+      wrap = <link rel="canonical" href="|" />
+      required = {register:pageUrlDigital}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+    14 = TEXT
+    14 {
+      data = register:pageUrlDigital
+      wrap = <meta property="og:url" content="|" />
+      required = {register:pageUrlDigital}
+      trim = 1
+      htmlSpecialChars = 1
+      htmlSpecialChars.preserveEntities = 1
+    }
+
+  }
+
+[END]
+
+
+plugin.tx_dlf {
+    persistence {
+        // PID of DLF - Mandant: SLUB
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
+    }
+    settings {
+        // UID of dlfCore0
+        solrcore = {$plugin.tx_slubdigitalcollections.solr.coreUid}
+        // PID of DLF - Mandant: SLUB
+        storagePid = {$plugin.tx_dlf.persistence.storagePid}
+    }
+    view {
+        partialRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Partials
+        }
+        templateRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates
+        }
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# search
+# --------------------------------------------------------------------------------------------------------------------
+
+plugin.tx_dlf_search < tt_content.list.20.dlf_search
+
+lib.kitodo.fulltext.search < plugin.tx_dlf_search
+lib.kitodo.fulltext.search {
+    view {
+        templateRootPaths {
+            10 = EXT:slub_digitalcollections/Resources/Private/Plugins/Kitodo/Templates/Fulltext
+        }
+    }
+    settings {
+        limit = {$plugin.tx_slubdigitalcollections.solr.searchLimit}
+        // we activate fulltext here and search only in fulltext (see template)
+        fulltext = 1
+        // search only in current document
+        searchIn = document
+        // doesn't work due to javascript inclusion of autocomplete in header
+        suggest = 0
+        targetPid = {$plugin.tx_slubdigitalcollections.listView}
+        // this feature doesn't work in our case. It always jumps to page 1
+        showSingleResult = 0
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# metadata
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_metadata < tt_content.list.20.dlf_metadata
+plugin.tx_dlf_metadata {
+    settings {
+        linkTitle = 0
+        getTitle = 0
+        showFull = 1
+        rootline = 1
+        separator = #
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# pageview / workview
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_pageview < tt_content.list.20.dlf_pageview
+plugin.tx_dlf_pageview {
+    settings {
+        features =
+        elementId = tx-dlf-map
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# thumbnail previews
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_pagegrid < tt_content.list.20.dlf_pagegrid
+plugin.tx_dlf_pagegrid {
+    settings {
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
+        paginate {
+            itemsPerPage = {$plugin.tx_slubdigitalcollections.pagegrid.limit}
+            insertAbove = 0
+            insertBelow = 1
+            lessPages = 1
+            forcedNumberOfLinks = 5
+            pagesBefore = 3
+            pagesAfter = 3
+            section =
+        }
+    }
+}
+# --------------------------------------------------------------------------------------------------------------------
+# table of contents
+# --------------------------------------------------------------------------------------------------------------------
+plugin.tx_dlf_tableofcontents < tt_content.list.20.dlf_tableofcontents
+plugin.tx_dlf_tableofcontents {
+    settings {
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
+        titleReplacements {
+            0 {
+                type = issue
+                fields = type,year
+            }
+            1 {
+                type = volume
+                fields = type,volume
+            }
+        }
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# navigation
+# --------------------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------------------
+# forward and backward buttons in page view
+# --------------------------------------------------------------------------------------------------------------------
+lib.kitodo.navigation.pagecontrol < tt_content.list.20.dlf_navigation
+lib.kitodo.navigation.pagecontrol {
+    settings {
+        pageStep = 10
+        features = pagesBackward,pagesForward
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# rotate and zoom buttons in page view
+# --------------------------------------------------------------------------------------------------------------------
+lib.kitodo.navigation.viewfunction < tt_content.list.20.dlf_navigation
+lib.kitodo.navigation.viewfunction {
+    settings {
+        features = pageSelect
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# Tools like image manipulation, fulltext and downloads eg.
+# --------------------------------------------------------------------------------------------------------------------
+
+# available tools:
+
+# annotationTool
+# audioVideoTool
+# fulltextDownloadTool
+# fulltextTool
+# imageDownloadTool
+# imageManipulationTool
+# modelDownloadTool
+# multiViewAddSourceTool
+# pdfDownloadTool
+# rotationTool
+# searchInDocumentTool
+# scoreTool
+# zoomTool
+
+plugin.tx_dlf_toolbox < tt_content.list.20.dlf_toolbox
+plugin.tx_dlf_toolbox {
+    settings {
+        solrCoreUid = {$plugin.tx_slubdigitalcollections.solr.coreUid}
+    }
+}
+
+plugin.tx_dlf_audiovideotool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_audiovideotool {
+    settings {
+        tools = audioVideoTool
+    }
+}
+
+plugin.tx_dlf_fulltextdownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_fulltextdownloadtool {
+    settings {
+        tools = fulltextDownloadTool
+    }
+}
+
+plugin.tx_dlf_fulltexttool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_fulltexttool {
+    settings {
+        tools = fulltextTool
+        activateFullTextInitially = 0
+        fullTextScrollElement = #tx-dlf-fulltextselection
+    }
+}
+
+plugin.tx_dlf_imagemanipulationtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_imagemanipulationtool {
+    settings {
+        tools = rotationTool,zoomTool,imageManipulationTool
+        showAsList = 0
+    }
+}
+
+plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_multiviewaddsourcetool {
+    settings {
+        tools = multiViewAddSourceTool
+    }
+}
+
+plugin.tx_dlf_pdfdownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_pdfdownloadtool {
+    settings {
+        tools = pdfDownloadTool
+    }
+}
+
+plugin.tx_dlf_scoretool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_scoretool {
+    settings {
+        tools = scoreTool
+    }
+}
+
+plugin.tx_dlf_searchindocumenttool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_searchindocumenttool {
+    settings {
+        tools = searchInDocumentTool
+        idInputName = tx_dlf[id]
+        pidInputName = tx_dlf[pid]
+        queryInputName = tx_dlf[query]
+        startInputName = tx_dlf[start]
+        pageInputName = tx_dlf[page]
+        highlightWordInputName = tx_dlf[highlight_word]
+        encryptedInputName = tx_dlf[encrypted]
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# newspaper navigation
+# --------------------------------------------------------------------------------------------------------------------
+lib.kitodo.newspaper.years < tt_content.list.20.dlf_calendar
+lib.kitodo.newspaper.years {
+    switchableControllerActions {
+        Calendar {
+            1 = years
+        }
+    }
+    settings {
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
+    }
+}
+
+lib.kitodo.newspaper.calendar < tt_content.list.20.dlf_calendar
+lib.kitodo.newspaper.calendar {
+    switchableControllerActions {
+        Calendar {
+            1 = calendar
+        }
+    }
+    settings {
+        targetPid = {$plugin.tx_slubdigitalcollections.pageView}
+        showEmptyMonths = 0
+    }
+}
+
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'ephemera' or getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'newspaper']
+page.10.variables {
+  isNewspaper = TEXT
+  isNewspaper.value = newspaper_anchor
+}
+[END]
+
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'year']
+page.10.variables {
+  isNewspaper = TEXT
+  isNewspaper.value = newspaper_year
+}
+# in year files, the full year is only in mets_orderlabel - not year field in Kitodo.Presentation 3.0
+page.2 {
+    # if year is set
+    yearDate {
+      cObject = TEXT
+      cObject {
+        dataWrap = DB:tx_dlf_documents:{GP:tx_dlf|id}:mets_orderlabel
+        wrap3={|}
+        insertData=1
+      }
+    }
+}
+page.2.postTitle.cObject {
+    30 = TEXT
+    30 {
+        data = register:yearDate
+        required = 1
+        noTrimWrap = |: ||
+    }
+}
+[END]
+
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'issue']
+page.10.variables {
+  isNewspaper = TEXT
+  isNewspaper.value = newspaper_issue
+}
+# The issue has YYYY-MM-DD as dateformat for the publishing date. We can format it in a localized format:
+page.2.postTitle.cObject {
+    30 = TEXT
+    30 {
+        data = register:yearDate
+        required = 1
+        strtotime = 1
+        strftime = %d.%m.%Y
+        noTrimWrap = |: ||
+    }
+}
+[END]
+
+# --------------------------------------------------------------------------------------------------------------------
+# pageview navigation
+# --------------------------------------------------------------------------------------------------------------------
+
+lib.navigation.kitodo = HMENU
+lib.navigation.kitodo {
+    special = list
+    special.value = {$plugin.tx_slubdigitalcollections.viewerNavigationPids}
+    includeNotInMenu = 1
+    1 = TMENU
+    1 {
+        expAll = 1
+        insertData = 1
+        noBlur = 1
+        NO = 1
+        NO {
+            wrapItemAndSub = <li>|</li>
+            ATagTitle.field = description // title
+        }
+    }
+}
+
+# --------------------------------------------------------------------------------------------------------------------
+# render new page in pageview / workview
+# --------------------------------------------------------------------------------------------------------------------
+
+page {
+    # assume "10"
+    10 {
+        # Template names will be generated automatically by converting the applied
+        # backend_layout, there is no explicit mapping necessary anymore.
+        #
+        # BackendLayout Key
+        # subnavigation_right_2_columns -> SubnavigationRight2Columns.html
+        #
+        # Backend Record
+        # uid: 1 -> 1.html
+        #
+        # Database Entry
+        # value: -1 -> None.html
+        # value: pagets__subnavigation_right_2_columns -> SubnavigationRight2Columns.html
+        templateName = TEXT
+        templateName {
+            cObject = TEXT
+            cObject {
+                data = pagelayout
+                required = 1
+                case = uppercamelcase
+                split {
+                    token = pagets__
+                    cObjNum = 1
+                    1.current = 1
+                }
+            }
+            ifEmpty = Default
+        }
+
+        layoutRootPaths.10 = {$plugin.tx_slubdigitalcollections.layoutRootPath}
+        partialRootPaths.10 = {$plugin.tx_slubdigitalcollections.partialRootPath}
+        templateRootPaths.10 = {$plugin.tx_slubdigitalcollections.templateRootPath}
+        settings {
+            rootPage {
+                pid = {$plugin.tx_slubdigitalcollections.rootPage.pid}
+                title = {$plugin.tx_slubdigitalcollections.rootPage.title}
+                cssClass = {$plugin.tx_slubdigitalcollections.rootPage.cssClass}
+            }
+
+            termsOfUsePid = {$plugin.tx_slubdigitalcollections.termsOfUsePid}
+
+            matomo {
+                hostname = {$plugin.tx_slubdigitalcollections.matomo.hostname}
+                siteId = {$plugin.tx_slubdigitalcollections.matomo.idsite}
+                setdomains = {$plugin.tx_slubdigitalcollections.matomo.domains}
+            }
+
+            collections {
+                solrHost = {$plugin.tx_slubdigitalcollections.solr.host}/{$plugin.tx_slubdigitalcollections.solr.coreName}
+                solrTimeout = {$plugin.tx_slubdigitalcollections.solr.timeout}
+            }
+
+            showProviderLogo = 0
+        }
+        variables {
+                content < styles.content.get
+                sidebar < styles.content.get
+                sidebar.select.where = colPos=1
+
+                isKitodoPageView = TEXT
+                isKitodoPageView.value = 1
+
+                docTitle = TEXT
+                docTitle {
+                    value = {register:postTitle}
+                    insertData = 1
+                }
+
+                # kitodo vars
+                gp-id = TEXT
+                gp-id {
+                    data = GP:tx_dlf|id
+                    ifEmpty = 0
+                    stdWrap.intval = 1
+                }
+
+                gp-page = TEXT
+                gp-page {
+                    data = GP:tx_dlf|page
+                    ifEmpty = 1
+                    stdWrap.intval = 1
+                }
+
+                gp-page2 = TEXT
+                gp-page2 {
+                    cObject = TEXT
+                    cObject.data = GP:tx_dlf|page
+                    cObject.wrap = | +1
+                    prioriCalc = 1
+                }
+
+                gp-double = TEXT
+                gp-double.data = GP:tx_dlf|double
+
+                gp-pagegrid = TEXT
+                gp-pagegrid.data = GP:tx_dlf|pagegrid
+
+                # set after submitting search in years / anchors
+                gp-query = TEXT
+                gp-query {
+                    data = GP:tx_dlf|query
+                }
+
+        }
+    }
+}

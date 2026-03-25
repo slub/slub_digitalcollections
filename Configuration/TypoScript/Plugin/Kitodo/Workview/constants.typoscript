@@ -1,3 +1,4 @@
 # --------------------------------------------------------------------------------------------------------------------
-# Typoscript setup for SLUB Digital Collections
+# constants for kitodo plugin
 # --------------------------------------------------------------------------------------------------------------------
+@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Kitodo/constants.typoscript'
