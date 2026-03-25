@@ -1,21 +1,10 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:dc="http://typo3.org/ns/Slub/SlubDigitalcollections/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
 
 <div class="document-functions">
     <div class="provider">
         <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
         <f:render partial="Kitodo/DocumentFunctions/Provider" arguments="{_all}" />
-        <dl class="mobile-meta">
-            <dt class="tx-dlf-title">Titel</dt>
-            <dd class="tx-dlf-title">
-                <a href="#">{docTitle}</a>
-            </dd>
-            <dt>Autor</dt>
-            <dd>
-                <dc:xpath
-                    xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type="host"]/mods:name[//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:name/mods:role/mods:roleTerm[@authority="marcrelator"][@type="code"]="aut"]/mods:displayForm)[1]' />
-            </dd>
-        </dl>
+        <f:render partial="Kitodo/DocumentFunctions/MobileMeta" arguments="{_all}" />
     </div>
 
     <ul>

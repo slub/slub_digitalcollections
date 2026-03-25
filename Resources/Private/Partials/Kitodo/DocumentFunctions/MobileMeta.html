@@ -1,0 +1,13 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:dc="http://typo3.org/ns/Slub/SlubDigitalcollections/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
+
+<dl class="mobile-meta">
+    <dt class="tx-dlf-title"><f:translate key='metadata.title' extensionName='dlf' /></dt>
+    <dd class="tx-dlf-title"><a href="#">{docTitle}</a></dd>
+    <dt><f:translate key='metadata.author' extensionName='dlf' /></dt>
+    <dd>
+        <dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type="host"]/mods:name[//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:name/mods:role/mods:roleTerm[@authority="marcrelator"][@type="code"]="aut"]/mods:displayForm)[1]' />
+    </dd>
+</dl>
+
+</html>
