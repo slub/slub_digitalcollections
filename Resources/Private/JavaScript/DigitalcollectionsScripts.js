@@ -217,7 +217,7 @@ $(function () {
                 ? 'Kein Band ausgew&auml;hlt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.'
                 : 'No volume selected. Click to jump to the first available volume.';
 
-            const firstVolHref = $('.tx-dlf-tableofcontents-list li ul li:first-child a').attr('href');
+            const firstVolHref = $('.tx-dlf-tableofcontents ul li ul li:first-child a').attr('href');
             
             const htmlSnippet = `
                 <div class="tx-dlf-empty">
