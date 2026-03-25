@@ -205,21 +205,34 @@ $(function () {
     }
 
     // Add an error message if no map element in document viewer is given
-    function checkForChild() {
-        const hasChild = $('.tx-dlf-pageview').children('.tx-dlf-map').children()[0];
+    // For example if no volume is selected in a multi-volume work, which leads to an empty map element. 
+    // In this case the message should guide the user to select the first volume.
+    function showEmptyMapMessage() {
+        const $mapContainer = $('.tx-dlf-pageview .tx-dlf-map');
         
-        if (!hasChild) {
-            const emptyMessage = ($('html[lang^="de"]')[0])
+        // If the container doesn't exist or doesn't have an OL viewport/canvas
+        if ($mapContainer.length === 0 || $mapContainer.find('.ol-viewport, canvas').length === 0) {
+            
+            const emptyMessage = $('html').attr('lang')?.startsWith('de')
                 ? 'Kein Band ausgew&auml;hlt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.'
                 : 'No volume selected. Click to jump to the first available volume.';
 
-            $('.tx-dlf-pageview').children('.tx-dlf-map').remove();
-            $('.tx-dlf-pageview').append('<div class="tx-dlf-empty"><a class="tx-dlf-emptyToFirstVol" href="' + $('.tx-dlf-toc ul li ul li:first-child a').attr('href') + '"><span class="error-arrow">&larr;</span>' + emptyMessage + '</a></div>');
+            const firstVolHref = $('.tx-dlf-tableofcontents-list li ul li:first-child a').attr('href');
+            
+            const htmlSnippet = `
+                <div class="tx-dlf-empty">
+                    <a class="tx-dlf-emptyToFirstVol" href="${firstVolHref}">
+                        <span class="error-arrow">&larr;</span> ${emptyMessage}
+                    </a>
+                </div>`;
+
+            $mapContainer.remove();
+            $('.tx-dlf-pageview').append(htmlSnippet);
         }
     }
 
     // Wait for 500ms to give OpenLayers time to populate the .tx-dlf-map Element
-    setTimeout(checkForChild, 500);
+    setTimeout(showEmptyMapMessage, 500);
 
 
     // Add class to  collection related DD elements in metadata lists
