@@ -3,7 +3,6 @@
 # header style an js files
 # --------------------------------------------------------------------------------------------------------------------
 
-
 page {
   includeCSS {
         kitodo = {$plugin.tx_slubdigitalcollections.css.lists}
