@@ -4,8 +4,15 @@ defined('TYPO3') or die('Access denied.');
 // Add default Typoscript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'slub_digitalcollections',
-    'Configuration/TypoScript',
-    'SLUB Digital Collections'
+    'Configuration/TypoScript/Plugin/Kitodo/Workview',
+    'SLUB Digital Collections - Workview'
+);
+
+// Add default Typoscript
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'slub_digitalcollections',
+    'Configuration/TypoScript/Plugin/Kitodo/Listview',
+    'SLUB Digital Collections - Listview'
 );
 
 // Add optional SitePackage Typoscript
