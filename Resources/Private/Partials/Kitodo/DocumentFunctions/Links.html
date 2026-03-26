@@ -24,23 +24,7 @@
         </f:if>
 
         <f:comment><!-- [reference links ] ----------------------------- --></f:comment>
-        <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
-            <f:variable name="referenceXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference)[{index}]' /></f:variable>
-            <f:if condition="{referenceXpath}">
-                <li>
-                    <f:variable name="referenceLinkXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' /></f:variable>
-                    <f:variable name="localCatalogue"><f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' /></f:variable>
-                    <f:if condition="{referenceLinkXpath}">
-                        <f:then>
-                            <f:link.external uri="{referenceXpath}" class="local-catalog" target="_blank" title="{localCatalogue}">{referenceLinkXpath}</f:link.external>
-                        </f:then>
-                        <f:else>
-                            <f:link.external uri="{referenceXpath}" class="local-catalog" target="_blank" title="{localCatalogue}">{localCatalogue}</f:link.external>
-                        </f:else>
-                    </f:if>
-                </li>
-            </f:if>
-        </f:for>
+        <f:render partial="Kitodo/DocumentFunctions/ReferenceLinks" arguments="{_all}" />
 
         <f:comment><!-- [License information] ------------------------------ --></f:comment>
         <f:if condition="{settings.termsOfUsePid}">
