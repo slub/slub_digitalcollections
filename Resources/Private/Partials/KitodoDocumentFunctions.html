@@ -1,31 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
 
 <div class="document-functions">
-    <div class="provider">
-        <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/Provider" arguments="{_all}" />
-        <f:render partial="Kitodo/DocumentFunctions/MobileMeta" arguments="{_all}" />
-    </div>
-
-    <ul>
-        <f:comment><!-- [document links] ----------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/Links" arguments="{_all}" />
-
-        <f:comment><!-- [downloads] ----------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/Downloads" arguments="{_all}" />
-
-        <f:comment><!-- [douple page switch (on/off)] ------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/DoublePage" arguments="{_all}" />
-
-        <f:comment><!-- [fulltext switch (on/off)] -------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/Fulltext" arguments="{_all}" />
-
-        <f:comment><!-- [page grid switch (on/off)] -------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/PageGrid" arguments="{_all}" />
-
-        <f:comment><!-- [SRU Search] -------------------------- --></f:comment>
-        <f:render partial="Kitodo/DocumentFunctions/SruSearch" arguments="{_all}" />
-    </ul>
+    <f:render partial="Kitodo/DocumentFunctions/Provider" arguments="{_all}" />
+    <f:render partial="Kitodo/DocumentFunctions/Submenu" arguments="{_all}" />
 </div>
 
 </html>
