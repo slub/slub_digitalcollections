@@ -397,7 +397,9 @@
             height: 40px;
             li {
                 display: inline-block;
-                &.rotate {
+                &.tx-dlf-tools-rotate-left a,
+                &.tx-dlf-tools-rotate-right a,
+                &.tx-dlf-tools-rotate-reset a {
                     display: none;
                 }
                 &.tx-dlf-navigation-pages {
@@ -544,7 +546,9 @@
         }
         @media screen and (min-width: @desktopViewportWidth) {
             li {
-                &.rotate {
+                &.tx-dlf-tools-rotate-left a,
+                &.tx-dlf-tools-rotate-right a,
+                &.tx-dlf-tools-rotate-reset a {
                     display: inline-block;
                 }
                 &.tx-dlf-navigation-pages {
