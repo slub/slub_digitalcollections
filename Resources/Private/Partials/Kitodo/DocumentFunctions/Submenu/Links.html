@@ -28,7 +28,7 @@
     <a href="#" title="Links">Links</a>
     <ul>
         <f:comment><!-- [Permalink] ----------------------------------------- --></f:comment>
-        <f:variable name="purlXpath"><dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:identifier[@type="purl"])[1]' /></f:variable>
+        <f:variable name="purlXpath"><dc:xpath xpath='({modsXpath}/mods:identifier[@type="purl"])[1]' /></f:variable>
         <f:if condition="{purlXpath}">
             <f:variable name="purlDocument"><f:translate key='purl.document' extensionName='slub_digitalcollections' /></f:variable>
             <li class="permalink">

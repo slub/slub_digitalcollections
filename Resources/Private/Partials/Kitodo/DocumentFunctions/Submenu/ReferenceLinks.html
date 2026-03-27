@@ -25,10 +25,10 @@
 </f:comment>
 
 <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
-    <f:variable name="referenceXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference)[{index}]' /></f:variable>
+    <f:variable name="referenceXpath"><dc:xpath xpath='({dvLinksXpath}/dv:reference)[{index}]' /></f:variable>
     <f:if condition="{referenceXpath}">
         <li>
-            <f:variable name="referenceLinkXpath"><dc:xpath xpath='(//mets:amdSec/mets:digiprovMD/mets:mdWrap[@OTHERMDTYPE="DVLINKS"]/mets:xmlData/dv:links/dv:reference/@linktext)[{index}]' /></f:variable>
+            <f:variable name="referenceLinkXpath"><dc:xpath xpath='({dvLinksXpath}/dv:reference/@linktext)[{index}]' /></f:variable>
             <f:variable name="localCatalogue"><f:translate key='provider.local_catalogue' extensionName='slub_digitalcollections' /></f:variable>
             <f:if condition="{referenceLinkXpath}">
                 <f:then>

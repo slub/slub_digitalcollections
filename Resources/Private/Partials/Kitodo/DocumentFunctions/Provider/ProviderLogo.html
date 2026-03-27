@@ -24,9 +24,11 @@
     This copyright notice MUST APPEAR in all copies of the script!
 </f:comment>
 
-<f:variable name="providerLogoXpath"><dc:xpath xpath='(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE="DVRIGHTS"]/mets:xmlData/dv:rights/dv:{provider}Logo)[1]' /></f:variable>
-<f:variable name="providerXpath"><dc:xpath xpath='(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE="DVRIGHTS"]/mets:xmlData/dv:rights/dv:{provider})[1]' /></f:variable>
-<f:variable name="providerSiteUrlXpath"><dc:xpath xpath='(//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE="DVRIGHTS"]/mets:xmlData/dv:rights/dv:{provider}SiteURL)[1]' htmlspecialchars='FALSE' /></f:variable>
+<f:variable name="dvRightsXpath">//mets:amdSec/mets:rightsMD/mets:mdWrap[@OTHERMDTYPE="DVRIGHTS"]/mets:xmlData/dv:rights/dv:</f:variable>
+<f:variable name="providerLogoXpath"><dc:xpath xpath='({dvRightsXpath}{provider}Logo)[1]' /></f:variable>
+<f:variable name="providerXpath"><dc:xpath xpath='({dvRightsXpath}{provider})[1]' /></f:variable>
+<f:variable name="providerSiteUrlXpath"><dc:xpath xpath='({dvRightsXpath}{provider}SiteURL)[1]' htmlspecialchars='FALSE' /></f:variable>
+
 <f:alias map="{logoUrl: '{providerLogoXpath}', logoTitle: '{providerXpath}',
         logoUri: '{providerSiteUrlXpath}'}">
     <f:if condition="{dc:providerLogoCached(logo:'{logoUrl}')}">
