@@ -1,16 +1,9 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"data-namespace-typo3-fluid="true" lang="en">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" lang="en">
 
-<f:if condition="{settings.showProviderLogo}">
-    <ul>
-        <f:variable name="provider">owner</f:variable>
-        <f:render partial="Kitodo/DocumentFunctions/ProviderLogo" arguments="{_all}" />
-
-        <f:variable name="provider">aggregator</f:variable>
-        <f:render partial="Kitodo/DocumentFunctions/ProviderLogo" arguments="{_all}" />
-
-        <f:variable name="provider">sponsor</f:variable>
-        <f:render partial="Kitodo/DocumentFunctions/ProviderLogo" arguments="{_all}" />
-    </ul>
-</f:if>
+<div class="provider">
+    <f:comment><!-- [provider logo] ----------------------------- --></f:comment>
+    <f:render partial="Kitodo/DocumentFunctions/Provider/Provider" arguments="{_all}" />
+    <f:render partial="Kitodo/DocumentFunctions/Provider/MobileMeta" arguments="{_all}" />
+</div>
 
 </html>
