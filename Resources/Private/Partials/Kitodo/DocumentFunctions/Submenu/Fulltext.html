@@ -24,7 +24,7 @@
     This copyright notice MUST APPEAR in all copies of the script!
 </f:comment>
 
-<f:variable name="xpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="FULLTEXT"]/mets:file[1]/mets:FLocat/@xlink:href)[1]' /></f:variable>
+<f:variable name="xpath"><dc:xpath xpath='{fulltextLocationXpath}[1]' /></f:variable>
 
 <f:if condition="{xpath}">
     <f:if condition="{gp-double} == 1">

@@ -32,7 +32,7 @@
             <span title="{preview}">{preview}</span>
         </f:then>
         <f:else>
-            <f:variable name="xpath"><dc:xpath xpath='(//mets:fileSec/mets:fileGrp[@USE="THUMBS"]//mets:file/mets:FLocat/@xlink:href)[1]' /></f:variable>
+            <f:variable name="xpath"><dc:xpath xpath='({fileGrpXpath}[@USE="THUMBS"]//mets:file/mets:FLocat/@xlink:href)[1]' /></f:variable>
             <f:if condition="{xpath}">
                 <f:then>
                     <f:if condition="{gp-pagegrid} == 1">

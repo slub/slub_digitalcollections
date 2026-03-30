@@ -29,7 +29,7 @@
     <dd class="tx-dlf-title"><a href="#">{docTitle}</a></dd>
     <dt><f:translate key='metadata.author' extensionName='dlf' /></dt>
     <dd>
-        <dc:xpath xpath='(//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:relatedItem[@type="host"]/mods:name[//mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:name/mods:role/mods:roleTerm[@authority="marcrelator"][@type="code"]="aut"]/mods:displayForm)[1]' />
+        <dc:xpath xpath='({modsXpath}/mods:relatedItem[@type="host"]/mods:name[{modsXpath}/mods:name/mods:role/mods:roleTerm[@authority="marcrelator"][@type="code"]="aut"]/mods:displayForm)[1]' />
     </dd>
 </dl>
 
