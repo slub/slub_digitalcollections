@@ -5,18 +5,6 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="double.RectoVerso" approved="yes">
-				<source><![CDATA[Adjust recto/verso]]></source>
-				<target><![CDATA[Recto/Verso korrigieren]]></target>
-			</trans-unit>
-			<trans-unit id="double.doublePageView" approved="yes">
-				<source><![CDATA[Show double pages]]></source>
-				<target><![CDATA[Doppelseitenansicht]]></target>
-			</trans-unit>
-			<trans-unit id="double.singlePageView" approved="yes">
-				<source><![CDATA[Show single page]]></source>
-				<target><![CDATA[Einzelseitenansicht]]></target>
-			</trans-unit>
 			<trans-unit id="download.fulltext.fulltextDownload" approved="yes">
 				<source><![CDATA[Fulltext download]]></source>
 				<target><![CDATA[Volltext herunterladen]]></target>
