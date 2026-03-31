@@ -453,7 +453,7 @@ plugin.tx_dlf_fulltexttool {
     settings {
         tools = fulltextTool
         activateFullTextInitially = 0
-        fullTextScrollElement = #tx-dlf-fulltextselection
+        fullTextScrollElement = #tx-dlf-toolbox-fulltext-selection
     }
 }
 
