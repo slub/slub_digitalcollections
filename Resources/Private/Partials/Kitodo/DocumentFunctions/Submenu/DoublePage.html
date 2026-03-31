@@ -27,15 +27,15 @@
 <li class="doublepage">
     <f:if condition="{gp-double} == 1">
         <f:then>
-            <f:variable name="rectoVerso"><f:translate key="navigation.doublePage.rectoVerso" extensionName="dlf" /></f:variable>
-            <f:variable name="singlePageView"><f:translate key="navigation.doublePage.singlePageView" extensionName="dlf" /></f:variable>
+            <f:variable name="rectoVerso"><f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:navigation.doublePage.rectoVerso" /></f:variable>
+            <f:variable name="singlePageView"><f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:navigation.doublePage.singlePageView" /></f:variable>
             <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'0', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOff" title="{singlePageView}">{singlePageView}</f:link.page>
             <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page + 1}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doublePlusOne" title="{rectoVerso}">
                 <span>{rectoVerso}</span>
             </f:link.page>
         </f:then>
         <f:else>
-            <f:variable name="doublePageView"><f:translate key="navigation.doublePage.doublePageView" extensionName="dlf" /></f:variable>
+            <f:variable name="doublePageView"><f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang.xlf:navigation.doublePage.doublePageView" /></f:variable>
             <f:link.page pageUid="{kitodo.pageView}" additionalParams="{tx_dlf:{page:'{gp-page}', double:'1', id:'{gp-id}', pagegrid:'0'}}" class="tx-dlf-navigation-doubleOn" title="{doublePageView}">{doublePageView}</f:link.page>
         </f:else>
     </f:if>
