@@ -8,12 +8,12 @@
  *
  */
 
-.tx-dlf-tools-searchindocument {
+.tx-dlf-toolbox-searchindocument {
     position: absolute;
     top: 0;
     right: 106px;
     list-style-type: none;
-    .fulltext-search-toggle { // should be semantically: .search-indocument-toggle
+    .tx-dlf-toolbox-searchindocument-search-toggle {
         display: none;
     }
     form {
@@ -67,7 +67,7 @@
                 }
             }
         }
-        .search-indocument-active &,
+        .tx-dlf-toolbox-searchindocument-search-active &,
         &:focus-within {
             pointer-events: all;
             opacity: 1;
@@ -139,7 +139,7 @@
             text-transform: uppercase;
             color: white;
         }
-        .search-indocument-active & {
+        .tx-dlf-toolbox-searchindocument-search-active & {
             pointer-events: all;
             opacity: 1;
             .transform(translateY(0));
@@ -180,7 +180,7 @@
         right: 8px;
         margin: 0;
         z-index: 50;
-        .fulltext-search-toggle {
+        .tx-dlf-toolbox-searchindocument-search-toggle {
             position: absolute;
             top: 10px;
             right: 0;
@@ -205,7 +205,7 @@
                 .transition();
                 opacity: 0;
             }
-            .search-indocument-active & {
+            .tx-dlf-toolbox-searchindocument-search-active & {
                 background-color: lighten(@secondary-color-light, 40%);
                 background-position: -560px 40px;
                 &:after {
@@ -308,7 +308,7 @@
     }
 }
 
-body.calendar .tx-dlf-tools-searchindocument { // If the search appears in calendar view
+body.calendar .tx-dlf-toolbox-searchindocument { // If the search appears in calendar view
     top: -20px;
     right: 15px;
     list-style-type: none;
@@ -323,7 +323,7 @@ body.calendar .tx-dlf-tools-searchindocument { // If the search appears in calen
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
         top: 30px;
         right: 35px;
-        .fulltext-search-toggle {
+        .tx-dlf-toolbox-searchindocument-search-toggle {
             border: 1px solid @secondary-color;
         }
         form {

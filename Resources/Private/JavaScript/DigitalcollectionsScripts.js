@@ -95,7 +95,7 @@ $(function () {
 
     // Copy some controls for mobile (page select, fullscreen)
     $('.provider').append('<div class="mobile-controls" />');
-    $('.view-functions .pages form, .view-functions .tx-dlf-tools-fullscreen a, .fulltext-search-toggle').clone().appendTo('.provider .mobile-controls');
+    $('.view-functions .pages form, .view-functions .tx-dlf-tools-fullscreen a, .tx-dlf-toolbox-searchindocument-search-toggle').clone().appendTo('.provider .mobile-controls');
 
     // Shorten mobile meta title
     shortenMobileMetaElement = $('.provider dl.mobile-meta dd.tx-dlf-title a');
@@ -153,14 +153,14 @@ $(function () {
     }
 
     // Toggle and setup for the 'in document search'
-    if ($('.tx-dlf-tools-searchindocument form')[0]) {
-        $('.fulltext-search-toggle').on('click', function () { // selector should be semantically: .search-indocument-toggle
-            $('body').toggleClass('search-indocument-active');
-            $('.tx-dlf-tools-searchindocument').css({top: ($(this).offset().top - 60) + 'px'});
-            $('body.search-indocument-active #tx-dlf-search-in-document-query').trigger('focus');
+    if ($('.tx-dlf-toolbox-searchindocument form')[0]) {
+        $('.tx-dlf-toolbox-searchindocument-search-toggle').on('click', function () {
+            $('body').toggleClass('tx-dlf-toolbox-searchindocument-search-active');
+            $('.tx-dlf-toolbox-searchindocument').css({top: ($(this).offset().top - 60) + 'px'});
+            $('body.tx-dlf-toolbox-searchindocument-search-active #tx-dlf-search-in-document-query').trigger('focus');
         });
     } else {
-        $('.fulltext-search-toggle').addClass('disabled');
+        $('.tx-dlf-toolbox-searchindocument-search-toggle').addClass('disabled');
     }
 
     // Complex page turning mechanism and check if a click on page control was made and unfold next/back navigation
