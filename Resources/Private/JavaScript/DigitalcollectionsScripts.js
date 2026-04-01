@@ -157,7 +157,7 @@ $(function () {
         $('.tx-dlf-toolbox-searchindocument-search-toggle').on('click', function () {
             $('body').toggleClass('tx-dlf-toolbox-searchindocument-search-active');
             $('.tx-dlf-toolbox-searchindocument').css({top: ($(this).offset().top - 60) + 'px'});
-            $('body.tx-dlf-toolbox-searchindocument-search-active #tx-dlf-search-in-document-query').trigger('focus');
+            $('body.tx-dlf-toolbox-searchindocument-search-active #tx-dlf-toolbox-searchindocument-input-query').trigger('focus');
         });
     } else {
         $('.tx-dlf-toolbox-searchindocument-search-toggle').addClass('disabled');
@@ -259,7 +259,7 @@ $(document).keyup(function (e) {
         }
     }
     // Check if the F key is pressed and no text input in SRU form is taking place.
-    if (e.key === 'f' && !$('#tx-dlf-search-in-document-query').is(':focus')) {
+    if (e.key === 'f' && !$('#tx-dlf-toolbox-searchindocument-input-query').is(':focus')) {
         return enterFullscreen();
     }
 
