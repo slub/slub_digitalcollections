@@ -17,7 +17,7 @@
     <f:render section="ControlBar" partial="KitodoControlBar" arguments="{_all}" />
     <f:if condition="{isAudio} == 1 OR {isVideo} == 1">
         <f:then>
-            <f:render section="PageView" partial="KitodoMediaView" arguments="{_all}" />
+            <f:render section="MediaView" partial="KitodoMediaView" arguments="{_all}" />
         </f:then>
         <f:else>
             <!--TYPO3SEARCH_begin-->
