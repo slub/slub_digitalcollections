@@ -97,14 +97,6 @@
 				<source><![CDATA[Open page navigation]]></source>
 				<target><![CDATA[Seitennavigation öffnen]]></target>
 			</trans-unit>
-			<trans-unit id="plugins.single_collection_view" approved="yes">
-				<source><![CDATA[Single Collection View]]></source>
-				<target><![CDATA[Ansicht einer einzelne Kollektion]]></target>
-			</trans-unit>
-			<trans-unit id="plugins.single_collection_view.description" approved="yes">
-				<source><![CDATA[Show Collection with Search Form and Search Results.]]></source>
-				<target><![CDATA[Anzeige einer Kollektion mit Such-Formular und Ergebnissen.]]></target>
-			</trans-unit>
 			<trans-unit id="provider.email_provider" approved="yes">
 				<source><![CDATA[Email to data provider]]></source>
 				<target><![CDATA[Email an Datenprovider]]></target>
