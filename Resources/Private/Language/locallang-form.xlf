@@ -21,6 +21,15 @@
 			<trans-unit id="input.sort-authorDesc" xml:space="preserve">
 				<source>Author Z-A</source>
 			</trans-unit>
+			<trans-unit id="input.default" xml:space="preserve">
+				<source>Search term</source>
+			</trans-unit>
+			<trans-unit id="input.default.placeholder" xml:space="preserve">
+				<source>Search in all digital collections</source>
+			</trans-unit>
+			<trans-unit id="input.default.placeholder.short" xml:space="preserve">
+				<source>Search in all collections</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

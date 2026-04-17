@@ -3,29 +3,41 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-02-18T10:59:49Z" product-name="find">
 		<header/>
 		<body>
-			<trans-unit id="input.sort" xml:space="preserve">
+			<trans-unit id="input.sort" xml:space="preserve" approved="yes">
 				<source>Sort By</source>
 				<target>Sortierung</target>
 			</trans-unit>
-			<trans-unit id="input.sort-relevance" xml:space="preserve">
+			<trans-unit id="input.sort-relevance" xml:space="preserve" approved="yes">
 				<source>Relevance</source>
 				<target>Relevanz</target>
 			</trans-unit>
-			<trans-unit id="input.sort-nameAsc" xml:space="preserve">
+			<trans-unit id="input.sort-nameAsc" xml:space="preserve" approved="yes">
 				<source>Name A-Z</source>
 				<target>Name A-Z</target>
 			</trans-unit>
-			<trans-unit id="input.sort-nameDesc" xml:space="preserve">
+			<trans-unit id="input.sort-nameDesc" xml:space="preserve" approved="yes">
 				<source>Name Z-A</source>
 				<target>Name Z-A</target>
 			</trans-unit>
-			<trans-unit id="input.sort-authorAsc" xml:space="preserve">
+			<trans-unit id="input.sort-authorAsc" xml:space="preserve" approved="yes">
 				<source>Author A-Z</source>
 				<target>Autor A-Z</target>
 			</trans-unit>
-			<trans-unit id="input.sort-authorDesc" xml:space="preserve">
+			<trans-unit id="input.sort-authorDesc" xml:space="preserve" approved="yes">
 				<source>Author Z-A</source>
 				<target>Autor Z-A</target>
+			</trans-unit>
+			<trans-unit id="input.default" xml:space="preserve" approved="yes">
+				<source>Search term</source>
+				<target>Suchbegriff</target>
+			</trans-unit>
+			<trans-unit id="input.default.placeholder" xml:space="preserve" approved="yes">
+				<source>Search in all digital collections</source>
+				<target>Suchen Sie allen digitalen Kollektionen</target>
+			</trans-unit>
+			<trans-unit id="input.default.placeholder.short" xml:space="preserve" approved="yes">
+				<source>Search in all collections</source>
+				<target>Suchen Sie allen Kollektionen</target>
 			</trans-unit>
 		</body>
 	</file>

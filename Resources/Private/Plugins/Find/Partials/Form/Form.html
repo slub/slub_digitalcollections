@@ -1,0 +1,118 @@
+
+<div class="hero-section">
+    <div class="hero-search">
+        <div class="hero-search-wrapper">
+            <div class="hero-search-background"></div>
+
+            <f:form name="c{config.uid}-form"
+                    method="get"
+                    id="search-form"
+                    section="{settings.jumpToID}"
+                    class="hero-search-form searchForm {f:if(condition:config.extendedSearch, then:'search-extended', else:'search-simple')}">
+
+                <f:for each="{formFacets}" as="facet" key="facetID">
+                    <f:for each="{facet}" as="unused" key="facetValue">
+                        <f:form.hidden name="facet[{facetID}][{facetValue}]" value="1"/>
+                    </f:for>
+                </f:for>
+
+            <div class="search-basic">
+                <f:for each="{settings.queryFields}" as="fieldInfo">
+                    <f:if condition="{fieldInfo.type}">
+                        <f:then>
+                            <f:if condition="{s:logic.or(conditions:'{
+                                0:\"{s:logic.not(condition:fieldInfo.hidden)}\",
+                                1:\"{s:data.valueForKey(array:arguments.q, key:fieldInfo.id)}\"
+                            }')}">
+                            <f:if condition="{fieldInfo.type} == 'Search'">
+                                <f:then>
+                                    <f:alias map="{queryParameter:'{s:data.valueForKey(array:config.query, key:fieldInfo.id)}'}">
+                                        <f:render partial="Form/Fields/{fieldInfo.type}" arguments="{_all}"/>
+                                    </f:alias>
+                                </f:then>
+                                <f:else>
+                                    <div class="fieldContainer fieldType-{fieldInfo.type} field-{fieldInfo.id} field-mode-{f:if(condition:'{fieldInfo.extended}', then:'extended', else:'simple')}">
+                                        <f:alias map="{queryParameter:'{s:data.valueForKey(array:config.query, key:fieldInfo.id)}'}">
+                                            <f:render partial="Form/Fields/{fieldInfo.type}" arguments="{_all}"/>
+                                        </f:alias>
+                                    </div>
+                                </f:else>
+                            </f:if>
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <div class="fieldContainer error">
+                                <f:translate key="Missing type in configuration for queryField %s." arguments="{0:fieldInfo.id}"/>
+                            </div>
+                        </f:else>
+                    </f:if>
+                </f:for>
+
+                <button class="btn">{f:translate(key:'Search')}</button>
+            </div>
+
+            <div class="search-enhancements">
+                <div class="search-filter">
+
+                </div>
+
+                <div class="search-links">
+                    <div class="controls">
+                        <f:groupedFor each="{settings.queryFields}" as="fieldsByType" groupBy="extended" groupKey="extended">
+                            <f:if condition="{0:extended} == {0:1}">
+                                <f:if condition="{config.extendedSearch}">
+                                    <f:then>
+                                        <f:link.action
+                                            addQueryString="TRUE"
+                                            argumentsToBeExcludedFromQueryString="{0:'{config.prefixID}[extendedSearch]'}"
+                                            class="extendedSearch internal"
+                                            additionalAttributes="{
+                                                simpleString:'{f:translate(key:\"extended Search\")}',
+                                                extendedString:'{f:translate(key:\"basic Search\")}'
+                                            }">
+                                            <f:translate key="basic Search"/>
+                                        </f:link.action>
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.action
+                                            addQueryString="TRUE"
+                                            arguments="{extendedSearch: 1}"
+                                            class="extendedSearch internal"
+                                            additionalAttributes="{
+                                                simplestring:'{f:translate(key:\"extended Search\")}',
+                                                extendedstring:'{f:translate(key:\"basic Search\")}'
+                                            }">
+                                            <f:translate key="extended Search"/>
+                                        </f:link.action>
+                                    </f:else>
+                                </f:if>
+                            </f:if>
+                        </f:groupedFor>
+                    </div>
+                </div>
+
+                <f:if condition="{f:count(subject:config.sortOptions.menu)} > 1">
+                    <div class="sortOrder">
+                        <label for="c{config.uid}-sortSelect">
+                            <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.sort"/>
+                        </label>
+                        <f:form.select id="c{config.uid}-sortSelect" name="sort" options="{config.sortOptions.menu}" value="{config.sortOptions.selected}"/>
+                    </div>
+                </f:if>
+
+                <f:if condition="{f:count(subject:config.resultCountOptions.menu)} > 1">
+                    <div class="resultCountPicker">
+                        <label for="c{config.uid}-resultCountSelect">
+                            <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.count"/>
+                        </label>
+                        <f:form.select id="c{config.uid}-resultCountSelect" name="count" options="{config.resultCountOptions.menu}" value="{config.resultCountOptions.selected}"/>
+                    </div>
+                </f:if>
+
+            </div>
+
+                <div class="clear"></div>
+            </f:form>
+        </div>
+    </div>
+</div>

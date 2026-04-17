@@ -1,0 +1,32 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:comment>
+	Text field for the input form with support for:
+	* autocomplete (using the suggest action; configured with the autocomplete and autocompleteDictionary variables)
+	* an alternate query style which can be set by a checkbox (appears when the alternateQuery is set)
+</f:comment>
+
+<div class="pseudo-placeholder {f:if(condition:queryParameter,then:'hidden-on-input')}">
+    <p class="responsive-label-sm"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.{fieldInfo.id}.placeholder.short" default="{fieldInfo.id}"/></p>
+    <p class="responsive-label-lg"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.{fieldInfo.id}.placeholder" default="{fieldInfo.id}"/></p>
+</div>
+<label class="fieldLabel sr-only" for="c{config.uid}-field-{fieldInfo.id}"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.{fieldInfo.id}" default="{fieldInfo.id}"/>:</label>
+<f:form.textfield
+    id="c{config.uid}-field-{fieldInfo.id}"
+    class="inputType-text"
+    type="search"
+    name="q[{fieldInfo.id}]{f:if(
+        condition:hasAlternate,
+        then:'[term]'
+    )}"
+    value="{f:if(
+        condition:hasAlternate,
+        then:queryParameter.term,
+        else:queryParameter
+    )}"
+    additionalAttributes="<f:if condition='{fieldInfo.autocomplete}==1'><f:then>{autocompleteURL:\"{f:uri.action(
+        arguments:{dictionary:fieldInfo.autocompleteDictionary, q:'%%%%'},
+        action:'suggest',
+        pageType:'1369315139',
+        format:'data',
+    )}\"}</f:then><f:else>{a:1}</f:else></f:if>"
+/>

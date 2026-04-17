@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                     "Resources/Public/Css/Digitalcollections.css" : "Resources/Private/Less/Digitalcollections.less",
                     "Resources/Public/Css/DigitalcollectionsLists.css" : "Resources/Private/Less/DigitalcollectionsLists.less",
                     "Resources/Public/Css/BaseDesign.css" : "Resources/Private/Less/BaseDesign.less",
+                    "Resources/Public/Css/Search.css" : "Resources/Private/Less/Search.less",
                 }
             }
         },

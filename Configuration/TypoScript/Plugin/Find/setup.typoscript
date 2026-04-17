@@ -16,7 +16,7 @@ plugin.tx_find {
         layoutRootPath >
         layoutRootPaths {
             0 = {$plugin.tx_find.view.layoutRootPath}
-#            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Layouts/
+            100 = EXT:slub_digitalcollections/Resources/Private/Plugins/Find/Layouts/
         }
     }
 }
@@ -204,6 +204,6 @@ plugin.tx_find.settings.queryFields {
         query = {!edismax qf="title^200 default"}%s
         noescape = 0
         phrase = 0
-        type = Text
+        type = Search
     }
 }
