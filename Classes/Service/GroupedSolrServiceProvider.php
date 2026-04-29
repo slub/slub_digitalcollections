@@ -101,6 +101,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 }
             } else {
                 // TYPO3 12.4: Parent expects 3 parameters
+                // @phpstan-ignore-next-line (TYPO3 12.4 constructor takes 3 parameters)
                 parent::__construct($connectionName, $settings, $logger);
             }
             
