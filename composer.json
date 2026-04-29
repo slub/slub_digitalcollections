@@ -50,7 +50,7 @@
   },
   "require-dev": {
     "phpstan/phpstan": "^1.12",
-    "subugoe/find": "^4.0.0|12.x-dev"
+    "subugoe/find": "^4.0.0|12.x-dev|13.x-dev"
   },
   "autoload": {
     "psr-4": {
