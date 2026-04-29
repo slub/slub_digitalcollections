@@ -39,15 +39,86 @@ use Subugoe\Find\Service\SolrServiceProvider;
  * - Multiple grouping fields/queries
  * - Group sorting, formatting, and faceting
  * - Configurable via TypoScript and URL parameters
+ * 
+ * Compatible with both TYPO3 12.4 and 13.4.
  */
 class GroupedSolrServiceProvider extends SolrServiceProvider
 {
     /**
-     * Constructor
+     * @var LoggerInterface
      */
-    public function __construct(string $connectionName, array $settings, LoggerInterface $logger)
+    protected LoggerInterface $localLogger;
+
+    /**
+     * @var array
+     */
+    protected array $localSettings = [];
+
+    /**
+     * @var string
+     */
+    protected string $localConnectionName = '';
+
+    /**
+     * Constructor compatible with both TYPO3 12.4 (PHP 8.1) and 13.4 (PHP 8.4).
+     * 
+     * TYPO3 12.4: Expects 3 parameters (connectionName, settings, logger)
+     * TYPO3 13.4: Expects 1 parameter (logger), uses setters for other values
+     * 
+     * Detection strategy: Checks if parent class has setConnectionName method (TYPO3 13 only)
+     * 
+     * @param mixed ...$args Variable arguments to support both versions
+     */
+    public function __construct(...$args)
     {
-        parent::__construct($connectionName, $settings, $logger);
+        if (count($args) === 1 && $args[0] instanceof LoggerInterface) {
+            // TYPO3 13.4 style: only logger parameter
+            parent::__construct($args[0]);
+            $this->localLogger = $args[0];
+        } elseif (count($args) === 3) {
+            // TYPO3 12.4 or 13.4 style with explicit parameters
+            [$connectionName, $settings, $logger] = $args;
+            
+            // Detect TYPO3 version by checking if parent has setConnectionName method (13.4 only)
+            // This is more reliable than checking constructor parameters
+            $isTypo3v13 = method_exists(parent::class, 'setConnectionName');
+            
+            if ($isTypo3v13) {
+                // TYPO3 13.4: Parent expects only logger, use setters for other values
+                parent::__construct($logger);
+                $this->setConnectionName($connectionName);
+                $this->setSettings($settings);
+            } else {
+                // TYPO3 12.4: Parent expects 3 parameters
+                parent::__construct($connectionName, $settings, $logger);
+            }
+            
+            $this->localLogger = $logger;
+            $this->localSettings = $settings;
+            $this->localConnectionName = $connectionName;
+        } else {
+            throw new \InvalidArgumentException(
+                'Invalid constructor arguments. Expected either (LoggerInterface) or (string, array, LoggerInterface).'
+            );
+        }
+    }
+
+    /**
+     * Override setSettings to keep local copy.
+     */
+    public function setSettings(array $settings): void
+    {
+        parent::setSettings($settings);
+        $this->localSettings = $settings;
+    }
+
+    /**
+     * Override setConnectionName to keep local copy.
+     */
+    public function setConnectionName(string $name): void
+    {
+        parent::setConnectionName($name);
+        $this->localConnectionName = $name;
     }
 
     /**
@@ -118,11 +189,11 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     protected function addGrouping(array $arguments): void
     {
         // Check if grouping is enabled in settings
-        if (empty($this->settings['grouping'])) {
+        if (empty($this->localSettings['grouping'])) {
             return;
         }
 
-        $groupSettings = $this->settings['grouping'];
+        $groupSettings = $this->localSettings['grouping'];
         
         // Check if grouping is explicitly disabled
         if (isset($groupSettings['enabled']) && !$groupSettings['enabled']) {
@@ -140,7 +211,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         // Configure general grouping parameters
         $this->configureGroupingParameters($grouping, $groupSettings, $arguments);
         
-        $this->logger->debug('Solr grouping configured', [
+        $this->localLogger->debug('Solr grouping configured', [
             'settings' => $groupSettings,
             'arguments' => $arguments
         ]);
@@ -178,7 +249,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         foreach ($fields as $field) {
             if (!empty($field) && is_string($field)) {
                 $grouping->addField($field);
-                $this->logger->debug('Added grouping field', ['field' => $field]);
+                $this->localLogger->debug('Added grouping field', ['field' => $field]);
             }
         }
     }
@@ -211,7 +282,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         foreach ($queries as $query) {
             if (!empty($query) && is_string($query)) {
                 $grouping->addQuery($query);
-                $this->logger->debug('Added grouping query', ['query' => $query]);
+                $this->localLogger->debug('Added grouping query', ['query' => $query]);
             }
         }
     }
@@ -303,7 +374,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         }
         
         // Process grouping if enabled
-        if (!empty($this->settings['grouping']) && !empty($result['results'])) {
+        if (!empty($this->localSettings['grouping']) && !empty($result['results'])) {
             $result = $this->processGroupedResults($result);
         }
         
@@ -347,7 +418,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 return $result;
             }
             
-            $groupSettings = $this->settings['grouping'];
+            $groupSettings = $this->localSettings['grouping'];
             $groupedResults = [];
             $allDocuments = [];
             $totalMatches = 0;
@@ -391,7 +462,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $additionalTitleInfo = $this->fetchAdditionalTitleInfo($allDocuments);
             $result['additionalTitleInfo'] = $additionalTitleInfo;
             
-            $this->logger->debug('Grouped results processed', [
+            $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
@@ -400,7 +471,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             ]);
             
         } catch (\Exception $e) {
-            $this->logger->error('Error processing grouped results', [
+            $this->localLogger->error('Error processing grouped results', [
                 'exception' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -532,13 +603,13 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                     }
                 }
                 
-                $this->logger->debug('Volume query executed', [
+                $this->localLogger->debug('Volume query executed', [
                     'missing' => count($missingUids),
                     'foundVolume' => iterator_count($volumeResult)
                 ]);
             }
             
-            $this->logger->debug('Fetched additional title info', [
+            $this->localLogger->debug('Fetched additional title info', [
                 'requested' => count($titleRequiredForDocuments),
                 'foundToplevel' => iterator_count($titlesResult),
                 'total' => count($additionalTitleInfo)
@@ -547,7 +618,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             return $additionalTitleInfo;
             
         } catch (\Exception $e) {
-            $this->logger->error('Error fetching additional title info', [
+            $this->localLogger->error('Error fetching additional title info', [
                 'exception' => $e->getMessage()
             ]);
             return [];
