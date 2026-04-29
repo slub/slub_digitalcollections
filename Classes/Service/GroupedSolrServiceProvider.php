@@ -73,7 +73,10 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     {
         if (count($args) === 1 && $args[0] instanceof LoggerInterface) {
             // TYPO3 13.4 style: only logger parameter
-            parent::__construct($args[0]);
+            // @phpstan-ignore-next-line (TYPO3 13.4 constructor signature differs)
+            if (method_exists(parent::class, '__construct')) {
+                parent::__construct($args[0]);
+            }
             $this->localLogger = $args[0];
         } elseif (count($args) === 3) {
             // TYPO3 12.4 or 13.4 style with explicit parameters
@@ -85,9 +88,17 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             
             if ($isTypo3v13) {
                 // TYPO3 13.4: Parent expects only logger, use setters for other values
+                // @phpstan-ignore-next-line (TYPO3 13.4 constructor takes 1 parameter)
                 parent::__construct($logger);
-                $this->setConnectionName($connectionName);
-                $this->setSettings($settings);
+                // PHPStan: These methods only exist in TYPO3 13.4
+                // @phpstan-ignore-next-line (Method exists in TYPO3 13.4)
+                if (method_exists($this, 'setConnectionName')) {
+                    $this->setConnectionName($connectionName);
+                }
+                // @phpstan-ignore-next-line (Method exists in TYPO3 13.4)
+                if (method_exists($this, 'setSettings')) {
+                    $this->setSettings($settings);
+                }
             } else {
                 // TYPO3 12.4: Parent expects 3 parameters
                 parent::__construct($connectionName, $settings, $logger);
@@ -105,19 +116,27 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
     /**
      * Override setSettings to keep local copy.
+     * Only available in TYPO3 13.4+.
      */
     public function setSettings(array $settings): void
     {
-        parent::setSettings($settings);
+        // @phpstan-ignore-next-line (Method exists in TYPO3 13.4)
+        if (method_exists(parent::class, 'setSettings')) {
+            parent::setSettings($settings);
+        }
         $this->localSettings = $settings;
     }
 
     /**
      * Override setConnectionName to keep local copy.
+     * Only available in TYPO3 13.4+.
      */
     public function setConnectionName(string $name): void
     {
-        parent::setConnectionName($name);
+        // @phpstan-ignore-next-line (Method exists in TYPO3 13.4)
+        if (method_exists(parent::class, 'setConnectionName')) {
+            parent::setConnectionName($name);
+        }
         $this->localConnectionName = $name;
     }
 
