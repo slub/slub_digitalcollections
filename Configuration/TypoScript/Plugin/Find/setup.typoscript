@@ -46,15 +46,7 @@ plugin.tx_find.settings {
                 path = /
                 timeout = 30
                 core = dlfCore0
-            }
-            options {
-                scheme = http
-                host = sdvsolrsachsendigital2025.slub-dresden.de
-                port = 8983
-                path = /
-                timeout = 30
-                core = dlfCore0
-            }            
+            }         
         }
     }
 
@@ -161,12 +153,6 @@ plugin.tx_find.settings {
             4 = 100
         }
     }
-
-    # Old grouping configuration - REMOVED (duplicate, was overriding the configuration above)
-    # grouping {
-    #     field = uid
-    #     limit = 100
-    # }
 	
     # Limit the requested data fields for different query types:
     # Only request the minimum by default and load all fields for displaying
