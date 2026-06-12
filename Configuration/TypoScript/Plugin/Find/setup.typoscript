@@ -38,6 +38,7 @@ plugin.tx_find.settings {
     # SOLR connections
     connections {
         default {
+            provider = Slub\SlubDigitalcollections\Service\GroupedSolrServiceProvider
             options {
                 scheme = http
                 host = v12-sachsen-digital.ddev.site
@@ -45,13 +46,103 @@ plugin.tx_find.settings {
                 path = /
                 timeout = 30
                 core = dlfCore0
-            }
+            }         
         }
     }
+
+   grouping {
+        # Enable/disable grouping
+        enabled = 1
+        
+        ## FIELD-BASED GROUPING (group.field)
+        ## ----------------------------------
+        
+        # Option 1: Single field
+        field = uid
+        
+        # Option 2: Multiple fields (comment out single field above)
+        # fields {
+        #     0 = uid
+        #     1 = collection_id
+        #     2 = document_type
+        # }
+        
+        ## QUERY-BASED GROUPING (group.query)
+        ## -----------------------------------
+        
+        # queries {
+        #     # Group by year ranges
+        #     0 {
+        #         query = year:[1900 TO 1950]
+        #     }
+        #     1 {
+        #         query = year:[1951 TO 2000]
+        #     }
+        #     2 {
+        #         query = year:[2001 TO *]
+        #     }
+        #     
+        #     # Group by document types
+        #     3 {
+        #         query = type:manuscript
+        #     }
+        #     4 {
+        #         query = type:book
+        #     }
+        # }
+        
+        ## GROUPING PARAMETERS
+        ## -------------------
+        
+        # Number of documents to return per group
+        # -1 = all documents (default)
+        limit = 100
+        
+        # Starting offset within groups
+        offset = 0
+        
+        # Sort order within groups
+        # Examples: title asc, date desc, score desc
+        sort = score desc
+        
+        # Result format
+        # - grouped: Results organized by groups (default)
+        # - simple: Flat list with group memberships + main results
+        format = grouped
+        
+        # Note: The 'main' parameter is controlled via format in Solarium.
+        # Use format = 'simple' to include main results alongside grouped results.
+        
+        # Calculate facets for grouped results
+        # IMPORTANT: Requires proper Solr schema configuration!
+        # Grouping fields need docvalues type SORTED (not NUMERIC)
+        # false = standard faceting (recommended, prevents docvalues errors)
+        # true = facets calculated for all grouped docs (may cause errors)
+        facets = false
+        
+        # Truncate group count to limit
+        # true = group count limited to specified limit
+        # false = show actual number of docs in group (default)
+        truncate = false
+        
+        # Query result cache percentage (0-100)
+        # Higher values = more caching but higher memory usage
+        cachePercentage = 0
+        
+        # Include total number of groups in results
+        # true = include ngroups in response (default)
+        # false = don't calculate total groups (faster)
+        numberOfGroups = true
+    }    
 	
     standardFields {
-        snippet = type
         title = title
+        metadata-place = place
+        metadata-year = year
+        metadata-owner = owner
+        metadata-shelfmark = shelfmark
+        metadata-useandreproduction = useandreproduction   
+        type = type
     }
 
     # result list paging options
@@ -102,11 +193,11 @@ plugin.tx_find.settings {
         }
         3 {
             id = authorAsc
-            sortCriteria = author_faceting desc
+            sortCriteria = author_usi desc
         }
         4 {
             id = authorDesc
-            sortCriteria = author_faceting asc
+            sortCriteria = author_usi asc
         }
     }
 	
@@ -145,8 +236,8 @@ plugin.tx_find.settings.facets {
     # author
     1 {
         id = author
-        field = author_faceting
-        query = author_faceting:"%s"
+        field = author_usi
+        query = author_usi:"%s"
         queryStyle = and
     }
 
