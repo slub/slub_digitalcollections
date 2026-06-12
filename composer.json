@@ -65,12 +65,10 @@
     "allow-plugins": {
       "typo3/class-alias-loader": true,
       "typo3/cms-composer-installers": true
+    },
+    "audit": {
+        "block-insecure": false
     }
-  }
-  "policies": {
-      "advisories": {
-          "block": false
-      }
   },
   "repositories": [
     {
