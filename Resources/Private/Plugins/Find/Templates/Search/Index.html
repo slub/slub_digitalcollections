@@ -34,7 +34,7 @@
 	</s:page.title></f:comment>
 	<f:render partial="Page/Standard" arguments="{_all}"/>
 
-	<div class="results">
+	<div class="results tx-dlf-listview">
 		<div class="navigation top">
 			<f:if condition="{groupingActive}">
 				<f:then>
@@ -54,7 +54,7 @@
 
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
-		<ol id="c{config.uid}-resultList" class="resultList" start="{config.counterStart}">
+		<ol id="c{config.uid}-resultList" class="resultList tx-dlf-abstracts" start="{config.counterStart}">
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:for each="{groupedResults.valueGroups}" as="group">

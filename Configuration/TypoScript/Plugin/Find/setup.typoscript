@@ -136,8 +136,13 @@ plugin.tx_find.settings {
     }    
 	
     standardFields {
-        snippet = type
         title = title
+        metadata-place = place
+        metadata-year = year
+        metadata-owner = owner
+        metadata-shelfmark = shelfmark
+        metadata-useandreproduction = useandreproduction   
+        type = type
     }
 
     # result list paging options
