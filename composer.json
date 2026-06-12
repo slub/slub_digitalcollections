@@ -66,6 +66,11 @@
       "typo3/class-alias-loader": true,
       "typo3/cms-composer-installers": true
     }
+  }
+  "policies": {
+      "advisories": {
+          "block": false
+      }
   },
   "repositories": [
     {
