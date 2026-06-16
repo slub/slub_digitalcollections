@@ -1,4 +1,5 @@
 {namespace s=Subugoe\Find\ViewHelpers}
+{namespace d=Slub\SlubDigitalcollections\ViewHelpers}
 
 <f:comment>
     Copyright notice
@@ -58,53 +59,26 @@
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:for each="{groupedResults.valueGroups}" as="group">
-						<f:if condition="{group.numFound} == 1">
-							<f:then>
-								<f:alias map="{document : group.documents.0 }">
-									<f:render partial="Display/Result" arguments="{document: document, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
-								</f:alias>
-								
-								<f:comment>
-								<f:alias map="{sdoc: '{allDocuments.{group.value}}'}">
-									<f:if condition="{sdoc.children}">
-									<div class="children-container" style="background-color: blanchedalmond;">
-										<ul class="children-list">
-											<f:for each="{sdoc.children}" as="subDocument">
-												<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results}"/>
-											</f:for>
-										</ul>
-									</div>
-									</f:if>
-								</f:alias>
-								</f:comment>
-							</f:then>
-							<f:else>
-								<f:alias map="{document: '{allDocuments.{group.value}}'}">
-								<f:render partial="Display/Result" arguments="{document: document, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
+						<d:fromSolr query="uid:{group.value} AND toplevel:true" rows="1">
+							<f:if condition="{documents.0}">
+								<f:then>
+									<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
 
-								<div class="children-container">
-									<ul class="children-list">
+									<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
+									
+									<ol class="tx-dlf-volume" style="display: none;">
 										<f:for each="{group.documents}" as="subDocument">
-											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo:additionalTitleInfo}"/>
+											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
 										</f:for>
-									</ul>
-								</div>
+									</ol>
+									
+								</f:then>
+								<f:else>
+									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+								</f:else>
+							</f:if>
+						</d:fromSolr>
 
-								<f:comment>
-								<f:if condition="{document.children}">
-								<div class="children-container">
-									<ul class="children-list">
-										<f:for each="{document.children}" as="subDocument">
-											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results}"/>
-										</f:for>
-									</ul>
-								</div>
-								</f:if>
-								</f:comment>
-								
-								</f:alias>
-							</f:else>
-						</f:if>
 					</f:for>
 
 				</f:then>
