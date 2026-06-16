@@ -25,9 +25,11 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
+use Solarium\QueryType\Select\Query\Query;
+use Solarium\QueryType\Select\Result\Document;
 use Solarium\QueryType\Select\Result\Result;
-use Solarium\QueryType\Update\Query\Document\DocumentInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -79,19 +81,19 @@ class FromSolrViewHelper extends AbstractViewHelper
     {
         $templateVariableContainer = $renderingContext->getVariableProvider();
 
-        $solrClient = static::getSolariumClient();
+        $solrClient = self::getSolariumClient();
 
         switch (gettype($arguments['query'])) {
             case 'string':
-                $query = static::createQuery($solrClient, $arguments['query'], $templateVariableContainer);
+                $query = self::createQuery($solrClient, $arguments['query'], $templateVariableContainer);
                 break;
             case 'array':
-                $query = static::createQuery($solrClient, implode(' ' . $arguments['operator'] . ' ', array_map(function ($k, $v) {
+                $query = self::createQuery($solrClient, implode(' ' . $arguments['operator'] . ' ', array_map(function ($k, $v) {
                     return $k . ':' . $v;
                 }, array_keys($arguments['query']), array_values($arguments['query']))), $templateVariableContainer);
                 break;
             default:
-                $query = static::createQuery($solrClient, '*:*', $templateVariableContainer);
+                $query = self::createQuery($solrClient, '*:*', $templateVariableContainer);
         }
 
         if (!is_null($arguments['sortField'])) {
@@ -111,12 +113,12 @@ class FromSolrViewHelper extends AbstractViewHelper
             $query->addFields($arguments['fields']);
         }
 
-        $solrClient->setOptions(static::getSolariumClientOptionsArray($templateVariableContainer, $query));
+        $solrClient->setOptions(self::getSolariumClientOptionsArray($templateVariableContainer, $query));
 
         /** @var Result $resultSet */
         $resultSet = static::$solr->select($query);
 
-        /** @var DocumentInterface $result */
+        /** @var array<int, Document> $results */
         $results = $resultSet->getDocuments();
 
         if ($results) {
@@ -147,10 +149,9 @@ class FromSolrViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Check configuration for shards and when found create Distributed Search
-     * @param Query $query
+     * Check configuration for shards and when found create distributed search.
      */
-    private static function createQueryComponents(&$query, &$templateVariableContainer)
+    private static function createQueryComponents(Query $query, VariableProviderInterface $templateVariableContainer): void
     {
         $settings = $templateVariableContainer->get('settings');
         $shards = $settings['shards'] ?? [];
@@ -166,10 +167,8 @@ class FromSolrViewHelper extends AbstractViewHelper
 
     /**
      * Adds filter queries configured in TypoScript to $query.
-     *
-     * @param Query $query
      */
-    private static function addTypoScriptFilters(&$query, &$templateVariableContainer)
+    private static function addTypoScriptFilters(Query $query, VariableProviderInterface $templateVariableContainer): void
     {
         if (!empty($templateVariableContainer->get('settings')['additionalFilters'])) {
             foreach ($templateVariableContainer->get('settings')['additionalFilters'] as $key => $filterQuery) {
@@ -180,21 +179,16 @@ class FromSolrViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Creates a query for a document
-     *
-     * @param \Solarium\Client $solrClient
-     * @param string $query
-     * @param VariableProviderInterface $templateVariableContainer
-     * @return SelectQuery
+     * Creates a query for a document.
      */
-    private static function createQuery($solrClient, $query, &$templateVariableContainer)
+    private static function createQuery(Client $solrClient, string $query, VariableProviderInterface $templateVariableContainer): Query
     {
         $queryObject = $solrClient->createSelect();
-        static::addTypoScriptFilters($queryObject, $templateVariableContainer);
+        self::addTypoScriptFilters($queryObject, $templateVariableContainer);
 
         $queryObject->setQuery($query);
 
-        static::createQueryComponents($queryObject, $templateVariableContainer);
+        self::createQueryComponents($queryObject, $templateVariableContainer);
 
         return $queryObject;
     }
@@ -215,7 +209,7 @@ class FromSolrViewHelper extends AbstractViewHelper
         return static::$solr;
     }
 
-    private static function getSolariumClientOptionsArray(&$templateVariableContainer, $query)
+    private static function getSolariumClientOptionsArray(VariableProviderInterface $templateVariableContainer, Query $query): array
     {
         $settings = $templateVariableContainer->get('settings');
         $connectionName = $settings['activeConnection'] ?? 'default';
