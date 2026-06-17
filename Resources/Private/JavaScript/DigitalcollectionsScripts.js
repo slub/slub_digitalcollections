@@ -67,7 +67,7 @@ $(function () {
     if ($('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view').hasClass('active')) {
         $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view').removeClass('active');
     }
-    $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view, .tx-dlf-calendar .calendar-view').addClass('active');
+    $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a.tx-dlf-calendar-select-calendar-view, .tx-dlf-calendar .tx-dlf-calendar-calendar-view').addClass('active');
     $('.tx-dlf-calendar .tx-dlf-calendar-list-selection a').on('click', function (event) {
         if (!$(this).hasClass('active')) {
             var targetElement = '.' + $(this).attr('class').replace('select-', '');
