@@ -78,7 +78,7 @@
 														<f:comment>Lade das übergeordnete Werk der nächsten Ebene</f:comment>
 														<d:fromSolr query="uid:{documents.0.partof} AND toplevel:true" rows="1">
 															
-<f:comment>Zeige das oberste übergeordnete Werk</f:comment>
+															<f:comment>Zeige das oberste übergeordnete Werk</f:comment>
 															<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
 
 															<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
