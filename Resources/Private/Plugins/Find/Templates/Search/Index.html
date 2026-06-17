@@ -37,6 +37,7 @@
 
 	<div class="results tx-dlf-listview">
 		<div class="navigation top">
+			<f:comment>Prüfung: Ist die Gruppierung aktiviert? (für unterschiedliche Anzeige von Ergebniszähler und Pager)</f:comment>
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:alias map="{grouping: groupedResults}">
@@ -56,34 +57,114 @@
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
 		<ol id="c{config.uid}-resultList" class="resultList tx-dlf-abstracts" start="{config.counterStart}">
+			<f:comment>Prüfung: Ist die Gruppierung von Ergebnissen aktiviert?</f:comment>
 			<f:if condition="{groupingActive}">
 				<f:then>
+					<f:comment>Durchlaufe alle gruppierten Ergebnisse</f:comment>
 					<f:for each="{groupedResults.valueGroups}" as="group">
-						<d:fromSolr query="uid:{group.value} AND toplevel:true" rows="1">
-							<f:if condition="{documents.0}">
+						<li>
+							<f:comment>Prüfung: Ist das aktuelle Dokument ein Teil eines übergeordneten Werks (z.B. Band einer Reihe)?</f:comment>
+							<f:if condition="{allDocuments.{group.value}.partof}">
 								<f:then>
-									<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+									<f:comment>Lade das übergeordnete Werk aus Solr</f:comment>
+									<d:fromSolr query="uid:{allDocuments.{group.value}.partof} AND toplevel:true" rows="1">
+										<f:comment>Prüfung: Wurde das übergeordnete Werk gefunden?</f:comment>
+										<f:if condition="{documents.0}">
+											<f:then>
 
-									<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
-									
-									<ol class="tx-dlf-volume" style="display: none;">
-										<f:for each="{group.documents}" as="subDocument">
-											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
-										</f:for>
-									</ol>
-									
+												<f:comment>Prüfung: Hat das übergeordnete Werk selbst noch ein übergeordnetes Werk? (mehrstufige Hierarchie)</f:comment>
+												<f:if condition="{documents.0.partof} > 0">
+													<f:then>
+														<f:comment>Lade das übergeordnete Werk der nächsten Ebene</f:comment>
+														<d:fromSolr query="uid:{documents.0.partof} AND toplevel:true" rows="1">
+															
+<f:comment>Zeige das oberste übergeordnete Werk</f:comment>
+															<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+
+															<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
+
+															<f:comment>Liste alle Unterdokumente (Bände) auf</f:comment>
+															<ol class="tx-dlf-volume">
+																<f:for each="{group.documents}" as="subDocument">
+																	<li>
+																		<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+																	</li>
+																</f:for>
+															</ol>	
+															
+														</d:fromSolr>
+														
+													</f:then>
+													<f:else>
+														<f:comment>Kein weiteres übergeordnetes Werk: Zeige das gefundene übergeordnete Werk</f:comment>
+														<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+
+														<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
+
+														<f:comment>Liste alle Unterdokumente (Bände) auf</f:comment>
+														<ol class="tx-dlf-volume">
+															<f:for each="{group.documents}" as="subDocument">
+																<li>
+																	<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+																</li>
+															</f:for>
+														</ol>	
+													
+
+													</f:else>
+												</f:if>
+												
+
+											</f:then>
+											<f:else>
+												<f:comment>Übergeordnetes Werk wurde nicht gefunden: Zeige nur das aktuelle Dokument</f:comment>
+												<li>
+													<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+												</li>
+											</f:else>
+										</f:if>
+									</d:fromSolr>
+
+
 								</f:then>
 								<f:else>
-									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+									<f:comment>Dokument ist kein Teil eines übergeordneten Werks: Lade es direkt als Top-Level-Dokument</f:comment>
+									<d:fromSolr query="uid:{group.value} AND toplevel:true" rows="1">
+										<f:comment>Prüfung: Wurde das Dokument gefunden?</f:comment>
+										<f:if condition="{documents.0}">
+											<f:then>
+												<f:comment>Zeige das Top-Level-Dokument</f:comment>
+												<f:render partial="Display/Result" arguments="{document: documents.0, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+
+												<button class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
+												
+												<f:comment>Liste alle zugehörigen Unterdokumente auf</f:comment>
+												<ol class="tx-dlf-volume">
+													<f:for each="{group.documents}" as="subDocument">
+														<li>
+															<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+														</li>
+													</f:for>
+												</ol>
+												
+											</f:then>
+											<f:else>
+												<f:comment>Dokument wurde nicht gefunden: Zeige Fallback</f:comment>
+												<li>
+													<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+												</li>
+											</f:else>
+										</f:if>
+									</d:fromSolr>
 								</f:else>
 							</f:if>
-						</d:fromSolr>
+						</li>
 
 					</f:for>
 
 				</f:then>
 				<f:else>
-
+					<f:comment>Keine Gruppierung: Zeige einfache Ergebnisliste</f:comment>
 					<f:for each="{results.documents}" as="document">
 						<f:render partial="Display/Result" arguments="{_all}"/>
 					</f:for>

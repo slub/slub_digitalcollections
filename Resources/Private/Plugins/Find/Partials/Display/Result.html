@@ -19,11 +19,10 @@
 	It uses the standardFields configured in settings, result highlighting
 	(if configured) and a link to the document’s page.
 </f:comment>
-<li id="c{config.uid}-result-{document.id}">
 
 	<f:link.page pageUid="{settings.kitodoPageView}" 
 		additionalParams="{tx_dlf:{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}}" >
-		<div class="tx-dlf-listview-thumbnail"></div>
+		<div class="tx-dlf-listview-thumbnail"><f:if condition="{s:data.valueForKey(array:document.fields, key:'thumbnail')}"><f:then><img src="{document.thumbnail}" alt="thumbnail for {s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}"/></f:then></f:if></div>
 		<dl>
 			<f:if condition="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}">
 				<f:then>
@@ -63,5 +62,5 @@
 
 	</f:link.page>
 
-</li>
+	
 
