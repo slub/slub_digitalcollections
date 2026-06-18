@@ -127,10 +127,10 @@ class FromSolrViewHelper extends AbstractViewHelper
             }
             $templateVariableContainer->add('numFound', $resultSet->getNumFound());
 
+            if ($templateVariableContainer->exists('documents')) {
+                $templateVariableContainer->remove('documents');
+            }
             if (!$arguments['numFoundOnly']) {
-                if ($templateVariableContainer->exists('documents')) {
-                    $templateVariableContainer->remove('documents');
-                }
                 $templateVariableContainer->add('documents', $results);
             }
         } else {
