@@ -98,7 +98,14 @@
 		</ol>
 
 		<div class="navigation bottom">
-			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+			<f:if condition="{groupingActive}">
+				<f:then>
+					<f:render partial="Pager/GroupedListPager" arguments="{_all}"/>
+				</f:then>
+				<f:else>
+					<f:render partial="Pager/ListPager" arguments="{_all}"/>
+				</f:else>
+			</f:if>
 		</div>
 	</div>
 </f:section>
