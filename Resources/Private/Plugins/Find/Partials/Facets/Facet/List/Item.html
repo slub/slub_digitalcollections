@@ -26,8 +26,7 @@
 	<f:if condition="{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}">
 		<f:then>
 			<f:link.action
-				addQueryString="TRUE"
-				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
+				addQueryString="TRUE"				arguments="{q: arguments.q}"				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
 				section="{settings.jumpToID}"
 				class="icon-cancel facetRemove internal"
 				title="{f:translate(key:'remove filter %s', arguments:{0:facetTerm})}"><span class="facetName"><f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTermDisplay}" default="{facetTermDisplay}"/></span></f:link.action>
