@@ -29,11 +29,9 @@
 							{grouping.numberOfGroups} <f:translate key="results"/>
 						</f:then>
 						<f:else>
-							
-							{config.counterStart}-<f:if condition="{groupedResults.numberOfGroups} < {config.counterEnd}"><f:then>{f:count(subject:groupedResults.valueGroups)}</f:then><f:else>{config.counterEnd}</f:else></f:if>
+							{config.counterStart}-<f:if condition="{config.counterEnd} > {grouping.numberOfGroups}"><f:then>{grouping.numberOfGroups}</f:then><f:else>{config.counterEnd}</f:else></f:if>
 							<f:translate key="of"/>
 							{grouping.numberOfGroups}
-							
 						</f:else>
 					</f:if>
 				</f:else>
