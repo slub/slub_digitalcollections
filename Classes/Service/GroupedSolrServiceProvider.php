@@ -481,13 +481,17 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             // Fetch additional title information for documents without title
             $additionalTitleInfo = $this->fetchAdditionalTitleInfo($allDocuments);
             $result['additionalTitleInfo'] = $additionalTitleInfo;
+
+            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
+            $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
             
             $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
                 'queryCount' => count($queries),
-                'additionalTitles' => count($additionalTitleInfo)
+                'additionalTitles' => count($additionalTitleInfo),
+                'groupDisplayDocuments' => count($result['groupDisplayDocuments'])
             ]);
             
         } catch (\Exception $e) {
@@ -641,6 +645,119 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $this->localLogger->error('Error fetching additional title info', [
                 'exception' => $e->getMessage()
             ]);
+            return [];
+        }
+    }
+
+    /**
+     * Resolves the display document for each group with batched Solr requests.
+     *
+     * Previous template logic queried Solr per group (and nested for multi-level parents).
+     * This method preserves that behavior while reducing requests to at most two batched calls.
+     *
+     * @param array $groupedResults Template-friendly grouped result structure
+     * @param array $allDocuments Flat array of all documents keyed by group value
+     * @return array Display documents keyed by group value
+     */
+    protected function resolveDisplayDocumentsForGroups(array $groupedResults, array $allDocuments): array
+    {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return [];
+        }
+
+        $candidateUidByGroupValue = [];
+        foreach ($valueGroups as $group) {
+            $groupValue = (string)($group['value'] ?? '');
+            if ($groupValue === '' || empty($allDocuments[$groupValue])) {
+                continue;
+            }
+
+            $document = $allDocuments[$groupValue];
+            $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
+            $candidateUidByGroupValue[$groupValue] = $candidateUid;
+        }
+
+        if (empty($candidateUidByGroupValue)) {
+            return [];
+        }
+
+        $topLevelCandidates = $this->fetchTopLevelDocumentsByUids(array_values($candidateUidByGroupValue));
+
+        $secondLevelUids = [];
+        foreach ($topLevelCandidates as $candidateDocument) {
+            if (!empty($candidateDocument['partof'])) {
+                $secondLevelUids[] = (string)$candidateDocument['partof'];
+            }
+        }
+        $secondLevelParents = $this->fetchTopLevelDocumentsByUids($secondLevelUids);
+
+        $displayDocuments = [];
+        foreach ($candidateUidByGroupValue as $groupValue => $candidateUid) {
+            if (!empty($topLevelCandidates[$candidateUid])) {
+                $candidateDocument = $topLevelCandidates[$candidateUid];
+                if (!empty($candidateDocument['partof'])) {
+                    $parentUid = (string)$candidateDocument['partof'];
+                    if (!empty($secondLevelParents[$parentUid])) {
+                        $displayDocuments[$groupValue] = $secondLevelParents[$parentUid];
+                        continue;
+                    }
+                }
+
+                $displayDocuments[$groupValue] = $candidateDocument;
+                continue;
+            }
+
+            if (!empty($allDocuments[$groupValue])) {
+                $displayDocuments[$groupValue] = $allDocuments[$groupValue];
+            }
+        }
+
+        return $displayDocuments;
+    }
+
+    /**
+     * Fetches top-level Solr documents by UID and returns them indexed by UID.
+     *
+     * @param array $uids UIDs to fetch
+     * @return array Documents keyed by UID
+     */
+    protected function fetchTopLevelDocumentsByUids(array $uids): array
+    {
+        $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
+            return $uid !== '';
+        })));
+
+        if (empty($uids)) {
+            return [];
+        }
+
+        $query = implode(' OR ', array_map(static function ($uid) {
+            return 'uid:' . $uid;
+        }, $uids));
+
+        try {
+            $selectQuery = $this->connection->createSelect();
+            $selectQuery->setQuery($query);
+            $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
+
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $result = $this->connection->execute($selectQuery);
+
+            $documents = [];
+            foreach ($result as $document) {
+                if (!empty($document['uid'])) {
+                    $documents[(string)$document['uid']] = $document;
+                }
+            }
+
+            return $documents;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching top-level documents by UIDs', [
+                'exception' => $e->getMessage(),
+                'uidCount' => count($uids)
+            ]);
+
             return [];
         }
     }
