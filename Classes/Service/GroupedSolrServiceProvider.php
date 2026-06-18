@@ -638,7 +638,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             
             $this->localLogger->debug('Fetched additional title info', [
                 'requested' => count($titleRequiredForDocuments),
-                'foundToplevel' => iterator_count($titlesResult),
+                'foundToplevel' => count($titlesResult->getDocuments()),
                 'total' => count($additionalTitleInfo)
             ]);
 
