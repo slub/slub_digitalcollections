@@ -66,7 +66,7 @@ class FromSolrViewHelper extends AbstractViewHelper
         $this->registerArgument('sortOrder', 'string', 'Sort order ("asc" or "desc").', false, 'asc');
         $this->registerArgument('rows', 'integer', 'Number of rows to be returned.', false);
         $this->registerArgument('start', 'integer', 'Number of leading documents to skip.', false);
-        $this->registerArgument('fields', 'string', 'Fields to be returned, comma seperated if more than one field.', false);
+        $this->registerArgument('fields', 'string', 'Fields to be returned, comma separated if more than one field.', false);
         $this->registerArgument('numFoundOnly', 'boolean', 'Return numFound only, do not fetch Documents.', false, false);
     }
 
