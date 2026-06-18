@@ -164,10 +164,12 @@
 
 				</f:then>
 				<f:else>
-					<f:comment>Keine Gruppierung: Zeige einfache Ergebnisliste</f:comment>
-					<f:for each="{results.documents}" as="document">
+				<f:comment>Keine Gruppierung: Zeige einfache Ergebnisliste</f:comment>
+				<f:for each="{results.documents}" as="document">
+					<li>
 						<f:render partial="Display/Result" arguments="{_all}"/>
-					</f:for>
+					</li>
+				</f:for>
 
 				</f:else>
 			</f:if>
