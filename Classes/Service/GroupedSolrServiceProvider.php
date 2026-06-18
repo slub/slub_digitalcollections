@@ -27,7 +27,6 @@ namespace Slub\SlubDigitalcollections\Service;
  * ************************************************************* */
 
 use Psr\Log\LoggerInterface;
-use Solarium\Component\Result\Grouping\Result as GroupingResult;
 use Subugoe\Find\Service\SolrServiceProvider;
 
 /**
