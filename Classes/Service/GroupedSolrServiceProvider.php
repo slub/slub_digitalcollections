@@ -480,10 +480,10 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $result['groupCount'] = $totalGroups;
             $result['matches'] = $totalMatches;
             $result['groupingActive'] = true;
-            
-            // Fetch additional title information for documents without title
-            $additionalTitleInfo = $this->fetchAdditionalTitleInfo($allDocuments);
-            $result['additionalTitleInfo'] = $additionalTitleInfo;
+
+            // Kept for template compatibility; expensive lookup is currently disabled
+            // because result partials do not consume this data.
+            $result['additionalTitleInfo'] = [];
 
             // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
             $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
@@ -493,7 +493,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
                 'queryCount' => count($queries),
-                'additionalTitles' => count($additionalTitleInfo),
                 'groupDisplayDocuments' => count($result['groupDisplayDocuments'])
             ]);
             
