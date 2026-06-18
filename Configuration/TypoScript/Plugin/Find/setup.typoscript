@@ -21,9 +21,6 @@ plugin.tx_find {
     }
 }
 
-# Grouping config has been extracted to a dedicated include.
-@import 'EXT:slub_digitalcollections/Configuration/TypoScript/Plugin/Find/grouping.typoscript'
-
 ##
 ## SOLR-related configuration options for find 
 ##
