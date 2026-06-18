@@ -27,6 +27,7 @@ namespace Slub\SlubDigitalcollections\Service;
  * ************************************************************* */
 
 use Psr\Log\LoggerInterface;
+use Solarium\Component\Result\Grouping\QueryGroup;
 use Subugoe\Find\Service\SolrServiceProvider;
 
 /**
@@ -463,15 +464,14 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
             
             // Process query-based grouping.
-            // If no field grouping is configured, use the first query group for totals.
+            // If no field grouping is configured (or no field-group data is available),
+            // map query groups into the same template structure used for field grouping.
             $queries = $this->getConfiguredQueries($groupSettings);
-            $primaryQuerySet = ($primaryField === null);
-            foreach ($queries as $query) {
-                $queryGroup = $grouping->getGroup($query);
-                if ($queryGroup && $primaryQuerySet) {
-                    $totalMatches = $queryGroup->getMatches();
-                    $primaryQuerySet = false;
-                }
+            $queryGroups = $this->collectQueryGroups($grouping, $queries);
+            if (empty($groupedResults) && !empty($queryGroups)) {
+                $groupedResults = $this->extractTemplateDataFromQueryGroups($queryGroups, $allDocuments);
+                $totalMatches = $groupedResults['matches'];
+                $totalGroups = $groupedResults['numberOfGroups'];
             }
             
             // Enrich result array with template-friendly structure
@@ -492,7 +492,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
-                'queryCount' => count($queries),
+                'queryCount' => count($queryGroups),
                 'groupDisplayDocuments' => count($result['groupDisplayDocuments'])
             ]);
             
@@ -546,6 +546,86 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             ];
         }
         
+        return $data;
+    }
+
+    /**
+     * Collects query groups from Solr grouping results.
+     *
+     * @param mixed $grouping Solarium grouping result container
+     * @param array $configuredQueries Query strings from settings
+     * @return array<string, QueryGroup> Query groups keyed by query string
+     */
+    protected function collectQueryGroups($grouping, array $configuredQueries): array
+    {
+        $queryGroups = [];
+
+        foreach ($configuredQueries as $query) {
+            $group = $grouping->getGroup($query);
+            if ($group instanceof QueryGroup) {
+                $queryGroups[$query] = $group;
+            }
+        }
+
+        // Fallback for runtime query overrides (e.g. URL groupQuery) that are not in settings.
+        if (empty($queryGroups) && method_exists($grouping, 'getGroups')) {
+            foreach ($grouping->getGroups() as $groupKey => $group) {
+                if ($group instanceof QueryGroup) {
+                    $queryGroups[(string)$groupKey] = $group;
+                }
+            }
+        }
+
+        return $queryGroups;
+    }
+
+    /**
+     * Extracts template-friendly data from query-based grouping results.
+     *
+     * @param array<string, QueryGroup> $queryGroups Query groups keyed by query string
+     * @param array &$allDocuments Reference to collect all documents by synthetic group key
+     * @return array Template-friendly group structure
+     */
+    protected function extractTemplateDataFromQueryGroups(array $queryGroups, array &$allDocuments): array
+    {
+        $data = [
+            'matches' => 0,
+            'numberOfGroups' => 0,
+            'valueGroups' => []
+        ];
+
+        foreach ($queryGroups as $query => $queryGroup) {
+            $documents = [];
+            foreach ($queryGroup as $document) {
+                $documents[] = $document;
+            }
+
+            // Skip empty groups so templates do not try to render a missing lead document.
+            if (empty($documents)) {
+                continue;
+            }
+
+            $groupValue = 'query-' . md5($query);
+
+            if ($data['matches'] === 0) {
+                $data['matches'] = $queryGroup->getMatches();
+            }
+
+            if (!isset($allDocuments[$groupValue])) {
+                $allDocuments[$groupValue] = $documents[0];
+            }
+
+            $data['valueGroups'][] = [
+                'value' => $groupValue,
+                'query' => $query,
+                'numFound' => $queryGroup->getNumFound(),
+                'start' => $queryGroup->getStart() ?? 0,
+                'documents' => $documents
+            ];
+        }
+
+        $data['numberOfGroups'] = count($data['valueGroups']);
+
         return $data;
     }
 
