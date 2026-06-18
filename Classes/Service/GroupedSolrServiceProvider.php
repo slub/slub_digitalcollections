@@ -444,30 +444,34 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $totalMatches = 0;
             $totalGroups = 0;
             
-            // Get the primary grouping field for template compatibility
+            // Get the primary grouping field for template compatibility.
+            // matches/numberOfGroups are taken exclusively from the primary field (or first
+            // query group) to avoid double-counting: every grouping command reports the same
+            // underlying matches, so summing across fields would multiply the value.
             $fields = $this->getConfiguredFields($groupSettings);
             $primaryField = !empty($fields) ? $fields[0] : null;
             
-            // Process field-based grouping
+            // Process field-based grouping – only primary field contributes to totals.
             foreach ($fields as $field) {
                 $fieldGroup = $grouping->getGroup($field);
                 if ($fieldGroup) {
-                    $totalMatches += $fieldGroup->getMatches();
-                    $totalGroups += $fieldGroup->getNumberOfGroups();
-                    
-                    // For the primary field, create template-friendly structure
                     if ($field === $primaryField) {
+                        $totalMatches = $fieldGroup->getMatches();
+                        $totalGroups = $fieldGroup->getNumberOfGroups();
                         $groupedResults = $this->extractTemplateData($fieldGroup, $allDocuments);
                     }
                 }
             }
             
-            // Process query-based grouping
+            // Process query-based grouping.
+            // If no field grouping is configured, use the first query group for totals.
             $queries = $this->getConfiguredQueries($groupSettings);
-            foreach ($queries as $idx => $query) {
+            $primaryQuerySet = ($primaryField === null);
+            foreach ($queries as $query) {
                 $queryGroup = $grouping->getGroup($query);
-                if ($queryGroup) {
-                    $totalMatches += $queryGroup->getMatches();
+                if ($queryGroup && $primaryQuerySet) {
+                    $totalMatches = $queryGroup->getMatches();
+                    $primaryQuerySet = false;
                 }
             }
             
