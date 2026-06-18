@@ -60,7 +60,7 @@
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:comment>Durchlaufe alle gruppierten Ergebnisse</f:comment>
-					<f:for each="{groupedResults.valueGroups}" as="group">
+					<f:for each="{groupedResults.valueGroups}" as="group" iteration="groupIterator">
 						<li>
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
 								<f:then>
@@ -71,9 +71,14 @@
 								</f:else>
 							</f:if>
 
-							<button type="button" class="tx-dlf-morevolumes" title="mehr anzeigen">mehr anzeigen</button>
+							<button
+								type="button"
+								class="tx-dlf-morevolumes"
+								title="mehr anzeigen"
+								aria-expanded="false"
+								aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">mehr anzeigen</button>
 
-							<ol class="tx-dlf-volume">
+							<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
 								<f:for each="{group.documents}" as="subDocument">
 									<li>
 										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>

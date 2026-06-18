@@ -14,7 +14,19 @@ $(function () {
 
     // sub entry toggle in list views
     $('.tx-dlf-morevolumes, .tx-dlf-hidevolumes').on(mobileEvent, function (event) {
-        $(this).parent().toggleClass('tx-dlf-volumes-open').find('.tx-dlf-volume').slideToggle();
+        var $toggle = $(this);
+        var controlledId = $toggle.attr('aria-controls');
+        var $volumes = controlledId ? $('#' + controlledId) : $toggle.parent().find('.tx-dlf-volume').first();
+        var isExpanded = $toggle.attr('aria-expanded') === 'true';
+        var nextExpanded = !isExpanded;
+
+        $toggle.attr('aria-expanded', nextExpanded ? 'true' : 'false');
+
+        if ($volumes.length) {
+            $volumes.attr('aria-hidden', nextExpanded ? 'false' : 'true').slideToggle();
+        }
+
+        $toggle.parent().toggleClass('tx-dlf-volumes-open', nextExpanded);
     });
 
     // Additional transformations for sidebar search box to use it as offcanvas element in smaller views
