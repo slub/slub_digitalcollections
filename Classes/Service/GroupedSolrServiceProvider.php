@@ -632,7 +632,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 
                 $this->localLogger->debug('Volume query executed', [
                     'missing' => count($missingUids),
-                    'foundVolume' => iterator_count($volumeResult)
+                    'foundVolume' => count($volumeResult->getDocuments())
                 ]);
             }
             
