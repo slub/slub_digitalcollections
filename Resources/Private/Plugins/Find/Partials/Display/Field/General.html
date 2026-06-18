@@ -31,7 +31,7 @@
 			<f:for each="{s:data.valueForKey(array:document.fields, key:field)}" as="value" iteration="iterator">
 				{groupItemPrefix->f:format.raw()}{fieldPrefix->f:format.raw()}
 					
-						<f:format.raw>4
+						<f:format.raw>
 							<s:find.highlightField
 								field="{field}"
 								document="{document}"
