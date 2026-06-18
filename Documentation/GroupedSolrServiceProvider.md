@@ -133,10 +133,10 @@ Benutzer können die Gruppierung per URL-Parameter ändern:
 
 In Ihren Fluid-Templates stehen folgende Variablen zur Verfügung:
 
-- `{results.groupedResults}` - Array mit gruppierten Ergebnissen
-- `{results.groupCount}` - Anzahl der Gruppen
-- `{results.matches}` - Gesamtanzahl der Treffer
-- `{results.groupingActive}` - Boolean (true wenn Grouping aktiv)
+- `{groupedResults}` - Array mit gruppierten Ergebnissen
+- `{groupCount}` - Anzahl der Gruppen
+- `{matches}` - Gesamtanzahl der Treffer
+- `{groupingActive}` - Boolean (true wenn Grouping aktiv)
 
 ### Beispiel: Einfache Ausgabe
 
