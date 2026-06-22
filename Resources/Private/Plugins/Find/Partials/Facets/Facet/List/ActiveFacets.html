@@ -36,7 +36,9 @@
 						</f:then>
 						<f:else>
 							<f:link.action
-								addQueryString="TRUE"							arguments="{q: arguments.q}"								argumentsToBeExcludedFromQueryString="{1: 'tx_find_find[facet]'}"
+								addQueryString="TRUE"
+								arguments="{q: arguments.q}"
+								argumentsToBeExcludedFromQueryString="{1: 'tx_find_find[facet]'}"
 								section="{settings.jumpToID}"
 								class=""
 								title="{f:translate(key:'Reset all facets')}">
@@ -51,7 +53,9 @@
 						<f:if condition="{reverseFacet}=='not'">
 							<li>
 								<f:link.action
-									addQueryString="TRUE"								arguments="{q: arguments.q}"									argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetKey, facetTerm:reverseFacetKey, activeFacets:config.activeFacets, mode:'remove')}"
+									addQueryString="TRUE"
+									arguments="{q: arguments.q}"
+									argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetKey, facetTerm:reverseFacetKey, activeFacets:config.activeFacets, mode:'remove')}"
 									section="{settings.jumpToID}"
 									class=""
 									style="text-decoration:line-through;"
@@ -73,7 +77,9 @@
 								<f:comment><hr class="active-facet-hr"/></f:comment>
 								<li>
 									<f:link.action
-										addQueryString="TRUE"									arguments="{q: arguments.q}"										argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
+										addQueryString="TRUE"
+										arguments="{q: arguments.q}"
+										argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
 										section="{settings.jumpToID}"
 										class=""
 										title="{f:translate(key:'remove filter %s', arguments:{0:facetTerm})}">

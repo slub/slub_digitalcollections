@@ -46,7 +46,7 @@ plugin.tx_find.settings {
                 path = /
                 timeout = 30
                 core = dlfCore0
-            }         
+            }
         }
     }
 
