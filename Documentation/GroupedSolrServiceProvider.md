@@ -1,65 +1,258 @@
-# GroupedSolrServiceProvider - Dokumentation
+# Grouped Search Results - TYPO3 Find Integration
 
-## Übersicht
+## Overview
 
-Die `GroupedSolrServiceProvider` Klasse erweitert die Standard-Solr-Integration von TYPO3 Find um vollständige Solr Grouping-Funktionalität.
+Grouped search results allow you to organize Solr search results by a specific field or query, displaying the first result from each group prominently with a "more" button to expand and show additional results within that group.
 
-## Features
+## What is Grouping?
 
-✅ **Field-basiertes Grouping** - Gruppierung nach einem oder mehreren Feldern  
-✅ **Query-basiertes Grouping** - Gruppierung nach Solr-Queries  
-✅ **Erweiterte Parameter** - Vollständige Kontrolle über Solr Grouping-Parameter  
-✅ **URL-Parameter** - Überschreibung der TypoScript-Konfiguration via URL  
-✅ **Flexible Konfiguration** - Einfache TypoScript-Konfiguration  
-✅ **Logging & Debugging** - Ausführliche Fehlerprotokollierung
+Instead of displaying search results as a flat list, grouping organizes results into collapsible groups. Each group represents documents that share a common attribute (e.g., same collection, author, or year range).
 
-## Installation & Aktivierung
+**Example:**
+```
+Collection A
+├─ Document 1 (shown by default)
+├─ Document 2 (hidden, click "more" to expand)
+├─ Document 3
+└─ Document 4
 
-### 1. Provider aktivieren
-
-In Ihrer TypoScript-Konfiguration (z.B. `setup.typoscript`):
-
-```typoscript
-plugin.tx_find.settings {
-    connections {
-        default {
-            # GroupedSolrServiceProvider verwenden
-            provider = Slub\SlubDigitalcollections\Service\GroupedSolrServiceProvider
-            
-            options {
-                scheme = http
-                host = localhost
-                port = 8983
-                path = /solr/
-                core = your_core
-            }
-        }
-    }
-}
+Collection B  
+├─ Document 5 (shown by default)
+├─ Document 6 (hidden)
+└─ Document 7
 ```
 
-### 2. Grouping konfigurieren
+## TypoScript Configuration
 
-Siehe `grouping-example.typoscript` für vollständige Konfigurationsoptionen.
+### Basic Setup
 
-**Minimale Konfiguration:**
+Enable grouping in your TypoScript configuration:
 
 ```typoscript
 plugin.tx_find.settings {
     grouping {
+        # Enable grouping
         enabled = 1
-        field = uid
-        limit = 100
+        
+        # Field to group by
+        field = collection_id
+        
+        # Number of results per group to display
+        limit = 5
     }
 }
 ```
 
-## Verwendungsszenarien
+### Complete Configuration Example
 
-### Szenario 1: Gruppierung nach Sammlungen
+```typoscript
+plugin.tx_find.settings {
+    # Standard search settings
+    standardFields {
+        title = title
+        snippet = text
+    }
+    
+    # Grouping configuration
+    grouping {
+        # Activate/deactivate grouping
+        enabled = 1
+        
+        # Single field grouping
+        field = collection_id
+        
+        # OR use multiple fields (commented out if using single field)
+        # fields {
+        #     0 = collection_id
+        #     1 = document_type
+        # }
+        
+        # Maximum documents per group to retrieve
+        limit = 10
+        
+        # Start offset within groups
+        offset = 0
+        
+        # Sort documents within each group
+        sort = title asc
+        
+        # Calculate total number of groups
+        numberOfGroups = 1
+        
+        # Truncate group count (optimization)
+        truncate = 0
+        
+        # Cache settings (0-100)
+        cachePercentage = 0
+    }
+}
+```
+
+### Field-Based Grouping
+
+Group results by a single Solr field:
 
 ```typoscript
 grouping {
+    enabled = 1
+    field = collection_id
+    limit = 20
+    sort = date_indexed desc
+}
+```
+
+**Use Cases:**
+- Group by `collection_id` - Results organized by collection
+- Group by `author` - Results organized by author
+- Group by `document_type` - Group by document type (manuscript, book, etc.)
+- Group by `year` - Group by publication year
+
+### Multiple Field Grouping
+
+Group by multiple fields hierarchically:
+
+```typoscript
+grouping {
+    enabled = 1
+    fields {
+        0 = collection_id
+        1 = author
+        2 = year
+    }
+    limit = 15
+}
+```
+
+This creates nested groups: Collection → Author → Year
+
+### Query-Based Grouping
+
+Group results by Solr queries (e.g., date ranges):
+
+```typoscript
+grouping {
+    enabled = 1
+    queries {
+        0 {
+            label = Before 1900
+            query = year:[* TO 1899]
+        }
+        1 {
+            label = 1900-1950
+            query = year:[1900 TO 1950]
+        }
+        2 {
+            label = 1950-2000
+            query = year:[1951 TO 2000]
+        }
+        3 {
+            label = After 2000
+            query = year:[2001 TO *]
+        }
+    }
+    limit = 10
+}
+```
+
+## Configuration Parameters Reference
+
+### Core Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `enabled` | boolean | 1 | Enable/disable grouping |
+| `field` | string | - | Single grouping field |
+| `fields` | array | - | Multiple grouping fields |
+| `queries` | array | - | Query-based grouping definition |
+
+### Display Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `limit` | integer | 10 | Max results per group to retrieve |
+| `offset` | integer | 0 | Start position within group results |
+| `sort` | string | - | Sort documents in groups (e.g., `title asc`) |
+
+### Performance Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `numberOfGroups` | boolean | 1 | Calculate total group count |
+| `truncate` | boolean | 0 | Limit group count calculation |
+| `cachePercentage` | integer | 0 | Query result caching (0-100) |
+
+## Template Implementation
+
+The template automatically handles grouped results when `groupingActive = 1`:
+
+```html
+<f:if condition="{groupingActive}">
+    <f:for each="{groupedResults.valueGroups}" as="group" iteration="groupIterator">
+        <li>
+            <!-- First document in group (always shown) -->
+            <f:render partial="Display/Result" arguments="{document: group.primaryDocument, config: config}"/>
+            
+            <!-- Expand/collapse button -->
+            <button
+                type="button"
+                class="tx-dlf-morevolumes"
+                title="{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}"
+                aria-expanded="false"
+                aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">
+                {f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}
+            </button>
+            
+            <!-- Additional group documents (hidden by default) -->
+            <ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
+                <f:for each="{group.documents}" as="document">
+                    <li>
+                        <f:render partial="Display/Result" arguments="{document: document, config: config}"/>
+                    </li>
+                </f:for>
+            </ol>
+        </li>
+    </f:for>
+</f:if>
+```
+
+### Template Variables
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `{groupingActive}` | boolean | True if grouping is enabled |
+| `{groupedResults.valueGroups}` | array | Array of grouped results |
+| `{group.value}` | string | Group identifier/name |
+| `{group.numFound}` | integer | Total results in this group |
+| `{group.documents}` | array | Documents in current group |
+| `{groupIterator.cycle}` | string | Unique group identifier |
+
+## URL Parameters
+
+Override TypoScript settings via URL parameters:
+
+```
+# Single field grouping
+?tx_find_find[groupField]=author
+
+# Multiple fields
+?tx_find_find[groupFields][0]=collection
+&tx_find_find[groupFields][1]=author
+
+# Query grouping
+?tx_find_find[groupQuery][0]=year:[1900 TO 1950]
+
+# Parameters
+?tx_find_find[groupLimit]=20
+?tx_find_find[groupOffset]=0
+?tx_find_find[groupSort]=date desc
+```
+
+## Practical Examples
+
+### Example 1: Group by Collection
+
+```typoscript
+plugin.tx_find.settings.grouping {
     enabled = 1
     field = collection_id
     limit = 10
@@ -67,281 +260,106 @@ grouping {
 }
 ```
 
-**Ergebnis:** Dokumente werden nach `collection_id` gruppiert, max. 10 Dokumente pro Sammlung, sortiert nach Titel.
+**Result:** Search results are grouped by collection. Each group shows the first 10 documents sorted by title, with remaining documents collapsible under "more".
 
-### Szenario 2: Mehrere Grouping-Felder
+### Example 2: Group by Author with Limit
 
 ```typoscript
-grouping {
+plugin.tx_find.settings.grouping {
     enabled = 1
-    fields {
-        0 = collection_id
-        1 = document_type
-    }
-    limit = 20
+    field = author
+    limit = 5
+    sort = date_indexed desc
+    numberOfGroups = 1
 }
 ```
 
-**Ergebnis:** Dokumente werden nach Sammlung UND Dokumenttyp gruppiert.
+**Result:** Results grouped by author, showing newest 5 documents per author first.
 
-### Szenario 3: Gruppierung nach Jahrzehnten
+### Example 3: Group by Time Periods
 
 ```typoscript
-grouping {
+plugin.tx_find.settings.grouping {
     enabled = 1
     queries {
-        0 {
-            query = year:[1900 TO 1919]
-        }
-        1 {
-            query = year:[1920 TO 1939]
-        }
-        2 {
-            query = year:[1940 TO 1959]
-        }
-        3 {
-            query = year:[1960 TO 1979]
-        }
-        4 {
-            query = year:[1980 TO *]
-        }
+        0.query = year:[1800 TO 1850]
+        1.query = year:[1851 TO 1900]
+        2.query = year:[1901 TO 1950]
+        3.query = year:[1951 TO *]
     }
-    limit = 50
+    limit = 15
 }
 ```
 
-**Ergebnis:** Dokumente werden in Jahrzehnt-Gruppen organisiert.
+**Result:** Results organized into historical periods, showing up to 15 documents per period.
 
-### Szenario 4: Dynamische Gruppierung via URL
+### Example 4: Hierarchical Grouping
 
-Benutzer können die Gruppierung per URL-Parameter ändern:
-
-```
-# Nach Autor gruppieren
-?tx_find_find[groupField]=author
-
-# Nach mehreren Feldern
-?tx_find_find[groupFields][0]=author&tx_find_find[groupFields][1]=year
-
-# Limit ändern
-?tx_find_find[groupLimit]=5
-```
-
-## Template-Integration
-
-### Zugriff auf gruppierte Ergebnisse
-
-In Ihren Fluid-Templates stehen folgende Variablen zur Verfügung:
-
-- `{groupedResults}` - Array mit gruppierten Ergebnissen
-- `{groupCount}` - Anzahl der Gruppen
-- `{matches}` - Gesamtanzahl der Treffer
-- `{groupingActive}` - Boolean (true wenn Grouping aktiv)
-
-### Beispiel: Einfache Ausgabe
-
-```html
-<f:if condition="{results.groupingActive}">
-    <h2>Gruppierte Ergebnisse</h2>
-    <p>Gefunden: {results.matches} Dokumente in {results.groupCount} Gruppen</p>
-    
-    <f:for each="{results.groupedResults}" as="fieldGroups" key="fieldName">
-        <h3>Gruppiert nach: {fieldName}</h3>
-        
-        <f:for each="{fieldGroups.groups}" as="group">
-            <div class="group">
-                <h4>{group.value} ({group.numFound})</h4>
-                
-                <ul>
-                    <f:for each="{group.documents}" as="document">
-                        <li>
-                            <strong>{document.title}</strong>
-                            <span class="meta">{document.author}, {document.year}</span>
-                        </li>
-                    </f:for>
-                </ul>
-            </div>
-        </f:for>
-    </f:for>
-</f:if>
-```
-
-### Beispiel: Erweiterte Ausgabe mit Pagination
-
-```html
-<f:if condition="{results.groupingActive}">
-    <f:for each="{results.groupedResults}" as="fieldGroups" key="fieldName">
-        <section class="grouped-results">
-            <header>
-                <h2>Gruppiert nach: {fieldName}</h2>
-                <p class="statistics">
-                    {fieldGroups.numberOfGroups} Gruppen, 
-                    {fieldGroups.matches} Treffer gesamt
-                </p>
-            </header>
-            
-            <f:for each="{fieldGroups.groups}" as="group" iteration="groupIterator">
-                <article class="group-container">
-                    <h3 class="group-title">
-                        {group.value}
-                        <span class="badge">{group.numFound}</span>
-                    </h3>
-                    
-                    <div class="documents">
-                        <f:for each="{group.documents}" as="document" iteration="iterator">
-                            <f:render 
-                                partial="Result/Document" 
-                                arguments="{document: document, position: iterator.index}" 
-                            />
-                        </f:for>
-                    </div>
-                    
-                    <f:if condition="{group.numFound} > {settings.grouping.limit}">
-                        <a href="#" class="show-more" 
-                           data-group="{group.value}"
-                           data-field="{fieldName}">
-                            Mehr anzeigen ({group.numFound - settings.grouping.limit} weitere)
-                        </a>
-                    </f:if>
-                </article>
-            </f:for>
-        </section>
-    </f:for>
-</f:if>
-```
-
-## Konfigurationsparameter
-
-### Basis-Parameter
-
-| Parameter | Typ | Default | Beschreibung |
-|-----------|-----|---------|--------------|
-| `enabled` | bool | true | Grouping aktivieren/deaktivieren |
-| `field` | string | - | Einzelnes Grouping-Feld |
-| `fields` | array | - | Mehrere Grouping-Felder |
-| `queries` | array | - | Query-basiertes Grouping |
-
-### Performance-Parameter
-
-| Parameter | Typ | Default | Beschreibung |
-|-----------|-----|---------|--------------|
-| `limit` | int | -1 | Dokumente pro Gruppe (-1 = alle) |
-| `offset` | int | 0 | Start-Position in Gruppen |
-| `cachePercentage` | int | 0 | Query-Cache (0-100) |
-| `numberOfGroups` | bool | true | Gruppenzahl berechnen |
-| `truncate` | bool | false | Gruppenzahl auf Limit begrenzen |
-
-### Darstellungs-Parameter
-
-| Parameter | Typ | Default | Beschreibung |
-|-----------|-----|---------|--------------|
-| `sort` | string | - | Sortierung innerhalb Gruppen |
-| `format` | string | grouped | Format: `grouped` oder `simple` |
-| `facets` | bool | false | Facetten für gruppierte Ergebnisse* |
-
-**Hinweis zu Facets & Grouping:** Das Kombinieren von Facets mit Grouping erfordert spezielle Solr-Schema-Konfiguration. Grouping-Felder müssen den docvalues-Typ `SORTED` haben (nicht `NUMERIC`). Der Default ist `false`, um Fehler zu vermeiden.
-
-## Performance-Tipps
-
-1. **Limit setzen**: Verwenden Sie `limit`, um die Ergebnismenge zu begrenzen
-2. **numberOfGroups optional**: Setzen Sie auf `false`, wenn die Gesamtzahl nicht benötigt wird
-3. **Truncate bei großen Sets**: Aktivieren Sie `truncate = true` für bessere Performance
-4. **Field-Grouping bevorzugen**: Schneller als Query-basiertes Grouping
-5. **Solr-Index optimieren**: Stellen Sie sicher, dass Grouping-Felder indexiert sind
-6. **Cache nutzen**: `cachePercentage` mit Vorsicht einsetzen (erhöht RAM-Nutzung)
-
-## Debugging
-
-### Log-Ausgaben prüfen
-
-Die Klasse schreibt Debug-Informationen in das TYPO3-Log:
-
-```php
-// In LocalConfiguration.php oder AdditionalConfiguration.php
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['Slub']['SlubDigitalcollections']['writerConfiguration'] = [
-    \Psr\Log\LogLevel::DEBUG => [
-        \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-            'logFile' => 'typo3temp/var/log/grouping.log'
-        ],
-    ],
-];
-```
-
-### Häufige Probleme
-
-**Problem:** Keine gruppierten Ergebnisse
-
-- ✓ Prüfen Sie `enabled = 1` in der Konfiguration
-- ✓ Prüfen Sie, ob das Grouping-Feld im Solr-Index existiert
-- ✓ Prüfen Sie die Log-Ausgaben
-
-**Problem:** Fehler "unexpected docvalues type NUMERIC" beim Faceting
-
-Dieser Fehler tritt auf, wenn `facets = true` gesetzt ist und das Grouping-Feld den falschen docvalues-Typ hat.
-
-**Lösung 1 (empfohlen):** Facets deaktivieren
 ```typoscript
-grouping {
-    facets = false  # Standard-Faceting verwenden
+plugin.tx_find.settings.grouping {
+    enabled = 1
+    fields {
+        0 = institution
+        1 = collection_type
+    }
+    limit = 20
+    numberOfGroups = 1
+    truncate = 0
 }
 ```
 
-**Lösung 2:** Solr-Schema anpassen (erfordert Re-Indexierung)
-```xml
-<!-- In schema.xml: Grouping-Feld als String mit SORTED docvalues -->
-<field name="uid" type="string" indexed="true" stored="true" docValues="true"/>
-```
+**Result:** Results grouped first by institution, then by collection type within each institution.
 
-**Lösung 3:** Anderes Grouping-Feld verwenden
+## Disabling Grouping
+
+To disable grouping in specific contexts:
+
 ```typoscript
-grouping {
-    field = collection_id  # Verwenden Sie ein String-Feld
-    facets = true
-}
+plugin.tx_find.settings.grouping.enabled = 0
 ```
 
-**Problem:** Zu wenige Ergebnisse pro Gruppe
-
-- ✓ Erhöhen Sie den `limit` Parameter
-- ✓ Prüfen Sie `offset` Einstellungen
-
-**Problem:** Performance-Probleme
-
-- ✓ Setzen Sie niedrigeren `limit`
-- ✓ Deaktivieren Sie `numberOfGroups`
-- ✓ Aktivieren Sie `truncate`
-- ✓ Reduzieren Sie die Anzahl der Grouping-Felder
-
-## URL-Parameter Referenz
-
-Alle TypoScript-Parameter können via URL überschrieben werden:
-
+Or disable via URL:
 ```
-# Einzelnes Feld
-?tx_find_find[groupField]=author
-
-# Mehrere Felder
-?tx_find_find[groupFields][0]=author
-&tx_find_find[groupFields][1]=year
-
-# Queries
-?tx_find_find[groupQuery][0]=year:[1900 TO 1950]
-
-# Parameter
-?tx_find_find[groupLimit]=50
-?tx_find_find[groupOffset]=0
-?tx_find_find[groupSort]=title asc
-?tx_find_find[groupFormat]=simple
+?tx_find_find[grouping][enabled]=0
 ```
 
-## Weitere Informationen
+## Performance Considerations
 
-- **Solr Dokumentation**: https://solr.apache.org/guide/result-grouping.html
-- **Solarium Dokumentation**: https://solarium.readthedocs.io/en/stable/queries/select-query/building-a-select-query/components/grouping/
-- **TYPO3 Find**: https://github.com/subugoe/find
+1. **Limit per Group** - Set appropriate `limit` to balance completeness and performance
+2. **numberOfGroups** - Set to `0` if total group count not needed
+3. **truncate** - Enable for large datasets to avoid expensive calculations
+4. **Indexed Fields** - Ensure grouping fields are indexed in Solr
+5. **Field Type** - Use string fields (not NUMERIC docvalues) for best performance
+
+## Troubleshooting
+
+### Results Not Grouped
+
+- Verify `grouping.enabled = 1` in TypoScript
+- Check that field exists in Solr index: `?debug=true` in Solr query
+- Clear TYPO3 cache
+- Verify field name matches exactly
+
+### Incomplete Results
+
+- Increase `limit` parameter
+- Reduce number of grouping fields
+- Check Solr query limitations
+
+### Performance Issues
+
+- Lower `limit` value
+- Set `numberOfGroups = 0` if not needed
+- Enable `truncate = 1`
+- Use single field grouping instead of multiple fields
+
+## References
+
+- [TYPO3 Find Documentation](https://github.com/subugoe/find)
+- [Apache Solr Grouping](https://solr.apache.org/guide/result-grouping.html)
+- [Solarium PHP Client](https://solarium.readthedocs.io/)
 
 ## Support
 
-Bei Fragen oder Problemen:
 - SLUB Dresden: typo3@slub-dresden.de
 - GitHub Issues: https://github.com/slub/slub_digitalcollections/issues
