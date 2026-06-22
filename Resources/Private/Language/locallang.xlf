@@ -92,6 +92,9 @@
             <trans-unit id="sru.search">
                 <target><![CDATA[Search]]></target>
             </trans-unit>
+			<trans-unit id="find.list.more">
+				<source><![CDATA[more]]></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

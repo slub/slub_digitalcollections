@@ -121,6 +121,10 @@
                 <source><![CDATA[Search]]></source>
                 <target><![CDATA[Suchen]]></target>
             </trans-unit>
+			<trans-unit id="find.list.more" approved="yes">
+				<source><![CDATA[more]]></source>
+				<target><![CDATA[mehr anzeigen]]></target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
