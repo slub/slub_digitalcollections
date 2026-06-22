@@ -36,7 +36,7 @@
 
 	<div class="results tx-dlf-listview">
 		<div class="navigation top">
-			<f:comment>Prüfung: Ist die Gruppierung aktiviert? (für unterschiedliche Anzeige von Ergebniszähler und Pager)</f:comment>
+			<f:comment>Check: Is grouping enabled? (for different display of result count and pager)</f:comment>
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:alias map="{grouping: groupedResults}">
@@ -56,10 +56,10 @@
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
 		<ol id="c{config.uid}-resultList" class="resultList tx-dlf-abstracts" start="{config.counterStart}">
-			<f:comment>Prüfung: Ist die Gruppierung von Ergebnissen aktiviert?</f:comment>
+			<f:comment>Check: Is result grouping enabled?</f:comment>
 			<f:if condition="{groupingActive}">
 				<f:then>
-					<f:comment>Durchlaufe alle gruppierten Ergebnisse</f:comment>
+					<f:comment>Iterate over all grouped results</f:comment>
 					<f:for each="{groupedResults.valueGroups}" as="group" iteration="groupIterator">
 						<li>
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
@@ -90,7 +90,7 @@
 
 				</f:then>
 				<f:else>
-				<f:comment>Keine Gruppierung: Zeige einfache Ergebnisliste</f:comment>
+				<f:comment>No grouping: show simple result list</f:comment>
 				<f:for each="{results.documents}" as="document">
 					<li>
 						<f:render partial="Display/Result" arguments="{_all}"/>
