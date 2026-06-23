@@ -4,3 +4,5 @@ parameters:
         - ../Classes/
     treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
+    excludePaths:
+        - ../Classes/Service
