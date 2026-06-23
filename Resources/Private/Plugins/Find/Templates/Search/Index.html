@@ -26,6 +26,7 @@
 </f:comment>
 
 <f:section name="main">
+
 	<f:comment><s:page.title>
 		<f:render partial="Components/QueryString" arguments="{query:arguments.q, facets:config.activeFacets}"/>
 		–
@@ -33,24 +34,82 @@
 	</s:page.title></f:comment>
 	<f:render partial="Page/Standard" arguments="{_all}"/>
 
-	<div class="results">
+	<div class="results tx-dlf-listview">
 		<div class="navigation top">
-			<f:render partial="Components/ResultCount" arguments="{_all}"/>
-			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+			<f:comment>Check: Is grouping enabled? (for different display of result count and pager)</f:comment>
+			<f:if condition="{groupingActive}">
+				<f:then>
+					<f:alias map="{grouping: groupedResults}">
+						<f:render partial="Components/GroupedResultCount" arguments="{_all}"/>
+						<f:render partial="Pager/GroupedListPager" arguments="{_all}"/>
+					</f:alias>
+				</f:then>
+				<f:else>
+					<f:render partial="Components/ResultCount" arguments="{_all}"/>
+					<f:render partial="Pager/ListPager" arguments="{_all}"/>
+				</f:else>
+			</f:if>
 		</div>
 
 		<f:render partial="Facets/Facet/List/ActiveFacets" arguments="{_all}"/>
 
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
-		<ol id="c{config.uid}-resultList" class="resultList" start="{config.counterStart}">
-			<f:for each="{results.documents}" as="document">
-				<f:render partial="Display/Result" arguments="{_all}"/>
-			</f:for>
+		<ol id="c{config.uid}-resultList" class="resultList tx-dlf-abstracts" start="{config.counterStart}">
+			<f:comment>Check: Is result grouping enabled?</f:comment>
+			<f:if condition="{groupingActive}">
+				<f:then>
+					<f:comment>Iterate over all grouped results</f:comment>
+					<f:for each="{groupedResults.valueGroups}" as="group" iteration="groupIterator">
+						<li>
+							<f:if condition="{groupDisplayDocuments.{group.value}}">
+								<f:then>
+									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+								</f:then>
+								<f:else>
+									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+								</f:else>
+							</f:if>
+							<button
+								type="button"
+								class="tx-dlf-morevolumes"
+								title="{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}"
+								aria-expanded="false"
+								aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}</button>
+
+							<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
+								<f:for each="{group.documents}" as="subDocument">
+									<li>
+										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+									</li>
+								</f:for>
+							</ol>
+						</li>
+
+					</f:for>
+
+				</f:then>
+				<f:else>
+				<f:comment>No grouping: show simple result list</f:comment>
+				<f:for each="{results.documents}" as="document">
+					<li>
+						<f:render partial="Display/Result" arguments="{_all}"/>
+					</li>
+				</f:for>
+
+				</f:else>
+			</f:if>
 		</ol>
 
 		<div class="navigation bottom">
-			<f:render partial="Pager/ListPager" arguments="{_all}"/>
+			<f:if condition="{groupingActive}">
+				<f:then>
+					<f:render partial="Pager/GroupedListPager" arguments="{_all}"/>
+				</f:then>
+				<f:else>
+					<f:render partial="Pager/ListPager" arguments="{_all}"/>
+				</f:else>
+			</f:if>
 		</div>
 	</div>
 </f:section>

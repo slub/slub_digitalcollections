@@ -37,6 +37,7 @@
 						<f:else>
 							<f:link.action
 								addQueryString="TRUE"
+								arguments="{q: arguments.q}"
 								argumentsToBeExcludedFromQueryString="{1: 'tx_find_find[facet]'}"
 								section="{settings.jumpToID}"
 								class=""
@@ -53,6 +54,7 @@
 							<li>
 								<f:link.action
 									addQueryString="TRUE"
+									arguments="{q: arguments.q}"
 									argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetKey, facetTerm:reverseFacetKey, activeFacets:config.activeFacets, mode:'remove')}"
 									section="{settings.jumpToID}"
 									class=""
@@ -76,6 +78,7 @@
 								<li>
 									<f:link.action
 										addQueryString="TRUE"
+										arguments="{q: arguments.q}"
 										argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
 										section="{settings.jumpToID}"
 										class=""

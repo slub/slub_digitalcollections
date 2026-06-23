@@ -1,0 +1,32 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:comment>
+	Creates the Facets section on the page and inserts each facet into it using
+	the Facet partial.
+
+	This override forwards the current request arguments to deeper facet partials,
+	so facet and pager links can preserve the active query state.
+</f:comment>
+<f:if condition="{results.components.facetset.facets}">
+	<section class="facets">
+		<h3 class="invisible">
+			<f:translate key="Facets"/>
+			<a href="#c{config.uid}-resultList">
+				<f:translate key="Jump to results"/>
+			</a>
+		</h3>
+		<f:for each="{config.facets}" as="facetInfo" key="facetKey">
+			<f:if condition="{facetInfo.hidden}!=1">
+				<f:render
+					partial="Facets/Facet"
+					arguments="{
+						facetData:'{s:data.valueForKey(array:results.components.facetset.facets, key:facetInfo.id)}',
+						facetInfo:facetInfo,
+						config:config,
+						arguments:arguments,
+						settings:settings,
+						results:results
+					}"/>
+			</f:if>
+		</f:for>
+	</section>
+</f:if>

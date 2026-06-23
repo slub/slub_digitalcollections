@@ -1,0 +1,55 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:comment>
+	Creates a facet list item with a link to select or deselect the facet
+	depending on its current status.
+	Determines whether the item should be hidden and adds CSS classes accordingly.
+</f:comment>
+<li class='index-{iterator.cycle} count-{itemCount}
+	<f:if condition="{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}">
+		<f:then>facetActive</f:then>
+	</f:if>
+	<f:if condition="{facetInfo.displayDefault}">
+		<f:then>
+			<f:if condition="{iterator.cycle} > {facetInfo.displayDefault}">
+				<f:then>hidden</f:then>
+			</f:if>
+		</f:then>
+		<f:else>
+			<f:if condition="{iterator.cycle} > {settings.facetDefaults.displayDefault}">
+				<f:then>hidden</f:then>
+			</f:if>
+		</f:else>
+	</f:if>'
+	value="{facetTerm}"
+	label="{f:translate(key:'LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTerm}', default:facetTerm)}"
+	count="{itemCount}">
+	<f:if condition="{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}">
+		<f:then>
+			<f:link.action
+				addQueryString="TRUE"				arguments="{q: arguments.q}"				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
+				section="{settings.jumpToID}"
+				class="icon-cancel facetRemove internal"
+				title="{f:translate(key:'remove filter %s', arguments:{0:facetTerm})}"><span class="facetName"><f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTermDisplay}" default="{facetTermDisplay}"/></span></f:link.action>
+		</f:then>
+		<f:else>
+			<s:data.newArray
+				name="facetAddArguments"
+				array="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}"
+				keys="{0:'q', 1:'page'}"
+				values="{0:arguments.q, 1:1}"
+				omitEmptyFields="TRUE"
+				global="TRUE"
+			/>
+			<f:link.action
+				addQueryString="TRUE"
+				arguments="{facetAddArguments}"
+				argumentsToBeExcludedFromQueryString="{0:'{config.prefixID}[page]'}"
+				section="{settings.jumpToID}"
+				class="facetAdd internal">
+				<f:translate
+					key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTermDisplay}"
+					default="{facetTermDisplay}"/>&nbsp;<span class="facetCount">{itemCount}</span>
+			</f:link.action>
+		</f:else>
+	</f:if>
+</li>

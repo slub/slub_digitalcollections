@@ -1,0 +1,34 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:comment>
+	Variation of the list facet designed to be used as Tabs outside the normal
+	facet section.
+</f:comment>
+<ol class="facetTabs">
+	<f:for each="{facetData.values}" as="itemCount" key="facetTerm" iteration="iterator">
+		<li class="{f:if(
+			condition:'{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}',
+			then:'facetActive'
+		)}">
+			<s:data.newArray
+				name="facetTabArguments"
+				array="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}"
+				keys="{0:'q', 1:'page'}"
+				values="{0:arguments.q, 1:1}"
+				omitEmptyFields="TRUE"
+				global="TRUE"
+			/>
+			<f:link.action
+				addQueryString="TRUE"
+				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, activeFacets:config.activeFacets, mode:'remove')}"
+				arguments="{facetTabArguments}"
+				section="{settings.jumpToID}"
+				class="internal"
+			>
+				<f:translate
+					key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTerm}"
+					default="{facetTerm}"/>
+				<span class="facetCount">{itemCount}</span>
+			</f:link.action>
+		</li>
+	</f:for>
+</ol>

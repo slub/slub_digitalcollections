@@ -38,6 +38,7 @@ plugin.tx_find.settings {
     # SOLR connections
     connections {
         default {
+            provider = Slub\SlubDigitalcollections\Service\GroupedSolrServiceProvider
             options {
                 scheme = http
                 host = v12-sachsen-digital.ddev.site
@@ -48,10 +49,15 @@ plugin.tx_find.settings {
             }
         }
     }
-	
+
     standardFields {
-        snippet = type
         title = title
+        metadata-place = place
+        metadata-year = year
+        metadata-owner = owner
+        metadata-shelfmark = shelfmark
+        metadata-useandreproduction = useandreproduction   
+        type = type
     }
 
     # result list paging options
@@ -102,11 +108,11 @@ plugin.tx_find.settings {
         }
         3 {
             id = authorAsc
-            sortCriteria = author_faceting desc
+            sortCriteria = author_usi desc
         }
         4 {
             id = authorDesc
-            sortCriteria = author_faceting asc
+            sortCriteria = author_usi asc
         }
     }
 	
@@ -145,8 +151,8 @@ plugin.tx_find.settings.facets {
     # author
     1 {
         id = author
-        field = author_faceting
-        query = author_faceting:"%s"
+        field = author_usi
+        query = author_usi:"%s"
         queryStyle = and
     }
 
