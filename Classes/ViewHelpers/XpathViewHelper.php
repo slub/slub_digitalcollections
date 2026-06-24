@@ -84,6 +84,7 @@ class XpathViewHelper extends AbstractViewHelper
 
         $parameters = [];
 
+        // @phpstan-ignore-next-line
         if (method_exists(GeneralUtility::class, '_GPmerged')) {
             $parametersSet = GeneralUtility::_GPmerged('set');
             $parametersDlf = GeneralUtility::_GPmerged('tx_dlf');
