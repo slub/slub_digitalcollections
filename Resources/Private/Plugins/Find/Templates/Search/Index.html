@@ -64,10 +64,10 @@
 						<li>
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
 								<f:then>
-									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
 								</f:then>
 								<f:else>
-									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
 								</f:else>
 							</f:if>
 							<button
@@ -80,7 +80,12 @@
 							<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
 								<f:for each="{group.documents}" as="subDocument">
 									<li>
-										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo}"/>
+										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
+										<f:if condition="{arguments.searchMode} == 'fulltext'">
+											<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
+												<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
+											</f:for>
+										</f:if>
 									</li>
 								</f:for>
 							</ol>
@@ -93,7 +98,7 @@
 				<f:comment>No grouping: show simple result list</f:comment>
 				<f:for each="{results.documents}" as="document">
 					<li>
-						<f:render partial="Display/Result" arguments="{_all}"/>
+						<f:render partial="Display/Result" arguments="{document: document, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
 					</li>
 				</f:for>
 
