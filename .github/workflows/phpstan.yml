@@ -31,4 +31,3 @@ jobs:
         uses: php-actions/phpstan@v3
         with:
           configuration: ./.github/phpstan.neon
-
