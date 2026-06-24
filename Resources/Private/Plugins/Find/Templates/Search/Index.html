@@ -64,7 +64,7 @@
 						<li>
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
 								<f:then>
-									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
+									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, noHighlighting: '1'}"/>
 								</f:then>
 								<f:else>
 									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
