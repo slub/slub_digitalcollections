@@ -14,4 +14,3 @@ If you want to use `subugoe/find`, you need to add it to your project composer.j
 
 ## Maintainer
 typo3@slub-dresden.de
-
