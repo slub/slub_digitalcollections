@@ -309,4 +309,3 @@ window.addEventListener('dlf-theater-mode', (e) => {
             break;
     }
 });
-
