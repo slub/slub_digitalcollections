@@ -39,7 +39,8 @@
 							document:document,
 							field:settings.standardFields.title,
 							separator:', ',
-							prefixString: 'Titel'
+							prefixString: 'Titel',
+							noHighlighting: noHighlighting
 						}"/>
 				</f:then>
 				<f:else>
@@ -58,7 +59,8 @@
 								document:document,
 								field: stdFieldValue,
 								separator:', ',
-								prefixString: stdFieldKey
+								prefixString: stdFieldKey,
+								noHighlighting: noHighlighting
 							}"/>
 					</f:if>
 				</f:for>

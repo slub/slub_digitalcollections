@@ -32,13 +32,23 @@
 				{groupItemPrefix->f:format.raw()}{fieldPrefix->f:format.raw()}
 					
 						<f:format.raw>
-							<s:find.highlightField
-								field="{field}"
-								document="{document}"
-								results="{results}"
-								index="{iterator.index}"
-								alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
-							/>
+
+							<f:if condition="{noHighlighting}">
+								<f:then>
+									{value}
+								</f:then>
+								<f:else>
+									<s:find.highlightField
+										field="{field}"
+										document="{document}"
+										results="{results}"
+										index="{iterator.index}"
+										alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
+									/>
+								</f:else>
+
+							</f:if>
+
 						</f:format.raw>
 
 				{fieldSuffix->f:format.raw()}{f:if(condition:"{iterator.isLast}==0", then:separator)}{groupItemSuffix->f:format.raw()}
@@ -51,13 +61,21 @@
 			</f:if>			
 			{fieldPrefix->f:format.raw()}
 				<f:format.raw>
-					<s:find.highlightField
-						field="{field}"
-						document="{document}"
-						results="{results}"
-						index="0"
-						alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
-					/>
+					<f:if condition="{noHighlighting}">
+						<f:then>
+							{document.fields.{field}}
+						</f:then>		
+						<f:else>
+							<s:find.highlightField
+								field="{field}"
+								document="{document}"
+								results="{results}"
+								index="0"
+								alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
+							/>
+
+						</f:else>
+					</f:if>			
 				</f:format.raw>
 			{fieldSuffix->f:format.raw()}
 		</f:else>
