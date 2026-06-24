@@ -31,7 +31,7 @@ plugin.tx_find.settings {
     languageRootPath = EXT:slub_digitalcollections/Resources/Private/Language/
 
     # enable empty search queries to show a starting page
-    allowNoSearch = 1
+    allowNoSearch = 0
 
     jumpToID = 
 
@@ -53,10 +53,11 @@ plugin.tx_find.settings {
     standardFields {
         title = title
         metadata-place = place
-        metadata-year = year
+        metadata-year = year_usi
         metadata-owner = owner
         metadata-shelfmark = shelfmark
         metadata-useandreproduction = useandreproduction   
+        metadata-page = page
         type = type
     }
 
@@ -206,3 +207,15 @@ plugin.tx_find.settings.queryFields {
         type = Text
     }
 }
+
+# Typoscript switch: Wenn Fulltext-Suche aktiviert ist
+[request && traverse(request.getQueryParams(), 'tx_find_find/searchMode') == 'fulltext']
+plugin.tx_find.settings.queryFields.10 {
+    id = default
+    query = {!edismax qf="fulltext"}%s
+    noescape = 0    
+    phrase = 0
+    type = Text
+}
+[END]
+
