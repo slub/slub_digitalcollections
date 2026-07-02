@@ -1,7 +1,13 @@
 {namespace s=Subugoe\Find\ViewHelpers}
+{namespace sl=Slub\SlubDigitalcollections\ViewHelpers}
 <f:comment>
-	Variation of the list facet designed to be used as Tabs outside the normal
-	facet section.
+	Variation of the list facet designed to be used as »Tabs« outside the normal
+	facet section (e.g. allow a general selection of different data types).
+	
+	It has to be included in an appropriate position of the page, probably between
+	the search form and the result list and will only allow the selection of
+	a single facet item. Please refer to the Readme for notes on the appropriate
+	facet configuration for this use case.
 </f:comment>
 <ol class="facetTabs">
 	<f:for each="{facetData.values}" as="itemCount" key="facetTerm" iteration="iterator">
@@ -9,18 +15,10 @@
 			condition:'{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}',
 			then:'facetActive'
 		)}">
-			<s:data.newArray
-				name="facetTabArguments"
-				array="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}"
-				keys="{0:'q', 1:'page'}"
-				values="{0:arguments.q, 1:1}"
-				omitEmptyFields="TRUE"
-				global="TRUE"
-			/>
 			<f:link.action
 				addQueryString="TRUE"
-				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, activeFacets:config.activeFacets, mode:'remove')}"
-				arguments="{facetTabArguments}"
+				argumentsToBeExcludedFromQueryString="{sl:find.facetLinkArguments(facetID:facetInfo.id, activeFacets:config.activeFacets, mode:'remove')}"
+				arguments="{sl:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mergeActiveFacets:1, replaceFacetSelection:1)}"
 				section="{settings.jumpToID}"
 				class="internal"
 			>

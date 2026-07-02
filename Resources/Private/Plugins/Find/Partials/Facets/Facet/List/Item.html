@@ -1,4 +1,5 @@
 {namespace s=Subugoe\Find\ViewHelpers}
+{namespace sl=Slub\SlubDigitalcollections\ViewHelpers}
 <f:comment>
 	Creates a facet list item with a link to select or deselect the facet
 	depending on its current status.
@@ -26,23 +27,16 @@
 	<f:if condition="{s:find.facetIsActive(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}">
 		<f:then>
 			<f:link.action
-				addQueryString="TRUE"				arguments="{q: arguments.q}"				argumentsToBeExcludedFromQueryString="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove')}"
+				addQueryString="TRUE"
+				arguments="{sl:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mode:'remove', returnAsArguments:1)}"
 				section="{settings.jumpToID}"
 				class="icon-cancel facetRemove internal"
 				title="{f:translate(key:'remove filter %s', arguments:{0:facetTerm})}"><span class="facetName"><f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.{facetInfo.id}.{facetTermDisplay}" default="{facetTermDisplay}"/></span></f:link.action>
 		</f:then>
 		<f:else>
-			<s:data.newArray
-				name="facetAddArguments"
-				array="{s:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets)}"
-				keys="{0:'q', 1:'page'}"
-				values="{0:arguments.q, 1:1}"
-				omitEmptyFields="TRUE"
-				global="TRUE"
-			/>
 			<f:link.action
 				addQueryString="TRUE"
-				arguments="{facetAddArguments}"
+				arguments="{sl:find.facetLinkArguments(facetID:facetInfo.id, facetTerm:facetTerm, activeFacets:config.activeFacets, mergeActiveFacets:1)}"
 				argumentsToBeExcludedFromQueryString="{0:'{config.prefixID}[page]'}"
 				section="{settings.jumpToID}"
 				class="facetAdd internal">
