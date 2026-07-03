@@ -51,8 +51,6 @@
 			</f:if>
 		</div>
 
-		<f:render partial="Facets/Facet/List/ActiveFacets" arguments="{_all}"/>
-
 		<f:render partial="Facets/Facets" arguments="{_all}"/>
 
 		<ol id="c{config.uid}-resultList" class="resultList tx-dlf-abstracts" start="{config.counterStart}">
@@ -79,7 +77,7 @@
 
 							<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
 								<f:for each="{group.documents}" as="subDocument">
-									<li>
+									<li class="pageresult">
 										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
 										<f:if condition="{arguments.searchMode} == 'fulltext'">
 											<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">

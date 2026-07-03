@@ -95,6 +95,72 @@
 			<trans-unit id="find.list.more">
 				<source><![CDATA[more]]></source>
 			</trans-unit>
+			<trans-unit id="find.display.title">
+				<source><![CDATA[Title]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-place">
+				<source><![CDATA[Place]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-year">
+				<source><![CDATA[Year]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-owner">
+				<source><![CDATA[Owner]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-shelfmark">
+				<source><![CDATA[Shelfmark]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-useandreproduction">
+				<source><![CDATA[Use and reproduction]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-page">
+				<source><![CDATA[Page]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type">
+				<source><![CDATA[Type]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.chapter">
+				<source><![CDATA[Chapter]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.monograph">
+				<source><![CDATA[Monograph]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.image">
+				<source><![CDATA[Image]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.other">
+				<source><![CDATA[Other]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.attached_work">
+				<source><![CDATA[Attached work]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.map">
+				<source><![CDATA[Map]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.index">
+				<source><![CDATA[Index]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.newspaper">
+				<source><![CDATA[Newspaper]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.article">
+				<source><![CDATA[Article]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.aricle">
+				<source><![CDATA[Article]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.periodical">
+				<source><![CDATA[Periodical]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.mark">
+				<source><![CDATA[Mark]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.advertising">
+				<source><![CDATA[Advertising]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.type.page">
+				<source><![CDATA[Page]]></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -21,7 +21,7 @@
 </f:comment>
 
 	<f:variable name="txDlfParams" value="{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}" />
-	<f:if condition="{arguments.search-fulltext} == 'on'">
+	<f:if condition="{arguments.searchMode} == 'fulltext'">
 		<f:variable name="txDlfParams" value="{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word:'{arguments.q.default}'}" />
 	</f:if>
 

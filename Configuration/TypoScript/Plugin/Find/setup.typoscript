@@ -219,3 +219,4 @@ plugin.tx_find.settings.queryFields.10 {
 }
 [END]
 
+page.bodyTag = <body class="collections">
