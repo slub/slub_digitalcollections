@@ -280,6 +280,8 @@ plugin.tx_dlf {
         solrcore = {$plugin.tx_slubdigitalcollections.solr.coreUid}
         // PID of DLF - Mandant: SLUB
         storagePid = {$plugin.tx_dlf.persistence.storagePid}
+
+        enableViteAssetInjection = {$plugin.tx_slubdigitalcollections.enableViteAssetInjection}
     }
     view {
         partialRootPaths {
