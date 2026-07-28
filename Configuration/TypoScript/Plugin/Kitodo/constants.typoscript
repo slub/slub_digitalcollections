@@ -76,4 +76,7 @@ plugin.tx_slubdigitalcollections {
     templateRootPath = EXT:slub_digitalcollections/Resources/Private/Templates/
     partialRootPath = EXT:slub_digitalcollections/Resources/Private/Partials/
     layoutRootPath = EXT:slub_digitalcollections/Resources/Private/Layouts/
+
+    # cat=plugin.tx_slubdigitalcollections/advanced/0503; type=bool; label= Enable Vite asset injection
+    enableViteAssetInjection = 1
 }
