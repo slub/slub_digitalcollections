@@ -124,14 +124,13 @@ class XpathViewHelper extends AbstractViewHelper
             return;
         }
 
-        /** @var MetsDocument $currentDocument */
-        $currentDocument = $document->getCurrentDocument();
-        $currentDocument->mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
-        $currentDocument->mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
-        $currentDocument->mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
-        $currentDocument->mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
+        $mets = $document->getCurrentDocument()->getMets();
+        $mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
+        $mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
+        $mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
 
-        $result = $currentDocument->mets->xpath($xpath);
+        $result = $mets->xpath($xpath);
 
         if ($returnArray) {
             $output = [];
