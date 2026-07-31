@@ -231,8 +231,8 @@ $(function () {
         }
     }
 
-    // Wait for 500ms to give OpenLayers time to populate the .tx-dlf-map Element
-    setTimeout(showEmptyMapMessage, 500);
+    // Wait for 3000ms to give OpenLayers time to populate the .tx-dlf-map Element
+    setTimeout(showEmptyMapMessage, 3000);
 
 
     // Add class to  collection related DD elements in metadata lists
