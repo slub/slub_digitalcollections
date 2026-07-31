@@ -49,6 +49,13 @@ use Kitodo\Dlf\Domain\Repository\DocumentRepository;
 class XpathViewHelper extends AbstractViewHelper
 {
     /**
+     * document repository
+     *
+     * @var DocumentRepository|null
+     */
+    private static ?DocumentRepository $documentRepository = null;
+
+    /**
      * Initialize arguments.
      */
     public function initializeArguments()
@@ -60,18 +67,18 @@ class XpathViewHelper extends AbstractViewHelper
     }
 
     /**
-     * documentRepository
-     *
-     * @var DocumentRepository
-     */
-    protected static $documentRepository = null;
-
-    /**
      * Render the supplied DateTime object as a formatted date.
+     *
+     * @access public
+     *
+     * @static
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     *
+     * @return array|string|void
+     * @phpstan-return array<string>|string|void
      */
     public static function renderStatic(
       array $arguments,
@@ -79,9 +86,60 @@ class XpathViewHelper extends AbstractViewHelper
       RenderingContextInterface $renderingContext
     ) {
         $xpath = $arguments['xpath'];
-        $htmlspecialchars = $arguments['htmlspecialchars'];
+        $htmlSpecialChars = $arguments['htmlspecialchars'];
         $returnArray = $arguments['returnArray'];
 
+        $parameters = self::getParameters();
+
+        $document = self::getDocumentRepository()->findOneByParameters($parameters);
+        $currentDocument = $document?->getCurrentDocument();
+
+        if ($document === null || !($currentDocument instanceof MetsDocument)) {
+            return;
+        }
+
+        $mets = $currentDocument->getMets();
+        $mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
+        $mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
+        $mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
+
+        $result = $mets->xpath($xpath);
+
+        if ($returnArray) {
+            $output = [];
+        } else {
+            $output = '';
+        }
+
+        if (is_array($result)) {
+            foreach ($result as $row) {
+                if ($returnArray) {
+                    $output[] = $htmlSpecialChars ? htmlspecialchars(trim($row)) : trim($row);
+                } else {
+                    $output .= $htmlSpecialChars ? htmlspecialchars(trim($row)) : trim($row) . ' ';
+                }
+            }
+        }
+
+        if ($returnArray) {
+            return $output;
+        } else {
+            return trim($output);
+        }
+    }
+
+    /**
+     * Get parameters from the request.
+     *
+     * @access private
+     *
+     * @static
+     *
+     * @return array<string,mixed>
+     */
+    private static function getParameters(): array
+    {
         $parameters = [];
 
         // @phpstan-ignore-next-line
@@ -118,56 +176,25 @@ class XpathViewHelper extends AbstractViewHelper
             $parameters['recordId'] = $parametersDlf['recordId'];
         }
 
-        $document = self::getDocumentRepository()->findOneByParameters($parameters);
-
-        if ($document === null || !($document->getCurrentDocument() instanceof MetsDocument)) {
-            return;
-        }
-
-        $mets = $document->getCurrentDocument()->getMets();
-        $mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
-        $mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
-        $mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
-        $mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
-
-        $result = $mets->xpath($xpath);
-
-        if ($returnArray) {
-            $output = [];
-        } else {
-            $output = '';
-        }
-
-        if (is_array($result)) {
-            foreach ($result as $row) {
-                if ($returnArray) {
-                    $output[] = $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row);
-                } else {
-                    $output .= $htmlspecialchars ? htmlspecialchars(trim($row)) : trim($row) . ' ';
-                }
-            }
-        }
-
-        if ($returnArray) {
-            return $output;
-        } else {
-            return trim($output);
-        }
+        return $parameters;
     }
-
 
     /**
      * Initialize the document repository
      *
-     * @return DocumentRepository
+     * @access private
+     *
+     * @static
+     *
+     * @return DocumentRepository|null
      */
-    private static function getDocumentRepository()
+    private static function getDocumentRepository(): ?DocumentRepository
     {
-        if (null === static::$documentRepository) {
-            static::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
+        if (self::$documentRepository === null) {
+            self::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
         }
 
-        return static::$documentRepository;
+        return self::$documentRepository;
     }
 
 }
