@@ -68,25 +68,27 @@
 									<f:render partial="Display/Result" arguments="{document: '{allDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
 								</f:else>
 							</f:if>
-							<button
-								type="button"
-								class="tx-dlf-morevolumes"
-								title="{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}"
-								aria-expanded="false"
-								aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}</button>
+							<f:if condition="{group.documents}">
+								<button
+									type="button"
+									class="tx-dlf-morevolumes"
+									title="{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}"
+									aria-expanded="false"
+									aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}</button>
 
-							<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
-								<f:for each="{group.documents}" as="subDocument">
-									<li class="pageresult">
-										<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
-										<f:if condition="{arguments.searchMode} == 'fulltext'">
-											<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
-												<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
-											</f:for>
-										</f:if>
-									</li>
-								</f:for>
-							</ol>
+								<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
+									<f:for each="{group.documents}" as="subDocument">
+										<li class="pageresult">
+											<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments}"/>
+											<f:if condition="{arguments.searchMode} == 'fulltext'">
+												<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
+													<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
+												</f:for>
+											</f:if>
+										</li>
+									</f:for>
+								</ol>
+							</f:if>
 						</li>
 
 					</f:for>

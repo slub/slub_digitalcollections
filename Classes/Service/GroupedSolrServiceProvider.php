@@ -487,6 +487,11 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
             // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
             $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+            $result['groupedResults'] = $this->filterDocumentsDuplicatingGroupDisplay(
+                $groupedResults,
+                $result['groupDisplayDocuments'],
+                $allDocuments
+            );
             
             $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
@@ -796,6 +801,65 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         }
 
         return $displayDocuments;
+    }
+
+    /**
+     * Removes subgroup documents that would render identically to the visible group header.
+     *
+     * @param array $groupedResults Template-friendly grouped result structure
+     * @param array $groupDisplayDocuments Display documents keyed by group value
+     * @param array $allDocuments Flat array of all documents keyed by group value
+     * @return array Grouped results with duplicate subgroup documents removed
+     */
+    protected function filterDocumentsDuplicatingGroupDisplay(
+        array $groupedResults,
+        array $groupDisplayDocuments,
+        array $allDocuments
+    ): array {
+        if (empty($groupedResults['valueGroups']) || !is_array($groupedResults['valueGroups'])) {
+            return $groupedResults;
+        }
+
+        foreach ($groupedResults['valueGroups'] as $index => $group) {
+            $groupValue = (string)($group['value'] ?? '');
+            $displayDocument = $groupDisplayDocuments[$groupValue] ?? $allDocuments[$groupValue] ?? null;
+            $displayDocumentId = $this->extractDocumentIdentifier($displayDocument);
+
+            if ($displayDocumentId === null || empty($group['documents']) || !is_array($group['documents'])) {
+                continue;
+            }
+
+            $groupedResults['valueGroups'][$index]['documents'] = array_values(array_filter(
+                $group['documents'],
+                function ($document) use ($displayDocumentId) {
+                    return $this->extractDocumentIdentifier($document) !== $displayDocumentId;
+                }
+            ));
+            $groupedResults['valueGroups'][$index]['numFound'] = count($groupedResults['valueGroups'][$index]['documents']);
+        }
+
+        return $groupedResults;
+    }
+
+    /**
+     * Extracts a stable identifier from a Solr document.
+     *
+     * @param mixed $document Solr document or array-like representation
+     * @return string|null
+     */
+    protected function extractDocumentIdentifier($document): ?string
+    {
+        if (!is_array($document) && !($document instanceof \ArrayAccess)) {
+            return null;
+        }
+
+        foreach (['id', 'uid'] as $field) {
+            if (!empty($document[$field])) {
+                return (string)$document[$field];
+            }
+        }
+
+        return null;
     }
 
     /**
