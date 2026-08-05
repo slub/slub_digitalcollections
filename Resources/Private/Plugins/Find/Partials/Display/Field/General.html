@@ -1,4 +1,5 @@
 {namespace s=Subugoe\Find\ViewHelpers}
+{namespace slub=Slub\SlubDigitalcollections\ViewHelpers}
 <f:comment>
 	Creates output for field contents.
 	Takes into account whether the field is an array and inserts the prefixes
@@ -52,7 +53,7 @@
 													<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
 												</f:then>
 												<f:else>
-													<s:find.highlightField
+													<slub:find.highlightField
 														field="{field}"
 														document="{document}"
 														results="{results}"
@@ -98,7 +99,7 @@
 												<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
 											</f:then>
 											<f:else>
-												<s:find.highlightField
+													<slub:find.highlightField
 													field="{field}"
 													document="{document}"
 													results="{results}"
@@ -141,7 +142,7 @@
 									<f:translate key="find.display.type.{document.fields.{field}}" extensionName="slub_digitalcollections" default="{document.fields.{field}}" />
 								</f:then>
 								<f:else>
-									<s:find.highlightField
+									<slub:find.highlightField
 										field="{field}"
 										document="{document}"
 										results="{results}"

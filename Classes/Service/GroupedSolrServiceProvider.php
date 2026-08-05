@@ -487,8 +487,13 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
             // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
             $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
-            $result['groupedResults'] = $this->filterDocumentsDuplicatingGroupDisplay(
+            [$result['groupedResults'], $result['groupDisplayDocuments']] = $this->normalizeSingleParentGroups(
                 $groupedResults,
+                $result['groupDisplayDocuments'],
+                $allDocuments
+            );
+            $result['groupedResults'] = $this->filterDocumentsDuplicatingGroupDisplay(
+                $result['groupedResults'],
                 $result['groupDisplayDocuments'],
                 $allDocuments
             );
@@ -842,6 +847,65 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     }
 
     /**
+     * Promotes a single matching parent document to the visible group header and fills
+     * the subgroup list with all documents that reference this parent via partof.
+     *
+     * @param array $groupedResults Template-friendly grouped result structure
+     * @param array $groupDisplayDocuments Display documents keyed by group value
+     * @param array $allDocuments Flat array of all documents keyed by group value
+     * @return array{0: array, 1: array} Updated grouped results and display documents
+     */
+    protected function normalizeSingleParentGroups(
+        array $groupedResults,
+        array $groupDisplayDocuments,
+        array $allDocuments
+    ): array {
+        if (empty($groupedResults['valueGroups']) || !is_array($groupedResults['valueGroups'])) {
+            return [$groupedResults, $groupDisplayDocuments];
+        }
+
+        $parentUidsByGroupIndex = [];
+        foreach ($groupedResults['valueGroups'] as $index => $group) {
+            $documents = $group['documents'] ?? [];
+            if (!is_array($documents) || count($documents) !== 1) {
+                continue;
+            }
+
+            $parentUid = $this->extractDocumentUid($documents[0]);
+            if ($parentUid === null) {
+                continue;
+            }
+
+            $parentUidsByGroupIndex[$index] = $parentUid;
+        }
+
+        if (empty($parentUidsByGroupIndex)) {
+            return [$groupedResults, $groupDisplayDocuments];
+        }
+
+        $childDocumentsByParentUid = $this->fetchDocumentsByPartOfUids(array_values($parentUidsByGroupIndex));
+
+        foreach ($parentUidsByGroupIndex as $index => $parentUid) {
+            $childDocuments = $childDocumentsByParentUid[$parentUid] ?? [];
+            if (empty($childDocuments)) {
+                continue;
+            }
+
+            $groupValue = (string)($groupedResults['valueGroups'][$index]['value'] ?? '');
+            $parentDocument = $groupedResults['valueGroups'][$index]['documents'][0] ?? null;
+            if ($groupValue === '' || $parentDocument === null) {
+                continue;
+            }
+
+            $groupDisplayDocuments[$groupValue] = $parentDocument;
+            $groupedResults['valueGroups'][$index]['documents'] = array_values($childDocuments);
+            $groupedResults['valueGroups'][$index]['numFound'] = count($childDocuments);
+        }
+
+        return [$groupedResults, $groupDisplayDocuments];
+    }
+
+    /**
      * Extracts a stable identifier from a Solr document.
      *
      * @param mixed $document Solr document or array-like representation
@@ -857,6 +921,25 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             if (!empty($document[$field])) {
                 return (string)$document[$field];
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Extracts a document UID from a Solr document.
+     *
+     * @param mixed $document Solr document or array-like representation
+     * @return string|null
+     */
+    protected function extractDocumentUid($document): ?string
+    {
+        if (!is_array($document) && !($document instanceof \ArrayAccess)) {
+            return null;
+        }
+
+        if (!empty($document['uid'])) {
+            return (string)$document['uid'];
         }
 
         return null;
@@ -906,6 +989,58 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
             return [];
         }
+    }
+
+    /**
+     * Fetches documents grouped by their partof reference.
+     *
+     * @param array $parentUids Parent UIDs to resolve child documents for
+     * @return array<string, array> Documents keyed by parent UID
+     */
+    protected function fetchDocumentsByPartOfUids(array $parentUids): array
+    {
+        $parentUids = array_values(array_unique(array_filter(array_map('strval', $parentUids), static function ($uid) {
+            return $uid !== '';
+        })));
+
+        if (empty($parentUids)) {
+            return [];
+        }
+
+        $query = implode(' OR ', array_map(static function ($uid) {
+            return 'partof:' . $uid;
+        }, $parentUids));
+
+        try {
+            $selectQuery = $this->connection->createSelect();
+            $selectQuery->setQuery($query);
+
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $result = $this->connection->execute($selectQuery);
+
+            $documentsByParentUid = [];
+            foreach ($result as $document) {
+                if (empty($document['partof'])) {
+                    continue;
+                }
+
+                $parentUid = (string)$document['partof'];
+                if (!isset($documentsByParentUid[$parentUid])) {
+                    $documentsByParentUid[$parentUid] = [];
+                }
+
+                $documentsByParentUid[$parentUid][] = $document;
+            }
+
+            return $documentsByParentUid;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching child documents by parent UID', [
+                'exception' => $e->getMessage(),
+                'parentUidCount' => count($parentUids)
+            ]);
+        }
+
+        return [];
     }
 
     /**
