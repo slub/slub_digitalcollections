@@ -186,9 +186,9 @@ class XpathViewHelper extends AbstractViewHelper
      *
      * @static
      *
-     * @return DocumentRepository|null
+     * @return DocumentRepository
      */
-    private static function getDocumentRepository(): ?DocumentRepository
+    private static function getDocumentRepository(): DocumentRepository
     {
         if (self::$documentRepository === null) {
             self::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
