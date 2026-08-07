@@ -50,6 +50,9 @@
 			<trans-unit id="download.iiif">
 				<source><![CDATA[IIIF manifest (JSON)]]></source>
 			</trans-unit>
+            <trans-unit id="empty">
+                <source><![CDATA[No volume selected. Click to jump to the first available volume.]]></source>
+            </trans-unit>
 			<trans-unit id="fullscreen">
 				<source><![CDATA[Fullscreen Mode]]></source>
 			</trans-unit>

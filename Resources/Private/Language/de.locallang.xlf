@@ -65,6 +65,10 @@
 				<source><![CDATA[IIIF manifest (JSON)]]></source>
 				<target><![CDATA[IIIF Manifest (JSON)]]></target>
 			</trans-unit>
+            <trans-unit id="empty">
+                <source><![CDATA[No volume selected. Click to jump to the first available volume.]]></source>
+                <target><![CDATA[Kein Band ausgewählt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.]]></target>
+            </trans-unit>
 			<trans-unit id="fullscreen" approved="yes">
 				<source><![CDATA[Fullscreen Mode]]></source>
 				<target><![CDATA[Vollansicht]]></target>

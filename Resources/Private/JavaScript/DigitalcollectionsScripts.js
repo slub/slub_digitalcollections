@@ -204,36 +204,19 @@ $(function () {
         }
     }
 
-    // Add an error message if no map element in document viewer is given
-    // For example if no volume is selected in a multi-volume work, which leads to an empty map element. 
-    // In this case the message should guide the user to select the first volume.
-    function showEmptyMapMessage() {
-        const $mapContainer = $('.tx-dlf-pageview .tx-dlf-map');
-        
-        // If the container doesn't exist or doesn't have an OL viewport/canvas
-        if ($mapContainer.length === 0 || $mapContainer.find('.ol-viewport, canvas').length === 0) {
-            
-            const emptyMessage = $('html').attr('lang')?.startsWith('de')
-                ? 'Kein Band ausgew&auml;hlt. Klicken Sie hier um zum ersten Band dieses Werks zu gelangen.'
-                : 'No volume selected. Click to jump to the first available volume.';
+    // Replace link for error message to add link to the volume
+    function replaceLinkForVolume() {
+        const $emptyContainer = $('.tx-dlf-pageview .tx-dlf-empty');
 
+        // If the container with empty message replace link
+        if ($emptyContainer.length > 0) {
             const firstVolHref = $('.tx-dlf-tableofcontents ul li ul li:first-child a').attr('href');
-            
-            const htmlSnippet = `
-                <div class="tx-dlf-empty">
-                    <a class="tx-dlf-emptyToFirstVol" href="${firstVolHref}">
-                        <span class="error-arrow">&larr;</span> ${emptyMessage}
-                    </a>
-                </div>`;
-
-            $mapContainer.remove();
-            $('.tx-dlf-pageview').append(htmlSnippet);
+            $('.tx-dlf-emptyToFirstVol').attr('href', firstVolHref || '#');
         }
     }
 
-    // Wait for 3000ms to give OpenLayers time to populate the .tx-dlf-map Element
-    setTimeout(showEmptyMapMessage, 3000);
-
+    // Wait for 500ms to replace link
+    setTimeout(replaceLinkForVolume, 500);
 
     // Add class to  collection related DD elements in metadata lists
     $('dl.tx-dlf-metadata-titledata').find('dt:contains(mmlung), dt:contains(llection)').nextUntil('dt', 'dd').addClass('tx-dlf-metadata-collection');
