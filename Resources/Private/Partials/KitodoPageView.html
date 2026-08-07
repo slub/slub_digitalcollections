@@ -22,7 +22,24 @@
                 <f:cObject typoscriptObjectPath="plugin.tx_dlf_pagegrid" />
             </f:then>
             <f:else>
-                <f:render partial="KitodoNewspaper" arguments="{_all}" />
+                <f:if condition="{gp-query}">
+                    <!-- A search has been executed > call search plugin again > redirect to result listview -->
+                    <f:cObject typoscriptObjectPath="lib.kitodo.fulltext.search" />
+                </f:if>
+                <div class="tx-dlf-pageview">
+                    <f:comment>
+                        <!-- example markup for future logo display -->
+                        <ul class="tx-dlf-logobar">
+                            <li><img src="/typo3conf/ext/slub_digitalcollections/Static/data/slublogo.jpg"
+                                     alt="Logo SLUB"></li>
+                            <li><img src="/typo3conf/ext/slub_digitalcollections/Static/data/unierfurtlogo.png"
+                                     alt="Logo Uni Erfurt"></li>
+                            <li><img src="/typo3conf/ext/slub_digitalcollections/Static/data/dfglogo.svg"
+                                     alt="Logo DFG"></li>
+                        </ul>
+                    </f:comment>
+                    <f:cObject typoscriptObjectPath="plugin.tx_dlf_pageview" />
+                </div>
             </f:else>
         </f:if>
         <f:render partial="KitodoDocumentFunctions" arguments="{_all}" />

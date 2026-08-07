@@ -20,7 +20,11 @@
 
 <div class="document-functions">
     <f:render partial="Kitodo/DocumentFunctions/Provider" arguments="{_all}" />
-    <f:render partial="Kitodo/DocumentFunctions/Submenu" arguments="{_all}" />
+    <f:if condition="{isNewspaper} == 'newspaper_anchor' OR {isNewspaper} == 'newspaper_year'">
+        <f:else>
+            <f:render partial="Kitodo/DocumentFunctions/Submenu" arguments="{_all}"/>
+        </f:else>
+    </f:if>
 </div>
 
 </html>
