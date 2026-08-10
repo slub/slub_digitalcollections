@@ -29,6 +29,9 @@
         <f:else if="{isNewspaper} == 'newspaper_anchor' OR {isNewspaper} == 'newspaper_year'">
             <f:render section="CalendarView" partial="KitodoCalendarView" arguments="{_all}" />
         </f:else>
+        <f:else if="{isMultivolumeWork} == 1">
+            <f:render section="MultivolumeWorkPageView" partial="MultivolumeWorkPageView" arguments="{_all}" />
+        </f:else>
         <f:else>
             <f:render section="PageView" partial="KitodoPageView" arguments="{_all}" />
         </f:else>

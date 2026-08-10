@@ -784,6 +784,13 @@ lib.navigation.kitodo {
 # render new page in pageview / workview
 # --------------------------------------------------------------------------------------------------------------------
 
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'multivolume_work']
+page.10.variables {
+  isMultivolumeWork = TEXT
+  isMultivolumeWork.value = 1
+}
+[END]
+
 page {
     # assume "10"
     10 {
