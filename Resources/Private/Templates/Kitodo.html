@@ -26,7 +26,7 @@
         <f:then>
             <f:render section="MediaView" partial="KitodoMediaView" arguments="{_all}" />
         </f:then>
-        <f:else if="{isNewspaper} == 'newspaper_anchor' OR {isNewspaper} == 'newspaper_year'">
+        <f:else if="{isCalendar} == 1">
             <f:render section="CalendarView" partial="KitodoCalendarView" arguments="{_all}" />
         </f:else>
         <f:else if="{isMultivolumeWork} == 1">

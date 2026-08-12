@@ -708,15 +708,19 @@ lib.kitodo.newspaper.calendar {
 
 [getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'ephemera' or getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'newspaper']
 page.10.variables {
-  isNewspaper = TEXT
-  isNewspaper.value = newspaper_anchor
+    isCalendar = TEXT
+    isCalendar.value = 1
+    isCalendarType = TEXT
+    isCalendarType.value = anchor
 }
 [END]
 
 [getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'year']
 page.10.variables {
-  isNewspaper = TEXT
-  isNewspaper.value = newspaper_year
+    isCalendar = TEXT
+    isCalendar.value = 1
+    isCalendarType = TEXT
+    isCalendarType.value = year
 }
 # in year files, the full year is only in mets_orderlabel - not year field in Kitodo.Presentation 3.0
 page.2 {
@@ -741,10 +745,6 @@ page.2.postTitle.cObject {
 [END]
 
 [getDocumentType({$plugin.tx_dlf.persistence.storagePid}) === 'issue']
-page.10.variables {
-  isNewspaper = TEXT
-  isNewspaper.value = newspaper_issue
-}
 # The issue has YYYY-MM-DD as dateformat for the publishing date. We can format it in a localized format:
 page.2.postTitle.cObject {
     30 = TEXT
