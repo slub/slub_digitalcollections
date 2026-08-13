@@ -102,19 +102,31 @@
 				<source><![CDATA[Title]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-place">
-				<source><![CDATA[Place]]></source>
+				<source><![CDATA[Place of Publication]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-year">
-				<source><![CDATA[Year]]></source>
+				<source><![CDATA[Year of Publication]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-author">
+				<source><![CDATA[Author]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-composer">
+				<source><![CDATA[Composer]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-owner">
-				<source><![CDATA[Owner]]></source>
+				<source><![CDATA[Digital Copy]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-shelfmark">
 				<source><![CDATA[Shelfmark]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-useandreproduction">
-				<source><![CDATA[Use and reproduction]]></source>
+				<source><![CDATA[Legal Notices]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-localtermsofuse">
+				<source><![CDATA[Terms of Use]]></source>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-localtermsofuse2">
+				<source><![CDATA[Terms of Use]]></source>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-page">
 				<source><![CDATA[Page]]></source>
@@ -122,47 +134,20 @@
 			<trans-unit id="find.display.type">
 				<source><![CDATA[Type]]></source>
 			</trans-unit>
-			<trans-unit id="find.display.type.chapter">
-				<source><![CDATA[Chapter]]></source>
+			<trans-unit id="find.facet.type">
+				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="find.display.type.monograph">
-				<source><![CDATA[Monograph]]></source>
+			<trans-unit id="find.facet.author">
+				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="find.display.type.image">
-				<source><![CDATA[Image]]></source>
+			<trans-unit id="find.facet.place">
+				<source>Place of Publication</source>
 			</trans-unit>
-			<trans-unit id="find.display.type.other">
-				<source><![CDATA[Other]]></source>
+			<trans-unit id="find.facet.year">
+				<source>Year of Publication</source>
 			</trans-unit>
-			<trans-unit id="find.display.type.attached_work">
-				<source><![CDATA[Attached work]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.map">
-				<source><![CDATA[Map]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.index">
-				<source><![CDATA[Index]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.newspaper">
-				<source><![CDATA[Newspaper]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.article">
-				<source><![CDATA[Article]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.aricle">
-				<source><![CDATA[Article]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.periodical">
-				<source><![CDATA[Periodical]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.mark">
-				<source><![CDATA[Mark]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.advertising">
-				<source><![CDATA[Advertising]]></source>
-			</trans-unit>
-			<trans-unit id="find.display.type.page">
-				<source><![CDATA[Page]]></source>
+			<trans-unit id="find.facet.collection">
+				<source>Collection(s)</source>
 			</trans-unit>
 		</body>
 	</file>
