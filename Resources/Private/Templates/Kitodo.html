@@ -1,7 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+    xmlns:vite="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
 >
 
 <f:comment>
@@ -41,7 +41,7 @@
 
 <f:section name="FooterAssets">
     <f:if condition="{settings.enableViteAssetInjection}">
-        <vac:asset.vite entry="assets/app.js"/>
+        <vite:asset entry="assets/app.js"/>
     </f:if>
 </f:section>
 
