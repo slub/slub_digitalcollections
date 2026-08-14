@@ -24,10 +24,6 @@ window.DigitalCollections = (function (dc) {
 })(window.DigitalCollections || {});
 
 $(function () {
-
-    // inital javascript "hello, i'm here!"
-    $('html').removeClass('no-js');
-
     // menu toggles for offcanvas toc and metadata
     $('.offcanvas-toggle').on('click', function (event) {
         $(this).parent().toggleClass('open');
