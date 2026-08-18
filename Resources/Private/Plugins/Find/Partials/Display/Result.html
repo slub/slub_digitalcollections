@@ -31,6 +31,7 @@
 		<dl>
 			<f:if condition="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}">
 				<f:then>
+					
 					<f:render
 						partial="Display/Field/Inline"
 						arguments="{
@@ -43,6 +44,32 @@
 							noHighlighting: noHighlighting
 						}"/>
 				</f:then>
+				<f:else>
+					<f:variable name="partof_document">{allDocuments.{document.partof}}</f:variable>
+					<f:if condition="{partof_document}">
+						<f:then>
+							<f:render
+								partial="Display/Field/General"
+								arguments="{
+									config:config,
+									results:results,
+									document:partof_document,
+									field:settings.standardFields.title,
+									prefixString: 'title',
+									groupPrefix:'',
+									groupSuffix:'',
+									groupItemPrefix:'',
+									groupItemSuffix:'',
+									fieldPrefix:'<dd class=\"tx-dlf-title\">[',
+									fieldSuffix:']</dd>',
+									separator:', ',
+									linkFieldContent:linkFieldContent,
+									linkFacets:linkFacets,
+									noHighlighting: 1
+								}"/>
+						</f:then>
+					</f:if>
+				</f:else>
 			</f:if>
 
 			<f:if condition="{settings.standardFields}">
@@ -61,6 +88,13 @@
 							}"/>
 					</f:if>
 				</f:for>
+			</f:if>
+
+			<f:if condition="{document.type} == 'year' && {metsOrderlabelsByUid.{document.uid}}">
+				<dt class="tx-dlf-metadata-year">
+					<f:translate key="find.display.metadata-year" extensionName="slub_digitalcollections" default="Year of Publication" />
+				</dt>
+				<dd class="tx-dlf-metadata-year">{metsOrderlabelsByUid.{document.uid}}</dd>
 			</f:if>
 		</dl>
 

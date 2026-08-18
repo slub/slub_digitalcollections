@@ -29,6 +29,9 @@ namespace Slub\SlubDigitalcollections\Service;
 use Psr\Log\LoggerInterface;
 use Solarium\Component\Result\Grouping\QueryGroup;
 use Subugoe\Find\Service\SolrServiceProvider;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extended Service Provider for Solr with advanced grouping support.
@@ -475,6 +478,14 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
 
             $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
+
+            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
+            $groupDisplayDocuments = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+
+            // metsOrderlabel is persisted in DB (tx_dlf_documents), not in Solr.
+            // Provide it as a separate mapping for Fluid templates to avoid mutating Solr docs.
+            $metsOrderlabelUids = $this->collectMetsOrderlabelUids($groupedResults, $allDocuments, $groupDisplayDocuments);
+            $result['metsOrderlabelsByUid'] = $this->fetchMetsOrderlabelsByUids($metsOrderlabelUids);
             
             // Enrich result array with template-friendly structure
             $result['groupedResults'] = $groupedResults;
@@ -486,16 +497,15 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             // Kept for template compatibility; expensive lookup is currently disabled
             // because result partials do not consume this data.
             $result['additionalTitleInfo'] = [];
-
-            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
-            $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+            $result['groupDisplayDocuments'] = $groupDisplayDocuments;
             
             $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
                 'queryCount' => count($queryGroups),
-                'groupDisplayDocuments' => count($result['groupDisplayDocuments'])
+                'groupDisplayDocuments' => count($result['groupDisplayDocuments']),
+                'metsOrderlabelsByUid' => count($result['metsOrderlabelsByUid'] ?? [])
             ]);
             
         } catch (\Exception $e) {
@@ -741,6 +751,101 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             return $documents;
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching documents by UIDs', [
+                'exception' => $e->getMessage(),
+                'uidCount' => count($uids)
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
+     * Collects all relevant UIDs for metsOrderlabel lookup.
+     *
+     * @param array $groupedResults Grouped result structure
+     * @param array $allDocuments Flat documents array
+     * @param array $groupDisplayDocuments Display documents by group value
+     * @return array<int> UID list for DB lookup
+     */
+    protected function collectMetsOrderlabelUids(
+        array $groupedResults,
+        array $allDocuments,
+        array $groupDisplayDocuments
+    ): array {
+        $uids = [];
+
+        foreach ($allDocuments as $document) {
+            $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+            if ($uid > 0) {
+                $uids[$uid] = true;
+            }
+        }
+
+        foreach ($groupDisplayDocuments as $document) {
+            $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+            if ($uid > 0) {
+                $uids[$uid] = true;
+            }
+        }
+
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        foreach ($valueGroups as $group) {
+            $documents = $group['documents'] ?? [];
+            foreach ($documents as $document) {
+                $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+                if ($uid > 0) {
+                    $uids[$uid] = true;
+                }
+            }
+        }
+
+        return array_keys($uids);
+    }
+
+    /**
+     * Fetches mets_orderlabel values from tx_dlf_documents by uid.
+     *
+     * @param array $uids Document UIDs
+     * @return array<int, string> Map of uid => mets_orderlabel
+     */
+    protected function fetchMetsOrderlabelsByUids(array $uids): array
+    {
+        $uids = array_values(array_unique(array_filter(array_map('intval', $uids), static function ($uid) {
+            return $uid > 0;
+        })));
+
+        if (empty($uids)) {
+            return [];
+        }
+
+        try {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_dlf_documents');
+
+            $rows = $queryBuilder
+                ->select('uid', 'mets_orderlabel')
+                ->from('tx_dlf_documents')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->eq('deleted', 0)
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            $result = [];
+            foreach ($rows as $row) {
+                $uid = (int)($row['uid'] ?? 0);
+                if ($uid > 0 && !empty($row['mets_orderlabel'])) {
+                    $result[$uid] = (string)$row['mets_orderlabel'];
+                }
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching metsOrderlabel from DB', [
                 'exception' => $e->getMessage(),
                 'uidCount' => count($uids)
             ]);
