@@ -756,8 +756,10 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
 
             $document = $allDocuments[$groupValue];
-            $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
-            $candidateUidByGroupValue[$groupValue] = $candidateUid;
+            if($document['toplevel'] === false) {            
+                $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
+                $candidateUidByGroupValue[$groupValue] = $candidateUid;
+            }
         }
 
         if (empty($candidateUidByGroupValue)) {
@@ -778,6 +780,9 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         foreach ($candidateUidByGroupValue as $groupValue => $candidateUid) {
             if (!empty($topLevelCandidates[$candidateUid])) {
                 $candidateDocument = $topLevelCandidates[$candidateUid];
+
+
+
                 if (!empty($candidateDocument['partof'])) {
                     $parentUid = (string)$candidateDocument['partof'];
                     if (!empty($secondLevelParents[$parentUid])) {
