@@ -105,33 +105,13 @@ plugin.tx_find.settings {
             sortCriteria = score desc
         }
         1 {
-            id = nameAsc
-            sortCriteria = title asc
+            id = default
+            sortCriteria = title_sorting asc
         }
         2 {
-            id = nameDesc
-            sortCriteria = title desc
+            id = titleDesc
+            sortCriteria = title_sorting desc
         }
-        3 {
-            id = authorAsc
-            sortCriteria = author_usi desc
-        }
-        4 {
-            id = authorDesc
-            sortCriteria = author_usi asc
-        }
-    }
-	
-    # sort options
-    sortOptions {
-        menu {
-            0 = relevance
-            1 = nameAsc
-            2 = nameDesc
-            3 = authorAsc
-            4 = authorDesc
-        }
-        selected = relevance
     }
 
     additionalFilters {
