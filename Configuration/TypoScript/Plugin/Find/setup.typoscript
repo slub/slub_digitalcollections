@@ -52,11 +52,16 @@ plugin.tx_find.settings {
 
     standardFields {
         title = title
-        metadata-place = place
+        metadata-serial = serial_usi
+        metadata-place = place_usi
         metadata-year = year_usi
-        metadata-owner = owner
-        metadata-shelfmark = shelfmark
-        metadata-useandreproduction = useandreproduction   
+        metadata-author = author_usi
+        metadata-composer = composer_usi
+        metadata-owner = owner_usi
+        metadata-shelfmark = shelfmark_usi
+        metadata-useandreproduction = useandreproduction_usi
+        metadata-localtermsofuse = localtermsofuse_usi
+        metadata-localtermsofuse2 = localtermsofuse2_usi
         metadata-page = page
         type = type
     }

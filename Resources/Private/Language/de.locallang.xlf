@@ -134,24 +134,40 @@
 				<target><![CDATA[Titel]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-place" approved="yes">
-				<source><![CDATA[Place]]></source>
-				<target><![CDATA[Ort]]></target>
+				<source><![CDATA[Place of Publication]]></source>
+				<target><![CDATA[Erscheinungsort]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-year" approved="yes">
-				<source><![CDATA[Year]]></source>
-				<target><![CDATA[Jahr]]></target>
+				<source><![CDATA[Year of Publication]]></source>
+				<target><![CDATA[Erscheinungsdatum]]></target>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-author" approved="yes">
+				<source><![CDATA[Author]]></source>
+				<target><![CDATA[Autor]]></target>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-composer" approved="yes">
+				<source><![CDATA[Composer]]></source>
+				<target><![CDATA[Komponist]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-owner" approved="yes">
-				<source><![CDATA[Owner]]></source>
-				<target><![CDATA[Besitzer]]></target>
+				<source><![CDATA[Digital Copy]]></source>
+				<target><![CDATA[Digitalisat]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-shelfmark" approved="yes">
 				<source><![CDATA[Shelfmark]]></source>
 				<target><![CDATA[Signatur]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-useandreproduction" approved="yes">
-				<source><![CDATA[Use and reproduction]]></source>
-				<target><![CDATA[Nutzung und Reproduktion]]></target>
+				<source><![CDATA[Legal Notices]]></source>
+				<target><![CDATA[Rechtehinweis]]></target>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-localtermsofuse" approved="yes">
+				<source><![CDATA[Terms of Use]]></source>
+				<target><![CDATA[Nutzungshinweis]]></target>
+			</trans-unit>
+			<trans-unit id="find.display.metadata-localtermsofuse2" approved="yes">
+				<source><![CDATA[Terms of Use]]></source>
+				<target><![CDATA[Nutzungshinweis]]></target>
 			</trans-unit>
 			<trans-unit id="find.display.metadata-page" approved="yes">
 				<source><![CDATA[Page]]></source>
@@ -159,63 +175,27 @@
 			</trans-unit>
 			<trans-unit id="find.display.type" approved="yes">
 				<source><![CDATA[Type]]></source>
-				<target><![CDATA[Typ]]></target>
+				<target><![CDATA[Strukturtyp]]></target>
 			</trans-unit>
-			<trans-unit id="find.display.type.chapter" approved="yes">
-				<source><![CDATA[Chapter]]></source>
-				<target><![CDATA[Kapitel]]></target>
+			<trans-unit id="find.facet.type" approved="yes">
+				<source>Type</source>
+				<target>Strukturtyp</target>
 			</trans-unit>
-			<trans-unit id="find.display.type.monograph" approved="yes">
-				<source><![CDATA[Monograph]]></source>
-				<target><![CDATA[Monografie]]></target>
+			<trans-unit id="find.facet.author" approved="yes">
+				<source>Author</source>
+				<target>Autor</target>
 			</trans-unit>
-			<trans-unit id="find.display.type.image" approved="yes">
-				<source><![CDATA[Image]]></source>
-				<target><![CDATA[Bild]]></target>
+			<trans-unit id="find.facet.place" approved="yes">
+				<source>Place of Publication</source>
+				<target>Erscheinungsort</target>
 			</trans-unit>
-			<trans-unit id="find.display.type.other" approved="yes">
-				<source><![CDATA[Other]]></source>
-				<target><![CDATA[Sonstiges]]></target>
+			<trans-unit id="find.facet.year" approved="yes">
+				<source>Year of Publication</source>
+				<target>Erscheinungsjahr</target>
 			</trans-unit>
-			<trans-unit id="find.display.type.attached_work" approved="yes">
-				<source><![CDATA[Attached work]]></source>
-				<target><![CDATA[Beigefuegtes Werk]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.map" approved="yes">
-				<source><![CDATA[Map]]></source>
-				<target><![CDATA[Karte]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.index" approved="yes">
-				<source><![CDATA[Index]]></source>
-				<target><![CDATA[Index]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.newspaper" approved="yes">
-				<source><![CDATA[Newspaper]]></source>
-				<target><![CDATA[Zeitung]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.article" approved="yes">
-				<source><![CDATA[Article]]></source>
-				<target><![CDATA[Artikel]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.aricle" approved="yes">
-				<source><![CDATA[Article]]></source>
-				<target><![CDATA[Artikel]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.periodical" approved="yes">
-				<source><![CDATA[Periodical]]></source>
-				<target><![CDATA[Periodikum]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.mark" approved="yes">
-				<source><![CDATA[Mark]]></source>
-				<target><![CDATA[Marke]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.advertising" approved="yes">
-				<source><![CDATA[Advertising]]></source>
-				<target><![CDATA[Anzeige]]></target>
-			</trans-unit>
-			<trans-unit id="find.display.type.page" approved="yes">
-				<source><![CDATA[Page]]></source>
-				<target><![CDATA[Seite]]></target>
+			<trans-unit id="find.facet.collection" approved="yes">
+				<source>Collection(s)</source>
+				<target>Sammlung(en)</target>
 			</trans-unit>
 		</body>
 	</file>

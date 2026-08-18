@@ -39,7 +39,7 @@
 										<f:then>
 											<f:if condition="{field} == 'type'">
 												<f:then>
-													<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
+													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
 												</f:then>
 												<f:else>
 													{value}
@@ -49,7 +49,7 @@
 										<f:else>
 											<f:if condition="{field} == 'type'">
 												<f:then>
-													<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
+													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
 												</f:then>
 												<f:else>
 													<s:find.highlightField
@@ -85,7 +85,7 @@
 									<f:then>
 										<f:if condition="{field} == 'type'">
 											<f:then>
-												<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
 											</f:then>
 											<f:else>
 												{value}
@@ -95,7 +95,7 @@
 									<f:else>
 										<f:if condition="{field} == 'type'">
 											<f:then>
-												<f:translate key="find.display.type.{value}" extensionName="slub_digitalcollections" default="{value}" />
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
 											</f:then>
 											<f:else>
 												<s:find.highlightField
@@ -128,7 +128,7 @@
 						<f:then>
 							<f:if condition="{field} == 'type'">
 								<f:then>
-									<f:translate key="find.display.type.{document.fields.{field}}" extensionName="slub_digitalcollections" default="{document.fields.{field}}" />
+									<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}" default="{document.fields.{field}}" />
 								</f:then>
 								<f:else>
 									{document.fields.{field}}
@@ -138,7 +138,7 @@
 						<f:else>
 							<f:if condition="{field} == 'type'">
 								<f:then>
-									<f:translate key="find.display.type.{document.fields.{field}}" extensionName="slub_digitalcollections" default="{document.fields.{field}}" />
+									<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}" default="{document.fields.{field}}" />
 								</f:then>
 								<f:else>
 									<s:find.highlightField
