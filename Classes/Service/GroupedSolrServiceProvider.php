@@ -473,6 +473,8 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $totalMatches = $groupedResults['matches'];
                 $totalGroups = $groupedResults['numberOfGroups'];
             }
+
+            $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
             
             // Enrich result array with template-friendly structure
             $result['groupedResults'] = $groupedResults;
@@ -627,6 +629,124 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         $data['numberOfGroups'] = count($data['valueGroups']);
 
         return $data;
+    }
+
+    /**
+     * Adds partOf-referenced documents from the current grouped response to allDocuments.
+     *
+     * This allows direct lookups by referenced UID when both child and parent documents are
+     * already part of the same Solr response payload.
+     *
+     * @param array $groupedResults Template-friendly group structure with valueGroups/documents
+     * @param array &$allDocuments Flat document array that is enriched in-place
+     */
+    protected function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
+    {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return;
+        }
+
+        $documentsByUid = [];
+        $missingReferencedUids = [];
+
+        foreach ($valueGroups as $group) {
+            $documents = $group['documents'] ?? [];
+            foreach ($documents as $document) {
+                $uid = isset($document['uid']) ? (string)$document['uid'] : '';
+                if ($uid !== '' && !isset($documentsByUid[$uid])) {
+                    $documentsByUid[$uid] = $document;
+                }
+
+                $partOfValues = [];
+                if (!empty($document['partof'])) {
+                    $partOfValues = is_array($document['partof']) ? $document['partof'] : [$document['partof']];
+                } elseif (!empty($document['partOf'])) {
+                    $partOfValues = is_array($document['partOf']) ? $document['partOf'] : [$document['partOf']];
+                }
+
+                foreach ($partOfValues as $partOfValue) {
+                    $partOfUid = (string)$partOfValue;
+                    if ($partOfUid !== '' && !isset($allDocuments[$partOfUid])) {
+                        $missingReferencedUids[$partOfUid] = true;
+                    }
+                }
+            }
+        }
+
+        if (empty($missingReferencedUids)) {
+            return;
+        }
+
+        // Prefer parent documents already present in the same response payload.
+        foreach (array_keys($missingReferencedUids) as $referencedUid) {
+            if (isset($documentsByUid[$referencedUid])) {
+                $allDocuments[$referencedUid] = $documentsByUid[$referencedUid];
+            }
+        }
+
+        $uidsToFetch = [];
+        foreach (array_keys($missingReferencedUids) as $referencedUid) {
+            if (!isset($allDocuments[$referencedUid])) {
+                $uidsToFetch[] = $referencedUid;
+            }
+        }
+
+        if (empty($uidsToFetch)) {
+            return;
+        }
+
+        $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
+        foreach ($fetchedReferencedDocuments as $uid => $document) {
+            if (!isset($allDocuments[$uid])) {
+                $allDocuments[$uid] = $document;
+            }
+        }
+    }
+
+    /**
+     * Fetches Solr documents by UID and returns them indexed by UID.
+     *
+     * @param array $uids UIDs to fetch
+     * @return array Documents keyed by UID
+     */
+    protected function fetchDocumentsByUids(array $uids): array
+    {
+        $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
+            return $uid !== '';
+        })));
+
+        if (empty($uids)) {
+            return [];
+        }
+
+        $query = implode(' OR ', array_map(static function ($uid) {
+            return 'uid:' . $uid;
+        }, $uids));
+
+        try {
+            $selectQuery = $this->connection->createSelect();
+            $selectQuery->setQuery($query);
+
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $result = $this->connection->execute($selectQuery);
+
+            $documents = [];
+            foreach ($result as $document) {
+                if (!empty($document['uid'])) {
+                    $documents[(string)$document['uid']] = $document;
+                }
+            }
+
+            return $documents;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching documents by UIDs', [
+                'exception' => $e->getMessage(),
+                'uidCount' => count($uids)
+            ]);
+
+            return [];
+        }
     }
 
     /**
