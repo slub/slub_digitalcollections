@@ -29,6 +29,9 @@ namespace Slub\SlubDigitalcollections\Service;
 use Psr\Log\LoggerInterface;
 use Solarium\Component\Result\Grouping\QueryGroup;
 use Subugoe\Find\Service\SolrServiceProvider;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extended Service Provider for Solr with advanced grouping support.
@@ -473,6 +476,16 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $totalMatches = $groupedResults['matches'];
                 $totalGroups = $groupedResults['numberOfGroups'];
             }
+
+            $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
+
+            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
+            $groupDisplayDocuments = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+
+            // metsOrderlabel is persisted in DB (tx_dlf_documents), not in Solr.
+            // Provide it as a separate mapping for Fluid templates to avoid mutating Solr docs.
+            $metsOrderlabelUids = $this->collectMetsOrderlabelUids($groupedResults, $allDocuments, $groupDisplayDocuments);
+            $result['metsOrderlabelsByUid'] = $this->fetchMetsOrderlabelsByUids($metsOrderlabelUids);
             
             // Enrich result array with template-friendly structure
             $result['groupedResults'] = $groupedResults;
@@ -484,16 +497,15 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             // Kept for template compatibility; expensive lookup is currently disabled
             // because result partials do not consume this data.
             $result['additionalTitleInfo'] = [];
-
-            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
-            $result['groupDisplayDocuments'] = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+            $result['groupDisplayDocuments'] = $groupDisplayDocuments;
             
             $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
                 'queryCount' => count($queryGroups),
-                'groupDisplayDocuments' => count($result['groupDisplayDocuments'])
+                'groupDisplayDocuments' => count($result['groupDisplayDocuments']),
+                'metsOrderlabelsByUid' => count($result['metsOrderlabelsByUid'] ?? [])
             ]);
             
         } catch (\Exception $e) {
@@ -630,6 +642,219 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     }
 
     /**
+     * Adds partOf-referenced documents from the current grouped response to allDocuments.
+     *
+     * This allows direct lookups by referenced UID when both child and parent documents are
+     * already part of the same Solr response payload.
+     *
+     * @param array $groupedResults Template-friendly group structure with valueGroups/documents
+     * @param array &$allDocuments Flat document array that is enriched in-place
+     */
+    protected function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
+    {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return;
+        }
+
+        $documentsByUid = [];
+        $missingReferencedUids = [];
+
+        foreach ($valueGroups as $group) {
+            $documents = $group['documents'] ?? [];
+            foreach ($documents as $document) {
+                $uid = isset($document['uid']) ? (string)$document['uid'] : '';
+                if ($uid !== '' && !isset($documentsByUid[$uid])) {
+                    $documentsByUid[$uid] = $document;
+                }
+
+                $partOfValues = [];
+                if (!empty($document['partof'])) {
+                    $partOfValues = is_array($document['partof']) ? $document['partof'] : [$document['partof']];
+                } elseif (!empty($document['partOf'])) {
+                    $partOfValues = is_array($document['partOf']) ? $document['partOf'] : [$document['partOf']];
+                }
+
+                foreach ($partOfValues as $partOfValue) {
+                    $partOfUid = (string)$partOfValue;
+                    if ($partOfUid !== '' && !isset($allDocuments[$partOfUid])) {
+                        $missingReferencedUids[$partOfUid] = true;
+                    }
+                }
+            }
+        }
+
+        if (empty($missingReferencedUids)) {
+            return;
+        }
+
+        // Prefer parent documents already present in the same response payload.
+        foreach (array_keys($missingReferencedUids) as $referencedUid) {
+            if (isset($documentsByUid[$referencedUid])) {
+                $allDocuments[$referencedUid] = $documentsByUid[$referencedUid];
+            }
+        }
+
+        $uidsToFetch = [];
+        foreach (array_keys($missingReferencedUids) as $referencedUid) {
+            if (!isset($allDocuments[$referencedUid])) {
+                $uidsToFetch[] = $referencedUid;
+            }
+        }
+
+        if (empty($uidsToFetch)) {
+            return;
+        }
+
+        $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
+        foreach ($fetchedReferencedDocuments as $uid => $document) {
+            if (!isset($allDocuments[$uid])) {
+                $allDocuments[$uid] = $document;
+            }
+        }
+    }
+
+    /**
+     * Fetches Solr documents by UID and returns them indexed by UID.
+     *
+     * @param array $uids UIDs to fetch
+     * @return array Documents keyed by UID
+     */
+    protected function fetchDocumentsByUids(array $uids): array
+    {
+        $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
+            return $uid !== '';
+        })));
+
+        if (empty($uids)) {
+            return [];
+        }
+
+        $query = implode(' OR ', array_map(static function ($uid) {
+            return 'uid:' . $uid;
+        }, $uids));
+
+        try {
+            $selectQuery = $this->connection->createSelect();
+            $selectQuery->setQuery($query);
+
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $result = $this->connection->execute($selectQuery);
+
+            $documents = [];
+            foreach ($result as $document) {
+                if (!empty($document['uid'])) {
+                    $documents[(string)$document['uid']] = $document;
+                }
+            }
+
+            return $documents;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching documents by UIDs', [
+                'exception' => $e->getMessage(),
+                'uidCount' => count($uids)
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
+     * Collects all relevant UIDs for metsOrderlabel lookup.
+     *
+     * @param array $groupedResults Grouped result structure
+     * @param array $allDocuments Flat documents array
+     * @param array $groupDisplayDocuments Display documents by group value
+     * @return array<int> UID list for DB lookup
+     */
+    protected function collectMetsOrderlabelUids(
+        array $groupedResults,
+        array $allDocuments,
+        array $groupDisplayDocuments
+    ): array {
+        $uids = [];
+
+        foreach ($allDocuments as $document) {
+            $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+            if ($uid > 0) {
+                $uids[$uid] = true;
+            }
+        }
+
+        foreach ($groupDisplayDocuments as $document) {
+            $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+            if ($uid > 0) {
+                $uids[$uid] = true;
+            }
+        }
+
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        foreach ($valueGroups as $group) {
+            $documents = $group['documents'] ?? [];
+            foreach ($documents as $document) {
+                $uid = isset($document['uid']) ? (int)$document['uid'] : 0;
+                if ($uid > 0) {
+                    $uids[$uid] = true;
+                }
+            }
+        }
+
+        return array_keys($uids);
+    }
+
+    /**
+     * Fetches mets_orderlabel values from tx_dlf_documents by uid.
+     *
+     * @param array $uids Document UIDs
+     * @return array<int, string> Map of uid => mets_orderlabel
+     */
+    protected function fetchMetsOrderlabelsByUids(array $uids): array
+    {
+        $uids = array_values(array_unique(array_filter(array_map('intval', $uids), static function ($uid) {
+            return $uid > 0;
+        })));
+
+        if (empty($uids)) {
+            return [];
+        }
+
+        try {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_dlf_documents');
+
+            $rows = $queryBuilder
+                ->select('uid', 'mets_orderlabel')
+                ->from('tx_dlf_documents')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->eq('deleted', 0)
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            $result = [];
+            foreach ($rows as $row) {
+                $uid = (int)($row['uid'] ?? 0);
+                if ($uid > 0 && !empty($row['mets_orderlabel'])) {
+                    $result[$uid] = (string)$row['mets_orderlabel'];
+                }
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching metsOrderlabel from DB', [
+                'exception' => $e->getMessage(),
+                'uidCount' => count($uids)
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
      * Fetches additional title information for documents without a title field.
      * 
      * For documents that have no title but reference a parent document (via partof field),
@@ -756,8 +981,10 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
 
             $document = $allDocuments[$groupValue];
-            $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
-            $candidateUidByGroupValue[$groupValue] = $candidateUid;
+            if($document['toplevel'] === false) {            
+                $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
+                $candidateUidByGroupValue[$groupValue] = $candidateUid;
+            }
         }
 
         if (empty($candidateUidByGroupValue)) {
@@ -778,6 +1005,9 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         foreach ($candidateUidByGroupValue as $groupValue => $candidateUid) {
             if (!empty($topLevelCandidates[$candidateUid])) {
                 $candidateDocument = $topLevelCandidates[$candidateUid];
+
+
+
                 if (!empty($candidateDocument['partof'])) {
                     $parentUid = (string)$candidateDocument['partof'];
                     if (!empty($secondLevelParents[$parentUid])) {
