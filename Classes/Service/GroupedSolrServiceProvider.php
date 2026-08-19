@@ -209,7 +209,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      *
      * @param array $arguments Request arguments from URL
      */
-    protected function addGrouping(array $arguments): void
+    private function addGrouping(array $arguments): void
     {
         // Check if grouping is enabled in settings
         if (empty($this->localSettings['grouping'])) {
@@ -247,7 +247,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureFieldGrouping($grouping, array $groupSettings, array $arguments): void
+    private function configureFieldGrouping($grouping, array $groupSettings, array $arguments): void
     {
         $fields = [];
         
@@ -284,7 +284,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureQueryGrouping($grouping, array $groupSettings, array $arguments): void
+    private function configureQueryGrouping($grouping, array $groupSettings, array $arguments): void
     {
         $queries = [];
         
@@ -317,7 +317,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureGroupingParameters($grouping, array $groupSettings, array $arguments): void
+    private function configureGroupingParameters($grouping, array $groupSettings, array $arguments): void
     {
         // Limit (results per group)
         // Default: -1 means all results
@@ -431,7 +431,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $result Result array from parent::getDefaultQuery()
      * @return array Enriched result array
      */
-    protected function processGroupedResults(array $result): array
+    private function processGroupedResults(array $result): array
     {
         try {
             $results = $result['results'];
@@ -526,7 +526,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array &$allDocuments Reference to collect all documents by UID
      * @return array Template-friendly group structure
      */
-    protected function extractTemplateData($fieldGroup, array &$allDocuments): array
+    private function extractTemplateData($fieldGroup, array &$allDocuments): array
     {
         $data = [
             'matches' => $fieldGroup->getMatches(),
@@ -568,7 +568,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $configuredQueries Query strings from settings
      * @return array<string, QueryGroup> Query groups keyed by query string
      */
-    protected function collectQueryGroups($grouping, array $configuredQueries): array
+    private function collectQueryGroups($grouping, array $configuredQueries): array
     {
         $queryGroups = [];
 
@@ -598,7 +598,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array &$allDocuments Reference to collect all documents by synthetic group key
      * @return array Template-friendly group structure
      */
-    protected function extractTemplateDataFromQueryGroups(array $queryGroups, array &$allDocuments): array
+    private function extractTemplateDataFromQueryGroups(array $queryGroups, array &$allDocuments): array
     {
         $data = [
             'matches' => 0,
@@ -650,7 +650,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupedResults Template-friendly group structure with valueGroups/documents
      * @param array &$allDocuments Flat document array that is enriched in-place
      */
-    protected function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
+    private function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
     {
         $valueGroups = $groupedResults['valueGroups'] ?? [];
         if (empty($valueGroups)) {
@@ -720,7 +720,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids UIDs to fetch
      * @return array Documents keyed by UID
      */
-    protected function fetchDocumentsByUids(array $uids): array
+    private function fetchDocumentsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
             return $uid !== '';
@@ -767,7 +767,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupDisplayDocuments Display documents by group value
      * @return array<int> UID list for DB lookup
      */
-    protected function collectMetsOrderlabelUids(
+    private function collectMetsOrderlabelUids(
         array $groupedResults,
         array $allDocuments,
         array $groupDisplayDocuments
@@ -808,7 +808,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids Document UIDs
      * @return array<int, string> Map of uid => mets_orderlabel
      */
-    protected function fetchMetsOrderlabelsByUids(array $uids): array
+    private function fetchMetsOrderlabelsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('intval', $uids), static function ($uid) {
             return $uid > 0;
@@ -864,7 +864,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $documents Array of documents keyed by UID
      * @return array Array of additional title info keyed by document UID
      */
-    protected function fetchAdditionalTitleInfo(array $documents): array
+    private function fetchAdditionalTitleInfo(array $documents): array
     {
         $titleRequiredForDocuments = [];
         
@@ -966,7 +966,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $allDocuments Flat array of all documents keyed by group value
      * @return array Display documents keyed by group value
      */
-    protected function resolveDisplayDocumentsForGroups(array $groupedResults, array $allDocuments): array
+    private function resolveDisplayDocumentsForGroups(array $groupedResults, array $allDocuments): array
     {
         $valueGroups = $groupedResults['valueGroups'] ?? [];
         if (empty($valueGroups)) {
@@ -1034,7 +1034,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids UIDs to fetch
      * @return array Documents keyed by UID
      */
-    protected function fetchTopLevelDocumentsByUids(array $uids): array
+    private function fetchTopLevelDocumentsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
             return $uid !== '';
@@ -1080,7 +1080,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings Grouping configuration
      * @return array List of field names
      */
-    protected function getConfiguredFields(array $groupSettings): array
+    private function getConfiguredFields(array $groupSettings): array
     {
         $fields = [];
         
@@ -1101,7 +1101,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings Grouping configuration
      * @return array List of query strings
      */
-    protected function getConfiguredQueries(array $groupSettings): array
+    private function getConfiguredQueries(array $groupSettings): array
     {
         $queries = [];
         
