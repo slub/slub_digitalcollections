@@ -616,8 +616,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $partOfValues = [];
                 if (!empty($document['partof'])) {
                     $partOfValues = is_array($document['partof']) ? $document['partof'] : [$document['partof']];
-                } elseif (!empty($document['partOf'])) {
-                    $partOfValues = is_array($document['partOf']) ? $document['partOf'] : [$document['partOf']];
                 }
 
                 foreach ($partOfValues as $partOfValue) {
