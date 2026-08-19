@@ -1,5 +1,7 @@
 <?php
+
 namespace Slub\SlubDigitalcollections\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,8 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to get kitodo collections froms olr
- *
- * @package TYPO3
  */
 class CollectionsViewHelper extends AbstractViewHelper
 {
@@ -42,7 +42,7 @@ class CollectionsViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('kitodoId', 'integer', 'Id of Kitodo document', true);
-        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, "http://example.com:8983/solr/dlfCore0/");
+        $this->registerArgument('solrHost', 'string', 'Id of Kitodo document', false, 'http://example.com:8983/solr/dlfCore0/');
         $this->registerArgument('solrTimeout', 'integer', 'Timeout to Solr server', false, 5);
     }
 
@@ -57,21 +57,21 @@ class CollectionsViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $kitodoId = $arguments['kitodoId'];
-        $solrHost = rtrim($arguments['solrHost'], "/");
+        $solrHost = rtrim($arguments['solrHost'], '/');
         $solrTimeout = $arguments['solrTimeout'];
         if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kitodoId)) {
             // calculate cache identifier
             $cacheIdentifier = $kitodoId;
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('slub_digitalcollections_matomo_collections');
 
-            if (($result = $cache->get($cacheIdentifier)) === FALSE) {
+            if (($result = $cache->get($cacheIdentifier)) === false) {
                 /** @var RequestFactory $requestFactory */
                 $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
                 $configuration = [
                     'timeout' => $solrTimeout,
                     'headers' => [
                         'Content-type' => 'application/x-www-form-urlencoded',
-                        'Accept' => 'application/json'
+                        'Accept' => 'application/json',
                     ],
                     'form_params' => [
                         'q' => 'uid:' . $kitodoId . ' AND toplevel:true',
@@ -79,8 +79,8 @@ class CollectionsViewHelper extends AbstractViewHelper
                         'fl' => 'collection',
                         'wt' => 'json',
                         'json.nl' => 'flat',
-                        'omitHeader' => 'true'
-                    ]
+                        'omitHeader' => 'true',
+                    ],
                 ];
 
                 $response = $requestFactory->request($solrHost . '/select?', 'POST', $configuration);
@@ -93,7 +93,7 @@ class CollectionsViewHelper extends AbstractViewHelper
                 }
             }
         } else {
-          return FALSE;
+            return false;
         }
         return $result;
     }

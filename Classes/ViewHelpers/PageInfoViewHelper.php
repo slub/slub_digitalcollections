@@ -1,4 +1,5 @@
 <?php
+
 namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
@@ -25,7 +26,6 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -41,8 +41,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * <output>
  * Will output the page record
  * </output>
- *
- * @package TYPO3
  */
 class PageInfoViewHelper extends AbstractViewHelper
 {
@@ -65,8 +63,8 @@ class PageInfoViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-      ) {
-        $pageUid = (int) $arguments['uid'];
+    ) {
+        $pageUid = (int)$arguments['uid'];
         $field = $arguments['field'];
 
         // If uid is 0, take the current page from routing context
@@ -82,6 +80,6 @@ class PageInfoViewHelper extends AbstractViewHelper
         $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
 
-        return array_key_exists($field, $page) ? (string) $page[$field] : '';
+        return array_key_exists($field, $page) ? (string)$page[$field] : '';
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace Slub\SlubDigitalcollections\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,15 +24,13 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to get the provider logo from cache
- *
- * @package TYPO3
  */
 class ProviderLogoCachedViewHelper extends AbstractViewHelper
 {
@@ -69,19 +69,20 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
             }
 
             // file not present or too old --> fetch new
-            $context = stream_context_create(array(
-                'http' => array(
-                    'timeout' => 10
-                    )
-                )
+            $context = stream_context_create(
+                [
+                    'http' => [
+                        'timeout' => 10,
+                    ],
+                ]
             );
-            $logo = @file_get_contents($logoUrl, false, $context, 0, 1024*100);
+            $logo = @file_get_contents($logoUrl, false, $context, 0, 1024 * 100);
             // Save value in cache
             if ($logo) {
                 GeneralUtility::writeFileToTypo3tempDir($logoFile, $logo);
                 return $cacheIdentifier;
             }
         }
-        return FALSE;
+        return false;
     }
 }
