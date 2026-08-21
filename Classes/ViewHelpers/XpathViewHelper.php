@@ -124,7 +124,6 @@ class XpathViewHelper extends AbstractViewHelper
             return $output;
         }
         return trim($output);
-
     }
 
     /**
