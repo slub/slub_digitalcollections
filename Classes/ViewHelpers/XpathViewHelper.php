@@ -1,4 +1,5 @@
 <?php
+
 namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
@@ -23,14 +24,14 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Kitodo\Dlf\Common\MetsDocument;
+use Kitodo\Dlf\Domain\Repository\DocumentRepository;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-
-use Kitodo\Dlf\Common\MetsDocument;
-use Kitodo\Dlf\Domain\Repository\DocumentRepository;
 
 /**
  * ViewHelper to get page info
@@ -43,8 +44,6 @@ use Kitodo\Dlf\Domain\Repository\DocumentRepository;
  * <output>
  * Will output the page record
  * </output>
- *
- * @package TYPO3
  */
 class XpathViewHelper extends AbstractViewHelper
 {
@@ -69,7 +68,6 @@ class XpathViewHelper extends AbstractViewHelper
     /**
      * Render the supplied DateTime object as a formatted date.
      *
-     * @access public
      *
      * @static
      *
@@ -81,9 +79,9 @@ class XpathViewHelper extends AbstractViewHelper
      * @phpstan-return array<string>|string|void
      */
     public static function renderStatic(
-      array $arguments,
-      \Closure $renderChildrenClosure,
-      RenderingContextInterface $renderingContext
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
     ) {
         $xpath = $arguments['xpath'];
         $htmlSpecialChars = $arguments['htmlspecialchars'];
@@ -124,15 +122,13 @@ class XpathViewHelper extends AbstractViewHelper
 
         if ($returnArray) {
             return $output;
-        } else {
-            return trim($output);
         }
+        return trim($output);
     }
 
     /**
      * Get parameters from the request.
      *
-     * @access private
      *
      * @static
      *
@@ -166,13 +162,13 @@ class XpathViewHelper extends AbstractViewHelper
         }
         if (isset($parametersSet['mets']) && GeneralUtility::isValidUrl($parametersSet['mets'])) {
             $parameters['location'] = $parametersSet['mets'];
-        } else if (isset($parametersDlf['id'])) {
+        } elseif (isset($parametersDlf['id'])) {
             if (MathUtility::canBeInterpretedAsInteger($parametersDlf['id'])) {
                 $parameters['id'] = $parametersDlf['id'];
-            } else if (GeneralUtility::isValidUrl($parametersDlf['id'])) {
+            } elseif (GeneralUtility::isValidUrl($parametersDlf['id'])) {
                 $parameters['location'] = $parametersDlf['id'];
             }
-        } else if (isset($parametersDlf['recordId'])) {
+        } elseif (isset($parametersDlf['recordId'])) {
             $parameters['recordId'] = $parametersDlf['recordId'];
         }
 
@@ -182,7 +178,6 @@ class XpathViewHelper extends AbstractViewHelper
     /**
      * Initialize the document repository
      *
-     * @access private
      *
      * @static
      *

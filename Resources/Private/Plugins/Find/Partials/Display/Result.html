@@ -27,7 +27,7 @@
 
 	<f:link.page pageUid="{settings.kitodoPageView}" 
 		additionalParams="{tx_dlf: txDlfParams}" >
-		<div class="tx-dlf-listview-thumbnail"><f:if condition="{s:data.valueForKey(array:document.fields, key:'thumbnail')}"><f:then><img src="{document.thumbnail}" alt="thumbnail for {s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}"/></f:then></f:if></div>
+		<div class="tx-dlf-listview-thumbnail"><f:if condition="{s:data.valueForKey(array:document.fields, key:'thumbnail')}"><f:then><f:variable name="titleFieldValue" value="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}" /><f:variable name="titleFieldText" value="{f:if(condition: '{s:data.isArray(subject:titleFieldValue)}', then: '{s:data.arrayFirst(array:titleFieldValue)}', else: '{titleFieldValue}') }" /><img src="{document.thumbnail}" alt="thumbnail for {titleFieldText}"/></f:then></f:if></div>
 		<dl>
 			<f:if condition="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}">
 				<f:then>

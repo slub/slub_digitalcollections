@@ -1,4 +1,5 @@
 <?php
+
 namespace Slub\SlubDigitalcollections\ViewHelpers;
 
 /***************************************************************
@@ -36,8 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * <output>
  * Will output all words out of the ALTO files
  * </output>
- *
- * @package TYPO3
  */
 class ExtractFulltextViewHelper extends AbstractViewHelper
 {
@@ -59,19 +58,19 @@ class ExtractFulltextViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-      ) {
-        $file= $arguments['file'];
+    ) {
+        $file = $arguments['file'];
         $rawText = '';
         $altoXml = @simplexml_load_file($file);
-        if($altoXml !== FALSE) {
-          $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
-          // Get all (presumed) words of the text.
-          $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
-          if (!empty($words)) {
-              $rawText = implode(' ', $words);
-          }
+        if ($altoXml !== false) {
+            $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
+            // Get all (presumed) words of the text.
+            $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
+            if (!empty($words)) {
+                $rawText = implode(' ', $words);
+            }
         }
         return $rawText;
-      }
+    }
 
 }

@@ -35,14 +35,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extended Service Provider for Solr with advanced grouping support.
- * 
+ *
  * Provides full Solr grouping functionality including:
  * - Field-based grouping (group.field)
  * - Query-based grouping (group.query)
  * - Multiple grouping fields/queries
  * - Group sorting, formatting, and faceting
  * - Configurable via TypoScript and URL parameters
- * 
+ *
  * Compatible with both TYPO3 12.4 and 13.4.
  */
 class GroupedSolrServiceProvider extends SolrServiceProvider
@@ -64,12 +64,12 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
     /**
      * Constructor compatible with both TYPO3 12.4 (PHP 8.1) and 13.4 (PHP 8.4).
-     * 
+     *
      * TYPO3 12.4: Expects 3 parameters (connectionName, settings, logger)
      * TYPO3 13.4: Expects 1 parameter (logger), uses setters for other values
-     * 
+     *
      * Detection strategy: Checks if parent class has setConnectionName method (TYPO3 13 only)
-     * 
+     *
      * @param mixed ...$args Variable arguments to support both versions
      */
     public function __construct(...$args)
@@ -84,11 +84,11 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         } elseif (count($args) === 3) {
             // TYPO3 12.4 or 13.4 style with explicit parameters
             [$connectionName, $settings, $logger] = $args;
-            
+
             // Detect TYPO3 version by checking if parent has setConnectionName method (13.4 only)
             // This is more reliable than checking constructor parameters
             $isTypo3v13 = method_exists(parent::class, 'setConnectionName');
-            
+
             if ($isTypo3v13) {
                 // TYPO3 13.4: Parent expects only logger, use setters for other values
                 // @phpstan-ignore-next-line (TYPO3 13.4 constructor takes 1 parameter)
@@ -107,7 +107,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 // @phpstan-ignore-next-line (TYPO3 12.4 constructor takes 3 parameters)
                 parent::__construct($connectionName, $settings, $logger);
             }
-            
+
             $this->localLogger = $logger;
             $this->localSettings = $settings;
             $this->localConnectionName = $connectionName;
@@ -153,21 +153,20 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     protected function createQueryForArguments(array $arguments): void
     {
         parent::createQueryForArguments($arguments);
-        
-        // Add Solr grouping configuration
+
         $this->addGrouping($arguments);
     }
 
     /**
      * Configures Solr grouping parameters on the query.
-     * 
+     *
      * Supports both field-based and query-based grouping with extensive configuration options:
-     * 
+     *
      * TypoScript Configuration Example:
      * grouping {
      *   // Basic options
      *   enabled = 1
-     *   
+     *
      *   // Field-based grouping (one or multiple fields)
      *   fields {
      *     0 = uid
@@ -175,7 +174,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      *   }
      *   // Or single field:
      *   field = uid
-     *   
+     *
      *   // Query-based grouping
      *   queries {
      *     0 {
@@ -185,7 +184,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      *       query = year:[1951 TO 2000]
      *     }
      *   }
-     *   
+     *
      *   // Advanced options
      *   limit = 100              // Results per group (default: -1 = all)
      *   offset = 0               // Start position within groups
@@ -209,34 +208,30 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      *
      * @param array $arguments Request arguments from URL
      */
-    protected function addGrouping(array $arguments): void
+    private function addGrouping(array $arguments): void
     {
-        // Check if grouping is enabled in settings
+
         if (empty($this->localSettings['grouping'])) {
             return;
         }
 
         $groupSettings = $this->localSettings['grouping'];
-        
-        // Check if grouping is explicitly disabled
+
         if (isset($groupSettings['enabled']) && !$groupSettings['enabled']) {
             return;
         }
 
         $grouping = $this->query->getGrouping();
-        
-        // Configure field-based grouping
+
         $this->configureFieldGrouping($grouping, $groupSettings, $arguments);
-        
-        // Configure query-based grouping
+
         $this->configureQueryGrouping($grouping, $groupSettings, $arguments);
-        
-        // Configure general grouping parameters
+
         $this->configureGroupingParameters($grouping, $groupSettings, $arguments);
-        
+
         $this->localLogger->debug('Solr grouping configured', [
             'settings' => $groupSettings,
-            'arguments' => $arguments
+            'arguments' => $arguments,
         ]);
     }
 
@@ -247,28 +242,20 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureFieldGrouping($grouping, array $groupSettings, array $arguments): void
+    private function configureFieldGrouping($grouping, array $groupSettings, array $arguments): void
     {
         $fields = [];
-        
-        // Priority 1: URL parameter (single field)
+
         if (!empty($arguments['groupField'])) {
             $fields[] = $arguments['groupField'];
-        }
-        // Priority 2: URL parameter (multiple fields)
-        elseif (!empty($arguments['groupFields']) && is_array($arguments['groupFields'])) {
+        } elseif (!empty($arguments['groupFields']) && is_array($arguments['groupFields'])) {
             $fields = $arguments['groupFields'];
-        }
-        // Priority 3: TypoScript fields array
-        elseif (!empty($groupSettings['fields']) && is_array($groupSettings['fields'])) {
+        } elseif (!empty($groupSettings['fields']) && is_array($groupSettings['fields'])) {
             $fields = array_values($groupSettings['fields']);
-        }
-        // Priority 4: TypoScript single field
-        elseif (!empty($groupSettings['field'])) {
+        } elseif (!empty($groupSettings['field'])) {
             $fields[] = $groupSettings['field'];
         }
-        
-        // Add all configured fields
+
         foreach ($fields as $field) {
             if (!empty($field) && is_string($field)) {
                 $grouping->addField($field);
@@ -284,24 +271,20 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureQueryGrouping($grouping, array $groupSettings, array $arguments): void
+    private function configureQueryGrouping($grouping, array $groupSettings, array $arguments): void
     {
         $queries = [];
-        
-        // Priority 1: URL parameters
+
         if (!empty($arguments['groupQuery']) && is_array($arguments['groupQuery'])) {
             $queries = $arguments['groupQuery'];
-        }
-        // Priority 2: TypoScript configuration
-        elseif (!empty($groupSettings['queries']) && is_array($groupSettings['queries'])) {
+        } elseif (!empty($groupSettings['queries']) && is_array($groupSettings['queries'])) {
             foreach ($groupSettings['queries'] as $queryConfig) {
                 if (!empty($queryConfig['query'])) {
                     $queries[] = $queryConfig['query'];
                 }
             }
         }
-        
-        // Add all configured queries
+
         foreach ($queries as $query) {
             if (!empty($query) && is_string($query)) {
                 $grouping->addQuery($query);
@@ -317,64 +300,48 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings TypoScript grouping settings
      * @param array $arguments URL arguments
      */
-    protected function configureGroupingParameters($grouping, array $groupSettings, array $arguments): void
+    private function configureGroupingParameters($grouping, array $groupSettings, array $arguments): void
     {
-        // Limit (results per group)
-        // Default: -1 means all results
+
         $limit = $arguments['groupLimit'] ?? $groupSettings['limit'] ?? -1;
         if (is_numeric($limit)) {
             $grouping->setLimit((int)$limit);
         }
-        
-        // Offset (start position within groups)
+
         $offset = $arguments['groupOffset'] ?? $groupSettings['offset'] ?? null;
         if ($offset !== null && is_numeric($offset)) {
             $grouping->setOffset((int)$offset);
         }
-        
-        // Sort (order within groups)
+
         $sort = $arguments['groupSort'] ?? $groupSettings['sort'] ?? null;
         if (!empty($sort) && is_string($sort)) {
             $grouping->setSort($sort);
         }
-        
-        // Format (grouped or simple)
+
         $format = $arguments['groupFormat'] ?? $groupSettings['format'] ?? null;
         if (!empty($format) && is_string($format)) {
             $grouping->setFormat($format);
         }
-        
-        // Main (return ungrouped results in main result list)
-        // Note: setMain() is controlled via the format parameter in Solarium
-        // Use format = 'simple' to get main results alongside grouped results
-        
-        // Facets (calculate facets for grouped results)
-        // Note: Combining facets with grouping requires proper Solr schema configuration.
-        // Fields used for grouping need docvalues type SORTED, not NUMERIC.
-        // Only set if explicitly enabled to avoid "unexpected docvalues type" errors.
 
-        if (isset($groupSettings['facets']) && 
-                        ($groupSettings['facets'] === true || 
-                         $groupSettings['facets'] === '1' || 
-                         $groupSettings['facets'] === 'true')) {
+        if (isset($groupSettings['facets'])
+                        && ($groupSettings['facets'] === true
+                         || $groupSettings['facets'] === '1'
+                         || $groupSettings['facets'] === 'true')) {
             $grouping->setFacet(true);
         } else {
             $grouping->setFacet(false);
         }
-        
-        // Truncate (truncate group count to limit)
+
         $truncate = $groupSettings['truncate'] ?? null;
         if ($truncate !== null) {
             $grouping->setTruncate((bool)$truncate);
         }
-        
-        // Cache percentage (0-100)
+
         $cachePercentage = $groupSettings['cachePercentage'] ?? null;
         if ($cachePercentage !== null && is_numeric($cachePercentage)) {
             $grouping->setCachePercentage((int)$cachePercentage);
         }
-        
-        // Number of groups (include total group count)
+
         $numberOfGroups = $groupSettings['numberOfGroups'] ?? true;
         if ($numberOfGroups !== null) {
             $grouping->setNumberOfGroups((bool)$numberOfGroups);
@@ -390,23 +357,21 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     public function getDefaultQuery(): array
     {
         $result = parent::getDefaultQuery();
-        
-        // If there was an error, return as-is
+
         if (!empty($result['error'])) {
             return $result;
         }
-        
-        // Process grouping if enabled
+
         if (!empty($this->localSettings['grouping']) && !empty($result['results'])) {
             $result = $this->processGroupedResults($result);
         }
-        
+
         return $result;
     }
 
     /**
      * Processes and enriches grouped Solr results.
-     * 
+     *
      * Extracts grouping information from Solr response and adds:
      * - groupedResults: Template-friendly structure with valueGroups array
      * - allDocuments: Flat array of all documents keyed by group value (UID)
@@ -431,30 +396,25 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $result Result array from parent::getDefaultQuery()
      * @return array Enriched result array
      */
-    protected function processGroupedResults(array $result): array
+    private function processGroupedResults(array $result): array
     {
         try {
             $results = $result['results'];
             $grouping = $results->getGrouping();
-            
+
             if (!$grouping) {
                 return $result;
             }
-            
+
             $groupSettings = $this->localSettings['grouping'];
             $groupedResults = [];
             $allDocuments = [];
             $totalMatches = 0;
             $totalGroups = 0;
-            
-            // Get the primary grouping field for template compatibility.
-            // matches/numberOfGroups are taken exclusively from the primary field (or first
-            // query group) to avoid double-counting: every grouping command reports the same
-            // underlying matches, so summing across fields would multiply the value.
+
             $fields = $this->getConfiguredFields($groupSettings);
             $primaryField = !empty($fields) ? $fields[0] : null;
-            
-            // Process field-based grouping – only primary field contributes to totals.
+
             foreach ($fields as $field) {
                 $fieldGroup = $grouping->getGroup($field);
                 if ($fieldGroup) {
@@ -465,10 +425,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                     }
                 }
             }
-            
-            // Process query-based grouping.
-            // If no field grouping is configured (or no field-group data is available),
-            // map query groups into the same template structure used for field grouping.
+
             $queries = $this->getConfiguredQueries($groupSettings);
             $queryGroups = $this->collectQueryGroups($grouping, $queries);
             if (empty($groupedResults) && !empty($queryGroups)) {
@@ -479,42 +436,36 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
             $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
 
-            // Resolve display documents for each group in batch to avoid N+1 Solr queries in Fluid templates.
             $groupDisplayDocuments = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
 
-            // metsOrderlabel is persisted in DB (tx_dlf_documents), not in Solr.
-            // Provide it as a separate mapping for Fluid templates to avoid mutating Solr docs.
             $metsOrderlabelUids = $this->collectMetsOrderlabelUids($groupedResults, $allDocuments, $groupDisplayDocuments);
             $result['metsOrderlabelsByUid'] = $this->fetchMetsOrderlabelsByUids($metsOrderlabelUids);
-            
-            // Enrich result array with template-friendly structure
+
             $result['groupedResults'] = $groupedResults;
             $result['allDocuments'] = $allDocuments;
             $result['groupCount'] = $totalGroups;
             $result['matches'] = $totalMatches;
             $result['groupingActive'] = true;
 
-            // Kept for template compatibility; expensive lookup is currently disabled
-            // because result partials do not consume this data.
             $result['additionalTitleInfo'] = [];
             $result['groupDisplayDocuments'] = $groupDisplayDocuments;
-            
+
             $this->localLogger->debug('Grouped results processed', [
                 'totalGroups' => $totalGroups,
                 'totalMatches' => $totalMatches,
                 'fields' => $fields,
                 'queryCount' => count($queryGroups),
                 'groupDisplayDocuments' => count($result['groupDisplayDocuments']),
-                'metsOrderlabelsByUid' => count($result['metsOrderlabelsByUid'] ?? [])
+                'metsOrderlabelsByUid' => count($result['metsOrderlabelsByUid'] ?? []),
             ]);
-            
+
         } catch (\Exception $e) {
             $this->localLogger->error('Error processing grouped results', [
                 'exception' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
         }
-        
+
         return $result;
     }
 
@@ -526,38 +477,34 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array &$allDocuments Reference to collect all documents by UID
      * @return array Template-friendly group structure
      */
-    protected function extractTemplateData($fieldGroup, array &$allDocuments): array
+    private function extractTemplateData($fieldGroup, array &$allDocuments): array
     {
         $data = [
             'matches' => $fieldGroup->getMatches(),
             'numberOfGroups' => $fieldGroup->getNumberOfGroups(),
-            'valueGroups' => []
+            'valueGroups' => [],
         ];
-        
-        // Extract groups and documents
+
         foreach ($fieldGroup as $group) {
             $groupValue = $group->getValue();
             $documents = [];
-            
-            // Extract documents from group
+
             foreach ($group as $document) {
                 $documents[] = $document;
-                
-                // Add to flat allDocuments array, keyed by group value
+
                 if (!isset($allDocuments[$groupValue])) {
                     $allDocuments[$groupValue] = $document;
                 }
             }
-            
-            // Create template-friendly group structure
+
             $data['valueGroups'][] = [
                 'value' => $groupValue,
                 'numFound' => $group->getNumFound(),
                 'start' => method_exists($group, 'getStart') ? $group->getStart() : 0,
-                'documents' => $documents
+                'documents' => $documents,
             ];
         }
-        
+
         return $data;
     }
 
@@ -568,7 +515,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $configuredQueries Query strings from settings
      * @return array<string, QueryGroup> Query groups keyed by query string
      */
-    protected function collectQueryGroups($grouping, array $configuredQueries): array
+    private function collectQueryGroups($grouping, array $configuredQueries): array
     {
         $queryGroups = [];
 
@@ -579,7 +526,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
         }
 
-        // Fallback for runtime query overrides (e.g. URL groupQuery) that are not in settings.
         if (empty($queryGroups) && method_exists($grouping, 'getGroups')) {
             foreach ($grouping->getGroups() as $groupKey => $group) {
                 if ($group instanceof QueryGroup) {
@@ -598,12 +544,12 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array &$allDocuments Reference to collect all documents by synthetic group key
      * @return array Template-friendly group structure
      */
-    protected function extractTemplateDataFromQueryGroups(array $queryGroups, array &$allDocuments): array
+    private function extractTemplateDataFromQueryGroups(array $queryGroups, array &$allDocuments): array
     {
         $data = [
             'matches' => 0,
             'numberOfGroups' => 0,
-            'valueGroups' => []
+            'valueGroups' => [],
         ];
 
         foreach ($queryGroups as $query => $queryGroup) {
@@ -612,7 +558,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $documents[] = $document;
             }
 
-            // Skip empty groups so templates do not try to render a missing lead document.
             if (empty($documents)) {
                 continue;
             }
@@ -632,7 +577,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 'query' => $query,
                 'numFound' => $queryGroup->getNumFound(),
                 'start' => $queryGroup->getStart() ?? 0,
-                'documents' => $documents
+                'documents' => $documents,
             ];
         }
 
@@ -650,7 +595,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupedResults Template-friendly group structure with valueGroups/documents
      * @param array &$allDocuments Flat document array that is enriched in-place
      */
-    protected function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
+    private function addPartOfReferencedDocumentsToAllDocuments(array $groupedResults, array &$allDocuments): void
     {
         $valueGroups = $groupedResults['valueGroups'] ?? [];
         if (empty($valueGroups)) {
@@ -671,8 +616,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $partOfValues = [];
                 if (!empty($document['partof'])) {
                     $partOfValues = is_array($document['partof']) ? $document['partof'] : [$document['partof']];
-                } elseif (!empty($document['partOf'])) {
-                    $partOfValues = is_array($document['partOf']) ? $document['partOf'] : [$document['partOf']];
                 }
 
                 foreach ($partOfValues as $partOfValue) {
@@ -688,7 +631,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             return;
         }
 
-        // Prefer parent documents already present in the same response payload.
         foreach (array_keys($missingReferencedUids) as $referencedUid) {
             if (isset($documentsByUid[$referencedUid])) {
                 $allDocuments[$referencedUid] = $documentsByUid[$referencedUid];
@@ -720,7 +662,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids UIDs to fetch
      * @return array Documents keyed by UID
      */
-    protected function fetchDocumentsByUids(array $uids): array
+    private function fetchDocumentsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
             return $uid !== '';
@@ -752,7 +694,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching documents by UIDs', [
                 'exception' => $e->getMessage(),
-                'uidCount' => count($uids)
+                'uidCount' => count($uids),
             ]);
 
             return [];
@@ -767,7 +709,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupDisplayDocuments Display documents by group value
      * @return array<int> UID list for DB lookup
      */
-    protected function collectMetsOrderlabelUids(
+    private function collectMetsOrderlabelUids(
         array $groupedResults,
         array $allDocuments,
         array $groupDisplayDocuments
@@ -808,7 +750,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids Document UIDs
      * @return array<int, string> Map of uid => mets_orderlabel
      */
-    protected function fetchMetsOrderlabelsByUids(array $uids): array
+    private function fetchMetsOrderlabelsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('intval', $uids), static function ($uid) {
             return $uid > 0;
@@ -847,7 +789,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching metsOrderlabel from DB', [
                 'exception' => $e->getMessage(),
-                'uidCount' => count($uids)
+                'uidCount' => count($uids),
             ]);
 
             return [];
@@ -856,101 +798,97 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
     /**
      * Fetches additional title information for documents without a title field.
-     * 
+     *
      * For documents that have no title but reference a parent document (via partof field),
      * this method queries Solr to fetch the parent's title and returns it in brackets.
      * First tries to find toplevel documents, then fallback to volume documents.
-     * 
+     *
      * @param array $documents Array of documents keyed by UID
      * @return array Array of additional title info keyed by document UID
      */
-    protected function fetchAdditionalTitleInfo(array $documents): array
+    private function fetchAdditionalTitleInfo(array $documents): array
     {
         $titleRequiredForDocuments = [];
-        
-        // Find documents without title that have a parent reference
+
         foreach ($documents as $uid => $doc) {
             if (empty($doc['title']) && !empty($doc['partof']) && ($doc['type'] ?? '') !== 'year') {
                 $titleRequiredForDocuments[] = [
                     'uid' => $uid,
-                    'partof' => $doc['partof']
+                    'partof' => $doc['partof'],
                 ];
             }
         }
-        
-        // Early return if no additional titles needed
+
         if (empty($titleRequiredForDocuments)) {
             return [];
         }
-        
-        // Build query to fetch parent titles
+
         $parentUids = array_unique(array_column($titleRequiredForDocuments, 'partof'));
-        $query = implode(' OR ', array_map(function($uid) {
+        $query = implode(' OR ', array_map(function ($uid) {
             return 'uid:' . $uid;
         }, $parentUids));
 
         $additionalTitleInfo = [];
-        
+
         try {
-            // First attempt: Query for toplevel parent documents
+
             $selectQuery = $this->connection->createSelect();
             $selectQuery->setQuery($query);
             $selectQuery->setFields(['uid', 'title']);
             $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
-            
+
             /** @var \Solarium\QueryType\Select\Result\Result $titlesResult */
             $titlesResult = $this->connection->execute($selectQuery);
-            
+
             foreach ($titlesResult as $doc) {
                 if (!empty($doc['title'])) {
                     $additionalTitleInfo[$doc['uid']] = [
                         'uid' => $doc['uid'],
-                        'title' => '[' . $doc['title'] . ']'
+                        'title' => '[' . $doc['title'] . ']',
                     ];
                 }
             }
 
-            // Second attempt: If some titles are still missing, try volume documents
             $missingUids = array_diff($parentUids, array_keys($additionalTitleInfo));
             if (!empty($missingUids)) {
-                $volumeQuery = implode(' OR ', array_map(function($uid) {
+                $volumeQuery = implode(' OR ', array_map(function ($uid) {
                     return 'uid:' . $uid;
                 }, $missingUids));
-                
+
                 $volumeSelectQuery = $this->connection->createSelect();
                 $volumeSelectQuery->setQuery($volumeQuery);
                 $volumeSelectQuery->setFields(['uid', 'title', 'type']);
                 $volumeSelectQuery->createFilterQuery('volumeType')->setQuery('type:volume');
-                
+
                 /** @var \Solarium\QueryType\Select\Result\Result $volumeResult */
                 $volumeResult = $this->connection->execute($volumeSelectQuery);
-                
+
                 foreach ($volumeResult as $doc) {
                     if (!empty($doc['title'])) {
                         $additionalTitleInfo[$doc['uid']] = [
                             'uid' => $doc['uid'],
-                            'title' => '[' . $doc['title'] . ']'
+                            'title' => '[' . $doc['title'] . ']',
                         ];
                     }
                 }
-                
+
                 $this->localLogger->debug('Volume query executed', [
                     'missing' => count($missingUids),
-                    'foundVolume' => count($volumeResult->getDocuments())
+                    'foundVolume' => count($volumeResult->getDocuments()),
                 ]);
             }
-            
+
             $this->localLogger->debug('Fetched additional title info', [
                 'requested' => count($titleRequiredForDocuments),
                 'foundToplevel' => count($titlesResult->getDocuments()),
-                'total' => count($additionalTitleInfo)
+                'total' => count($additionalTitleInfo),
             ]);
 
             return $additionalTitleInfo;
-            
+
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching additional title info', [
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ]);
             return [];
         }
@@ -966,7 +904,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $allDocuments Flat array of all documents keyed by group value
      * @return array Display documents keyed by group value
      */
-    protected function resolveDisplayDocumentsForGroups(array $groupedResults, array $allDocuments): array
+    private function resolveDisplayDocumentsForGroups(array $groupedResults, array $allDocuments): array
     {
         $valueGroups = $groupedResults['valueGroups'] ?? [];
         if (empty($valueGroups)) {
@@ -981,7 +919,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             }
 
             $document = $allDocuments[$groupValue];
-            if($document['toplevel'] === false) {            
+            if ($document['toplevel'] === false) {
                 $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
                 $candidateUidByGroupValue[$groupValue] = $candidateUid;
             }
@@ -1005,8 +943,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         foreach ($candidateUidByGroupValue as $groupValue => $candidateUid) {
             if (!empty($topLevelCandidates[$candidateUid])) {
                 $candidateDocument = $topLevelCandidates[$candidateUid];
-
-
 
                 if (!empty($candidateDocument['partof'])) {
                     $parentUid = (string)$candidateDocument['partof'];
@@ -1034,7 +970,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $uids UIDs to fetch
      * @return array Documents keyed by UID
      */
-    protected function fetchTopLevelDocumentsByUids(array $uids): array
+    private function fetchTopLevelDocumentsByUids(array $uids): array
     {
         $uids = array_values(array_unique(array_filter(array_map('strval', $uids), static function ($uid) {
             return $uid !== '';
@@ -1067,7 +1003,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching top-level documents by UIDs', [
                 'exception' => $e->getMessage(),
-                'uidCount' => count($uids)
+                'uidCount' => count($uids),
             ]);
 
             return [];
@@ -1080,17 +1016,17 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings Grouping configuration
      * @return array List of field names
      */
-    protected function getConfiguredFields(array $groupSettings): array
+    private function getConfiguredFields(array $groupSettings): array
     {
         $fields = [];
-        
+
         if (!empty($groupSettings['fields']) && is_array($groupSettings['fields'])) {
             $fields = array_values($groupSettings['fields']);
         } elseif (!empty($groupSettings['field'])) {
             $fields[] = $groupSettings['field'];
         }
-        
-        return array_filter($fields, function($field) {
+
+        return array_filter($fields, function ($field) {
             return !empty($field) && is_string($field);
         });
     }
@@ -1101,10 +1037,10 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      * @param array $groupSettings Grouping configuration
      * @return array List of query strings
      */
-    protected function getConfiguredQueries(array $groupSettings): array
+    private function getConfiguredQueries(array $groupSettings): array
     {
         $queries = [];
-        
+
         if (!empty($groupSettings['queries']) && is_array($groupSettings['queries'])) {
             foreach ($groupSettings['queries'] as $queryConfig) {
                 if (!empty($queryConfig['query'])) {
@@ -1112,7 +1048,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 }
             }
         }
-        
+
         return $queries;
     }
 }
