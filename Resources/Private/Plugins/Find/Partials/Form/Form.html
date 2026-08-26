@@ -1,0 +1,122 @@
+{namespace s=Subugoe\Find\ViewHelpers}
+<f:comment>
+	The main search form, automatically built from the configuration in the
+	queryFields setting.
+
+	Uses the the partials in the Form/Fields folder to create each individual
+	field type. Also creates the submit button, extended search link and
+	possibly the UI to control the sort order and number of results per page.
+
+	Adds an error message to the page if an error occured.
+</f:comment>
+<f:render partial="Form/QueryError.html" arguments="{_all}"/>
+
+<f:form name="c{config.uid}-form"
+		method="get"
+		section="{settings.jumpToID}"
+		class="searchForm {f:if(condition:config.extendedSearch, then:'search-extended', else:'search-simple')} hero-search-form">
+
+	<f:for each="{formFacets}" as="facet" key="facetID">
+		<f:for each="{facet}" as="unused" key="facetValue">
+			<f:form.hidden name="facet[{facetID}][{facetValue}]" value="1"/>
+		</f:for>
+	</f:for>
+
+	<div class="formFields">
+		<f:for each="{settings.queryFields}" as="fieldInfo">
+			<f:if condition="{fieldInfo.type}">
+				<f:then>
+					<f:if condition="{s:logic.or(conditions:'{
+						0:\"{s:logic.not(condition:fieldInfo.hidden)}\",
+						1:\"{s:data.valueForKey(array:arguments.q, key:fieldInfo.id)}\"
+					}')}">
+						<div class="fieldContainer fieldType-{fieldInfo.type} field-{fieldInfo.id} field-mode-{f:if(condition:'{fieldInfo.extended}', then:'extended', else:'simple')}">
+							<f:alias map="{queryParameter:'{s:data.valueForKey(array:config.query, key:fieldInfo.id)}'}">
+								<f:render partial="Form/Fields/{fieldInfo.type}" arguments="{_all}"/>
+							</f:alias>
+						</div>
+					</f:if>
+				</f:then>
+				<f:else>
+					<div class="fieldContainer error">
+						<f:translate key="Missing type in configuration for queryField %s." arguments="{0:fieldInfo.id}"/>
+					</div>
+				</f:else>
+			</f:if>
+		</f:for>
+	</div>
+
+	<div class="controls">
+		<f:form.submit value="{f:translate(key:'Search')}" class="submit"/>
+
+		<f:groupedFor each="{settings.queryFields}" as="fieldsByType" groupBy="extended" groupKey="extended">
+			<f:if condition="{0:extended} == {0:1}">
+				<f:if condition="{config.extendedSearch}">
+					<f:then>
+						<f:link.action
+							addQueryString="TRUE"
+							argumentsToBeExcludedFromQueryString="{0:'{config.prefixID}[extendedSearch]'}"
+							class="extendedSearch internal"
+							additionalAttributes="{
+								simpleString:'{f:translate(key:\"extended Search\")}',
+								extendedString:'{f:translate(key:\"basic Search\")}'
+							}">
+							<f:translate key="basic Search"/>
+						</f:link.action>
+					</f:then>
+					<f:else>
+						<f:link.action
+							addQueryString="TRUE"
+							arguments="{extendedSearch: 1}"
+							class="extendedSearch internal"
+							additionalAttributes="{
+								simplestring:'{f:translate(key:\"extended Search\")}',
+								extendedstring:'{f:translate(key:\"basic Search\")}'
+							}">
+							<f:translate key="extended Search"/>
+						</f:link.action>
+					</f:else>
+				</f:if>
+			</f:if>
+		</f:groupedFor>
+	</div>
+
+    <div class="search-enhancements">
+        <div class="search-mode-selector">
+            <f:if condition="{arguments.searchMode} == 'fulltext'">
+                <f:then>
+                    <input type="radio" id="search-metadata" name="tx_find_find[searchMode]" value="metadata" required>
+                    <label for="search-metadata"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:searchmode.metadata"/></label>
+                    <input type="radio" id="search-fulltext" name="tx_find_find[searchMode]" value="fulltext" checked>
+                    <label for="search-fulltext"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:searchmode.fulltext"/></label>
+                </f:then>
+                <f:else>
+                    <input type="radio" id="search-metadata" name="tx_find_find[searchMode]" value="metadata" checked required>
+                    <label for="search-metadata"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:searchmode.metadata"/></label>
+                    <input type="radio" id="search-fulltext" name="tx_find_find[searchMode]" value="fulltext">
+                    <label for="search-fulltext"><f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:searchmode.fulltext"/></label>
+                </f:else>
+            </f:if>
+        </div>
+
+        <f:if condition="{f:count(subject:config.sortOptions.menu)} > 1">
+            <div class="sortOrder">
+                <label for="c{config.uid}-sortSelect">
+                    <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.sort"/>
+                </label>
+                <f:form.select id="c{config.uid}-sortSelect" name="sort" options="{config.sortOptions.menu}" value="{config.sortOptions.selected}"/>
+            </div>
+        </f:if>
+
+        <f:if condition="{f:count(subject:config.resultCountOptions.menu)} > 1">
+            <div class="resultCountPicker">
+                <label for="c{config.uid}-resultCountSelect">
+                    <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:input.count"/>
+                </label>
+                <f:form.select id="c{config.uid}-resultCountSelect" name="count" options="{config.resultCountOptions.menu}" value="{config.resultCountOptions.selected}"/>
+            </div>
+        </f:if>
+    </div>
+
+	<div class="clear"></div>
+</f:form>

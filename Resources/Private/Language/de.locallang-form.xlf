@@ -19,6 +19,18 @@
 				<source>Title Z-A</source>
 				<target>Titel Z-A</target>
 			</trans-unit>
+			<trans-unit id="input.default.placeholder" xml:space="preserve" approved="yes">
+				<source>Search in the collection</source>
+				<target>Suchen in der Kollektion</target>
+			</trans-unit>
+			<trans-unit id="searchmode.metadata" xml:space="preserve" approved="yes">
+				<source>In meta data</source>
+				<target>In Metadaten</target>
+			</trans-unit>
+			<trans-unit id="searchmode.fulltext" xml:space="preserve" approved="yes">
+				<source>Full-text search</source>
+				<target>Volltextrecherche</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

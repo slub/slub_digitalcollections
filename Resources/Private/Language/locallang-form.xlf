@@ -15,6 +15,15 @@
 			<trans-unit id="input.sort-titleDesc" xml:space="preserve">
 				<source>Title Z-A</source>
 			</trans-unit>
+			<trans-unit id="input.default.placeholder" xml:space="preserve">
+				<source>Search in the collection</source>
+			</trans-unit>
+			<trans-unit id="searchmode.metadata" xml:space="preserve">
+				<source>In meta data</source>
+			</trans-unit>
+			<trans-unit id="searchmode.fulltext" xml:space="preserve">
+				<source>Full-text search</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
