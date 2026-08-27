@@ -39,7 +39,7 @@
 				</f:then>
 				<f:else>
 					<div class="fieldContainer error">
-						<f:translate key="Missing type in configuration for queryField %s." arguments="{0:fieldInfo.id}"/>
+						<f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:search.error.notypeinfieldconfig" arguments="{0:fieldInfo.id}"/>
 					</div>
 				</f:else>
 			</f:if>
@@ -47,7 +47,7 @@
 	</div>
 
 	<div class="controls">
-		<f:form.submit value="{f:translate(key:'Search')}" class="submit"/>
+		<f:form.submit value="{f:translate(key:'LLL:{settings.languageRootPath}locallang-form.xml:search')}" class="submit"/>
 
 		<f:groupedFor each="{settings.queryFields}" as="fieldsByType" groupBy="extended" groupKey="extended">
 			<f:if condition="{0:extended} == {0:1}">
@@ -58,10 +58,10 @@
 							argumentsToBeExcludedFromQueryString="{0:'{config.prefixID}[extendedSearch]'}"
 							class="extendedSearch internal"
 							additionalAttributes="{
-								simpleString:'{f:translate(key:\"extended Search\")}',
-								extendedString:'{f:translate(key:\"basic Search\")}'
+								simpleString:'{f:translate(key:\"LLL:{settings.languageRootPath}locallang-form.xml:search.extended\")}',
+								extendedString:'{f:translate(key:\"LLL:{settings.languageRootPath}locallang-form.xml:search.basic\")}'
 							}">
-							<f:translate key="basic Search"/>
+                            <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:search.basic"/>
 						</f:link.action>
 					</f:then>
 					<f:else>
@@ -70,10 +70,10 @@
 							arguments="{extendedSearch: 1}"
 							class="extendedSearch internal"
 							additionalAttributes="{
-								simplestring:'{f:translate(key:\"extended Search\")}',
-								extendedstring:'{f:translate(key:\"basic Search\")}'
+								simplestring:'{f:translate(key:\"LLL:{settings.languageRootPath}locallang-form.xml:search.extended\")}',
+								extendedstring:'{f:translate(key:\"LLL:{settings.languageRootPath}locallang-form.xml:search.basic\")}'
 							}">
-							<f:translate key="extended Search"/>
+                            <f:translate key="LLL:{settings.languageRootPath}locallang-form.xml:search.extended"/>
 						</f:link.action>
 					</f:else>
 				</f:if>
