@@ -19,6 +19,36 @@
 				<source>Title Z-A</source>
 				<target>Titel Z-A</target>
 			</trans-unit>
+			<trans-unit id="input.default.placeholder" xml:space="preserve" approved="yes">
+				<source>Search in the collection</source>
+				<target>Suchen in der Kollektion</target>
+			</trans-unit>
+			<trans-unit id="searchmode.metadata" xml:space="preserve" approved="yes">
+				<source>In metadata</source>
+				<target>In Metadaten</target>
+			</trans-unit>
+			<trans-unit id="searchmode.fulltext" xml:space="preserve" approved="yes">
+				<source>Full-text search</source>
+				<target>Volltextrecherche</target>
+			</trans-unit>
+
+			<trans-unit id="search" xml:space="preserve" approved="yes">
+				<source>Search</source>
+				<target>Suchen</target>
+			</trans-unit>
+			<trans-unit id="search.extended" xml:space="preserve" approved="yes">
+				<source>extended search</source>
+				<target>erweiterte Suche</target>
+			</trans-unit>
+			<trans-unit id="search.basic" xml:space="preserve" approved="yes">
+				<source>basic search</source>
+				<target>einfache Suche</target>
+			</trans-unit>
+			<trans-unit id="search.error.notypeinfieldconfig" xml:space="preserve" approved="yes">
+				<source>Missing type in configuration for queryField %s.</source>
+				<target>Fehlender Typ in der Konfiguration für Query-Feld %s.</target>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
