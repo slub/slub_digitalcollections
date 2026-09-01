@@ -784,7 +784,7 @@ lib.navigation.kitodo {
 # render new page in pageview / workview
 # --------------------------------------------------------------------------------------------------------------------
 
-[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) in ['multivolume_work','periodical','inventory']]
+[getDocumentType({$plugin.tx_dlf.persistence.storagePid}) in ['multivolume_work','periodical','inventory','bundle']]
 page.10.variables {
   isMultivolumeWork = TEXT
   isMultivolumeWork.value = 1
