@@ -210,7 +210,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      */
     private function addGrouping(array $arguments): void
     {
-
         if (empty($this->localSettings['grouping'])) {
             return;
         }
@@ -302,7 +301,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
      */
     private function configureGroupingParameters($grouping, array $groupSettings, array $arguments): void
     {
-
         $limit = $arguments['groupLimit'] ?? $groupSettings['limit'] ?? -1;
         if (is_numeric($limit)) {
             $grouping->setLimit((int)$limit);
@@ -434,9 +432,14 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $totalGroups = $groupedResults['numberOfGroups'];
             }
 
-            $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
+            $this->enrichSingleTopLevelRootGroupsWithChildren($groupedResults, $allDocuments);
 
             $groupDisplayDocuments = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
+            $this->synchronizeAllDocumentsWithGroupHeads($groupDisplayDocuments, $allDocuments);
+
+            $this->removeGroupHeadFromMultiMemberGroups($groupedResults, $groupDisplayDocuments);
+
+            $this->addPartOfReferencedDocumentsToAllDocuments($groupedResults, $allDocuments);
 
             $metsOrderlabelUids = $this->collectMetsOrderlabelUids($groupedResults, $allDocuments, $groupDisplayDocuments);
             $result['metsOrderlabelsByUid'] = $this->fetchMetsOrderlabelsByUids($metsOrderlabelUids);
@@ -458,7 +461,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 'groupDisplayDocuments' => count($result['groupDisplayDocuments']),
                 'metsOrderlabelsByUid' => count($result['metsOrderlabelsByUid'] ?? []),
             ]);
-
         } catch (\Exception $e) {
             $this->localLogger->error('Error processing grouped results', [
                 'exception' => $e->getMessage(),
@@ -587,6 +589,203 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     }
 
     /**
+     * Enriches single-document groups whose head is a top-level root title.
+     *
+     * For groups that only contain one document and where that document matches
+     * toplevel:true AND partof:0, all top-level child documents (partof:<head-uid>)
+     * are fetched and appended to the group. Added documents are also indexed in
+     * allDocuments by UID for direct lookups in templates.
+     *
+     * @param array &$groupedResults Template-friendly grouped result structure
+     * @param array &$allDocuments Flat document array enriched in-place
+     */
+    private function enrichSingleTopLevelRootGroupsWithChildren(array &$groupedResults, array &$allDocuments): void
+    {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return;
+        }
+
+        $existingGroupHeadUids = [];
+        foreach ($valueGroups as $group) {
+            $groupDocuments = $group['documents'] ?? [];
+            $groupHeadDocument = $this->findTopLevelDocumentInGroup($groupDocuments);
+            if ($groupHeadDocument === null) {
+                continue;
+            }
+
+            $groupHeadUid = isset($groupHeadDocument['uid']) ? (string)$groupHeadDocument['uid'] : '';
+            if ($groupHeadUid !== '') {
+                $existingGroupHeadUids[$groupHeadUid] = true;
+            }
+        }
+
+        $groupHeadUidByIndex = [];
+
+        foreach ($valueGroups as $index => $group) {
+            $documents = $group['documents'] ?? [];
+            if (count($documents) !== 1) {
+                continue;
+            }
+
+            $groupHead = $documents[0];
+            $groupHeadUid = isset($groupHead['uid']) ? (string)$groupHead['uid'] : '';
+            if ($groupHeadUid === '') {
+                continue;
+            }
+
+            $isTopLevel = filter_var($groupHead['toplevel'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            if (!$isTopLevel) {
+                continue;
+            }
+
+            $partOfValues = [];
+            if (isset($groupHead['partof'])) {
+                $partOfValues = is_array($groupHead['partof']) ? $groupHead['partof'] : [$groupHead['partof']];
+            }
+
+            $isRootDocument = false;
+            foreach ($partOfValues as $partOfValue) {
+                if ((string)$partOfValue === '0') {
+                    $isRootDocument = true;
+                    break;
+                }
+            }
+
+            if ($isRootDocument) {
+                $groupHeadUidByIndex[$index] = $groupHeadUid;
+            }
+        }
+
+        if (empty($groupHeadUidByIndex)) {
+            return;
+        }
+
+        $childrenByParentUid = $this->fetchTopLevelDocumentsByPartOfUids(array_values($groupHeadUidByIndex));
+        if (empty($childrenByParentUid)) {
+            return;
+        }
+
+        foreach ($groupHeadUidByIndex as $groupIndex => $groupHeadUid) {
+            $childDocuments = $childrenByParentUid[$groupHeadUid] ?? [];
+            if (empty($childDocuments)) {
+                continue;
+            }
+
+            $documents = $groupedResults['valueGroups'][$groupIndex]['documents'] ?? [];
+            $existingUids = [];
+
+            foreach ($documents as $document) {
+                $uid = isset($document['uid']) ? (string)$document['uid'] : '';
+                if ($uid !== '') {
+                    $existingUids[$uid] = true;
+                }
+            }
+
+            foreach ($childDocuments as $childDocument) {
+                $childUid = isset($childDocument['uid']) ? (string)$childDocument['uid'] : '';
+                if ($childUid === '' || isset($existingUids[$childUid])) {
+                    continue;
+                }
+
+                // Keep documents that are already separate group heads out of enriched sub-lists.
+                if ($childUid !== $groupHeadUid && isset($existingGroupHeadUids[$childUid])) {
+                    continue;
+                }
+
+                $documents[] = $childDocument;
+                $existingUids[$childUid] = true;
+
+                if (!isset($allDocuments[$childUid])) {
+                    $allDocuments[$childUid] = $childDocument;
+                }
+            }
+
+            $groupedResults['valueGroups'][$groupIndex]['documents'] = $documents;
+            $groupedResults['valueGroups'][$groupIndex]['numFound'] = count($documents);
+        }
+    }
+
+    /**
+     * Removes the group head from groups that contain multiple members.
+     *
+     * The group head remains available via allDocuments/groupDisplayDocuments,
+     * but should not appear again in the list of grouped child documents.
+     *
+     * @param array &$groupedResults Template-friendly grouped result structure
+     * @param array $groupDisplayDocuments Resolved group heads keyed by group value
+     */
+    private function removeGroupHeadFromMultiMemberGroups(array &$groupedResults, array $groupDisplayDocuments): void
+    {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return;
+        }
+
+        foreach ($valueGroups as $groupIndex => $group) {
+            $documents = $group['documents'] ?? [];
+            if (count($documents) <= 1) {
+                continue;
+            }
+
+            $groupValue = (string)($group['value'] ?? '');
+            $groupHeadDocument = $groupDisplayDocuments[$groupValue] ?? null;
+
+            if ($groupHeadDocument === null) {
+                $groupHeadDocument = $this->findTopLevelDocumentInGroup($documents);
+            }
+
+            if ($groupHeadDocument === null) {
+                continue;
+            }
+
+            $groupHeadUid = isset($groupHeadDocument['uid']) ? (string)$groupHeadDocument['uid'] : '';
+            $groupHeadId = isset($groupHeadDocument['id']) ? (string)$groupHeadDocument['id'] : '';
+
+            $filteredDocuments = [];
+            foreach ($documents as $document) {
+                $documentUid = isset($document['uid']) ? (string)$document['uid'] : '';
+                $documentId = isset($document['id']) ? (string)$document['id'] : '';
+
+                $isGroupHead = false;
+                if ($groupHeadUid !== '' && $documentUid !== '' && $documentUid === $groupHeadUid) {
+                    $isGroupHead = true;
+                } elseif ($groupHeadId !== '' && $documentId !== '' && $documentId === $groupHeadId) {
+                    $isGroupHead = true;
+                }
+
+                if (!$isGroupHead) {
+                    $filteredDocuments[] = $document;
+                }
+            }
+
+            // Only apply when we actually removed the head and still have children.
+            if (!empty($filteredDocuments) && count($filteredDocuments) < count($documents)) {
+                $groupedResults['valueGroups'][$groupIndex]['documents'] = $filteredDocuments;
+                $groupedResults['valueGroups'][$groupIndex]['numFound'] = count($filteredDocuments);
+            }
+        }
+    }
+
+    /**
+     * Keeps allDocuments group-value entries aligned with resolved group heads.
+     *
+     * @param array $groupDisplayDocuments Resolved group heads keyed by group value
+     * @param array &$allDocuments Flat document array keyed by group value/UID
+     */
+    private function synchronizeAllDocumentsWithGroupHeads(array $groupDisplayDocuments, array &$allDocuments): void
+    {
+        foreach ($groupDisplayDocuments as $groupValue => $groupHeadDocument) {
+            $allDocuments[(string)$groupValue] = $groupHeadDocument;
+
+            $groupHeadUid = isset($groupHeadDocument['uid']) ? (string)$groupHeadDocument['uid'] : '';
+            if ($groupHeadUid !== '' && !isset($allDocuments[$groupHeadUid])) {
+                $allDocuments[$groupHeadUid] = $groupHeadDocument;
+            }
+        }
+    }
+
+    /**
      * Adds partOf-referenced documents from the current grouped response to allDocuments.
      *
      * This allows direct lookups by referenced UID when both child and parent documents are
@@ -679,6 +878,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         try {
             $selectQuery = $this->connection->createSelect();
             $selectQuery->setQuery($query);
+            $selectQuery->setRows(count($uids));
 
             /** @var \Solarium\QueryType\Select\Result\Result $result */
             $result = $this->connection->execute($selectQuery);
@@ -695,6 +895,78 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $this->localLogger->error('Error fetching documents by UIDs', [
                 'exception' => $e->getMessage(),
                 'uidCount' => count($uids),
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
+     * Fetches top-level child documents for parent UIDs and groups them by partof UID.
+     *
+     * @param array $parentUids Parent UIDs used as partof values
+     * @return array<string, array> Child documents grouped by parent UID
+     */
+    private function fetchTopLevelDocumentsByPartOfUids(array $parentUids): array
+    {
+        $parentUids = array_values(array_unique(array_filter(array_map('strval', $parentUids), static function ($uid) {
+            return $uid !== '';
+        })));
+
+        if (empty($parentUids)) {
+            return [];
+        }
+
+        $query = implode(' OR ', array_map(static function ($uid) {
+            return 'partof:' . $uid;
+        }, $parentUids));
+
+        try {
+            $groupedChildren = [];
+            $requestedParentUidMap = array_fill_keys($parentUids, true);
+
+            $start = 0;
+            $rows = 500;
+            $numFound = null;
+
+            do {
+                $selectQuery = $this->connection->createSelect();
+                $selectQuery->setQuery($query);
+                $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
+                $selectQuery->setStart($start);
+                $selectQuery->setRows($rows);
+
+                /** @var \Solarium\QueryType\Select\Result\Result $result */
+                $result = $this->connection->execute($selectQuery);
+                $documents = $result->getDocuments();
+
+                if ($numFound === null) {
+                    $numFound = (int)$result->getNumFound();
+                }
+
+                foreach ($documents as $document) {
+                    if (empty($document['partof'])) {
+                        continue;
+                    }
+
+                    $partOfValues = is_array($document['partof']) ? $document['partof'] : [$document['partof']];
+                    foreach ($partOfValues as $partOfValue) {
+                        $parentUid = (string)$partOfValue;
+                        if (!isset($requestedParentUidMap[$parentUid])) {
+                            continue;
+                        }
+                        $groupedChildren[$parentUid][] = $document;
+                    }
+                }
+
+                $start += count($documents);
+            } while (!empty($documents) && $start < (int)$numFound);
+
+            return $groupedChildren;
+        } catch (\Exception $e) {
+            $this->localLogger->error('Error fetching top-level child documents by partof UIDs', [
+                'exception' => $e->getMessage(),
+                'parentUidCount' => count($parentUids),
             ]);
 
             return [];
@@ -831,7 +1103,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         $additionalTitleInfo = [];
 
         try {
-
             $selectQuery = $this->connection->createSelect();
             $selectQuery->setQuery($query);
             $selectQuery->setFields(['uid', 'title']);
@@ -885,7 +1156,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             ]);
 
             return $additionalTitleInfo;
-
         } catch (\Exception $e) {
             $this->localLogger->error('Error fetching additional title info', [
                 'exception' => $e->getMessage(),
@@ -895,10 +1165,11 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     }
 
     /**
-     * Resolves the display document for each group with batched Solr requests.
+     * Resolves the display document for each group.
      *
-     * Previous template logic queried Solr per group (and nested for multi-level parents).
-     * This method preserves that behavior while reducing requests to at most two batched calls.
+        * Group head is defined as the element inside the same group with toplevel:true.
+        * If none exists in the group, fallback uses Solr lookup by uid with
+        * an additional toplevel:true filter.
      *
      * @param array $groupedResults Template-friendly grouped result structure
      * @param array $allDocuments Flat array of all documents keyed by group value
@@ -911,57 +1182,61 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             return [];
         }
 
-        $candidateUidByGroupValue = [];
+        $displayDocuments = [];
+        $groupsWithoutTopLevel = [];
+
         foreach ($valueGroups as $group) {
             $groupValue = (string)($group['value'] ?? '');
-            if ($groupValue === '' || empty($allDocuments[$groupValue])) {
+            if ($groupValue === '') {
                 continue;
             }
 
-            $document = $allDocuments[$groupValue];
-            if ($document['toplevel'] === false) {
-                $candidateUid = !empty($document['partof']) ? (string)$document['partof'] : $groupValue;
-                $candidateUidByGroupValue[$groupValue] = $candidateUid;
+            $documents = $group['documents'] ?? [];
+            $groupHeadDocument = $this->findTopLevelDocumentInGroup($documents);
+            if ($groupHeadDocument !== null) {
+                $displayDocuments[$groupValue] = $groupHeadDocument;
+                continue;
             }
+
+            $groupsWithoutTopLevel[$groupValue] = $documents;
         }
 
-        if (empty($candidateUidByGroupValue)) {
-            return [];
-        }
+        if (!empty($groupsWithoutTopLevel)) {
+            $fallbackTopLevelDocuments = $this->fetchTopLevelDocumentsByUids(array_keys($groupsWithoutTopLevel));
 
-        $topLevelCandidates = $this->fetchTopLevelDocumentsByUids(array_values($candidateUidByGroupValue));
-
-        $secondLevelUids = [];
-        foreach ($topLevelCandidates as $candidateDocument) {
-            if (!empty($candidateDocument['partof'])) {
-                $secondLevelUids[] = (string)$candidateDocument['partof'];
-            }
-        }
-        $secondLevelParents = $this->fetchTopLevelDocumentsByUids($secondLevelUids);
-
-        $displayDocuments = [];
-        foreach ($candidateUidByGroupValue as $groupValue => $candidateUid) {
-            if (!empty($topLevelCandidates[$candidateUid])) {
-                $candidateDocument = $topLevelCandidates[$candidateUid];
-
-                if (!empty($candidateDocument['partof'])) {
-                    $parentUid = (string)$candidateDocument['partof'];
-                    if (!empty($secondLevelParents[$parentUid])) {
-                        $displayDocuments[$groupValue] = $secondLevelParents[$parentUid];
-                        continue;
-                    }
+            foreach ($groupsWithoutTopLevel as $groupValue => $documents) {
+                if (!empty($fallbackTopLevelDocuments[$groupValue])) {
+                    $displayDocuments[$groupValue] = $fallbackTopLevelDocuments[$groupValue];
+                    continue;
                 }
 
-                $displayDocuments[$groupValue] = $candidateDocument;
-                continue;
-            }
-
-            if (!empty($allDocuments[$groupValue])) {
-                $displayDocuments[$groupValue] = $allDocuments[$groupValue];
+                if (!empty($allDocuments[$groupValue])) {
+                    $displayDocuments[$groupValue] = $allDocuments[$groupValue];
+                } elseif (!empty($documents[0])) {
+                    $displayDocuments[$groupValue] = $documents[0];
+                }
             }
         }
 
         return $displayDocuments;
+    }
+
+    /**
+     * Finds the group head document inside the group by toplevel marker.
+     *
+     * @param array $documents Documents of one value group
+     * @return mixed|null Group head document or null when none exists
+     */
+    private function findTopLevelDocumentInGroup(array $documents)
+    {
+        foreach ($documents as $document) {
+            $isTopLevel = filter_var($document['toplevel'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            if ($isTopLevel) {
+                return $document;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -988,6 +1263,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $selectQuery = $this->connection->createSelect();
             $selectQuery->setQuery($query);
             $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
+            $selectQuery->setRows(count($uids));
 
             /** @var \Solarium\QueryType\Select\Result\Result $result */
             $result = $this->connection->execute($selectQuery);

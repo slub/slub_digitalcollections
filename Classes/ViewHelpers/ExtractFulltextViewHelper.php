@@ -72,5 +72,4 @@ class ExtractFulltextViewHelper extends AbstractViewHelper
         }
         return $rawText;
     }
-
 }
