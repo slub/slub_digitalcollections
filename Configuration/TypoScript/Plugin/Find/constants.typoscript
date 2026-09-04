@@ -1,0 +1,35 @@
+############################################################
+# All used TYPO3find Constants for SLUB Digital Collection #
+############################################################
+plugin.tx_find {
+    settings {
+        connections {
+            default {
+                # cat=plugin.tx_find/connections/default; type=string; label=Default Service Provider
+                provider = Slub\SlubDigitalcollections\Service\GroupedSolrServiceProvider
+                options {
+                    # cat=plugin.tx_find/connections/default; type=string; label=Solr Host
+                    host = v12-sachsen-digital.ddev.site
+                    # cat=plugin.tx_find/connections/default; type=int+; label=Solr Port
+                    port = 8983
+                    # cat=plugin.tx_find/connections/default; type=string; label=Path to the solr core in use
+                    path = /
+                    # cat=plugin.tx_find/connections/default; type=int+; label=Solr Connection Timeout
+                    timeout = 5
+                    # cat=plugin.tx_find/connections/default; type=string; label=Solr Connection Scheme
+                    scheme = http
+                    # cat=plugin.tx_find/connections/default; type=string; label=Solr Core Name
+                    core = dlfCore0
+                }
+            }
+        }
+
+        # basic filter query config
+        filter {
+            # cat=plugin.tx_find/filter; type=string; label=Filter Query for Collections
+            collection_filter = *
+            # cat=plugin.tx_find/filter; type=string; label=Filter Query for Toplevel Documents
+            toplevel_filter = toplevel:true AND partof:0
+        }
+    }
+}

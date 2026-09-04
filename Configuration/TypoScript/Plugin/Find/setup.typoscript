@@ -38,14 +38,14 @@ plugin.tx_find.settings {
     # SOLR connections
     connections {
         default {
-            provider = Slub\SlubDigitalcollections\Service\GroupedSolrServiceProvider
+            provider = {$plugin.tx_find.settings.connections.default.provider}
             options {
-                scheme = http
-                host = v12-sachsen-digital.ddev.site
-                port = 8983
-                path = /
-                timeout = 30
-                core = dlfCore0
+                scheme = {$plugin.tx_find.settings.connections.default.options.scheme}
+                host = {$plugin.tx_find.settings.connections.default.options.host}
+                port = {$plugin.tx_find.settings.connections.default.options.port}
+                path = {$plugin.tx_find.settings.connections.default.options.path}
+                timeout = {$plugin.tx_find.settings.connections.default.options.timeout}
+                core = {$plugin.tx_find.settings.connections.default.options.core}
             }
         }
     }
