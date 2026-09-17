@@ -444,6 +444,12 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $metsOrderlabelUids = $this->collectMetsOrderlabelUids($groupedResults, $allDocuments, $groupDisplayDocuments);
             $result['metsOrderlabelsByUid'] = $this->fetchMetsOrderlabelsByUids($metsOrderlabelUids);
 
+            $this->sortGroupedDocumentsByMetsOrderlabel(
+                $groupedResults,
+                $groupDisplayDocuments,
+                $result['metsOrderlabelsByUid']
+            );
+
             $result['groupedResults'] = $groupedResults;
             $result['allDocuments'] = $allDocuments;
             $result['groupCount'] = $totalGroups;
@@ -1014,6 +1020,108 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         }
 
         return array_keys($uids);
+    }
+
+    /**
+     * Sorts grouped child documents for newspaper/ephemera groups by metsOrderlabel.
+     *
+     * Primary sort: first 4-digit year at string start (ascending).
+     * Secondary sort: natural alphabetic order of metsOrderlabel/title.
+     *
+     * @param array &$groupedResults Grouped result structure to sort in-place
+     * @param array $groupDisplayDocuments Group heads keyed by group value
+     * @param array<int, string> $metsOrderlabelsByUid Map of uid => mets_orderlabel
+     */
+    private function sortGroupedDocumentsByMetsOrderlabel(
+        array &$groupedResults,
+        array $groupDisplayDocuments,
+        array $metsOrderlabelsByUid
+    ): void {
+        $valueGroups = $groupedResults['valueGroups'] ?? [];
+        if (empty($valueGroups)) {
+            return;
+        }
+
+        foreach ($valueGroups as $groupIndex => $group) {
+            $groupValue = (string)($group['value'] ?? '');
+            $groupHeadDocument = $groupDisplayDocuments[$groupValue] ?? null;
+            $groupHeadType = strtolower((string)($groupHeadDocument['type'] ?? ''));
+
+            if ($groupHeadType !== 'newspaper' && $groupHeadType !== 'ephemera') {
+                continue;
+            }
+
+            $documents = $group['documents'] ?? [];
+            if (count($documents) <= 1) {
+                continue;
+            }
+
+            usort($documents, function ($left, $right) use ($metsOrderlabelsByUid): int {
+                $leftLabel = $this->resolveDocumentSortLabel($left, $metsOrderlabelsByUid);
+                $rightLabel = $this->resolveDocumentSortLabel($right, $metsOrderlabelsByUid);
+
+                $leftYear = $this->extractLeadingYear($leftLabel);
+                $rightYear = $this->extractLeadingYear($rightLabel);
+
+                if ($leftYear !== null && $rightYear !== null && $leftYear !== $rightYear) {
+                    return $leftYear <=> $rightYear;
+                }
+
+                if ($leftYear !== null && $rightYear === null) {
+                    return -1;
+                }
+
+                if ($leftYear === null && $rightYear !== null) {
+                    return 1;
+                }
+
+                $labelComparison = strnatcasecmp($leftLabel, $rightLabel);
+                if ($labelComparison !== 0) {
+                    return $labelComparison;
+                }
+
+                $leftUid = (int)($left['uid'] ?? 0);
+                $rightUid = (int)($right['uid'] ?? 0);
+
+                return $leftUid <=> $rightUid;
+            });
+
+            $groupedResults['valueGroups'][$groupIndex]['documents'] = $documents;
+        }
+    }
+
+    /**
+     * Builds a stable sort label from metsOrderlabel with title/uid fallback.
+     *
+     * @param mixed $document Solr document
+     * @param array<int, string> $metsOrderlabelsByUid Map of uid => mets_orderlabel
+     */
+    private function resolveDocumentSortLabel($document, array $metsOrderlabelsByUid): string
+    {
+        $uid = (int)($document['uid'] ?? 0);
+        $metsOrderlabel = trim((string)($metsOrderlabelsByUid[$uid] ?? ''));
+        if ($metsOrderlabel !== '') {
+            return $metsOrderlabel;
+        }
+
+        $title = trim((string)($document['title'] ?? ''));
+        if ($title !== '') {
+            return $title;
+        }
+
+        return (string)$uid;
+    }
+
+    /**
+     * Extracts a leading 4-digit year from a sort label.
+     */
+    private function extractLeadingYear(string $value): ?int
+    {
+        if (preg_match('/^\s*(\d{4})/', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int)$matches[1];
     }
 
     /**
