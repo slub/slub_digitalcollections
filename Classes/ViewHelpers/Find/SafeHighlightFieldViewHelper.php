@@ -132,7 +132,7 @@ class SafeHighlightFieldViewHelper extends AbstractViewHelper
 
         foreach ($highlightInfo as $highlightItem) {
             $highlightItemStripped = str_replace(['\\ueeee', '\\ueeef'], ['', ''], (string)$highlightItem);
-            if (strpos($fieldString, (string)$highlightItemStripped) !== false) {
+            if (str_contains($fieldString, (string)$highlightItemStripped)) {
                 if (!$arguments['raw']) {
                     $highlightItem = htmlspecialchars((string)$highlightItem);
                 }

@@ -191,5 +191,4 @@ class XpathViewHelper extends AbstractViewHelper
 
         return self::$documentRepository;
     }
-
 }
