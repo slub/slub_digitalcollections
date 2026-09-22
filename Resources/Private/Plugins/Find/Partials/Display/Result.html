@@ -98,7 +98,7 @@
 
 			<f:if condition="{settings.standardFields}">
 				<f:for each="{settings.standardFields}" as="stdFieldValue" key="stdFieldKey">
-					<f:if condition="{stdFieldValue} && {stdFieldKey} != 'title'">
+					<f:if condition="{stdFieldValue} && {stdFieldKey} != 'title' && ({stdFieldKey} != 'metadata-page' || {document.type} == 'page')">
 						<f:render
 							partial="Display/Field/Inline"
 							arguments="{
