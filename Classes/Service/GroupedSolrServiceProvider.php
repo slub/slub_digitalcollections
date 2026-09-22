@@ -802,7 +802,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         }
 
         $documentsByUid = [];
-        $missingReferencedUids = [];
+        $uidsToInspect = [];
 
         foreach ($valueGroups as $group) {
             $documents = $group['documents'] ?? [];
@@ -819,38 +819,63 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
                 foreach ($partOfValues as $partOfValue) {
                     $partOfUid = (string)$partOfValue;
-                    if ($partOfUid !== '' && !isset($allDocuments[$partOfUid])) {
-                        $missingReferencedUids[$partOfUid] = true;
+                    if ($partOfUid !== '') {
+                        $uidsToInspect[$partOfUid] = true;
                     }
                 }
             }
         }
 
-        if (empty($missingReferencedUids)) {
-            return;
-        }
+        $inspectedUids = [];
+        while (!empty($uidsToInspect)) {
+            $uidsToFetch = [];
+            foreach (array_keys($uidsToInspect) as $referencedUid) {
+                unset($uidsToInspect[$referencedUid]);
 
-        foreach (array_keys($missingReferencedUids) as $referencedUid) {
-            if (isset($documentsByUid[$referencedUid])) {
-                $allDocuments[$referencedUid] = $documentsByUid[$referencedUid];
+                if (isset($inspectedUids[$referencedUid])) {
+                    continue;
+                }
+                $inspectedUids[$referencedUid] = true;
+
+                if (isset($allDocuments[$referencedUid])) {
+                    $referencedDocument = $allDocuments[$referencedUid];
+                } elseif (isset($documentsByUid[$referencedUid])) {
+                    $referencedDocument = $documentsByUid[$referencedUid];
+                    $allDocuments[$referencedUid] = $referencedDocument;
+                } else {
+                    $uidsToFetch[] = $referencedUid;
+                    continue;
+                }
+
+                $parentUids = $referencedDocument['partof'] ?? [];
+                $parentUids = is_array($parentUids) ? $parentUids : [$parentUids];
+                foreach ($parentUids as $parentUid) {
+                    $parentUid = (string)$parentUid;
+                    if ($parentUid !== '' && $parentUid !== '0' && !isset($inspectedUids[$parentUid])) {
+                        $uidsToInspect[$parentUid] = true;
+                    }
+                }
             }
-        }
 
-        $uidsToFetch = [];
-        foreach (array_keys($missingReferencedUids) as $referencedUid) {
-            if (!isset($allDocuments[$referencedUid])) {
-                $uidsToFetch[] = $referencedUid;
+            if (empty($uidsToFetch)) {
+                continue;
             }
-        }
 
-        if (empty($uidsToFetch)) {
-            return;
-        }
+            $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
+            foreach ($fetchedReferencedDocuments as $uid => $document) {
+                if (!isset($allDocuments[$uid])) {
+                    $allDocuments[$uid] = $document;
+                }
+                $documentsByUid[(string)$uid] = $document;
 
-        $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
-        foreach ($fetchedReferencedDocuments as $uid => $document) {
-            if (!isset($allDocuments[$uid])) {
-                $allDocuments[$uid] = $document;
+                $parentUids = $document['partof'] ?? [];
+                $parentUids = is_array($parentUids) ? $parentUids : [$parentUids];
+                foreach ($parentUids as $parentUid) {
+                    $parentUid = (string)$parentUid;
+                    if ($parentUid !== '' && $parentUid !== '0' && !isset($inspectedUids[$parentUid])) {
+                        $uidsToInspect[$parentUid] = true;
+                    }
+                }
             }
         }
     }
