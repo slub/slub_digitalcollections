@@ -456,7 +456,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             $result['matches'] = $totalMatches;
             $result['groupingActive'] = true;
 
-            $result['additionalTitleInfo'] = [];
             $result['groupDisplayDocuments'] = $groupDisplayDocuments;
 
             $this->localLogger->debug('Grouped results processed', [
@@ -808,7 +807,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         }
 
         $documentsByUid = [];
-        $missingReferencedUids = [];
+        $uidsToInspect = [];
 
         foreach ($valueGroups as $group) {
             $documents = $group['documents'] ?? [];
@@ -825,38 +824,63 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
 
                 foreach ($partOfValues as $partOfValue) {
                     $partOfUid = (string)$partOfValue;
-                    if ($partOfUid !== '' && !isset($allDocuments[$partOfUid])) {
-                        $missingReferencedUids[$partOfUid] = true;
+                    if ($partOfUid !== '') {
+                        $uidsToInspect[$partOfUid] = true;
                     }
                 }
             }
         }
 
-        if (empty($missingReferencedUids)) {
-            return;
-        }
+        $inspectedUids = [];
+        while (!empty($uidsToInspect)) {
+            $uidsToFetch = [];
+            foreach (array_keys($uidsToInspect) as $referencedUid) {
+                unset($uidsToInspect[$referencedUid]);
 
-        foreach (array_keys($missingReferencedUids) as $referencedUid) {
-            if (isset($documentsByUid[$referencedUid])) {
-                $allDocuments[$referencedUid] = $documentsByUid[$referencedUid];
+                if (isset($inspectedUids[$referencedUid])) {
+                    continue;
+                }
+                $inspectedUids[$referencedUid] = true;
+
+                if (isset($allDocuments[$referencedUid])) {
+                    $referencedDocument = $allDocuments[$referencedUid];
+                } elseif (isset($documentsByUid[$referencedUid])) {
+                    $referencedDocument = $documentsByUid[$referencedUid];
+                    $allDocuments[$referencedUid] = $referencedDocument;
+                } else {
+                    $uidsToFetch[] = $referencedUid;
+                    continue;
+                }
+
+                $parentUids = $referencedDocument['partof'] ?? [];
+                $parentUids = is_array($parentUids) ? $parentUids : [$parentUids];
+                foreach ($parentUids as $parentUid) {
+                    $parentUid = (string)$parentUid;
+                    if ($parentUid !== '' && $parentUid !== '0' && !isset($inspectedUids[$parentUid])) {
+                        $uidsToInspect[$parentUid] = true;
+                    }
+                }
             }
-        }
 
-        $uidsToFetch = [];
-        foreach (array_keys($missingReferencedUids) as $referencedUid) {
-            if (!isset($allDocuments[$referencedUid])) {
-                $uidsToFetch[] = $referencedUid;
+            if (empty($uidsToFetch)) {
+                continue;
             }
-        }
 
-        if (empty($uidsToFetch)) {
-            return;
-        }
+            $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
+            foreach ($fetchedReferencedDocuments as $uid => $document) {
+                if (!isset($allDocuments[$uid])) {
+                    $allDocuments[$uid] = $document;
+                }
+                $documentsByUid[(string)$uid] = $document;
 
-        $fetchedReferencedDocuments = $this->fetchDocumentsByUids($uidsToFetch);
-        foreach ($fetchedReferencedDocuments as $uid => $document) {
-            if (!isset($allDocuments[$uid])) {
-                $allDocuments[$uid] = $document;
+                $parentUids = $document['partof'] ?? [];
+                $parentUids = is_array($parentUids) ? $parentUids : [$parentUids];
+                foreach ($parentUids as $parentUid) {
+                    $parentUid = (string)$parentUid;
+                    if ($parentUid !== '' && $parentUid !== '0' && !isset($inspectedUids[$parentUid])) {
+                        $uidsToInspect[$parentUid] = true;
+                    }
+                }
             }
         }
     }
@@ -1172,102 +1196,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 'uidCount' => count($uids),
             ]);
 
-            return [];
-        }
-    }
-
-    /**
-     * Fetches additional title information for documents without a title field.
-     *
-     * For documents that have no title but reference a parent document (via partof field),
-     * this method queries Solr to fetch the parent's title and returns it in brackets.
-     * First tries to find toplevel documents, then fallback to volume documents.
-     *
-     * @param array $documents Array of documents keyed by UID
-     * @return array Array of additional title info keyed by document UID
-     */
-    private function fetchAdditionalTitleInfo(array $documents): array
-    {
-        $titleRequiredForDocuments = [];
-
-        foreach ($documents as $uid => $doc) {
-            if (empty($doc['title']) && !empty($doc['partof']) && ($doc['type'] ?? '') !== 'year') {
-                $titleRequiredForDocuments[] = [
-                    'uid' => $uid,
-                    'partof' => $doc['partof'],
-                ];
-            }
-        }
-
-        if (empty($titleRequiredForDocuments)) {
-            return [];
-        }
-
-        $parentUids = array_unique(array_column($titleRequiredForDocuments, 'partof'));
-        $query = implode(' OR ', array_map(function ($uid) {
-            return 'uid:' . $uid;
-        }, $parentUids));
-
-        $additionalTitleInfo = [];
-
-        try {
-            $selectQuery = $this->connection->createSelect();
-            $selectQuery->setQuery($query);
-            $selectQuery->setFields(['uid', 'title']);
-            $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
-
-            /** @var \Solarium\QueryType\Select\Result\Result $titlesResult */
-            $titlesResult = $this->connection->execute($selectQuery);
-
-            foreach ($titlesResult as $doc) {
-                if (!empty($doc['title'])) {
-                    $additionalTitleInfo[$doc['uid']] = [
-                        'uid' => $doc['uid'],
-                        'title' => '[' . $doc['title'] . ']',
-                    ];
-                }
-            }
-
-            $missingUids = array_diff($parentUids, array_keys($additionalTitleInfo));
-            if (!empty($missingUids)) {
-                $volumeQuery = implode(' OR ', array_map(function ($uid) {
-                    return 'uid:' . $uid;
-                }, $missingUids));
-
-                $volumeSelectQuery = $this->connection->createSelect();
-                $volumeSelectQuery->setQuery($volumeQuery);
-                $volumeSelectQuery->setFields(['uid', 'title', 'type']);
-                $volumeSelectQuery->createFilterQuery('volumeType')->setQuery('type:volume');
-
-                /** @var \Solarium\QueryType\Select\Result\Result $volumeResult */
-                $volumeResult = $this->connection->execute($volumeSelectQuery);
-
-                foreach ($volumeResult as $doc) {
-                    if (!empty($doc['title'])) {
-                        $additionalTitleInfo[$doc['uid']] = [
-                            'uid' => $doc['uid'],
-                            'title' => '[' . $doc['title'] . ']',
-                        ];
-                    }
-                }
-
-                $this->localLogger->debug('Volume query executed', [
-                    'missing' => count($missingUids),
-                    'foundVolume' => count($volumeResult->getDocuments()),
-                ]);
-            }
-
-            $this->localLogger->debug('Fetched additional title info', [
-                'requested' => count($titleRequiredForDocuments),
-                'foundToplevel' => count($titlesResult->getDocuments()),
-                'total' => count($additionalTitleInfo),
-            ]);
-
-            return $additionalTitleInfo;
-        } catch (\Exception $e) {
-            $this->localLogger->error('Error fetching additional title info', [
-                'exception' => $e->getMessage(),
-            ]);
             return [];
         }
     }

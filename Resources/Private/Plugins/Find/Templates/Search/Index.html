@@ -99,7 +99,7 @@
 											</f:then>
 											<f:else>
 												<li class="pageresult">
-													<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid}"/>
+													<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
 													<f:if condition="{arguments.searchMode} == 'fulltext'">
 														<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
 															<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
