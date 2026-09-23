@@ -58,6 +58,7 @@
 			<f:if condition="{groupingActive}">
 				<f:then>
 					<f:comment>Iterate over all grouped results</f:comment>
+
 					<f:for each="{groupedResults.valueGroups}" as="group" iteration="groupIterator">
 						<li>
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
@@ -80,16 +81,33 @@
 										aria-expanded="false"
 										aria-controls="volume-list-{config.uid}-{groupIterator.cycle}">{f:translate(key: 'find.list.more', extensionName: 'slub_digitalcollections')}</button>
 
-									<ol class="tx-dlf-volume" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
-										<f:for each="{group.documents}" as="subDocument">
-											<li class="pageresult">
-												<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
-												<f:if condition="{arguments.searchMode} == 'fulltext'">
-													<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
-														<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
-													</f:for>
-												</f:if>
-											</li>
+									<ol class="tx-dlf-volume{f:if(condition: '{group_head.type} == \'ephemera\' || {group_head.type} == \'newspaper\'', then: ' tx-dlf-volume-years')}" id="volume-list-{config.uid}-{groupIterator.cycle}" aria-hidden="true">
+										<f:for each="{group.documents}" as="subDocument" iteration="subDocumentIterator">
+											<f:if condition="{group_head.type} == 'ephemera' || {group_head.type} == 'newspaper'">
+											<f:then>
+												<f:comment>Special output for Newspaper / Ephemera</f:comment>
+												<f:variable name="newspaperTitle" value="{f:if(condition:'{metsOrderlabelsByUid.{subDocument.uid}}', then:'{metsOrderlabelsByUid.{subDocument.uid}}', else:'[{subDocument.title}]')}" />
+												<li value="{subDocumentIterator.cycle}" class="pageresult years-item">
+													<f:link.page
+													pageUid="{settings.targetPidPageView}"
+													additionalParams="{tx_dlf:{page:'1', double:'0', id:'{subDocument.uid}', pagegrid:'0'}}"
+													class="years-link"
+													title="{newspaperTitle}">
+														<span class="years-pill">{newspaperTitle}</span>
+													</f:link.page>
+												</li>
+											</f:then>
+											<f:else>
+												<li class="pageresult">
+													<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
+													<f:if condition="{arguments.searchMode} == 'fulltext'">
+														<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
+															<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
+														</f:for>
+													</f:if>
+												</li>
+											</f:else>
+											</f:if>
 										</f:for>
 									</ol>
 								</f:else>

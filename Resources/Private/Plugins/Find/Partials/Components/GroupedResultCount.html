@@ -29,9 +29,10 @@
 							{grouping.numberOfGroups} <f:translate key="results"/>
 						</f:then>
 						<f:else>
-							{config.counterStart}-<f:if condition="{config.counterEnd} > {grouping.numberOfGroups}"><f:then>{grouping.numberOfGroups}</f:then><f:else>{config.counterEnd}</f:else></f:if>
+							<f:translate key="documents" default="Dokumente"/> {config.counterStart}-<f:if condition="{config.counterEnd} > {grouping.numberOfGroups}"><f:then>{grouping.numberOfGroups}</f:then><f:else>{config.counterEnd}</f:else></f:if>
 							<f:translate key="of"/>
-							{grouping.numberOfGroups}
+							{grouping.numberOfGroups} <f:translate key="documents_all" default="Dokumenten"/>
+							mit {grouping.matches} <f:translate key="matches" default="Treffern"/>
 						</f:else>
 					</f:if>
 				</f:else>

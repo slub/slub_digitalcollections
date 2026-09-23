@@ -1,5 +1,6 @@
 <?php
 
+/** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'SLUB Digital Collections',
     'description' => 'Templates, Styles and Configuration for the Kitodo.Presentation based Digital Collections by SLUB Dresden',

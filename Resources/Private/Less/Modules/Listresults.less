@@ -247,8 +247,19 @@
                     position: relative;
                     background: desaturate(lighten(@secondary-color-light, 40%), 15%);
                     padding: 15px 0;
+                    margin: 15px 0 0 0;
                     display: none;
+
+                    &.tx-dlf-volume-years {
+                        text-align: center;
+
+                        li {
+                            text-align: center;
+                        }
+                    }
+
                     li {
+                        display: block;
                         border-bottom: 1px solid white;
                         padding: 15px;
                         .tx-dlf-listview-thumbnail img {
@@ -276,6 +287,43 @@
                         border-top-width: 0;
                         border-bottom-color: desaturate(lighten(@secondary-color-light, 40%), 15%);
                         content: " ";
+                    }
+
+                    .years-item {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0;
+                        padding: 8px;
+                        margin: 6px 8px 6px 0;
+                        background: transparent;
+
+                        .years-link {
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-decoration: none;
+                            line-height: 1;
+                        }
+
+                        .years-pill {
+                            display: inline-block;
+                            padding: 0.6rem 1rem;
+                            border-radius: 999px;
+                            background: darken(rgb(245, 241, 226), 42%);
+                            border: 0;
+                            color: white;
+                            font-family: @font-sans-bold;
+                            font-size: 18px;
+                            letter-spacing: 0.01em;
+                            white-space: nowrap;
+                            -moz-font-feature-settings: "lnum";
+                            -webkit-font-feature-settings: "lnum";
+                            font-feature-settings: "lnum";
+                            box-shadow: 0 1px 1px fade(black, 18%);
+                            .transition();
+                        }
+
                     }
                 }
             }
@@ -328,6 +376,7 @@
                     }
                     .tx-dlf-volume {
                         flex: 0 0 100%;
+
                         &:before {
                             left: auto;
                             right: 5px;
