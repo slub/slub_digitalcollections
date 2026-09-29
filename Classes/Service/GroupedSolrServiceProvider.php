@@ -157,6 +157,20 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         $this->addGrouping($arguments);
     }
 
+    protected function setActiveFacetSelectionForID(array &$activeFacets, string $facetID, array $facetSelection): void
+    {
+        $normalizedSelection = [];
+        foreach ($facetSelection as $facetTerm => $selection) {
+            $normalizedTerm = (string)$facetTerm;
+            if (str_starts_with($normalizedTerm, '[') && substr_count($normalizedTerm, '[') > substr_count($normalizedTerm, ']')) {
+                $normalizedTerm .= ']';
+            }
+            $normalizedSelection[$normalizedTerm] = $selection;
+        }
+
+        parent::setActiveFacetSelectionForID($activeFacets, $facetID, $normalizedSelection);
+    }
+
     /**
      * Configures Solr grouping parameters on the query.
      *
