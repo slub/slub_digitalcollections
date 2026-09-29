@@ -157,6 +157,25 @@ class FacetLinkArgumentsViewHelper extends AbstractViewHelper
         $requestArguments = array_replace_recursive($queryArguments, $bodyArguments);
 
         // Use request args as primary source, but keep Fluid arguments as fallback.
-        return array_replace_recursive($fluidArguments, $requestArguments);
+        $arguments = array_replace_recursive($fluidArguments, $requestArguments);
+        if (isset($arguments['facet']) && is_array($arguments['facet'])) {
+            foreach ($arguments['facet'] as $facetID => $facetSelection) {
+                if (!is_array($facetSelection)) {
+                    continue;
+                }
+
+                $normalizedSelection = [];
+                foreach ($facetSelection as $facetTerm => $selection) {
+                    $normalizedTerm = (string)$facetTerm;
+                    if (str_starts_with($normalizedTerm, '[') && substr_count($normalizedTerm, '[') > substr_count($normalizedTerm, ']')) {
+                        $normalizedTerm .= ']';
+                    }
+                    $normalizedSelection[$normalizedTerm] = $selection;
+                }
+                $arguments['facet'][$facetID] = $normalizedSelection;
+            }
+        }
+
+        return $arguments;
     }
 }
