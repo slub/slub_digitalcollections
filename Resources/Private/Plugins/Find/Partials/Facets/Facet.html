@@ -1,3 +1,4 @@
+{namespace sl=Slub\SlubDigitalcollections\ViewHelpers}
 <f:comment>
 	Creates an individual facet using the arguments:
 		* facetInfo: with the facet configuration
@@ -7,7 +8,8 @@
 	Each facet is created by the partial in Facets/Facet with the name of the
 	facet’s configured type (deaulting to  »List«).
 </f:comment>
-<f:if condition="{f:count(subject:facetData.values)} > 0">
+<f:variable name="facetValues" value="{sl:find.nonEmptyFacetValues(values:facetData.values)}" />
+<f:if condition="{f:count(subject:facetValues)} > 0">
 	<div class="facet facet-id-{facetInfo.id}{f:if(condition:facetInfo.type, then:' facet-type-{facetInfo.type}')}">
 		<h1>
 			<f:translate key="find.facet.{facetInfo.id}" extensionName="slub_digitalcollections" default="{facetInfo.id}" />
