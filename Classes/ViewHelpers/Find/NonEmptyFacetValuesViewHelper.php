@@ -20,7 +20,7 @@ class NonEmptyFacetValuesViewHelper extends AbstractViewHelper
     ): array {
         return array_filter(
             $arguments['values'],
-            static fn (mixed $count, string|int $term): bool => !is_string($term) || trim($term) !== '',
+            static fn(mixed $count, string|int $term): bool => !is_string($term) || trim($term) !== '',
             ARRAY_FILTER_USE_BOTH
         );
     }
