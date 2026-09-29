@@ -139,7 +139,7 @@ plugin.tx_find.settings.facets {
         id = author
         field = author_usi
         query = author_usi:"%s"
-        queryStyle = and
+        queryStyle = filter
     }
 
     # publ location
@@ -147,7 +147,7 @@ plugin.tx_find.settings.facets {
         id = place
         field = place_faceting
         query = place_faceting:"%s"
-        queryStyle = and
+        queryStyle = filter
     }
 
     # publ year
@@ -155,7 +155,7 @@ plugin.tx_find.settings.facets {
         id = year
         field = year_faceting
         query = year_faceting:"%s"
-        queryStyle = and
+        queryStyle = filter
     }
 
     # collections
@@ -163,7 +163,7 @@ plugin.tx_find.settings.facets {
 		id = collection
 		field = collection
 		query = collection:"%s"
-		queryStyle = and
+        queryStyle = filter
     }
 
     # type
@@ -171,7 +171,7 @@ plugin.tx_find.settings.facets {
         id = type
         field = type
         query = type:"%s"
-        queryStyle = and
+        queryStyle = filter
     }
 }
 
