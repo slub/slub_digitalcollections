@@ -121,10 +121,6 @@
 				<source><![CDATA[Permalink page]]></source>
 				<target><![CDATA[Permalink Seite]]></target>
 			</trans-unit>
-            <trans-unit id="sru.search" approved="yes">
-                <source><![CDATA[Search]]></source>
-                <target><![CDATA[Suchen]]></target>
-            </trans-unit>
 			<trans-unit id="find.list.more" approved="yes">
 				<source><![CDATA[more]]></source>
 				<target><![CDATA[mehr anzeigen]]></target>
