@@ -40,7 +40,9 @@
 										<f:then>
 											<f:if condition="{field} == 'type'">
 												<f:then>
-													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
+													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+														<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+													</f:translate>
 												</f:then>
 												<f:else>
 													{value}
@@ -50,7 +52,9 @@
 										<f:else>
 											<f:if condition="{field} == 'type'">
 												<f:then>
-													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
+													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+														<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+													</f:translate>
 												</f:then>
 												<f:else>
 													<slub:find.safeHighlightField
@@ -86,7 +90,9 @@
 									<f:then>
 										<f:if condition="{field} == 'type'">
 											<f:then>
-												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+												</f:translate>
 											</f:then>
 											<f:else>
 												{value}
@@ -96,7 +102,9 @@
 									<f:else>
 										<f:if condition="{field} == 'type'">
 											<f:then>
-												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}" default="{value}" />
+													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+														<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+													</f:translate>
 											</f:then>
 											<f:else>
 												<slub:find.safeHighlightField
@@ -129,7 +137,9 @@
 						<f:then>
 							<f:if condition="{field} == 'type'">
 								<f:then>
-									<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}" default="{document.fields.{field}}" />
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
+													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
+												</f:translate>
 								</f:then>
 								<f:else>
 									{document.fields.{field}}
@@ -139,7 +149,9 @@
 						<f:else>
 							<f:if condition="{field} == 'type'">
 								<f:then>
-									<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}" default="{document.fields.{field}}" />
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
+													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
+												</f:translate>
 								</f:then>
 								<f:else>
 									<slub:find.safeHighlightField

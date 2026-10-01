@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:slub_digitalcollections/Resources/Private/Language/locallang-facets.xlf" product-name="slub_digitalcollections">
+		<body>
+			<trans-unit id="facet.type.periodical_part" approved="yes">
+				<source>Periodical part</source>
+				<target>Zeitschriftenteil</target>
+			</trans-unit>
+			<trans-unit id="facet.type.mark" approved="yes">
+				<source>Mark</source>
+				<target>Marke</target>
+			</trans-unit>
+			<trans-unit id="facet.type.advertising" approved="yes">
+				<source>Advertising</source>
+				<target>Werbung</target>
+			</trans-unit>
+			<trans-unit id="facet.type.attached_work" approved="yes">
+				<source>Attached work</source>
+				<target>Beigefügtes Werk</target>
+			</trans-unit>
+			<trans-unit id="facet.type.other" approved="yes">
+				<source>Other</source>
+				<target>Sonstiges</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
