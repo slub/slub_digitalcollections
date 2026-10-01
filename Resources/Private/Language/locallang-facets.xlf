@@ -17,6 +17,9 @@
 			<trans-unit id="facet.type.other">
 				<source>Other</source>
 			</trans-unit>
+			<trans-unit id="facet.type.appendix">
+				<source>Appendix</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

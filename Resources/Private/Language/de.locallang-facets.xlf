@@ -22,6 +22,10 @@
 				<source>Other</source>
 				<target>Sonstiges</target>
 			</trans-unit>
+			<trans-unit id="facet.type.appendix" approved="yes">
+				<source>Appendix</source>
+				<target>Anhang</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
