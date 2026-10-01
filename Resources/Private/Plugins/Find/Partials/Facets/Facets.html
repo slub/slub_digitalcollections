@@ -15,7 +15,7 @@
 			</a>
 		</h3>
 		<f:for each="{config.facets}" as="facetInfo" key="facetKey">
-			<f:if condition="{facetInfo.hidden}!=1">
+			<f:if condition="{facetInfo.hidden} != 1 && ({facetInfo.id} != 'type' || {arguments.searchMode} != 'fulltext')">
 				<f:render
 					partial="Facets/Facet"
 					arguments="{
