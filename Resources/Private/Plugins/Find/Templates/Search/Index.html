@@ -89,7 +89,7 @@
 												<f:variable name="newspaperTitle" value="{f:if(condition:'{metsOrderlabelsByUid.{subDocument.uid}}', then:'{metsOrderlabelsByUid.{subDocument.uid}}', else:'[{subDocument.title}]')}" />
 												<li value="{subDocumentIterator.cycle}" class="pageresult years-item">
 													<f:link.page
-													pageUid="{settings.targetPidPageView}"
+													pageUid="{settings.kitodoPageView}"
 													additionalParams="{tx_dlf:{page:'1', double:'0', id:'{subDocument.uid}', pagegrid:'0'}}"
 													class="years-link"
 													title="{newspaperTitle}">
