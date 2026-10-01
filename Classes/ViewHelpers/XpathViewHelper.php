@@ -26,10 +26,9 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  ***************************************************************/
 use Kitodo\Dlf\Common\MetsDocument;
 use Kitodo\Dlf\Domain\Repository\DocumentRepository;
-
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -96,13 +95,20 @@ class XpathViewHelper extends AbstractViewHelper
             return;
         }
 
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+
         $mets = $currentDocument->getMets();
         $mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
         $mets->registerXPathNamespace('mods', 'http://www.loc.gov/mods/v3');
         $mets->registerXPathNamespace('dv', 'http://dfg-viewer.de/');
         $mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
 
-        $result = $mets->xpath($xpath);
+        try {
+            $result = $mets->xpath($xpath);
+        } catch (\Exception $e) {
+            $result = false;
+            $logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
+        }
 
         if ($returnArray) {
             $output = [];
