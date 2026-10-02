@@ -193,6 +193,10 @@
 				<source>Collection(s)</source>
 				<target>Sammlung(en)</target>
 			</trans-unit>
+			<trans-unit id="show all" approved="yes">
+				<source>show all</source>
+				<target>weitere anzeigen</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
