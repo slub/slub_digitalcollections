@@ -104,7 +104,7 @@ class XpathViewHelper extends AbstractViewHelper
         $mets->registerXPathNamespace('slub', 'http://slub-dresden.de/');
 
         try {
-            $result = $mets->xpath($xpath);
+            $result = self::safeXpath($mets, $xpath);
         } catch (\Exception $e) {
             $result = false;
             $logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
@@ -196,5 +196,37 @@ class XpathViewHelper extends AbstractViewHelper
         }
 
         return self::$documentRepository;
+    }
+
+    /**
+     * Execute XPath expression and throw exception on errors.
+     *
+     * @static
+     *
+     * @param \SimpleXMLElement $xml
+     * @param string $xpath
+     *
+     * @return array
+     *
+     * @throws \RuntimeException
+     */
+    private static function safeXpath(\SimpleXMLElement $xml, string $xpath): array
+    {
+        $previousLibxml = libxml_use_internal_errors(true);
+        libxml_clear_errors();
+
+        $result = $xml->xpath($xpath);
+
+        if ($result === false) {
+            $errors = libxml_get_errors();
+            $message = !empty($errors) ? trim($errors[0]->message) : 'Invalid XPath expression';
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousLibxml);
+
+            throw new \RuntimeException($message);
+        }
+
+        libxml_use_internal_errors($previousLibxml);
+        return $result;
     }
 }
