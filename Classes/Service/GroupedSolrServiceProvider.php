@@ -628,10 +628,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
         $groupHeadUidByIndex = [];
 
         foreach ($valueGroups as $index => $group) {
-
-            //typo3 dump $group
-            //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($group);
-
             $documents = $group['documents'] ?? [];
             if (count($documents) !== 1) {
                 continue;
