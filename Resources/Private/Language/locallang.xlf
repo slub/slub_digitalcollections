@@ -146,6 +146,9 @@
 			<trans-unit id="find.facet.collection">
 				<source>Collection(s)</source>
 			</trans-unit>
+			<trans-unit id="showMore" approved="yes">
+				<source>show more</source>
+			</trans-unit>			
 		</body>
 	</file>
 </xliff>

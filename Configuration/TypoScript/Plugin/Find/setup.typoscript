@@ -101,18 +101,26 @@ plugin.tx_find.settings {
     # define sort criteria
     sort {
         0 {
-            id = relevance
-            sortCriteria = score desc
+            id = default
+            sortCriteria = title_sorting asc
         }
         1 {
-            id = default
+            id = titleAsc
             sortCriteria = title_sorting asc
         }
         2 {
             id = titleDesc
             sortCriteria = title_sorting desc
         }
+        3 {
+            id = relevance
+            sortCriteria = score desc, year_sorting asc, title_sorting asc, volume_sorting asc
+        }
     }
+
+    [request && traverse(request.getQueryParams(), 'tx_find_find/q/default') != '']
+    plugin.tx_find.settings.sort.0.sortCriteria = score desc, year_sorting asc, title_sorting asc, volume_sorting asc
+    [END]
 
     additionalFilters {
         

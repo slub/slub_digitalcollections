@@ -27,7 +27,7 @@
 	<f:if condition="{f:count(subject:facetValues)} > {facetInfo.displayDefault}">
 		<li class="facetShowAll" style="display: list-item;">
 			<a href="#" onclick="return tx_find.showAllFacetsOfType(event)">
-				<f:translate key="show all"/>
+				<f:translate key="showMore" extensionName="slub_digitalcollections" default="show more" />
 			</a>
 		</li>
 		<li class="facetHideHidden" style="display: none;">

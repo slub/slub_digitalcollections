@@ -12,6 +12,9 @@
 			<trans-unit id="input.sort-default" xml:space="preserve">
 				<source>Title A-Z</source>
 			</trans-unit>
+			<trans-unit id="input.sort-titleAsc" xml:space="preserve">
+				<source>Title A-Z</source>
+			</trans-unit>
 			<trans-unit id="input.sort-titleDesc" xml:space="preserve">
 				<source>Title Z-A</source>
 			</trans-unit>

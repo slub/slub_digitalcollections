@@ -15,6 +15,10 @@
 				<source>Title A-Z</source>
 				<target>Titel A-Z</target>
 			</trans-unit>
+			<trans-unit id="input.sort-titleAsc" xml:space="preserve" approved="yes">
+				<source>Title A-Z</source>
+				<target>Titel A-Z</target>
+			</trans-unit>
 			<trans-unit id="input.sort-titleDesc" xml:space="preserve" approved="yes">
 				<source>Title Z-A</source>
 				<target>Titel Z-A</target>

@@ -15,7 +15,7 @@ plugin.tx_find {
                     # cat=plugin.tx_find/connections/default; type=string; label=Path to the solr core in use
                     path = /
                     # cat=plugin.tx_find/connections/default; type=int+; label=Solr Connection Timeout
-                    timeout = 5
+                    timeout = 30
                     # cat=plugin.tx_find/connections/default; type=string; label=Solr Connection Scheme
                     scheme = http
                     # cat=plugin.tx_find/connections/default; type=string; label=Solr Core Name

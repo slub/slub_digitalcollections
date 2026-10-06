@@ -64,7 +64,7 @@
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
 								<f:then>
 									<f:variable name="group_head">{groupDisplayDocuments.{group.value}}</f:variable>
-									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, noHighlighting: '1', allDocuments: allDocuments, metsOrderlabelsByUid: metsOrderlabelsByUid}"/>
+									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, allDocuments: allDocuments, metsOrderlabelsByUid: metsOrderlabelsByUid}"/>
 								</f:then>
 								<f:else>
 									<f:variable name="group_head">{allDocuments.{group.value}}</f:variable>
@@ -89,7 +89,7 @@
 												<f:variable name="newspaperTitle" value="{f:if(condition:'{metsOrderlabelsByUid.{subDocument.uid}}', then:'{metsOrderlabelsByUid.{subDocument.uid}}', else:'[{subDocument.title}]')}" />
 												<li value="{subDocumentIterator.cycle}" class="pageresult years-item">
 													<f:link.page
-													pageUid="{settings.targetPidPageView}"
+													pageUid="{settings.kitodoPageView}"
 													additionalParams="{tx_dlf:{page:'1', double:'0', id:'{subDocument.uid}', pagegrid:'0'}}"
 													class="years-link"
 													title="{newspaperTitle}">
@@ -98,14 +98,16 @@
 												</li>
 											</f:then>
 											<f:else>
-												<li class="pageresult">
-													<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
-													<f:if condition="{arguments.searchMode} == 'fulltext'">
-														<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
-															<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
-														</f:for>
-													</f:if>
-												</li>
+												<f:if condition="{subDocument.id} != {group_head.id}">
+													<li class="pageresult">
+														<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
+														<f:if condition="{arguments.searchMode} == 'fulltext'">
+															<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
+																<p><i><f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw></i></p>
+															</f:for>
+														</f:if>
+													</li>
+												</f:if>
 											</f:else>
 											</f:if>
 										</f:for>
