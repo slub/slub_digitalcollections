@@ -446,7 +446,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $totalGroups = $groupedResults['numberOfGroups'];
             }
 
-            $this->enrichSingleTopLevelRootGroupsWithChildren($groupedResults, $allDocuments);
+            $this->enrichSingleTopLevelGroupsWithChildren($groupedResults, $allDocuments);
 
             $groupDisplayDocuments = $this->resolveDisplayDocumentsForGroups($groupedResults, $allDocuments);
             $this->synchronizeAllDocumentsWithGroupHeads($groupDisplayDocuments, $allDocuments);
@@ -608,40 +608,30 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
     }
 
     /**
-     * Enriches single-document groups whose head is a top-level root title.
+    * Enriches single-document groups whose head is a top-level document.
      *
      * For groups that only contain one document and where that document matches
-     * toplevel:true AND partof:0, all top-level child documents (partof:<head-uid>)
+    * toplevel:true, all top-level child documents (partof:<head-uid>)
      * are fetched and appended to the group. Added documents are also indexed in
      * allDocuments by UID for direct lookups in templates.
      *
      * @param array &$groupedResults Template-friendly grouped result structure
      * @param array &$allDocuments Flat document array enriched in-place
      */
-    private function enrichSingleTopLevelRootGroupsWithChildren(array &$groupedResults, array &$allDocuments): void
+    private function enrichSingleTopLevelGroupsWithChildren(array &$groupedResults, array &$allDocuments): void
     {
         $valueGroups = $groupedResults['valueGroups'] ?? [];
         if (empty($valueGroups)) {
             return;
         }
 
-        $existingGroupHeadUids = [];
-        foreach ($valueGroups as $group) {
-            $groupDocuments = $group['documents'] ?? [];
-            $groupHeadDocument = $this->findTopLevelDocumentInGroup($groupDocuments);
-            if ($groupHeadDocument === null) {
-                continue;
-            }
-
-            $groupHeadUid = isset($groupHeadDocument['uid']) ? (string)$groupHeadDocument['uid'] : '';
-            if ($groupHeadUid !== '') {
-                $existingGroupHeadUids[$groupHeadUid] = true;
-            }
-        }
-
         $groupHeadUidByIndex = [];
 
         foreach ($valueGroups as $index => $group) {
+
+            //typo3 dump $group
+            //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($group);
+
             $documents = $group['documents'] ?? [];
             if (count($documents) !== 1) {
                 continue;
@@ -658,22 +648,7 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 continue;
             }
 
-            $partOfValues = [];
-            if (isset($groupHead['partof'])) {
-                $partOfValues = is_array($groupHead['partof']) ? $groupHead['partof'] : [$groupHead['partof']];
-            }
-
-            $isRootDocument = false;
-            foreach ($partOfValues as $partOfValue) {
-                if ((string)$partOfValue === '0') {
-                    $isRootDocument = true;
-                    break;
-                }
-            }
-
-            if ($isRootDocument) {
-                $groupHeadUidByIndex[$index] = $groupHeadUid;
-            }
+            $groupHeadUidByIndex[$index] = $groupHeadUid;
         }
 
         if (empty($groupHeadUidByIndex)) {
@@ -704,11 +679,6 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
             foreach ($childDocuments as $childDocument) {
                 $childUid = isset($childDocument['uid']) ? (string)$childDocument['uid'] : '';
                 if ($childUid === '' || isset($existingUids[$childUid])) {
-                    continue;
-                }
-
-                // Keep documents that are already separate group heads out of enriched sub-lists.
-                if ($childUid !== $groupHeadUid && isset($existingGroupHeadUids[$childUid])) {
                     continue;
                 }
 
