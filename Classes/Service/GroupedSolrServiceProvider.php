@@ -943,6 +943,12 @@ class GroupedSolrServiceProvider extends SolrServiceProvider
                 $selectQuery = $this->connection->createSelect();
                 $selectQuery->setQuery($query);
                 $selectQuery->createFilterQuery('onlyTopLevel')->setQuery('toplevel:true');
+                $selectQuery->setSorts([
+                    'score' => 'desc',
+                    'year_sorting' => 'asc',
+                    'title_sorting' => 'asc',
+                    'volume_sorting' => 'asc',
+                ]);
                 $selectQuery->setStart($start);
                 $selectQuery->setRows($rows);
 
