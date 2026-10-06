@@ -34,58 +34,6 @@
 					<f:for each="{s:data.valueForKey(array:document.fields, key:field)}" as="value" iteration="iterator">
 						{groupItemPrefix->f:format.raw()}{fieldPrefix->f:format.raw()}
 							
-								<f:format.raw>
-
-									<f:if condition="{noHighlighting}">
-										<f:then>
-											<f:if condition="{field} == 'type'">
-												<f:then>
-													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
-														<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
-													</f:translate>
-												</f:then>
-												<f:else>
-													{value}
-												</f:else>
-											</f:if>
-										</f:then>
-										<f:else>
-											<f:if condition="{field} == 'type'">
-												<f:then>
-													<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
-														<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
-													</f:translate>
-												</f:then>
-												<f:else>
-													<slub:find.safeHighlightField
-														field="{field}"
-														document="{document}"
-														results="{results}"
-														index="{iterator.index}"
-														alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
-													/>
-												</f:else>
-											</f:if>
-										</f:else>
-
-									</f:if>
-
-								</f:format.raw>
-
-						{fieldSuffix->f:format.raw()}{f:if(condition:"{iterator.isLast}==0", then:separator)}{groupItemSuffix->f:format.raw()}
-					</f:for>
-					{groupSuffix->f:format.raw()}
-				</f:then>
-
-				<f:if condition="{prefixString}">
-					<dt class="tx-dlf-{field}"><f:translate key="find.display.{prefixString}" extensionName="slub_digitalcollections" default="{prefixString}" /></dt>
-				</f:if>		
-				{groupPrefix->f:format.raw()}
-				<f:for each="{s:data.valueForKey(array:document.fields, key:field)}" as="value" iteration="iterator">
-					{groupItemPrefix->f:format.raw()}{fieldPrefix->f:format.raw()}
-						
-							<f:format.raw>
-
 								<f:if condition="{noHighlighting}">
 									<f:then>
 										<f:if condition="{field} == 'type'">
@@ -95,7 +43,7 @@
 												</f:translate>
 											</f:then>
 											<f:else>
-												{value}
+												<f:format.htmlspecialchars>{value}</f:format.htmlspecialchars>
 											</f:else>
 										</f:if>
 									</f:then>
@@ -107,20 +55,64 @@
 													</f:translate>
 											</f:then>
 											<f:else>
-												<slub:find.safeHighlightField
+												<f:format.raw><slub:find.safeHighlightField
 													field="{field}"
 													document="{document}"
 													results="{results}"
 													index="{iterator.index}"
 													alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
-												/>
+												/></f:format.raw>
 											</f:else>
 										</f:if>
 									</f:else>
 
 								</f:if>
 
-							</f:format.raw>
+						{fieldSuffix->f:format.raw()}{f:if(condition:"{iterator.isLast}==0", then:separator)}{groupItemSuffix->f:format.raw()}
+					</f:for>
+					{groupSuffix->f:format.raw()}
+				</f:then>
+
+				<f:if condition="{prefixString}">
+					<dt class="tx-dlf-{field}"><f:translate key="find.display.{prefixString}" extensionName="slub_digitalcollections" default="{prefixString}" /></dt>
+				</f:if>
+				{groupPrefix->f:format.raw()}
+				<f:for each="{s:data.valueForKey(array:document.fields, key:field)}" as="value" iteration="iterator">
+					{groupItemPrefix->f:format.raw()}{fieldPrefix->f:format.raw()}
+
+							<f:if condition="{noHighlighting}">
+								<f:then>
+									<f:if condition="{field} == 'type'">
+										<f:then>
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+												</f:translate>
+										</f:then>
+										<f:else>
+											<f:format.htmlspecialchars>{value}</f:format.htmlspecialchars>
+										</f:else>
+									</f:if>
+								</f:then>
+								<f:else>
+									<f:if condition="{field} == 'type'">
+										<f:then>
+												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{value}">
+													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{value}" default="{value}" />
+												</f:translate>
+										</f:then>
+										<f:else>
+											<f:format.raw><slub:find.safeHighlightField
+												field="{field}"
+												document="{document}"
+												results="{results}"
+												index="{iterator.index}"
+												alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
+												/></f:format.raw>
+										</f:else>
+									</f:if>
+
+				</f:else>
+								</f:if>
 
 					{fieldSuffix->f:format.raw()}{f:if(condition:"{iterator.isLast}==0", then:separator)}{groupItemSuffix->f:format.raw()}
 				</f:for>
@@ -132,41 +124,38 @@
 				<dt class="tx-dlf-{field}"><f:translate key="find.display.{prefixString}" extensionName="slub_digitalcollections" default="{prefixString}" /></dt>
 			</f:if>			
 			{fieldPrefix->f:format.raw()}
-				<f:format.raw>
-					<f:if condition="{noHighlighting}">
+			<f:if condition="{noHighlighting}">
+				<f:then>
+					<f:if condition="{field} == 'type'">
 						<f:then>
-							<f:if condition="{field} == 'type'">
-								<f:then>
-												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
-													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
-												</f:translate>
-								</f:then>
-								<f:else>
-									{document.fields.{field}}
-								</f:else>
-							</f:if>
-						</f:then>		
+							<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
+								<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
+							</f:translate>
+						</f:then>
 						<f:else>
-							<f:if condition="{field} == 'type'">
-								<f:then>
-												<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
-													<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
-												</f:translate>
-								</f:then>
-								<f:else>
-									<slub:find.safeHighlightField
-										field="{field}"
-										document="{document}"
-										results="{results}"
-										index="0"
-										alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
-									/>
-								</f:else>
-							</f:if>
-
+							<f:format.htmlspecialchars>{document.fields.{field}}</f:format.htmlspecialchars>
 						</f:else>
-					</f:if>			
-				</f:format.raw>
+					</f:if>
+				</f:then>
+				<f:else>
+					<f:if condition="{field} == 'type'">
+						<f:then>
+							<f:translate key="LLL:EXT:dlf/Resources/Private/Language/locallang_structure.xlf:structure.{document.fields.{field}}">
+								<f:translate key="LLL:{settings.languageRootPath}locallang-facets.xml:facet.type.{document.fields.{field}}" default="{document.fields.{field}}" />
+							</f:translate>
+						</f:then>
+						<f:else>
+							<f:format.raw><slub:find.safeHighlightField
+								field="{field}"
+								document="{document}"
+								results="{results}"
+								index="0"
+								alternateField="{s:data.valueForKey(array:config.highlight.alternateFields, key:field)}"
+							/></f:format.raw>
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
 			{fieldSuffix->f:format.raw()}
 		</f:else>
 	</f:if>
