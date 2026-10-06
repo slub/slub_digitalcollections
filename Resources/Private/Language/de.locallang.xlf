@@ -194,7 +194,7 @@
 				<target>Sammlung(en)</target>
 			</trans-unit>
 			<trans-unit id="showAll" approved="yes">
-				<source>show all</source>
+				<source>show more</source>
 				<target>weitere anzeigen</target>
 			</trans-unit>
 		</body>
