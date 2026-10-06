@@ -75,25 +75,28 @@
 						<f:else>
 							<f:variable name="higher_partof_document">{allDocuments.{partof_document.partof}}</f:variable>
 							<f:if condition="{s:data.valueForKey(array:higher_partof_document.fields, key:settings.standardFields.title)}">
-								<f:render
-									partial="Display/Field/General"
-									arguments="{
-										config:config,
-										results:results,
-										document:higher_partof_document,
-										field:settings.standardFields.title,
-										prefixString: 'title',
-										groupPrefix:'',
-										groupSuffix:'',
-										groupItemPrefix:'',
-										groupItemSuffix:'',
-										fieldPrefix:'<dd class=\"tx-dlf-title\">[',
-										fieldSuffix:']</dd>',
-										separator:', ',
-										linkFieldContent:linkFieldContent,
-										linkFacets:linkFacets,
-										noHighlighting: 1
-									}"/>
+								<f:link.page pageUid="{settings.kitodoPageView}" 
+									additionalParams="{tx_dlf: txDlfParams}" >
+									<f:render
+										partial="Display/Field/General"
+										arguments="{
+											config:config,
+											results:results,
+											document:higher_partof_document,
+											field:settings.standardFields.title,
+											prefixString: 'title',
+											groupPrefix:'',
+											groupSuffix:'',
+											groupItemPrefix:'',
+											groupItemSuffix:'',
+											fieldPrefix:'<dd class=\"tx-dlf-title\">[',
+											fieldSuffix:']</dd>',
+											separator:', ',
+											linkFieldContent:linkFieldContent,
+											linkFacets:linkFacets,
+											noHighlighting: 1
+										}"/>
+								</f:link.page>
 							</f:if>
 						</f:else>
 					</f:if>
