@@ -21,22 +21,6 @@
 				<source><![CDATA[Fulltext page (XML)]]></source>
 				<target><![CDATA[Volltext Seite (XML)]]></target>
 			</trans-unit>
-			<trans-unit id="download.image.imageDownload" approved="yes">
-				<source><![CDATA[Download image]]></source>
-				<target><![CDATA[Bild herunterladen]]></target>
-			</trans-unit>
-			<trans-unit id="download.image.leftPage" approved="yes">
-				<source><![CDATA[Download left page (JPG)]]></source>
-				<target><![CDATA[Linke Seite herunterladen (JPG)]]></target>
-			</trans-unit>
-			<trans-unit id="download.image.rightPage" approved="yes">
-				<source><![CDATA[Download right page (JPG)]]></source>
-				<target><![CDATA[Rechte Seite herunterladen (JPG)]]></target>
-			</trans-unit>
-			<trans-unit id="download.image.singlePage" approved="yes">
-				<source><![CDATA[Download single page (JPG)]]></source>
-				<target><![CDATA[Einzelseite als Bild herunterladen (JPG)]]></target>
-			</trans-unit>
 			<trans-unit id="download.mets" approved="yes">
 				<source><![CDATA[METS file (XML)]]></source>
 				<target><![CDATA[METS Datei (XML)]]></target>

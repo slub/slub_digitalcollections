@@ -22,44 +22,7 @@
         </li>
 
         <f:comment><!-- [Image downloads (JPG)] ----------------------------- --></f:comment>
-        <!-- ORDER: ORIGINAL (best) -> MAX -> DEFAULT -->
-        <f:variable name="originalXpath"><dc:xpath xpath='({fileGrpXpath}[@USE="ORIGINAL"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
-        <f:variable name="maxXpath"><dc:xpath xpath='({fileGrpXpath}[@USE="MAX"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
-        <f:variable name="defaultXpath"><dc:xpath xpath='({fileGrpXpath}[@USE="DEFAULT"]/mets:file/mets:FLocat/@xlink:href)[{gp-page}]' /></f:variable>
-        <f:if condition="{originalXpath}">
-            <f:then>
-                <f:variable name="usedFileGrp">[@USE="ORIGINAL"]</f:variable>
-            </f:then>
-            <f:else if="{maxXpath}">
-                <f:variable name="usedFileGrp">[@USE="MAX"]</f:variable>
-            </f:else>
-            <f:else if="{defaultXpath}">
-                <f:variable name="usedFileGrp">[@USE="DEFAULT"]</f:variable>
-            </f:else>
-        </f:if>
-
-        <f:variable name="mimeType" value="{dc:xpath(xpath:'({fileGrpXpath}/mets:file/@MIMETYPE)[{gp-page}]')}" />
-        <f:variable name="downloadImage"><dc:xpath xpath='({fileGrpXpath}{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page}]' />{f:if(condition:"{mimeType}=='application/vnd.kitodo.iiif' ", then:'/full/full/0/default.jpg')}</f:variable>
-        <f:if condition="{gp-double} == 1">
-            <f:then>
-                <f:variable name="downloadImageLeftPage"><f:translate key='download.image.leftPage' extensionName='slub_digitalcollections' /></f:variable>
-                <f:variable name="downloadImageRight"><dc:xpath xpath='({fileGrpXpath}{usedFileGrp}//mets:file/mets:FLocat/@xlink:href)[{gp-page2}]' />{f:if(condition:"{mimeType}=='application/vnd.kitodo.iiif' ", then:'/full/full/0/default.jpg')}</f:variable>
-                <f:variable name="downloadImageRightPage"><f:translate key='download.image.rightPage' extensionName='slub_digitalcollections' /></f:variable>
-                <li class="jpg-download has-multilinks">
-                    <div class="multilinks">
-                        <f:link.external uri="{downloadImage}" class="download-document image left" target="_blank" title="{downloadImageLeftPage}">{downloadImageLeftPage}</f:link.external>
-                        <f:link.external uri="{downloadImageRight}" class="download-document image right" target="_blank"
-                        title="{downloadImageRightPage}">{downloadImageRightPage}</f:link.external>
-                    </div>
-                </li>
-            </f:then>
-            <f:else>
-                <f:variable name="downloadImageSinglePage"><f:translate key='download.image.singlePage' extensionName='slub_digitalcollections' /></f:variable>
-                <li class="jpg-download">
-                    <f:link.external uri="{downloadImage}" class="download-document image" target="_blank" title="{downloadImageSinglePage}">{downloadImageSinglePage}</f:link.external>
-                </li>
-            </f:else>
-        </f:if>
+        <f:cObject typoscriptObjectPath="plugin.tx_dlf_imagedownloadtool" />
 
         <f:comment><!-- [Fulltext downloads (XML)] -------------------------- --></f:comment>
         <f:variable name="fulltextXpath"><dc:xpath xpath='{fulltextLocationXpath}[1]' /></f:variable>

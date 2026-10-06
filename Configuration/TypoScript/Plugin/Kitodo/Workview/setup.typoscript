@@ -635,6 +635,14 @@ plugin.tx_dlf_fulltexttool {
     }
 }
 
+plugin.tx_dlf_imagedownloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_imagedownloadtool {
+    settings {
+        tools = imageDownloadTool
+        showAsList = 0
+    }
+}
+
 plugin.tx_dlf_imagemanipulationtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_imagemanipulationtool {
     settings {
