@@ -64,7 +64,7 @@
 							<f:if condition="{groupDisplayDocuments.{group.value}}">
 								<f:then>
 									<f:variable name="group_head">{groupDisplayDocuments.{group.value}}</f:variable>
-									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, noHighlighting: '1', allDocuments: allDocuments, metsOrderlabelsByUid: metsOrderlabelsByUid}"/>
+									<f:render partial="Display/Result" arguments="{document: '{groupDisplayDocuments.{group.value}}', config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, allDocuments: allDocuments, metsOrderlabelsByUid: metsOrderlabelsByUid}"/>
 								</f:then>
 								<f:else>
 									<f:variable name="group_head">{allDocuments.{group.value}}</f:variable>
