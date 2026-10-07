@@ -17,18 +17,6 @@
 			<trans-unit id="download.fulltext.singlePage">
 				<source><![CDATA[Fulltext page (XML)]]></source>
 			</trans-unit>
-			<trans-unit id="download.image.imageDownload">
-				<source><![CDATA[Download image]]></source>
-			</trans-unit>
-			<trans-unit id="download.image.leftPage">
-				<source><![CDATA[Download left page (JPG)]]></source>
-			</trans-unit>
-			<trans-unit id="download.image.rightPage">
-				<source><![CDATA[Download right page (JPG)]]></source>
-			</trans-unit>
-			<trans-unit id="download.image.singlePage">
-				<source><![CDATA[Download single page (JPG)]]></source>
-			</trans-unit>
 			<trans-unit id="download.mets">
 				<source><![CDATA[METS file (XML)]]></source>
 			</trans-unit>
