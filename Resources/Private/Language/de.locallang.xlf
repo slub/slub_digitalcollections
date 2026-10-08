@@ -153,6 +153,10 @@
 				<source><![CDATA[Page]]></source>
 				<target><![CDATA[Seite]]></target>
 			</trans-unit>
+			<trans-unit id="find.display.metadata-serial" approved="yes">
+				<source><![CDATA[Serial]]></source>
+				<target><![CDATA[Reihe]]></target>
+			</trans-unit>				
 			<trans-unit id="find.display.type" approved="yes">
 				<source><![CDATA[Type]]></source>
 				<target><![CDATA[Strukturtyp]]></target>

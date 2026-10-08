@@ -113,6 +113,9 @@
 			<trans-unit id="find.display.metadata-localtermsofuse2">
 				<source><![CDATA[Terms of Use]]></source>
 			</trans-unit>
+			<trans-unit id="find.display.metadata-serial">
+				<source><![CDATA[Serial]]></source>
+			</trans-unit>			
 			<trans-unit id="find.display.metadata-page">
 				<source><![CDATA[Page]]></source>
 			</trans-unit>
