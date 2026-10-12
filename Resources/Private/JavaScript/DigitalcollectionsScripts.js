@@ -89,9 +89,9 @@ $(function () {
         $('dl.mobile-meta').append('<dt class="mobile-page-number">No.</dt><dd class="mobile-page-number">' + $('.tx-dlf-navigation-pages select option[selected]').text() + '</dd>');
     }
 
-    // Copy some controls for mobile (page select, fullscreen)
-    $('.provider').append('<div class="mobile-controls" />');
-    $('.view-functions .tx-dlf-navigation-pages form, .view-functions .tx-dlf-tools-fullscreen, .tx-dlf-toolbox-searchindocument-search-toggle').clone().appendTo('.provider .mobile-controls');
+    // Copy search in document for mobile
+    $('.view-functions ul').append('<li class="tx-dlf-toolbox-searchindocument-mobile" />');
+    $('.tx-dlf-toolbox-searchindocument-search-toggle').first().clone().appendTo('.view-functions ul > li.tx-dlf-toolbox-searchindocument-mobile');
 
     // Shorten mobile meta title
     shortenMobileMetaElement = $('.provider dl.mobile-meta dd.tx-dlf-title a');
@@ -151,8 +151,16 @@ $(function () {
     // Toggle and setup for the 'in document search'
     if ($('.tx-dlf-toolbox-searchindocument form')[0]) {
         $('.tx-dlf-toolbox-searchindocument-search-toggle').on('click', function () {
+            var searchContainer = $('.tx-dlf-toolbox-searchindocument').has('form');
+            var mobileSearchToggle = $(this).closest('.tx-dlf-toolbox-searchindocument-mobile');
+            var searchTop;
+            if (mobileSearchToggle.length) {
+                var offsetParent = searchContainer.offsetParent();
+                var offsetParentTop = offsetParent.length ? offsetParent.offset().top : 0;
+                searchTop = $(this).offset().top + $(this).outerHeight() - offsetParentTop;
+            }
             $('body').toggleClass('tx-dlf-toolbox-searchindocument-search-active');
-            $('.tx-dlf-toolbox-searchindocument').css({top: ($(this).offset().top - 60) + 'px'});
+            searchContainer.css({top: (mobileSearchToggle.length ? searchTop : $(this).offset().top - 60) + 'px'});
             $('body.tx-dlf-toolbox-searchindocument-search-active #tx-dlf-toolbox-searchindocument-input-query').trigger('focus');
         });
     } else {
