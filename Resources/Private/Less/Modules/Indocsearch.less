@@ -175,6 +175,13 @@
             max-height: calc(100vh - 280px);
         }
     }
+    @media screen and (max-width: @tabletViewportWidth) {
+        form {
+            right: -190px;
+            width: calc(100vw - 30px);
+            box-sizing: border-box;
+        }
+    }
     @media screen and (min-width: @tabletLandscapeViewportWidth) {
         top: 10px !important;
         right: 8px;
