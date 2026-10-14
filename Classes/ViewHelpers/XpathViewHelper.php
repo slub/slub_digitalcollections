@@ -26,6 +26,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  ***************************************************************/
 use Kitodo\Dlf\Common\MetsDocument;
 use Kitodo\Dlf\Domain\Repository\DocumentRepository;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -52,6 +53,13 @@ class XpathViewHelper extends AbstractViewHelper
      * @var DocumentRepository|null
      */
     private static ?DocumentRepository $documentRepository = null;
+
+    /**
+     * Logger instance
+     *
+     * @var Logger
+     */
+    private static Logger $logger;
 
     /**
      * Initialize arguments.
@@ -86,6 +94,8 @@ class XpathViewHelper extends AbstractViewHelper
         $htmlSpecialChars = $arguments['htmlspecialchars'];
         $returnArray = $arguments['returnArray'];
 
+        self::$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+
         $parameters = self::getParameters();
 
         $document = self::getDocumentRepository()->findOneByParameters($parameters);
@@ -94,8 +104,6 @@ class XpathViewHelper extends AbstractViewHelper
         if ($document === null || !($currentDocument instanceof MetsDocument)) {
             return;
         }
-
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
 
         $mets = $currentDocument->getMets();
         $mets->registerXPathNamespace('mets', 'http://www.loc.gov/METS/');
@@ -107,7 +115,7 @@ class XpathViewHelper extends AbstractViewHelper
             $result = self::safeXpath($mets, $xpath);
         } catch (\Exception $e) {
             $result = false;
-            $logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
+            self::$logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
         }
 
         if ($returnArray) {
@@ -143,6 +151,8 @@ class XpathViewHelper extends AbstractViewHelper
     private static function getParameters(): array
     {
         $parameters = [];
+        $parametersSet = [];
+        $parametersDlf = [];
 
         // @phpstan-ignore-next-line
         if (method_exists(GeneralUtility::class, '_GPmerged')) {
@@ -150,20 +160,21 @@ class XpathViewHelper extends AbstractViewHelper
             $parametersDlf = GeneralUtility::_GPmerged('tx_dlf');
         } else {
             $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-            if ($request === null) {
-                $parametersSet = [];
-                $parametersDlf = [];
-            } else {
-                $queryParams = $request->getQueryParams();
-                $parsedBody  = $request->getParsedBody();
-                $parametersSet = array_merge(
-                    $queryParams['set'] ?? [],
-                    $parsedBody['set'] ?? []
-                );
-                $parametersDlf = array_merge(
-                    $queryParams['tx_dlf'] ?? [],
-                    $parsedBody['tx_dlf'] ?? []
-                );
+            if ($request !== null) {
+                try {
+                    $queryParams = $request->getQueryParams();
+                    $parsedBody  = $request->getParsedBody();
+                    $parametersSet = array_merge(
+                        $queryParams['set'] ?? [],
+                        $parsedBody['set'] ?? []
+                    );
+                    $parametersDlf = array_merge(
+                        $queryParams['tx_dlf'] ?? [],
+                        $parsedBody['tx_dlf'] ?? []
+                    );
+                } catch (\Throwable $e) {
+                    self::$logger->info('Error occurred while fetching parameters: ' . $e->getMessage());
+                }
             }
         }
         if (isset($parametersSet['mets']) && GeneralUtility::isValidUrl($parametersSet['mets'])) {
