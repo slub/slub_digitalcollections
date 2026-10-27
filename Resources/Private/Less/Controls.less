@@ -415,7 +415,11 @@
 /* ==============[ view functions for zoom, rotate and other view related functions ]===== */
 .view-functions {
     ul {
-        position: relative;
+        position: absolute;
+        top: 20px;
+        right: 50px;
+        display: block;
+        height: 40px;
         @media screen and (max-width: @tabletLandscapeViewportWidth) {
             position: absolute;
             display: flex;
@@ -638,11 +642,6 @@
             }
         }
         @media screen and (min-width: @tabletLandscapeViewportWidth) {
-            position: absolute;
-            top: 20px;
-            right: 10px;
-            display: block;
-            height: 40px;
             li {
                 display: inline-block;
                 &.tx-dlf-toolbox-searchindocument-mobile,
