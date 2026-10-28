@@ -21,9 +21,6 @@
 </f:comment>
 
 	<f:variable name="txDlfParams" value="{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0'}" />
-	<f:if condition="{arguments.searchMode} == 'fulltext'">
-		<f:variable name="txDlfParams" value="{page:'{document.page}', double:'0', id:'{document.uid}', pagegrid:'0', highlight_word:'{arguments.q.default}'}" />
-	</f:if>
 
 	<div class="doc">
 		<div class="tx-dlf-listview-thumbnail"><f:if condition="{s:data.valueForKey(array:document.fields, key:'thumbnail')}"><f:then><f:variable name="titleFieldValue" value="{s:data.valueForKey(array:document.fields, key:settings.standardFields.title)}" /><f:variable name="titleFieldText" value="{f:if(condition: '{s:data.isArray(subject:titleFieldValue)}', then: '{s:data.arrayFirst(array:titleFieldValue)}', else: '{titleFieldValue}') }" /><img src="{document.thumbnail}" alt="thumbnail for {titleFieldText}"/></f:then></f:if></div>
@@ -75,6 +72,7 @@
 						<f:else>
 							<f:variable name="higher_partof_document">{allDocuments.{partof_document.partof}}</f:variable>
 							<f:if condition="{s:data.valueForKey(array:higher_partof_document.fields, key:settings.standardFields.title)}">
+								<f:then>
 								<f:link.page pageUid="{settings.kitodoPageView}" 
 									additionalParams="{tx_dlf: txDlfParams}" >
 									<f:render
@@ -97,6 +95,17 @@
 											noHighlighting: 1
 										}"/>
 								</f:link.page>
+								</f:then>
+								<f:else>
+									<f:if condition="{results.data.highlighting.{document.id}}">
+										<f:else>
+											<f:link.page pageUid="{settings.kitodoPageView}"
+												additionalParams="{tx_dlf: txDlfParams}" >
+												<dd class="tx-dlf-title"><f:translate key="find.display.title.fallback" extensionName="slub_digitalcollections" /></dd>
+											</f:link.page>
+										</f:else>
+									</f:if>
+								</f:else>
 							</f:if>
 						</f:else>
 					</f:if>

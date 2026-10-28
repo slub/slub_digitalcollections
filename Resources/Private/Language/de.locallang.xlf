@@ -109,6 +109,10 @@
 				<source><![CDATA[more]]></source>
 				<target><![CDATA[mehr anzeigen]]></target>
 			</trans-unit>
+			<trans-unit id="find.display.title.fallback" approved="yes">
+				<source><![CDATA[Go to work view]]></source>
+				<target><![CDATA[Zur Werkansicht]]></target>
+			</trans-unit>
 			<trans-unit id="find.display.title" approved="yes">
 				<source><![CDATA[Title]]></source>
 				<target><![CDATA[Titel]]></target>
