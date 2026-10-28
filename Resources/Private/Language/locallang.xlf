@@ -83,6 +83,9 @@
 			<trans-unit id="find.list.more">
 				<source><![CDATA[more]]></source>
 			</trans-unit>
+			<trans-unit id="find.display.title.fallback">
+				<source><![CDATA[Go to work view]]></source>
+			</trans-unit>
 			<trans-unit id="find.display.title">
 				<source><![CDATA[Title]]></source>
 			</trans-unit>

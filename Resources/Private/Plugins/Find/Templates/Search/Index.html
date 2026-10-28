@@ -102,8 +102,9 @@
 													<li class="pageresult">
 														<f:render partial="Display/Result" arguments="{document: subDocument, config: config, settings: settings, results: results, additionalTitleInfo: additionalTitleInfo, arguments: arguments, metsOrderlabelsByUid: metsOrderlabelsByUid, allDocuments: allDocuments}"/>
 														<f:if condition="{arguments.searchMode} == 'fulltext'">
+															<f:variable name="highlightWord">{arguments.q.default -> f:replace(search: '"', replace: '') -> f:format.trim() -> f:replace(search: ' ', replace: ';')}</f:variable>
 															<f:for each="{results.data.highlighting.{subDocument.id}}" as="highlight">
-																<p><i>[...] <f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw> [...]</i></p>
+																<p><i><f:link.page pageUid="{settings.kitodoPageView}" additionalParams="{tx_dlf: {page: '{subDocument.page}', double: '0', id: '{subDocument.uid}', pagegrid: '0', highlight_word: highlightWord}}">[...] <f:format.raw>{highlight.0 -> f:replace(search: '\ueeee', replace: '<strong>') -> f:replace(search: '\ueeef', replace: '</strong>') -> f:replace(search: '<b>', replace: '') -> f:replace(search: '</b>', replace: '')}</f:format.raw> [...]</f:link.page></i></p>
 															</f:for>
 														</f:if>
 													</li>
