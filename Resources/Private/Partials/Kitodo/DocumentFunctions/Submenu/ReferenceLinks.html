@@ -15,7 +15,7 @@
 </f:comment>
 
 <f:for each="{0: '1', 1: '2', 2: '3'}" as="index">
-    <f:variable name="referenceXpath"><dc:xpath xpath='({dvLinksXpath}/dv:reference)[{index}]' /></f:variable>
+    <f:variable name="referenceXpath"><dc:xpath xpath='({dvLinksXpath}/dv:reference)[{index}]' htmlspecialchars="false" /></f:variable>
     <f:if condition="{referenceXpath}">
         <li>
             <f:variable name="referenceLinkXpath"><dc:xpath xpath='({dvLinksXpath}/dv:reference/@linktext)[{index}]' /></f:variable>
