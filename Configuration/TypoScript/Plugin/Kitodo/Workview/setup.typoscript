@@ -619,6 +619,14 @@ plugin.tx_dlf_audiovideotool {
     }
 }
 
+plugin.tx_dlf_downloadtool < plugin.tx_dlf_toolbox
+plugin.tx_dlf_downloadtool {
+    settings {
+        tools = fileDownloadTool,imageDownloadTool
+        showAsList = 0
+    }
+}
+
 plugin.tx_dlf_fulltextdownloadtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_fulltextdownloadtool {
     settings {
@@ -635,14 +643,6 @@ plugin.tx_dlf_fulltexttool {
     }
 }
 
-plugin.tx_dlf_imagedownloadtool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_imagedownloadtool {
-    settings {
-        tools = imageDownloadTool
-        showAsList = 0
-    }
-}
-
 plugin.tx_dlf_imagemanipulationtool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_imagemanipulationtool {
     settings {
@@ -655,13 +655,6 @@ plugin.tx_dlf_multiviewaddsourcetool < plugin.tx_dlf_toolbox
 plugin.tx_dlf_multiviewaddsourcetool {
     settings {
         tools = multiViewAddSourceTool
-    }
-}
-
-plugin.tx_dlf_filedownloadtool < plugin.tx_dlf_toolbox
-plugin.tx_dlf_filedownloadtool {
-    settings {
-        tools = fileDownloadTool
     }
 }
 
