@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -52,19 +51,24 @@ class XpathViewHelper extends AbstractViewHelper
      *
      * @var DocumentRepository|null
      */
-    private static ?DocumentRepository $documentRepository = null;
+    private ?DocumentRepository $documentRepository = null;
 
     /**
      * Logger instance
      *
      * @var Logger
      */
-    private static Logger $logger;
+    private Logger $logger;
 
     /**
      * Initialize arguments.
+     * @see AbstractViewHelper::initializeArguments()
+     *
+     * @access public
+     *
+     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('xpath', 'string', 'Xpath Expression', true);
@@ -74,34 +78,26 @@ class XpathViewHelper extends AbstractViewHelper
 
     /**
      * Render the supplied DateTime object as a formatted date.
+     * @see AbstractViewHelper::render()
      *
-     *
-     * @static
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * @access public
      *
      * @return array|string|void
      * @phpstan-return array<string>|string|void
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $xpath = $arguments['xpath'];
-        $htmlSpecialChars = $arguments['htmlspecialchars'];
-        $returnArray = $arguments['returnArray'];
+    public function render() {
+        $xpath = $this->arguments['xpath'];
+        $htmlSpecialChars = $this->arguments['htmlspecialchars'];
+        $returnArray = $this->arguments['returnArray'];
 
-        self::$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
 
-        $parameters = self::getParameters();
+        $parameters =  $this->getParameters();
 
-        $document = self::getDocumentRepository()->findOneByParameters($parameters);
+        $document =  $this->getDocumentRepository()->findOneByParameters($parameters);
         $currentDocument = $document?->getCurrentDocument();
 
-        if ($document === null || !($currentDocument instanceof MetsDocument)) {
+        if (!($currentDocument instanceof MetsDocument)) {
             return;
         }
 
@@ -115,7 +111,7 @@ class XpathViewHelper extends AbstractViewHelper
             $result = self::safeXpath($mets, $xpath);
         } catch (\Exception $e) {
             $result = false;
-            self::$logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
+            $this->logger->info('Problem occurred while evaluating XPath (' . $xpath . ') in METS (' . $document->getLocation() . '): ' . $e->getMessage());
         }
 
         if ($returnArray) {
@@ -143,12 +139,11 @@ class XpathViewHelper extends AbstractViewHelper
     /**
      * Get parameters from the request.
      *
-     *
-     * @static
+     * @access private
      *
      * @return array<string,mixed>
      */
-    private static function getParameters(): array
+    private function getParameters(): array
     {
         $parameters = [];
         $parametersSet = [];
@@ -173,7 +168,7 @@ class XpathViewHelper extends AbstractViewHelper
                         $parsedBody['tx_dlf'] ?? []
                     );
                 } catch (\Throwable $e) {
-                    self::$logger->info('Error occurred while fetching parameters: ' . $e->getMessage());
+                    $this->logger->info('Error occurred while fetching parameters: ' . $e->getMessage());
                 }
             }
         }
@@ -195,24 +190,23 @@ class XpathViewHelper extends AbstractViewHelper
     /**
      * Initialize the document repository
      *
-     *
-     * @static
+     * @access private
      *
      * @return DocumentRepository
      */
-    private static function getDocumentRepository(): DocumentRepository
+    private function getDocumentRepository(): DocumentRepository
     {
-        if (self::$documentRepository === null) {
-            self::$documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
+        if ( $this->documentRepository === null) {
+            $this->documentRepository = GeneralUtility::makeInstance(DocumentRepository::class);
         }
 
-        return self::$documentRepository;
+        return  $this->documentRepository;
     }
 
     /**
      * Execute XPath expression and throw exception on errors.
      *
-     * @static
+     * @access private
      *
      * @param \SimpleXMLElement $xml
      * @param string $xpath
@@ -221,7 +215,7 @@ class XpathViewHelper extends AbstractViewHelper
      *
      * @throws \RuntimeException
      */
-    private static function safeXpath(\SimpleXMLElement $xml, string $xpath): array
+    private function safeXpath(\SimpleXMLElement $xml, string $xpath): array
     {
         $previousLibxml = libxml_use_internal_errors(true);
         libxml_clear_errors();
