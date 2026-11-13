@@ -28,7 +28,6 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -38,24 +37,29 @@ class ProviderLogoCachedViewHelper extends AbstractViewHelper
 {
     /**
      * Initialize arguments.
+     * @see AbstractViewHelper::initializeArguments()
+     *
+     * @access public
+     *
+     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('logo', 'string', 'URI of the provider logo', true);
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * Render results.
+     * @see AbstractViewHelper::render()
+     *
+     * @access public
+     *
+     * @return string|false
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $logoUrl = $arguments['logo'];
+    public function render(): string|false
+    {
+        $logoUrl = $this->arguments['logo'];
         // is valid uri?
         if (isset($logoUrl) && GeneralUtility::isValidUrl($logoUrl)) {
             // calculate cache identifier
