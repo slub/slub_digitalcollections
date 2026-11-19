@@ -27,7 +27,7 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -37,8 +37,13 @@ class CollectionsViewHelper extends AbstractViewHelper
 {
     /**
      * Initialize arguments.
+     * @see AbstractViewHelper::initializeArguments()
+     *
+     * @access public
+     *
+     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('kitodoId', 'integer', 'Id of Kitodo document', true);
@@ -47,24 +52,22 @@ class CollectionsViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * Render results.
+     * @see AbstractViewHelper::render()
+     *
+     * @access public
+     *
+     * @return mixed
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $kitodoId = $arguments['kitodoId'];
-        $solrHost = rtrim($arguments['solrHost'], '/');
-        $solrTimeout = $arguments['solrTimeout'];
-        if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kitodoId)) {
-            // calculate cache identifier
-            $cacheIdentifier = $kitodoId;
+    public function render(): mixed
+    {
+        $kitodoId = $this->arguments['kitodoId'];
+        $solrHost = rtrim($this->arguments['solrHost'], '/');
+        $solrTimeout = $this->arguments['solrTimeout'];
+        if (MathUtility::canBeInterpretedAsInteger($kitodoId)) {
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('slub_digitalcollections_matomo_collections');
 
-            if (($result = $cache->get($cacheIdentifier)) === false) {
+            if (($result = $cache->get($kitodoId)) === false) {
                 /** @var RequestFactory $requestFactory */
                 $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
                 $configuration = [
@@ -89,7 +92,7 @@ class CollectionsViewHelper extends AbstractViewHelper
 
                 // Save value in cache
                 if ($result) {
-                    $cache->set($cacheIdentifier, $result);
+                    $cache->set($kitodoId, $result);
                 }
             }
         } else {

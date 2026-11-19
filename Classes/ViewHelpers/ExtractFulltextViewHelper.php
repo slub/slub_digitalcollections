@@ -24,7 +24,6 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -42,34 +41,39 @@ class ExtractFulltextViewHelper extends AbstractViewHelper
 {
     /**
      * Initialize arguments.
+     * @see AbstractViewHelper::initializeArguments()
+     *
+     * @access public
+     *
+     * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('file', 'string', 'URI of the ALTO fulltext file', true);
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * Render results.
+     * @see AbstractViewHelper::render()
+     *
+     * @access public
+     *
+     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $file = $arguments['file'];
-        $rawText = '';
+    public function render(): string
+    {
+        $file = $this->arguments['file'];
+
         $altoXml = @simplexml_load_file($file);
         if ($altoXml !== false) {
             $altoXml->registerXPathNamespace('alto', 'http://www.loc.gov/standards/alto/ns-v2#');
             // Get all (presumed) words of the text.
             $words = $altoXml->xpath('./alto:Layout/alto:Page/alto:PrintSpace//alto:TextBlock/alto:TextLine/alto:String/@CONTENT');
             if (!empty($words)) {
-                $rawText = implode(' ', $words);
+                return implode(' ', $words);
             }
         }
-        return $rawText;
+        return '';
     }
 }

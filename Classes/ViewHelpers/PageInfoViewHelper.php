@@ -25,9 +25,10 @@ namespace Slub\SlubDigitalcollections\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -46,6 +47,11 @@ class PageInfoViewHelper extends AbstractViewHelper
 {
     /**
      * Initialize arguments.
+     * @see AbstractViewHelper::initializeArguments()
+     *
+     * @access public
+     *
+     * @return void
      */
     public function initializeArguments(): void
     {
@@ -55,31 +61,37 @@ class PageInfoViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * Render results.
+     * @see AbstractViewHelper::render()
+     *
+     * @access public
+     *
+     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $pageUid = (int)$arguments['uid'];
-        $field = $arguments['field'];
+    public function render(): string
+    {
+        $pageUid = (int) $this->arguments['uid'];
+        $field = $this->arguments['field'];
 
         // If uid is 0, take the current page from routing context
         if ($pageUid === 0) {
-            // TODO: TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest() is deprecated since version 13.3
-            /** @var RenderingContext $renderingContext */ // @phpstan-ignore-line
-            $request = $renderingContext->getRequest(); // @phpstan-ignore-line
+            /** @var ServerRequestInterface|null $request */
+            $request = null;
+            if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+                $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+            }
+
+            if (!$request) {
+                throw new RuntimeException('Required request not found in RenderingContext');
+            }
 
             if ($request->getAttribute('applicationType') === 1) {
                 $pageUid = $request->getAttribute('routing')->getPageId();
             }
         }
-        $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $page = $pageRepository->getPage($pageUid);
 
-        return array_key_exists($field, $page) ? (string)$page[$field] : '';
+        return array_key_exists($field, $page) ? (string) $page[$field] : '';
     }
 }
